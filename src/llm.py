@@ -612,9 +612,14 @@ def _call_gemini(model: str, user: str, ai: dict, system: str = SYSTEM) -> str:
             ),
         )
     except Exception as e:  # noqa: BLE001
-        if "thinking" not in str(e).lower():
+        msg = str(e).lower()
+        # 모델마다 thinking 옵션 형식이 달라 400(INVALID_ARGUMENT)이 날 수 있다.
+        # 그 경우 옵션 없이 한 번 더 시도한다.
+        retriable = ("thinking" in msg or "invalid_argument" in msg
+                     or "invalid argument" in msg or "400" in msg)
+        if not retriable:
             raise
-        log.debug("thinking_config 미지원 — 기본 설정으로 재호출")
+        log.info("thinking 옵션 미지원 — 기본 설정으로 재호출합니다")
     if res is None:
         res = client.models.generate_content(
             model=model, contents=user,
