@@ -77,6 +77,15 @@ def send_brief(cfg: dict, messages: list[str], url: str = "") -> bool:
         log.warning("발송할 메시지가 없습니다.")
         return False
 
+    # 사이트_주소가 비어 있으면 url 이 파일명뿐이라 카카오가 거부한다.
+    # 온전한 http(s) 주소일 때만 링크 버튼을 붙인다.
+    if url and not url.startswith(("http://", "https://")):
+        log.warning(
+            "사이트_주소가 설정되지 않아 링크 버튼 없이 발송합니다. "
+            "GitHub Pages 설정 후 config.yaml 의 사이트_주소를 채워주세요."
+        )
+        url = ""
+
     token, new_refresh = refresh_access_token()
     if new_refresh:
         _persist_refresh_token(new_refresh)
