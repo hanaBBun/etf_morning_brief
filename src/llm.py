@@ -298,8 +298,107 @@ HANDOFF_SCHEMA = """반드시 아래 JSON 형식으로만 답하세요. 다른 �
 """
 
 
-def _payload(data: dict[str, Any]) -> str:
-    return json.dumps(data, ensure_ascii=False, indent=1, default=str)[:120_000]
+MAX_PAYLOAD_CHARS = 16_000  # 무료 티어 분당 입력 토큰 한도 안에 들어가도록
+
+
+def _slim_quote(r: dict) -> dict:
+    """지표 한 줄에서 AI가 실제로 쓰는 값만 남긴다."""
+    out = {"이름": r.get("이름"), "종가": r.get("종가"), "등락률": r.get("등락률")}
+    for k in ("변화bp", "기준일", "상태", "고가등락률"):
+        if r.get(k) is not None:
+            out[k] = r[k]
+    return {k: v for k, v in out.items() if v is not None}
+
+
+def _slim_news(items: list[dict], n: int, summary_len: int = 110) -> list[dict]:
+    out = []
+    for it in (items or [])[:n]:
+        row = {
+            "제목": it.get("제목"),
+            "출처": it.get("출처"),
+            "링크": it.get("링크"),
+            "날짜": it.get("날짜"),
+            "경과시간": it.get("경과시간"),
+        }
+        if it.get("본문"):
+            row["본문"] = str(it["본문"])[:1200]
+        elif it.get("요약"):
+            row["요약"] = str(it["요약"])[:summary_len]
+        out.append({k: v for k, v in row.items() if v})
+    return out
+
+
+def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
+    """AI에 넘길 데이터를 꼭 필요한 것만 남겨 압축한다.
+
+    무료 티어는 분당 입력 토큰이 1만으로 제한되어 있어, 원본을 그대로 보내면
+    429(RESOURCE_EXHAUSTED)가 난다.
+    """
+    d: dict[str, Any] = {
+        k: data.get(k)
+        for k in ("날짜표시", "기준설명", "국내기준일_표시", "해외기준일_표시", "수집범위")
+        if data.get(k)
+    }
+
+    if mode == "thursday":
+        news = data.get("뉴스") or {}
+        d["뉴스"] = {
+            "ETF": _slim_news(news.get("ETF"), 14),
+            "국내": _slim_news(news.get("국내"), 6),
+        }
+        return d
+
+    d["국내지수"] = [_slim_quote(r) for r in (data.get("국내지수") or [])]
+    d["지표"] = {
+        g: [_slim_quote(r) for r in rows if r.get("종가") is not None]
+        for g, rows in (data.get("지표") or {}).items()
+    }
+    d["수급"] = data.get("수급") or []
+
+    d["종목_후보_국내"] = [
+        {"종목명": s.get("종목명"), "등락률": s.get("등락률"), "사유": s.get("이유_표시")}
+        for s in (data.get("종목_후보_국내") or [])[:10]
+    ]
+    d["종목_후보_미국"] = [
+        {"이름": s.get("이름"), "티커": s.get("티커"),
+         "업종": s.get("업종"), "등락률": s.get("등락률")}
+        for s in (data.get("종목_후보_미국") or [])[:8]
+    ]
+
+    etf = data.get("ETF_후보") or {}
+    d["ETF_후보"] = {
+        k: (v[:5] if isinstance(v, list) else v)
+        for k, v in etf.items() if v
+    }
+
+    news = data.get("뉴스") or {}
+    d["뉴스"] = {
+        "ETF": _slim_news(news.get("ETF"), 8),
+        "국내": _slim_news(news.get("국내"), 8),
+        "국제": _slim_news(news.get("국제"), 6),
+    }
+
+    yt = data.get("유튜브") or {}
+    if yt.get("급상승"):
+        d["유튜브"] = {
+            "급상승": [
+                {"영상ID": v.get("영상ID"), "제목": v.get("제목"),
+                 "채널": v.get("채널"), "조회수": v.get("조회수")}
+                for v in yt["급상승"][:5]
+            ],
+            "댓글샘플": [str(c)[:100] for c in (yt.get("댓글샘플") or [])[:12]],
+        }
+    return d
+
+
+def _payload(data: dict[str, Any], mode: str = "daily") -> str:
+    text = json.dumps(_compact(data, mode), ensure_ascii=False, default=str)
+    if len(text) > MAX_PAYLOAD_CHARS:
+        log.warning("데이터가 커서 %d자로 잘라냅니다 (원본 %d자)",
+                    MAX_PAYLOAD_CHARS, len(text))
+        text = text[:MAX_PAYLOAD_CHARS]
+    log.info("AI 입력 크기: %d자 (약 %d토큰)", len(text), len(text) // 2)
+    return text
 
 
 def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, Any]:
@@ -333,7 +432,7 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
 아래는 수집된 원본 데이터입니다.
 
 <데이터>
-{_payload(data)}
+{_payload(data, mode)}
 </데이터>
 """
     candidates = [ai.get("모델") or "gemini-3.6-flash"]
@@ -359,7 +458,21 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
                 return _postprocess(parsed, cfg, data, mode)
             log.warning("모델 %s: JSON 파싱 실패", model)
         except Exception as e:  # noqa: BLE001
-            log.warning("모델 %s 실패(시도 %d): %s", model, attempt + 1, e)
+            msg = str(e)
+            short = msg[:200].replace("\n", " ")
+            log.warning("모델 %s 실패(시도 %d): %s", model, attempt + 1, short)
+            # 분당 할당량 초과면 잠깐 쉬었다가 같은 모델로 한 번 더
+            if "RESOURCE_EXHAUSTED" in msg or "429" in msg:
+                import time
+                log.info("할당량 초과 — 20초 대기 후 재시도합니다")
+                time.sleep(20)
+                try:
+                    raw = _call_gemini(model, user, ai, system) if provider == "gemini" else ""
+                    parsed = _parse_json(raw)
+                    if parsed:
+                        return _postprocess(parsed, cfg, data, mode)
+                except Exception as e2:  # noqa: BLE001
+                    log.warning("재시도도 실패: %s", str(e2)[:200])
     log.error("AI 생성 전부 실패 — 데이터만으로 브리핑을 만듭니다.")
     return {}
 
@@ -389,7 +502,12 @@ def _discover_gemini_models(limit: int = 3) -> list[str]:
             if "generateContent" not in (m.get("supportedGenerationMethods") or []):
                 continue
             name = str(m.get("name", "")).replace("models/", "")
-            if not name or "embedding" in name or "vision" in name:
+            if not name.startswith("gemini-"):
+                continue
+            # 텍스트 생성이 아닌 모델(음성·이미지·임베딩)과 실험판을 제외한다.
+            bad = ("tts", "audio", "image", "vision", "embedding",
+                   "live", "native", "preview", "exp", "thinking", "learnlm")
+            if any(b in name for b in bad):
                 continue
             names.append(name)
         # 빠르고 저렴한 flash 계열을 우선한다.
