@@ -482,7 +482,8 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
             parsed = _parse_json(raw)
             if parsed:
                 return _postprocess(parsed, cfg, data, mode)
-            log.warning("모델 %s: JSON 파싱 실패", model)
+            head = (raw or "")[:300].replace("\n", " ")
+            log.warning("모델 %s: JSON 파싱 실패. 응답 앞부분: %s", model, head or "(빈 응답)")
         except Exception as e:  # noqa: BLE001
             msg = str(e)
             short = msg[:200].replace("\n", " ")
@@ -549,22 +550,86 @@ def _discover_gemini_models(limit: int = 3) -> list[str]:
         return []
 
 
+def _gemini_text(res) -> str:
+    """응답에서 실제 텍스트만 뽑는다.
+
+    Gemini 3.x 는 '생각(thought)' 파트를 함께 돌려줄 수 있어 res.text 가
+    비거나 JSON 앞에 잡음이 섞이는 경우가 있다. 파트를 직접 훑어 안전하게 모은다.
+    """
+    # 1) 파트를 직접 순회 (thought 파트는 건너뛴다)
+    try:
+        chunks = []
+        for cand in (getattr(res, "candidates", None) or []):
+            content = getattr(cand, "content", None)
+            for part in (getattr(content, "parts", None) or []):
+                if getattr(part, "thought", False):
+                    continue
+                t = getattr(part, "text", None)
+                if t:
+                    chunks.append(t)
+        if chunks:
+            return "".join(chunks)
+    except Exception as e:  # noqa: BLE001
+        log.debug("파트 추출 실패: %s", e)
+
+    # 2) 그래도 없으면 SDK 기본 속성
+    try:
+        return res.text or ""
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def _finish_reason(res) -> str:
+    try:
+        cands = getattr(res, "candidates", None) or []
+        if cands:
+            return str(getattr(cands[0], "finish_reason", "") or "")
+    except Exception:  # noqa: BLE001
+        pass
+    return ""
+
+
 def _call_gemini(model: str, user: str, ai: dict, system: str = SYSTEM) -> str:
     from google import genai
     from google.genai import types
 
     client = genai.Client(api_key=env("GEMINI_API_KEY", required=True))
-    res = client.models.generate_content(
-        model=model,
-        contents=user,
-        config=types.GenerateContentConfig(
-            system_instruction=system,
-            temperature=float(ai.get("온도", 0.4)),
-            max_output_tokens=int(ai.get("최대_출력토큰", 8192)),
-            response_mime_type="application/json",
-        ),
+    base = dict(
+        system_instruction=system,
+        temperature=float(ai.get("온도", 0.4)),
+        max_output_tokens=int(ai.get("최대_출력토큰", 32768)),
+        response_mime_type="application/json",
     )
-    return res.text or ""
+
+    # 최신 모델은 '생각'에 출력 토큰을 크게 쓴다. 끌 수 있으면 꺼서 본문에 몰아준다.
+    res = None
+    try:
+        res = client.models.generate_content(
+            model=model, contents=user,
+            config=types.GenerateContentConfig(
+                **base,
+                thinking_config=types.ThinkingConfig(thinking_budget=0),
+            ),
+        )
+    except Exception as e:  # noqa: BLE001
+        if "thinking" not in str(e).lower():
+            raise
+        log.debug("thinking_config 미지원 — 기본 설정으로 재호출")
+    if res is None:
+        res = client.models.generate_content(
+            model=model, contents=user,
+            config=types.GenerateContentConfig(**base),
+        )
+
+    text = _gemini_text(res)
+    reason = _finish_reason(res)
+    log.info("모델 %s 응답: %d자, finish_reason=%s", model, len(text), reason or "?")
+    if not text:
+        log.warning("응답 본문이 비었습니다 (finish_reason=%s)", reason)
+    elif "MAX_TOKENS" in reason.upper():
+        log.warning("출력 토큰 한도에 걸려 응답이 잘렸습니다. "
+                    "config.yaml 의 AI > 최대_출력토큰 을 늘려주세요.")
+    return text
 
 
 def _call_claude(model: str, user: str, ai: dict, system: str = SYSTEM) -> str:
