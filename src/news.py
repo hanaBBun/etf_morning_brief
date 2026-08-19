@@ -1,0 +1,160 @@
+"""뉴스 RSS 수집."""
+from __future__ import annotations
+
+import logging
+from datetime import timedelta
+from typing import Any
+
+from .config import now_kst
+
+log = logging.getLogger(__name__)
+
+
+def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
+    """config의 RSS 목록에서 최근 N시간 기사만 수집."""
+    import feedparser
+
+    cutoff = now_kst() - timedelta(hours=hours)
+    limit = int((cfg.get("뉴스") or {}).get("기사_최대개수", 40))
+    out: dict[str, list[dict]] = {}
+
+    for group, sources in (cfg.get("뉴스") or {}).items():
+        if not isinstance(sources, list):
+            continue
+        items: list[dict] = []
+        for src in sources:
+            try:
+                feed = feedparser.parse(src["url"])
+                for e in feed.entries[:60]:
+                    pub = _parsed_time(e)
+                    if pub and pub < cutoff:
+                        continue
+                    items.append({
+                        "제목": _clean(getattr(e, "title", "")),
+                        "요약": _clean(getattr(e, "summary", ""))[:400],
+                        "링크": getattr(e, "link", ""),
+                        "출처": src["이름"],
+                        "날짜": pub.strftime("%Y-%m-%d") if pub else "",
+                        "시각": pub.strftime("%m/%d %H:%M") if pub else "",
+                        "경과시간": _elapsed_hours(pub),
+                        "_ts": pub.timestamp() if pub else 0,
+                    })
+            except Exception as ex:  # noqa: BLE001
+                log.warning("RSS 실패 %s: %s", src.get("이름"), ex)
+        items.sort(key=lambda r: r["_ts"], reverse=True)
+        for it in items:
+            it.pop("_ts", None)
+        out[group] = items[:limit]
+    return out
+
+
+def collect_since_tuesday(cfg: dict) -> dict[str, list[dict]]:
+    """이번 주 화요일 00시(KST)부터의 기사만. 목요일 전달문용."""
+    now = now_kst()
+    # 월=0 … 화=1. 이번 주 화요일 00시를 기준으로 몇 시간 전인지 계산.
+    days_since_tue = (now.weekday() - 1) % 7
+    tue = (now - timedelta(days=days_since_tue)).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+    hours = max(int((now - tue).total_seconds() // 3600), 24)
+    log.info("목요일 전달문 뉴스 범위: 최근 %d시간 (화요일 00시 기준)", hours)
+    return collect_news(cfg, hours=hours)
+
+
+# ─────────────────────────────────────────────
+# 기사 본문 추출
+# RSS 요약만으로는 "누가 어떤 의견을 냈는지"가 잘 안 잡힌다.
+# 목요일 전달문에서만 상위 기사 본문을 가볍게 긁어온다.
+# ─────────────────────────────────────────────
+_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+       "(KHTML, like Gecko) Chrome/122.0 Safari/537.36")
+
+
+def fetch_article_text(url: str, max_chars: int = 2500, timeout: int = 12) -> str:
+    """기사 본문을 최선 노력으로 추출. 실패하면 빈 문자열."""
+    import re
+
+    import requests
+
+    try:
+        r = requests.get(url, headers={"User-Agent": _UA}, timeout=timeout)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding or r.encoding
+        html = r.text
+    except Exception as e:  # noqa: BLE001
+        log.debug("본문 수집 실패 %s: %s", url[:60], e)
+        return ""
+
+    html = re.sub(r"(?is)<(script|style|nav|header|footer|aside|form)[^>]*>.*?</\1>", " ", html)
+
+    # ① <article> 또는 본문으로 보이는 컨테이너
+    best = ""
+    for pat in (
+        r"(?is)<article[^>]*>(.*?)</article>",
+        r'(?is)<div[^>]*(?:id|class)="[^"]*(?:article|news[_-]?body|content[_-]?body|'
+        r'articleBody|view[_-]?content|entry[_-]?content)[^"]*"[^>]*>(.*?)</div>',
+    ):
+        for m in re.finditer(pat, html):
+            text = _strip(m.group(1))
+            if len(text) > len(best):
+                best = text
+
+    # ② 그래도 짧으면 <p> 태그를 모은다
+    if len(best) < 300:
+        ps = [_strip(m.group(1)) for m in re.finditer(r"(?is)<p[^>]*>(.*?)</p>", html)]
+        joined = " ".join(p for p in ps if len(p) > 30)
+        if len(joined) > len(best):
+            best = joined
+
+    return best[:max_chars]
+
+
+def _strip(fragment: str) -> str:
+    import html as _html
+    import re
+    t = re.sub(r"(?is)<br\s*/?>", " ", fragment)
+    t = re.sub(r"(?is)</(p|div|li|h[1-6])>", " ", t)
+    t = re.sub(r"<[^>]+>", "", t)
+    return re.sub(r"\s+", " ", _html.unescape(t)).strip()
+
+
+def enrich_with_body(items: list[dict], limit: int = 14) -> list[dict]:
+    """상위 N건에 본문을 붙인다. 나머지는 요약만 유지."""
+    out = []
+    for i, it in enumerate(items):
+        row = dict(it)
+        if i < limit and row.get("링크"):
+            body = fetch_article_text(row["링크"])
+            if body:
+                row["본문"] = body
+        out.append(row)
+    return out
+
+
+def _parsed_time(entry: Any):
+    import datetime as dt
+    from .config import KST
+    for key in ("published_parsed", "updated_parsed"):
+        t = getattr(entry, key, None)
+        if t:
+            try:
+                return dt.datetime(*t[:6], tzinfo=dt.timezone.utc).astimezone(KST)
+            except Exception:  # noqa: BLE001
+                continue
+    return None
+
+
+def _elapsed_hours(pub) -> int | None:
+    if not pub:
+        return None
+    try:
+        return int((now_kst() - pub).total_seconds() // 3600)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _clean(s: str) -> str:
+    import html
+    import re
+    s = re.sub(r"<[^>]+>", "", s or "")
+    return html.unescape(s).strip()

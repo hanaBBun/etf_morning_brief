@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETF 처방전 전달문 · {{ 날짜표시 }}</title>
+<style>
+  :root{
+    --bg:#0e1116; --surface:#161b22; --surface2:#1c2230; --line:#242c3a;
+    --ink:#e8edf5; --ink2:#a6b2c4; --ink3:#6f7d92;
+    --up:#f05a5a; --down:#3b8fe8; --warn:#e0a33c; --accent:#7c6cf0; --pick:#2fae7e;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f6; --line:#e2e6ee;
+           --ink:#161b22; --ink2:#4c5768; --ink3:#8792a4; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+       line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 60px}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+  h1{font-size:23px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink3);font-size:13px;margin:0}
+  h2{font-size:15px;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+     letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
+  h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+
+  .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+       border:1px solid var(--line);border-radius:50%;font-size:10px;color:var(--ink3);
+       cursor:help;position:relative;font-weight:600;vertical-align:2px;margin-left:5px;
+       background:var(--surface2);flex-shrink:0}
+  .tip:hover,.tip:focus{color:var(--accent);border-color:var(--accent);outline:none}
+  .tip .bubble{visibility:hidden;opacity:0;position:absolute;top:22px;left:50%;
+       transform:translateX(-50%);width:min(340px,78vw);background:var(--surface2);
+       border:1px solid var(--line);border-radius:8px;padding:10px 12px;z-index:20;
+       font-size:12px;font-weight:400;color:var(--ink2);line-height:1.6;text-align:left;
+       box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
+  .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
+  @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
+
+  /* 뉴스 6선 */
+  .newslist{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+            padding:2px 16px;margin:10px 0}
+  .nitem{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:12px 0;
+         border-bottom:1px solid var(--line);align-items:start}
+  .nitem:last-child{border-bottom:none}
+  .nno{display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+       border-radius:5px;background:var(--surface2);border:1px solid var(--line);
+       font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;margin-top:1px}
+  .nitem a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .nitem a:hover{color:var(--accent)}
+  .nmeta{font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .nsum{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .ntheme{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent);
+          border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 7px;margin-right:7px}
+
+  .copybox{margin:8px 0 0}
+  .copybox summary{font-size:12.5px;color:var(--ink3);cursor:pointer;padding:6px 2px;
+                   list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .copybox summary::before{content:"📋"}
+  .copybox summary:hover{color:var(--accent)}
+  .copybox textarea{width:100%;margin-top:6px;background:var(--surface2);color:var(--ink2);
+                    border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                    font-size:12px;line-height:1.75;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                    resize:vertical}
+
+  /* 애널리스트 발언 */
+  .quote{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:14px 16px;margin:10px 0}
+  .qhead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+  .qname{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .qorg{font-size:12px;color:var(--ink3)}
+  .qtopic{font-size:10.5px;font-weight:700;color:var(--ink3);background:var(--surface2);
+          border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:auto}
+  .qbody{font-size:13px;color:var(--ink2);margin:0;padding-left:11px;
+         border-left:2px solid var(--line)}
+  .qsrc{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+  .qsrc a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+  .qsrc a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* 출연자 추천 */
+  .guest{background:linear-gradient(135deg,rgba(47,174,126,.10),rgba(47,174,126,.03));
+         border:1px solid rgba(47,174,126,.32);border-radius:10px;padding:15px 17px;margin:10px 0}
+  .ghead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:3px}
+  .gname{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .gorg{font-size:12.5px;color:var(--ink3)}
+  .gcorner{font-size:10.5px;font-weight:700;color:var(--pick);
+           border:1px solid rgba(47,174,126,.45);border-radius:4px;padding:2px 8px;margin-left:auto}
+  .grow{display:grid;grid-template-columns:82px 1fr;gap:5px 10px;font-size:12.5px;margin-top:9px}
+  .grow .k{color:var(--ink3);font-weight:600}
+  .grow .v{color:var(--ink2)}
+  .gq{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
+      font-size:12.5px;color:var(--ink2);border-left:2px solid var(--pick)}
+  .gnote{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+
+  .empty{background:var(--surface);border:1px dashed var(--line);border-radius:10px;
+         padding:16px;margin:10px 0;font-size:13px;color:var(--ink3);text-align:center}
+
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:11px;color:var(--ink3);line-height:1.7}
+  .srclist{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+  .srclist a{font-size:11.5px;background:var(--surface2);border:1px solid var(--line);
+             border-radius:16px;padding:3px 10px;color:var(--ink2);text-decoration:none}
+  .srclist a:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ETF 처방전 · 목요일 전달문</div>
+  <h1>{{ 날짜표시 }} ETF 뉴스 브리프</h1>
+  <p class="sub">{{ 수집범위 }} 보도분 · 박승진 실장 전달용</p>
+</header>
+
+{# ── 1. ETF 뉴스 6선 ── #}
+<h2>📰 ETF 뉴스 6선<span class="tip" tabindex="0">?<span class="bubble">
+  이번 주 ETF가 언급된 기사 중 주제가 겹치지 않게 6건을 고릅니다.
+  수급 / 신규 상장 / 규제 / 해외 동향 / 상품 구조 / 시장 규모로 분산합니다.
+  아래 <b>복사용 텍스트</b>를 그대로 카톡에 붙여넣으면 됩니다.</span></span>
+  <span class="tag">전달용</span></h2>
+
+{% if ai.etf_뉴스6선 %}
+<div class="newslist">
+  {% for n in ai.etf_뉴스6선 %}
+  <div class="nitem">
+    <div class="nno">{{ loop.index }}</div>
+    <div>
+      {% if n.주제 %}<span class="ntheme">{{ n.주제 }}</span>{% endif %}
+      <a href="{{ n.url }}" target="_blank" rel="noopener">{{ n.제목 }}</a>
+      <div class="nmeta">{{ n.매체 }}{% if n.날짜 %} · {{ n.날짜 }}{% endif %}</div>
+      {% if n.한줄 %}<div class="nsum">{{ n.한줄 }}</div>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<details class="copybox">
+  <summary>복사용 텍스트 열기</summary>
+  <textarea readonly rows="{{ (ai.etf_뉴스6선|length) * 3 + 3 }}">[{{ 날짜표시 }}] ETF 뉴스 {{ ai.etf_뉴스6선|length }}선
+{% for n in ai.etf_뉴스6선 %}
+{{ loop.index }}. {{ n.제목 }}
+   {{ n.매체 }}{% if n.날짜 %} · {{ n.날짜 }}{% endif %}
+   {{ n.url }}
+{% endfor %}</textarea>
+</details>
+{% else %}
+<div class="empty">이번 주 수집된 ETF 기사에서 조건에 맞는 항목을 찾지 못했습니다.</div>
+{% endif %}
+
+{# ── 2. 애널리스트·전문가 발언 ── #}
+{% if ai.발언정리 %}
+<h2>🎙️ 애널리스트 · 전문가 발언<span class="tip" tabindex="0">?<span class="bubble">
+  ETF·자산배분 관련 기사에서 <b>실명으로 인용된 발언</b>만 모읍니다.
+  기사에 이름과 소속이 명시된 경우에만 싣고, 익명 코멘트는 제외합니다.</span></span>
+  <span class="tag">ETF · 자산배분</span></h2>
+{% for q in ai.발언정리 %}
+<div class="quote">
+  <div class="qhead">
+    <span class="qname">{{ q.이름 }}</span>
+    <span class="qorg">{{ q.소속 }}{% if q.직함 %} {{ q.직함 }}{% endif %}</span>
+    {% if q.주제 %}<span class="qtopic">{{ q.주제 }}</span>{% endif %}
+  </div>
+  <p class="qbody">{{ q.발언 }}</p>
+  {% if q.출처 %}
+  <div class="qsrc">출처 ·
+    {% if q.출처.url %}<a href="{{ q.출처.url }}" target="_blank" rel="noopener">{{ q.출처.이름 }}</a>{% else %}{{ q.출처.이름 }}{% endif %}
+    {% if q.출처.날짜 %} · {{ q.출처.날짜 }}{% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{# ── 3. 출연자 추천 ── #}
+{% if ai.출연자추천 %}
+<h2>🎯 출연자 추천<span class="tip" tabindex="0">?<span class="bubble">
+  위 발언자 중 지금 섭외할 만한 인물을 코너별로 제안합니다.
+  <b>왜 지금인지</b>가 명확한 경우에만 올립니다. 섭외 이력·연락처는 별도 확인이 필요합니다.</span></span></h2>
+{% for g in ai.출연자추천 %}
+<div class="guest">
+  <div class="ghead">
+    <span class="gname">{{ g.이름 }}</span>
+    <span class="gorg">{{ g.소속 }}{% if g.직함 %} {{ g.직함 }}{% endif %}</span>
+    <span class="gcorner">{{ g.추천코너 }}</span>
+  </div>
+  <div class="grow">
+    <div class="k">왜 지금</div><div class="v">{{ g.이유 }}</div>
+    {% if g.다룰주제 %}<div class="k">다룰 주제</div><div class="v">{{ g.다룰주제 }}</div>{% endif %}
+    {% if g.관련ETF %}<div class="k">관련 ETF</div><div class="v">{{ g.관련ETF }}</div>{% endif %}
+  </div>
+  {% if g.질문 %}<div class="gq"><b>물어볼 질문</b> — “{{ g.질문 }}”</div>{% endif %}
+  {% if g.주의 %}<div class="gnote">⚠ {{ g.주의 }}</div>{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{# ── 출처 ── #}
+{% if 출처목록 %}
+<h2>🔗 출처</h2>
+<div class="srclist">
+  {% for s in 출처목록 %}
+  {% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}<a>{{ s.이름 }}</a>{% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<footer>
+  생성 {{ 생성시각 }} · 매주 목요일 오전 11시 자동 발송<br>
+  ※ 발언 인용은 기사 원문 기준입니다. 인용문을 그대로 쓰실 때는 원문 링크로 한 번 더 확인해 주세요.<br>
+  ※ 출연자 추천은 공개 발언을 근거로 한 제안이며, 섭외 가능 여부·이력은 별도 확인이 필요합니다.
+</footer>
+
+</div>
+</body>
+</html>

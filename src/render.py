@@ -1,0 +1,287 @@
+"""수집 데이터 + AI 결과 → HTML 렌더링, GitHub Pages 인덱스 갱신."""
+from __future__ import annotations
+
+import json
+import logging
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+from .config import ROOT, now_kst
+
+log = logging.getLogger(__name__)
+DOCS = ROOT / "docs"
+
+
+def _dir(v: float | None) -> str:
+    if v is None:
+        return "flat"
+    return "up" if v > 0 else ("down" if v < 0 else "flat")
+
+
+def _cell(row: dict, digits: int = 2, unit: str = "", as_bp: bool = False) -> dict:
+    """레벨과 변화를 같은 봉(row)에서만 만든다. 서로 다른 시점 값을 섞지 않는다."""
+    close = row.get("종가")
+    if close is None:
+        return {"이름": row["이름"], "값": "—", "변화": "", "방향": "flat", "기준일": ""}
+
+    if as_bp:
+        bp = row.get("변화bp")
+        if bp is None and row.get("전일") is not None:
+            bp = (close - row["전일"]) * 100
+        변화 = f"{bp:+.1f}bp" if bp is not None else ""
+        방향 = _dir(bp)
+    else:
+        pct = row.get("등락률")
+        변화 = f"{pct:+.2f}%" if pct is not None else ""
+        방향 = _dir(pct)
+
+    return {
+        "이름": row["이름"],
+        "값": f"{close:,.{digits}f}{unit}",
+        "변화": 변화,
+        "방향": 방향,
+        "기준일": row.get("기준일", ""),
+        "상태": row.get("상태", ""),
+    }
+
+
+def _md(iso: str) -> str:
+    return f"{iso[5:7]}/{iso[8:10]}" if iso and len(iso) >= 10 else ""
+
+
+def _stamp(cells: list[dict]) -> str:
+    """그룹 안 기준일이 하나면 라벨에 붙이고, 섞였으면 빈 값을 돌려준다."""
+    dates = {c.get("기준일") for c in cells if c.get("기준일")}
+    states = {c.get("상태") for c in cells if c.get("상태")}
+    if len(dates) == 1:
+        d = _md(next(iter(dates)))
+        st = next(iter(states)) if len(states) == 1 else ""
+        return f"{d} {st}".strip()
+    return ""
+
+
+def _annotate_mixed(cells: list[dict]) -> None:
+    """기준일이 섞인 그룹은 각 항목 이름 옆에 날짜를 박아 혼동을 막는다."""
+    dates = {c.get("기준일") for c in cells if c.get("기준일")}
+    if len(dates) <= 1:
+        return
+    log.warning("기준일 혼재 — 항목별 날짜를 표기합니다: %s", sorted(d for d in dates if d))
+    for c in cells:
+        if c.get("기준일"):
+            c["이름"] = f"{c['이름']} ({_md(c['기준일'])})"
+
+
+def _glance(data: dict) -> list[dict]:
+    """시장 한눈에 — 그룹별 요약. 값이 없는 그룹은 빠진다.
+
+    한 그룹 안의 레벨·변화는 모두 같은 timestamp에서 나온 것만 담는다.
+    """
+    ind = data.get("지표") or {}
+    groups: list[dict] = []
+
+    def add(label: str, cells: list[dict]):
+        cells = [c for c in cells if c["값"] != "—"]
+        if not cells:
+            return
+        _annotate_mixed(cells)
+        stamp = _stamp(cells)
+        groups.append({
+            "라벨": f"{label} · {stamp}" if stamp else label,
+            "항목": cells,
+        })
+
+    # 국내 지수 · 환율 · 수급은 모두 같은 거래일 마감 기준이라 한 그룹으로 묶는다.
+    국내 = [_cell(r, 2) for r in (data.get("국내지수") or [])]
+    국내 += [_cell(r, 1, "원") for r in ind.get("국내", []) if r["이름"] == "원/달러"]
+    if data.get("수급"):
+        from .config import fmt_eok
+        for f in data["수급"]:
+            if f["주체"] == "외국인":
+                국내.append({
+                    "이름": "외국인 수급", "값": fmt_eok(f["순매수"]), "변화": "",
+                    "방향": "up" if f["순매수"] >= 0 else "down",
+                    "기준일": data.get("국내기준일_ISO", ""), "상태": "마감",
+                })
+    add("국내 증시 · 환율", 국내)
+
+    add("해외 지수", [_cell(r, 2) for r in ind.get("해외지수", [])])
+    # 국채 금리 변화는 항상 bp로 표기한다.
+    add("국채 금리", [_cell(r, 3, "%", as_bp=True) for r in ind.get("금리", [])])
+    add("원자재 · 변동성",
+        [_cell(r, 2) for r in ind.get("원자재", [])]
+        + [_cell(r, 2) for r in ind.get("변동성", [])])
+
+    return groups
+
+
+def _elapsed(iso: str) -> str:
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+        h = (datetime.now(timezone.utc) - dt).total_seconds() / 3600
+        return f"{int(h)}시간 전" if h >= 1 else f"{int(h * 60)}분 전"
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+OVERLAP_CLASS = {"높음": "high", "보통": "mid", "낮음": "low"}
+
+
+def _youtube(data: dict, ai: dict) -> list[dict]:
+    """수집한 영상 + AI가 붙인 주제·훅·겹침 판정을 합친다."""
+    raw = (data.get("유튜브") or {}).get("급상승") or []
+    notes = {n.get("영상ID"): n for n in (ai.get("유튜브") or []) if isinstance(n, dict)}
+    if not raw:
+        return []
+    picked = [v for v in raw if v.get("영상ID") in notes] or raw[:3]
+    out = []
+    for v in picked[:3]:
+        n = notes.get(v.get("영상ID"), {})
+        ov = n.get("겹침", "")
+        out.append({
+            "제목": v.get("제목", ""),
+            "채널": v.get("채널", ""),
+            "링크": v.get("링크", ""),
+            "조회수표시": f"{v.get('조회수', 0):,}회",
+            "경과": _elapsed(v.get("업로드", "")),
+            "핵심주제": n.get("핵심주제", ""),
+            "훅": n.get("훅", ""),
+            "겹침": ov,
+            "겹침등급": OVERLAP_CLASS.get(ov, "low"),
+        })
+    return out
+
+
+BASE_SOURCES = [
+    {"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
+    {"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"},
+]
+
+
+def _sources(data: dict, ai: dict) -> list[dict]:
+    """카드에 달린 출처 + 뉴스 소스를 모아 중복 제거."""
+    seen: dict[str, dict] = {}
+
+    def put(name: str, url: str = ""):
+        name = (name or "").strip()
+        if not name or name in seen:
+            return
+        seen[name] = {"이름": name, "url": url}
+
+    for s in BASE_SOURCES:
+        put(s["이름"], s["url"])
+    for key in ("핵심이슈", "etf_레이더"):
+        for c in ai.get(key) or []:
+            for s in c.get("출처") or []:
+                if isinstance(s, dict):
+                    put(s.get("이름", ""), s.get("url", ""))
+    for group in (data.get("뉴스") or {}).values():
+        for it in (group or [])[:3]:
+            put(it.get("출처", ""))
+    if data.get("유튜브"):
+        put("YouTube Data API", "https://www.youtube.com")
+    return list(seen.values())
+
+
+def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str) -> dict:
+    br = cfg.get("브리핑") or {}
+    for c in ai.get("핵심이슈") or []:
+        for s in c.get("종목") or []:
+            s.setdefault("방향", "flat")
+    return {
+        "제목": br.get("제목", "아침 경제·ETF 브리핑"),
+        "날짜표시": data.get("날짜표시", ""),
+        "기준설명": data.get("기준설명", ""),
+        "기준일태그": data.get("기준일태그", ""),
+        "한눈에": _glance(data),
+        "유튜브영상": _youtube(data, ai),
+        "출처목록": _sources(data, ai),
+        "레이더_최대": (cfg.get("ETF_레이더") or {}).get("최대_항목수", 3),
+        "ai": ai or {},
+        "모드": mode,
+        "생성시각": now_kst().strftime("%Y-%m-%d %H:%M KST"),
+    }
+
+
+def build_handoff_context(cfg: dict, data: dict, ai: dict) -> dict:
+    return {
+        "날짜표시": data.get("날짜표시", ""),
+        "수집범위": data.get("수집범위", "이번 주"),
+        "출처목록": _sources(data, ai),
+        "ai": ai or {},
+        "생성시각": now_kst().strftime("%Y-%m-%d %H:%M KST"),
+    }
+
+
+SUFFIX = {"daily": "", "weekly": "-weekly", "thursday": "-handoff"}
+TEMPLATE = {"daily": "brief.html.j2", "weekly": "brief.html.j2",
+            "thursday": "handoff.html.j2"}
+
+
+def render(cfg: dict, data: dict, ai: dict, mode: str = "daily") -> tuple[Path, str]:
+    env = Environment(
+        loader=FileSystemLoader(str(ROOT / "templates")),
+        autoescape=select_autoescape(["html"]),
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+    ctx = (build_handoff_context(cfg, data, ai) if mode == "thursday"
+           else build_context(cfg, data, ai, mode))
+    html = env.get_template(TEMPLATE.get(mode, "brief.html.j2")).render(**ctx)
+
+    DOCS.mkdir(exist_ok=True)
+    stamp = now_kst().strftime("%Y-%m-%d")
+    out = DOCS / f"{stamp}{SUFFIX.get(mode, '')}.html"
+    out.write_text(html, encoding="utf-8")
+    if mode != "thursday":  # 전달문은 '최근 브리핑'을 덮어쓰지 않는다
+        (DOCS / "latest.html").write_text(html, encoding="utf-8")
+    (DOCS / ".nojekyll").write_text("", encoding="utf-8")
+
+    base = (cfg.get("브리핑") or {}).get("사이트_주소", "").rstrip("/")
+    url = f"{base}/{out.name}" if base else out.name
+    _update_index(cfg)
+    return out, url
+
+
+def _update_index(cfg: dict) -> None:
+    files = sorted(DOCS.glob("20*.html"), key=lambda p: p.name, reverse=True)
+    rows = "\n".join(
+        '<li><a href="{}">{}</a></li>'.format(
+            p.name,
+            p.stem.replace("-weekly", " (주간)").replace("-handoff", " (ETF 처방전 전달문)"),
+        )
+        for p in files[:400]
+    )
+    title = (cfg.get("브리핑") or {}).get("제목", "아침 경제·ETF 브리핑")
+    html = f"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>{title} 아카이브</title>
+<style>
+:root{{--bg:#0e1116;--surface:#161b22;--line:#242c3a;--ink:#e8edf5;--ink3:#6f7d92;--accent:#7c6cf0}}
+@media(prefers-color-scheme:light){{:root{{--bg:#f6f7f9;--surface:#fff;--line:#e2e6ee;--ink:#161b22;--ink3:#8792a4}}}}
+body{{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}}
+.w{{max-width:640px;margin:0 auto;padding:40px 20px}}
+h1{{font-size:22px;margin:0 0 6px}} p.s{{color:var(--ink3);font-size:13px;margin:0 0 22px}}
+ul{{list-style:none;padding:0;margin:0}} li{{border-bottom:1px solid var(--line)}}
+li a{{display:block;padding:13px 4px;color:var(--ink);text-decoration:none;font-size:14.5px}}
+li a:hover{{color:var(--accent)}}
+.latest{{display:inline-block;margin-bottom:20px;padding:10px 18px;background:var(--accent);
+color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px}}
+</style></head><body><div class="w">
+<h1>{title}</h1><p class="s">매일 오전 7시 자동 생성</p>
+<a class="latest" href="latest.html">가장 최근 브리핑 보기 →</a>
+<ul>{rows}</ul></div></body></html>"""
+    (DOCS / "index.html").write_text(html, encoding="utf-8")
+
+
+def dump_debug(data: dict, ai: dict) -> None:
+    try:
+        (ROOT / "debug").mkdir(exist_ok=True)
+        stamp = now_kst().strftime("%Y%m%d")
+        (ROOT / "debug" / f"{stamp}-data.json").write_text(
+            json.dumps(data, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+        (ROOT / "debug" / f"{stamp}-ai.json").write_text(
+            json.dumps(ai, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    except Exception as e:  # noqa: BLE001
+        log.debug("디버그 저장 실패: %s", e)

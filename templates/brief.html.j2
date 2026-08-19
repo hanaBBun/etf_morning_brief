@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ 제목 }} · {{ 날짜표시 }}</title>
+<style>
+  :root{
+    --bg:#0e1116; --surface:#161b22; --surface2:#1c2230; --line:#242c3a;
+    --ink:#e8edf5; --ink2:#a6b2c4; --ink3:#6f7d92;
+    --up:#f05a5a; --down:#3b8fe8; --warn:#e0a33c; --accent:#7c6cf0;
+    --p1:#e0524f; --p2:#e08a3c; --p3:#d9b93c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f6; --line:#e2e6ee;
+           --ink:#161b22; --ink2:#4c5768; --ink3:#8792a4; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+       line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 60px}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:24px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+  h1{font-size:24px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink3);font-size:13px;margin:0}
+  h2{font-size:15px;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+     letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
+  h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+
+  /* ── 툴팁 (호버 + 탭 모두 동작) ───────────────── */
+  .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+       border:1px solid var(--line);border-radius:50%;font-size:10px;color:var(--ink3);
+       cursor:help;position:relative;font-weight:600;vertical-align:2px;margin-left:5px;
+       background:var(--surface2);flex-shrink:0}
+  .tip:hover,.tip:focus{color:var(--accent);border-color:var(--accent);outline:none}
+  .tip .bubble{visibility:hidden;opacity:0;position:absolute;top:22px;left:50%;
+       transform:translateX(-50%);width:min(340px,78vw);background:var(--surface2);
+       border:1px solid var(--line);border-radius:8px;padding:10px 12px;z-index:20;
+       font-size:12px;font-weight:400;color:var(--ink2);line-height:1.6;text-align:left;
+       box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
+  .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
+  .tip .bubble b{color:var(--ink)}
+  @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
+
+  /* ── TOP 5 ──────────────────────────────────── */
+  .top5{display:flex;flex-direction:column;gap:6px;margin:4px 0}
+  .rank{display:grid;grid-template-columns:auto 1fr;gap:11px;background:var(--surface);
+        border:1px solid var(--line);border-radius:9px;padding:11px 14px;align-items:start}
+  .rank .no{display:flex;align-items:center;justify-content:center;width:22px;height:22px;
+            border-radius:50%;font-size:11.5px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px}
+  .rank.r1 .no,.rank.r2 .no{background:var(--p1)}
+  .rank.r3 .no,.rank.r4 .no{background:var(--p2)}
+  .rank.r5 .no{background:var(--p3)}
+  .rank .t{font-size:14px;font-weight:700;letter-spacing:-.01em;margin:0 0 2px}
+  .rank .n{font-size:12.5px;color:var(--ink2);margin:0;font-variant-numeric:tabular-nums}
+  .rank .n .arrow{color:var(--ink3);margin:0 5px}
+  .rank .n .eff{color:var(--accent);font-weight:600}
+
+  /* ── 시장 한눈에 ─────────────────────────────── */
+  .glance{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+          padding:4px 16px;margin:12px 0}
+  .grow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:2px 22px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .grow:last-child{border-bottom:none}
+  .gcell{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:3px 0;min-width:0}
+  .gcell .k{font-size:12px;color:var(--ink3);white-space:nowrap;flex-shrink:0}
+  .gcell .v{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;
+            text-align:right;white-space:nowrap}
+  .gcell .v .p{font-size:11.5px;font-weight:600;margin-left:5px}
+  @media (max-width:430px){ .grow{grid-template-columns:1fr;gap:0} }
+  .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--ink3)}
+  .glabel{font-size:10.5px;font-weight:700;color:var(--ink3);letter-spacing:.08em;
+          padding:11px 0 2px;grid-column:1/-1}
+
+  /* ── 카드 (사실/해석) ────────────────────────── */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+        padding:14px 16px;margin:10px 0}
+  .card h3{margin:0 0 8px;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .fact{font-size:13.5px;color:var(--ink2);margin:0}
+  .fact .k{display:inline-block;font-size:9.5px;font-weight:700;color:var(--ink3);
+           border:1px solid var(--line);border-radius:4px;padding:1px 6px;margin-right:7px;
+           letter-spacing:.08em;vertical-align:2px}
+  .src{margin-top:7px;font-size:11.5px;color:var(--ink3)}
+  .src a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+  .src a:hover{color:var(--accent);border-color:var(--accent)}
+  .interp{margin-top:10px;background:var(--surface2);border:1px solid var(--line);
+          border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 13px;
+          font-size:12.5px;color:var(--ink2)}
+  .interp .k{display:block;font-size:9.5px;font-weight:700;color:var(--accent);
+             letter-spacing:.08em;margin-bottom:4px}
+
+  /* ── 종목 (최대 3, 컴팩트) ──────────────────── */
+  .stocks{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+  .srow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;
+        background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+  .srow .nm{font-size:13px;font-weight:700}
+  .srow .nm span{font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px}
+  .srow .pc{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .srow .rz{grid-column:1/-1;font-size:12px;color:var(--ink3);margin-top:2px}
+
+  /* ── ETF 레이더 ─────────────────────────────── */
+  .radar{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:2px 16px;margin:10px 0}
+  .ritem{padding:12px 0;border-bottom:1px solid var(--line)}
+  .ritem:last-child{border-bottom:none}
+  .ritem .h{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+  .ritem .badge{font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--accent);
+                border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 6px;flex-shrink:0}
+  .ritem .t{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+  .ritem p{margin:0;font-size:12.5px;color:var(--ink2)}
+  .ritem .sig{margin-top:5px;font-size:12px;color:var(--ink3)}
+
+  /* ── ETF 뉴스 6선 ───────────────────────────── */
+  .newslist{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+            padding:2px 16px;margin:10px 0}
+  .nitem{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:11px 0;
+         border-bottom:1px solid var(--line);align-items:start}
+  .nitem:last-child{border-bottom:none}
+  .nno{display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+       border-radius:5px;background:var(--surface2);border:1px solid var(--line);
+       font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;margin-top:1px}
+  .nitem a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .nitem a:hover{color:var(--accent)}
+  .nmeta{font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .nsum{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .copybox{margin:8px 0 0}
+  .copybox summary{font-size:12.5px;color:var(--ink3);cursor:pointer;padding:6px 2px;
+                   list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .copybox summary::before{content:"📋"}
+  .copybox summary:hover{color:var(--accent)}
+  .copybox textarea{width:100%;margin-top:6px;background:var(--surface2);color:var(--ink2);
+                    border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                    font-size:12px;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                    resize:vertical}
+
+  /* ── 유튜브 ─────────────────────────────────── */
+  .yt{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+  .ytc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .ytc .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:3px}
+  .ytc a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .ytc a:hover{color:var(--accent)}
+  .ytc .meta{font-size:11.5px;color:var(--ink3);margin-top:4px;font-variant-numeric:tabular-nums}
+  .ytc .row{display:grid;grid-template-columns:58px 1fr;gap:4px 10px;margin-top:8px;font-size:12px}
+  .ytc .row .k{color:var(--ink3);font-weight:600}
+  .ytc .row .v{color:var(--ink2)}
+  .ov{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+  .ov.high{background:rgba(240,90,90,.15);color:var(--up);border:1px solid rgba(240,90,90,.35)}
+  .ov.mid{background:rgba(224,163,60,.15);color:var(--warn);border:1px solid rgba(224,163,60,.35)}
+  .ov.low{background:var(--surface2);color:var(--ink3);border:1px solid var(--line)}
+
+  /* ── 콘텐츠 후보 ────────────────────────────── */
+  .idea{background:linear-gradient(135deg,rgba(124,108,240,.10),rgba(124,108,240,.03));
+        border:1px solid rgba(124,108,240,.32);border-radius:10px;padding:14px 16px;margin:10px 0}
+  .idea .k{font-size:10.5px;font-weight:700;color:var(--accent);letter-spacing:.06em}
+  .idea h3{margin:5px 0 8px;font-size:14.5px;font-weight:700;line-height:1.45}
+  .idea .row{display:grid;grid-template-columns:74px 1fr;gap:5px 10px;font-size:12.5px}
+  .idea .row .k2{color:var(--ink3);font-weight:600}
+  .idea .row .v{color:var(--ink2)}
+  .idea .q{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
+           font-size:12.5px;color:var(--ink2);border-left:2px solid var(--accent)}
+
+  /* ── 오늘의 개념 ────────────────────────────── */
+  .concept{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+           padding:14px 16px;margin:10px 0}
+  .concept .w{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .concept .why{font-size:11.5px;color:var(--ink3);margin:2px 0 8px}
+  .concept p{margin:0;font-size:13px;color:var(--ink2)}
+
+  /* ── 일정 ───────────────────────────────────── */
+  .cal{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:13px;margin:10px 0}
+  .cal .d{color:var(--ink3);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .cal .e{color:var(--ink2)}
+  .cpk{display:inline-block;font-size:10px;font-weight:700;border-radius:4px;
+       padding:1px 6px;margin-right:7px;letter-spacing:.03em;vertical-align:1px}
+  .cpk.일정{color:var(--accent);border:1px solid rgba(124,108,240,.42)}
+  .cpk.확인{color:var(--warn);border:1px solid rgba(224,163,60,.42)}
+
+  footer{margin-top:38px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:11px;color:var(--ink3);line-height:1.7}
+  footer a{color:var(--ink3)}
+  .srclist{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+  .srclist a{font-size:11.5px;background:var(--surface2);border:1px solid var(--line);
+             border-radius:16px;padding:3px 10px;color:var(--ink2);text-decoration:none}
+  .srclist a:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Morning Brief · ETF Edition</div>
+  <h1>{{ 날짜표시 }} {{ 제목 }}</h1>
+  <p class="sub">{{ 기준설명 }}</p>
+</header>
+
+{# ─────────── 1. TOP 5 ─────────── #}
+{% if ai.top5 %}
+<h2>🎯 오늘 알아야 할 것<span class="tip" tabindex="0">?<span class="bubble">
+  그날 시장에서 가장 중요한 순서대로 5개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.
+  자세한 설명은 아래 '핵심 이슈'에서 한 번만 합니다.</span></span>
+  <span class="tag">30초 스캔</span></h2>
+<div class="top5">
+  {% for r in ai.top5 %}
+  <div class="rank r{{ r.순위 }}">
+    <div class="no">{{ r.순위 }}</div>
+    <div>
+      <p class="t">{{ r.제목 }}</p>
+      <p class="n">{{ r.숫자 }}{% if r.영향 %}<span class="arrow">→</span><span class="eff">{{ r.영향 }}</span>{% endif %}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ─────────── 2. 시장 한눈에 ─────────── #}
+{% if 한눈에 %}
+<h2>📈 시장 한눈에 <span class="tag">{{ 기준일태그 }}</span></h2>
+<div class="glance">
+  {% for group in 한눈에 %}
+  <div class="grow">
+    <div class="glabel">{{ group.라벨 }}</div>
+    {% for c in group.항목 %}
+    <div class="gcell">
+      <span class="k">{{ c.이름 }}</span>
+      <span class="v">{{ c.값 }}<span class="p {{ c.방향 }}">{{ c.변화 }}</span></span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ─────────── 3. 핵심 이슈 ─────────── #}
+{% if ai.핵심이슈 %}
+<h2>🔍 핵심 이슈<span class="tip" tabindex="0">?<span class="bubble">
+  한 이슈는 여기서 <b>딱 한 번만</b> 자세히 다룹니다. 위 TOP 5나 아래 섹션에서 같은 내용을 반복하지 않습니다.<br><br>
+  회색 <b>사실</b> 태그는 검증 가능한 수치·발표 내용, 보라색 <b>해석</b> 박스는 그 데이터에 대해
+  가능한 설명 중 하나입니다.</span></span></h2>
+{% for c in ai.핵심이슈 %}
+<div class="card">
+  <h3>{{ c.제목 }}</h3>
+  <p class="fact"><span class="k">사실</span>{{ c.사실 }}</p>
+  {% if c.출처 %}
+  <div class="src">출처 ·
+    {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
+  </div>
+  {% endif %}
+  {% if c.종목 %}
+  <div class="stocks">
+    {% for s in c.종목 %}
+    <div class="srow">
+      <div class="nm">{{ s.이름 }}<span>{{ s.업종 }}</span></div>
+      <div class="pc {{ s.방향 }}">{{ s.등락 }}</div>
+      <div class="rz">{{ s.이유 }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if c.해석 %}<div class="interp"><span class="k">해석</span>{{ c.해석 }}</div>{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{# ─────────── 4. ETF 레이더 ─────────── #}
+{% if ai.etf_레이더 %}
+<h2>📡 ETF 레이더<span class="tip" tabindex="0">?<span class="bubble">
+  매일 아래 여섯 갈래를 내부적으로 점검하고, <b>그날 의미 있는 것만 최대 {{ 레이더_최대 }}개</b> 싣습니다.
+  해당 없는 갈래는 표시하지 않습니다.<br><br>
+  ① 순매수·순매도 특이 수급 ② 최근 자금유입 급증 ③ 순자산 급증
+  ④ 신규 상장 ⑤ 거래량 급증 ⑥ 운용사 주요 신상품·보도자료</span></span>
+  <span class="tag">전일 기준</span></h2>
+<div class="radar">
+  {% for r in ai.etf_레이더 %}
+  <div class="ritem">
+    <div class="h"><span class="badge">{{ r.구분 }}</span><span class="t">{{ r.제목 }}</span></div>
+    <p>{{ r.사실 }}</p>
+    {% if r.출처 %}
+    <div class="src">출처 ·
+      {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
+    </div>
+    {% endif %}
+    {% if r.관찰 %}<p class="sig">{{ r.관찰 }}</p>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ─────────── 5. 경쟁 유튜브 ─────────── #}
+{% if 유튜브영상 %}
+<h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
+  설정 파일에 등록된 채널의 최근 업로드 중 주목할 영상만 최대 3개.
+  <b>겹침</b>은 오늘 브리핑 이슈와 주제가 얼마나 겹치는지를 뜻하며,
+  '높음'은 이미 선점된 주제일 수 있다는 신호입니다.</span></span>
+  <span class="tag">최근 36시간</span></h2>
+<div class="yt">
+  {% for v in 유튜브영상 %}
+  <div class="ytc">
+    <div class="top">
+      <a href="{{ v.링크 }}" target="_blank" rel="noopener">{{ v.제목 }}</a>
+      {% if v.겹침 %}<span class="ov {{ v.겹침등급 }}">겹침 {{ v.겹침 }}</span>{% endif %}
+    </div>
+    <div class="meta">{{ v.채널 }} · 조회 {{ v.조회수표시 }} · 업로드 {{ v.경과 }}</div>
+    <div class="row">
+      {% if v.핵심주제 %}<div class="k">핵심 주제</div><div class="v">{{ v.핵심주제 }}</div>{% endif %}
+      {% if v.훅 %}<div class="k">제목 훅</div><div class="v">{{ v.훅 }}</div>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% if ai.댓글키워드 %}
+<div class="card">
+  <p class="fact"><span class="k">시청자 질문</span>{{ ai.댓글키워드 }}</p>
+</div>
+{% endif %}
+{% endif %}
+
+{# ─────────── 6. 콘텐츠 후보 ─────────── #}
+{% if ai.콘텐츠후보 %}
+<h2>🎬 ETF 아는형 콘텐츠 후보 <span class="tag">최대 2개</span></h2>
+{% for i in ai.콘텐츠후보 %}
+<div class="idea">
+  <div class="k">{{ i.코너 }}</div>
+  <h3>{{ i.제목 }}</h3>
+  <div class="row">
+    <div class="k2">오늘 해야 하는 이유</div><div class="v">{{ i.이유 }}</div>
+    <div class="k2">관련 ETF</div><div class="v">{{ i.관련ETF }}</div>
+  </div>
+  {% if i.질문 %}<div class="q"><b>출연자 질문</b> — “{{ i.질문 }}”</div>{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{# ─────────── 7. 오늘의 개념 ─────────── #}
+{% if ai.오늘의개념 %}
+<h2>📚 오늘의 개념</h2>
+<div class="concept">
+  <div class="w">{{ ai.오늘의개념.용어 }}</div>
+  {% if ai.오늘의개념.연결 %}<div class="why">오늘 브리핑에서 나온 맥락 — {{ ai.오늘의개념.연결 }}</div>{% endif %}
+  <p>{{ ai.오늘의개념.설명 }}</p>
+</div>
+{% endif %}
+
+{# ─────────── 8. 일정 ─────────── #}
+{% if ai.체크포인트 %}
+<h2>🗓️ 체크포인트 · 주요 일정<span class="tip" tabindex="0">?<span class="bubble">
+  두 가지를 함께 담습니다.<br>
+  <b>일정</b> — 날짜가 확정된 것 (FOMC, 금통위, 실적 발표, ETF 상장일)<br>
+  <b>확인</b> — 날짜는 없지만 계속 지켜봐야 하는 것 (수급 연속 여부, 특정 레벨 유지 여부)</span></span></h2>
+<div class="cal">
+  {% for e in ai.체크포인트 %}
+  <div class="d"><span class="cpk {{ '일정' if e.유형 == '일정' else '확인' }}">{{ e.유형 }}</span>{{ e.때 }}</div>
+  <div class="e">{{ e.내용 }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ─────────── 9. 출처 ─────────── #}
+<h2>🔗 출처</h2>
+<div class="srclist">
+  {% for s in 출처목록 %}
+  {% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}<a>{{ s.이름 }}</a>{% endif %}
+  {% endfor %}
+</div>
+
+<footer>
+  생성 {{ 생성시각 }} · 자동 브리핑{% if 모드 == 'daily' %} · 주 단위 지표는 토요일 브리핑에 담깁니다{% endif %}<br>
+  ※ 국내 투자자 해외주식 수급은 한국예탁결제원 결제 기준으로 실제 매매일보다 2~3영업일 지연됩니다.<br>
+  ※ 정보 제공 목적이며 투자 권유가 아닙니다. '해석'은 확정된 사실이 아닙니다. 투자 판단과 결과는 본인 책임입니다.
+</footer>
+
+</div>
+</body>
+</html>
