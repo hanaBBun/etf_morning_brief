@@ -336,9 +336,15 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
 {_payload(data)}
 </데이터>
 """
-    for attempt, model in enumerate(
-        [ai.get("모델", "gemini-2.5-flash"), ai.get("대체모델", "gemini-2.0-flash")]
-    ):
+    candidates = [ai.get("모델") or "gemini-3.6-flash"]
+    if ai.get("대체모델"):
+        candidates.append(ai["대체모델"])
+    # 구글이 모델 이름을 바꿔 404가 나는 경우를 대비해, 실제 사용 가능한 모델을 뒤에 붙인다.
+    if provider == "gemini":
+        candidates += [m for m in _discover_gemini_models() if m not in candidates]
+    log.info("AI 모델 후보: %s", candidates)
+
+    for attempt, model in enumerate(candidates):
         try:
             if provider == "gemini":
                 raw = _call_gemini(model, user, ai, system)
@@ -361,6 +367,44 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
 # ─────────────────────────────────────────────
 # 제공자별 호출
 # ─────────────────────────────────────────────
+def _discover_gemini_models(limit: int = 3) -> list[str]:
+    """지금 이 API 키로 실제 쓸 수 있는 Gemini 모델 목록을 조회한다.
+
+    구글이 모델 이름을 바꿔도(예: 2.5-flash → 3.6-flash) 자동으로 따라가기 위함이다.
+    조회 실패해도 예외를 던지지 않고 빈 목록을 돌려준다.
+    """
+    import requests
+
+    key = env("GEMINI_API_KEY")
+    if not key:
+        return []
+    try:
+        r = requests.get(
+            "https://generativelanguage.googleapis.com/v1beta/models",
+            params={"key": key, "pageSize": 200}, timeout=20,
+        )
+        r.raise_for_status()
+        names = []
+        for m in r.json().get("models", []):
+            if "generateContent" not in (m.get("supportedGenerationMethods") or []):
+                continue
+            name = str(m.get("name", "")).replace("models/", "")
+            if not name or "embedding" in name or "vision" in name:
+                continue
+            names.append(name)
+        # 빠르고 저렴한 flash 계열을 우선한다.
+        flash = [n for n in names if "flash" in n and "lite" not in n]
+        lite = [n for n in names if "lite" in n]
+        rest = [n for n in names if n not in flash and n not in lite]
+        ordered = flash + lite + rest
+        if ordered:
+            log.info("사용 가능한 Gemini 모델 %d개 확인", len(ordered))
+        return ordered[:limit]
+    except Exception as e:  # noqa: BLE001
+        log.warning("모델 목록 조회 실패: %s", e)
+        return []
+
+
 def _call_gemini(model: str, user: str, ai: dict, system: str = SYSTEM) -> str:
     from google import genai
     from google.genai import types

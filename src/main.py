@@ -64,22 +64,26 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
     }
 
     log.info("1/6 국내 증시 데이터 수집")
-    try:
-        day = krx.last_business_day()
-        data["국내기준일"] = day
-        data["국내기준일_표시"] = f"{day[4:6]}/{day[6:8]}"
-        data["국내기준일_ISO"] = f"{day[:4]}-{day[4:6]}-{day[6:8]}"
-        data["국내지수"] = krx.index_snapshot(day)
-        data["수급"] = krx.investor_flow(day, "KOSPI")
-        data["수급_코스닥"] = krx.investor_flow(day, "KOSDAQ")
-        # 아래는 '후보'다. 브리핑에 그대로 싣는 목록이 아니라,
-        # 지수·ETF 움직임을 설명할 때 근거로 쓸 수 있는 재료로만 전달한다.
-        data["종목_후보_국내"] = krx.notable_stocks(day, cfg)
-        data["ETF_후보"] = krx.etf_radar(day, cfg)
-    except Exception as e:  # noqa: BLE001
-        log.error("국내 데이터 수집 실패: %s", e)
-        data.setdefault("국내지수", [])
-        data.setdefault("종목_후보_국내", [])
+    data["국내지수"] = []
+    data["종목_후보_국내"] = []
+    if krx.krx_ready():
+        try:
+            day = krx.last_business_day()
+            data["국내기준일"] = day
+            data["국내기준일_표시"] = f"{day[4:6]}/{day[6:8]}"
+            data["국내기준일_ISO"] = f"{day[:4]}-{day[4:6]}-{day[6:8]}"
+            data["국내지수"] = krx.index_snapshot(day)
+            data["수급"] = krx.investor_flow(day, "KOSPI")
+            data["수급_코스닥"] = krx.investor_flow(day, "KOSDAQ")
+            # 아래는 '후보'다. 브리핑에 그대로 싣는 목록이 아니라,
+            # 지수·ETF 움직임을 설명할 때 근거로 쓸 수 있는 재료로만 전달한다.
+            data["종목_후보_국내"] = krx.notable_stocks(day, cfg)
+            data["ETF_후보"] = krx.etf_radar(day, cfg)
+        except Exception as e:  # noqa: BLE001
+            log.error("국내 데이터 수집 실패: %s", e)
+    else:
+        # KRX 계정이 없으면 호출 자체를 건너뛴다 (실패 로그 도배 방지)
+        log.info("KRX 건너뜀 — 아래에서 yfinance 값으로 대체합니다")
 
     log.info("2/6 글로벌 지표 수집")
     try:
@@ -87,6 +91,21 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
     except Exception as e:  # noqa: BLE001
         log.error("글로벌 지표 실패: %s", e)
         data["지표"] = {}
+
+    # KRX가 막히면(로그인 필요 등) 국내 지수는 yfinance 값으로 대체한다.
+    if not data.get("국내지수"):
+        alt = [r for r in (data.get("지표") or {}).get("국내", [])
+               if r["이름"] in ("코스피", "코스닥") and r.get("종가") is not None]
+        if alt:
+            log.warning("KRX 지수 조회 실패 → yfinance 값으로 대체합니다 (%d개)", len(alt))
+            data["국내지수"] = alt
+            if alt[0].get("기준일"):
+                iso = alt[0]["기준일"]
+                data["국내기준일_ISO"] = iso
+                data["국내기준일_표시"] = f"{iso[5:7]}/{iso[8:10]}"
+                data["기준일태그"] = data["국내기준일_표시"]
+    if not data.get("수급"):
+        log.warning("투자자별 수급 데이터 없음 — 해당 섹션은 브리핑에서 생략됩니다")
 
     log.info("3/6 미국 개별 종목 스크리닝 (후보 재료)")
     try:

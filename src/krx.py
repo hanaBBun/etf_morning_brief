@@ -14,6 +14,30 @@ from .config import now_kst
 log = logging.getLogger(__name__)
 
 
+_WARNED = {"krx": False}
+
+
+def krx_ready() -> bool:
+    """KRX 계정이 설정돼 있는지 확인. 없으면 한 번만 안내 로그를 남긴다.
+
+    2025년부터 KRX 정보데이터시스템이 로그인을 요구하도록 바뀌어,
+    pykrx도 KRX_ID / KRX_PW 환경변수를 필요로 한다.
+    """
+    import os
+
+    ok = bool(os.environ.get("KRX_ID") and os.environ.get("KRX_PW"))
+    if not ok and not _WARNED["krx"]:
+        _WARNED["krx"] = True
+        log.warning(
+            "KRX_ID / KRX_PW 가 설정되지 않았습니다. "
+            "국내 지수는 yfinance 값으로 대체하고, "
+            "투자자별 수급·주목 종목·ETF 레이더는 이번 브리핑에서 생략됩니다. "
+            "data.krx.co.kr 에서 무료 회원가입 후 GitHub Secrets 에 "
+            "KRX_ID / KRX_PW 를 등록하면 전부 살아납니다."
+        )
+    return ok
+
+
 def _stock():
     from pykrx import stock
     return stock
