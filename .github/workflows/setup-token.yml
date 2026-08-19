@@ -1,0 +1,31 @@
+name: 🔑 카카오 토큰 발급 (최초 1회)
+
+# 터미널 없이 카카오 리프레시 토큰을 받기 위한 도우미 워크플로입니다.
+# SETUP.md 3단계를 먼저 읽고 실행하세요.
+
+on:
+  workflow_dispatch:
+    inputs:
+      code:
+        description: "카카오 인증 후 주소창에서 복사한 code 값"
+        required: true
+        type: string
+      redirect_uri:
+        description: "카카오 앱에 등록한 Redirect URI (기본값 그대로 두세요)"
+        required: true
+        default: "https://localhost:3000"
+        type: string
+
+jobs:
+  token:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 토큰 교환
+        env:
+          KAKAO_REST_API_KEY:  ${{ secrets.KAKAO_REST_API_KEY }}
+          KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          KAKAO_AUTH_CODE:     ${{ inputs.code }}
+          KAKAO_REDIRECT_URI:  ${{ inputs.redirect_uri }}
+        run: python3 tools/get_kakao_token.py
