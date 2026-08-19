@@ -173,8 +173,8 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   ],
 
   "카톡": {
-    "1": "첫 카톡. 195자 이내. 전일 국내 증시 중심. 쉬운 말.",
-    "2": "둘째 카톡. 195자 이내. 밤사이 해외 + 오늘 관전포인트. 쉬운 말."
+    "1": "TOP 1~3을 담은 카톡. 195자 이내.",
+    "2": "TOP 4~5 + 오늘 관전포인트를 담은 카톡. 195자 이내."
   }
 }
 
@@ -210,7 +210,33 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 오늘의개념은 VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지, 베이시스포인트,
 멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중 그날 뉴스와 실제로 연결되는 것을 고릅니다.
 
-카톡 메시지는 각각 195자를 절대 넘기지 마세요.
+★ 카톡 메시지는 위 top5 를 그대로 압축해 담습니다. 별도 내용을 새로 쓰지 마세요.
+  카톡만 봐도 오늘 뭐가 중요한지 알 수 있어야 합니다. 아래 형식을 지키세요.
+
+  "1" 예시 (실제 숫자로 채울 것):
+☀️ 8/19(수) 아침 브리핑
+
+1. 美 장기금리 급등
+   30년 5.31%·10년 4.72%
+2. 코스피 급등 후 급락
+   장중 7,216 → 종가 6,869(-1.55%)
+3. 이란·호르무즈 재점화
+   브렌트 $91 · WTI $85
+
+  "2" 예시:
+4. 환율 10개월래 최저
+   1,411.8원(-1.2원)
+5. VKOSPI 56.97
+   평시(20)의 2.8배
+
+👉 오늘 관전포인트
+금리가 나스닥·반도체 ETF를 누르는 국면.
+레버리지 ETF는 변동성 잠식 구간.
+
+  - 번호와 줄바꿈을 위 형식대로 씁니다.
+  - 각 항목은 '제목' 한 줄 + '숫자' 한 줄, 총 두 줄입니다.
+  - "2"의 마지막에는 👉 오늘 관전포인트를 1~2문장 붙입니다.
+  - 각 메시지 195자를 절대 넘기지 마세요. 넘칠 것 같으면 숫자 줄을 줄이세요.
 
 문장을 짧게 쓰세요. 수식어를 빼고, 같은 말을 다시 하지 마세요.
 """
@@ -586,20 +612,41 @@ def _call_openai(model: str, user: str, ai: dict, system: str = SYSTEM) -> str:
 # ─────────────────────────────────────────────
 # 후처리 — 분량과 금지 표현을 코드로 강제
 # ─────────────────────────────────────────────
+def _as_dict(obj: Any) -> dict | None:
+    """모델이 객체 대신 배열로 감싸서 주는 경우를 흡수한다.
+
+    Gemini 가 response_mime_type=application/json 으로 [{...}] 를 돌려주면
+    그대로 dict 로 다루다 'list' object has no attribute 'get' 로 터진다.
+    """
+    if isinstance(obj, dict):
+        return obj
+    if isinstance(obj, list):
+        for item in obj:
+            if isinstance(item, dict):
+                log.info("모델이 배열로 응답 — 첫 객체를 사용합니다")
+                return item
+    return None
+
+
 def _parse_json(raw: str) -> dict | None:
     raw = (raw or "").strip()
     if raw.startswith("```"):
         raw = re.sub(r"^```[a-zA-Z]*\n?", "", raw)
         raw = re.sub(r"\n?```$", "", raw)
     try:
-        return json.loads(raw)
+        return _as_dict(json.loads(raw))
     except Exception:  # noqa: BLE001
-        m = re.search(r"\{.*\}", raw, re.S)
+        pass
+    # 앞뒤에 설명이 붙은 경우 JSON 덩어리만 추출
+    for pattern in (r"\{.*\}", r"\[.*\]"):
+        m = re.search(pattern, raw, re.S)
         if m:
             try:
-                return json.loads(m.group(0))
+                d = _as_dict(json.loads(m.group(0)))
+                if d:
+                    return d
             except Exception:  # noqa: BLE001
-                return None
+                continue
     return None
 
 
@@ -706,7 +753,8 @@ def _strip_stale_sources(items: list[dict], ages: dict[str, int]) -> list[dict]:
     return out
 
 
-def _postprocess(d: dict, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
+def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
+    d = _as_dict(d) or {}
     data = data or {}
     limit = int((cfg.get("카카오") or {}).get("글자수_제한", 195))
 

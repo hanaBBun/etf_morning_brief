@@ -104,6 +104,21 @@ def _shift(day: str, days: int) -> str:
 # ─────────────────────────────────────────────
 # 투자자별 수급
 # ─────────────────────────────────────────────
+# pykrx 버전에 따라 순매수 컬럼 이름이 다르다. 후보를 순서대로 찾는다.
+NET_COLS = ("순매수거래대금", "순매수", "순매수대금", "거래대금_순매수")
+
+
+def _net_col(df) -> str | None:
+    for c in NET_COLS:
+        if c in df.columns:
+            return c
+    # 이름이 또 바뀐 경우: '순매수'가 들어간 컬럼을 찾아본다.
+    for c in df.columns:
+        if "순매수" in str(c):
+            return c
+    return None
+
+
 def investor_flow(day: str, market: str = "KOSPI") -> list[dict]:
     """개인·외국인·기관 순매수 금액(원)."""
     s = _stock()
@@ -111,11 +126,15 @@ def investor_flow(day: str, market: str = "KOSPI") -> list[dict]:
         df = s.get_market_trading_value_by_investor(day, day, market)
         if df is None or df.empty:
             return []
+        col = _net_col(df)
+        if not col:
+            log.warning("순매수 컬럼을 찾지 못했습니다. 실제 컬럼: %s", list(df.columns))
+            return []
         want = {"개인": "개인", "외국인": "외국인", "기관합계": "기관"}
         rows = []
         for idx, label in want.items():
             if idx in df.index:
-                rows.append({"주체": label, "순매수": float(df.loc[idx, "순매수거래대금"])})
+                rows.append({"주체": label, "순매수": float(df.loc[idx, col])})
         return rows
     except Exception as e:  # noqa: BLE001
         log.warning("투자자별 수급 실패: %s", e)
@@ -129,16 +148,18 @@ def net_purchase_top(day: str, investor: str, market: str = "KOSPI", n: int = 10
         df = s.get_market_net_purchases_of_equities(day, day, market, investor)
         if df is None or df.empty:
             return []
-        df = df.sort_values("순매수거래대금", ascending=False)
-        top = df.head(n)
-        bot = df.tail(n)
+        col = _net_col(df)
+        if not col:
+            log.warning("순매수 컬럼을 찾지 못했습니다. 실제 컬럼: %s", list(df.columns))
+            return []
+        df = df.sort_values(col, ascending=False)
         rows = []
-        for tk, r in top.iterrows():
+        for tk, r in df.head(n).iterrows():
             rows.append({"티커": tk, "종목명": r.get("종목명", ""),
-                         "순매수": float(r["순매수거래대금"]), "구분": "순매수"})
-        for tk, r in bot.iterrows():
+                         "순매수": float(r[col]), "구분": "순매수"})
+        for tk, r in df.tail(n).iterrows():
             rows.append({"티커": tk, "종목명": r.get("종목명", ""),
-                         "순매수": float(r["순매수거래대금"]), "구분": "순매도"})
+                         "순매수": float(r[col]), "구분": "순매도"})
         return rows
     except Exception as e:  # noqa: BLE001
         log.warning("순매수 상위 실패(%s): %s", investor, e)

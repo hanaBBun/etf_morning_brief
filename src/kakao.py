@@ -143,17 +143,61 @@ def _persist_refresh_token(new_token: str) -> None:
         log.warning("Secret 자동 갱신 중 오류: %s", e)
 
 
+def _fmt(row: dict, digits: int = 2, unit: str = "", bp: bool = False) -> str | None:
+    close, pct = row.get("종가"), row.get("등락률")
+    if close is None:
+        return None
+    if bp:
+        v = row.get("변화bp")
+        if v is None and row.get("전일") is not None:
+            v = (close - row["전일"]) * 100
+        chg = f"{v:+.1f}bp" if v is not None else ""
+    else:
+        chg = f"{pct:+.2f}%" if pct is not None else ""
+    return f"{row['이름']} {close:,.{digits}f}{unit} {chg}".strip()
+
+
 def fallback_messages(data: dict) -> list[str]:
-    """AI 생성이 실패했을 때 쓸 최소한의 카톡 문구."""
-    lines = []
-    for row in (data.get("국내지수") or [])[:2]:
-        if row.get("종가") is not None:
-            lines.append(f"{row['이름']} {row['종가']:,.2f} ({row['등락률']:+.2f}%)")
-    fx = next(
-        (r for r in (data.get("지표") or {}).get("국내", []) if r["이름"] == "원/달러"), None
-    )
-    if fx and fx.get("종가"):
-        lines.append(f"원/달러 {fx['종가']:,.1f}원 ({fx['등락률']:+.2f}%)")
-    head = f"☀️ {data.get('날짜표시','')} 아침 브리핑"
-    body = "\n".join(lines) or "데이터 수집에 실패했습니다."
-    return [f"{head}\n\n{body}\n\n자세한 내용은 링크에서 확인하세요."]
+    """AI 생성이 실패했을 때 쓸 카톡 문구.
+
+    AI가 없어도 그날 숫자는 최대한 담는다. (지수·환율·해외·금리·유가)
+    """
+    ind = data.get("지표") or {}
+    head = f"☀️ {data.get('날짜표시', '')} 아침 브리핑"
+
+    # 1건: 국내
+    dom = [_fmt(r) for r in (data.get("국내지수") or [])]
+    fx = next((r for r in ind.get("국내", []) if r["이름"] == "원/달러"), None)
+    if fx:
+        dom.append(_fmt(fx, 1, "원"))
+    if data.get("수급"):
+        from .config import fmt_eok
+        for f in data["수급"]:
+            if f["주체"] == "외국인":
+                dom.append(f"외국인 {fmt_eok(f['순매수'])}")
+    dom = [x for x in dom if x]
+
+    # 2건: 해외 + 금리 + 원자재
+    ovs = [_fmt(r) for r in ind.get("해외지수", [])[:4]]
+    rate = [_fmt(r, 3, "%", bp=True) for r in ind.get("금리", [])[:2]]
+    comm = [_fmt(r) for r in ind.get("원자재", [])[:2]]
+    ovs = [x for x in ovs if x]
+    rate = [x for x in rate if x]
+    comm = [x for x in comm if x]
+
+    msgs = []
+    if dom:
+        msgs.append(f"{head}\n\n🇰🇷 국내\n" + "\n".join(dom))
+    second = []
+    if ovs:
+        second.append("🌍 해외\n" + "\n".join(ovs))
+    if rate:
+        second.append("💵 금리\n" + "\n".join(rate))
+    if comm:
+        second.append("🛢 원자재\n" + "\n".join(comm))
+    if second:
+        msgs.append("\n\n".join(second))
+
+    if not msgs:
+        msgs = [f"{head}\n\n데이터 수집에 실패했습니다. 실행 로그를 확인해주세요."]
+    return msgs
