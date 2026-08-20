@@ -298,9 +298,12 @@
 {% endif %}
 {% if 유튜브영상 %}
 <h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
-  설정 파일에 등록된 채널의 최근 업로드 중 주목할 영상만 최대 3개.
-  <b>겹침</b>은 오늘 브리핑 이슈와 주제가 얼마나 겹치는지를 뜻하며,
-  '높음'은 이미 선점된 주제일 수 있다는 신호입니다.</span></span>
+  설정 파일에 등록된 채널의 최근 36시간 업로드 중 최대 3개.
+  <b>ETF를 다룬 영상을 먼저 고릅니다.</b><br>
+  <b>겹침</b>은 오늘 우리가 다루려는 주제를 이미 선점했는지를 뜻합니다.
+  <b>높음</b>=TOP5·레이더의 바로 그 이슈를 ETF 관점까지 겹치게 다룸,
+  <b>보통</b>=같은 테마·다른 각도, <b>낮음</b>=개별 종목·재테크 일반 등
+  직접 닿지 않음. 대부분은 '낮음'이 정상입니다.</span></span>
   <span class="tag">최근 36시간</span></h2>
 <div class="yt">
   {% for v in 유튜브영상 %}
@@ -309,7 +312,9 @@
       <a href="{{ v.링크 }}" target="_blank" rel="noopener">{{ v.제목 }}</a>
       {% if v.겹침 %}<span class="ov {{ v.겹침등급 }}">겹침 {{ v.겹침 }}</span>{% endif %}
     </div>
-    <div class="meta">{{ v.채널 }} · 조회 {{ v.조회수표시 }} · 업로드 {{ v.경과 }}</div>
+    <div class="meta">{{ v.채널 }} · 조회 {{ v.조회수표시 }} · 업로드 {{ v.경과 }}
+      · {% if v.ETF관련 %}ETF 주제{% else %}일반 경제{% endif %}
+      {% if v.겹침근거 %} · {{ v.겹침근거 }}{% endif %}</div>
     <div class="row">
       {% if v.핵심주제 %}<div class="k">핵심 주제</div><div class="v">{{ v.핵심주제 }}</div>{% endif %}
       {% if v.훅 %}<div class="k">제목 훅</div><div class="v">{{ v.훅 }}</div>{% endif %}
@@ -317,6 +322,7 @@
   </div>
   {% endfor %}
 </div>
+{% if 유튜브각주 %}<div class="notice">{{ 유튜브각주 }}</div>{% endif %}
 {% if ai.댓글키워드 %}
 <div class="card">
   <p class="fact"><span class="k">시청자 질문</span>{{ ai.댓글키워드 }}</p>
