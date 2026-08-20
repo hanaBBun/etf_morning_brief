@@ -4,7 +4,7 @@
 브리핑:
   제목: "아침 경제·ETF 브리핑"
   발송시각_KST: "07:00"
-  사이트_주소: "https://hanabbun.github.io/etf_morning_brief/"   # GitHub Pages 주소. 설정 후 예) https://내아이디.github.io/etf-morning-brief
+  사이트_주소: "https://hanabbun.github.io/etf_morning_brief/"   # GitHub Pages 주소
 
 # ─────────────────────────────────────────────
 # 종목 편성 기준 (시가총액 제한 없음)
@@ -75,6 +75,21 @@ ETF_레이더:
   ETF:
     - { 이름: "구글뉴스 국내ETF", url: "https://news.google.com/rss/search?q=ETF+%EC%88%9C%EC%9E%90%EC%82%B0+OR+%EC%83%81%EC%9E%A5+OR+%EC%88%9C%EB%A7%A4%EC%88%98+when:7d&hl=ko&gl=KR&ceid=KR:ko" }
     - { 이름: "구글뉴스 해외ETF", url: "https://news.google.com/rss/search?q=ETF+flows+OR+launch+when:7d&hl=en-US&gl=US&ceid=US:en" }
+
+  # 운용사 보도자료 — 신규 상장·보수 인하·순자산 발표는 대부분 보도자료가 원출처입니다.
+  # 목요일 전달문에서 '무엇이 새로 나왔는지'를 잡는 핵심 소스입니다.
+  보도자료:
+    - { 이름: "구글뉴스 운용사보도자료", url: "https://news.google.com/rss/search?q=%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9%20ETF%20%EC%83%81%EC%9E%A5%20OR%20%EB%B3%B4%EC%88%98%20OR%20%EC%88%9C%EC%9E%90%EC%82%B0%20OR%20%EB%B3%B4%EB%8F%84%EC%9E%90%EB%A3%8C%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
+    - { 이름: "구글뉴스 뉴스와이어", url: "https://news.google.com/rss/search?q=site%3Anewswire.co.kr%20ETF%20OR%20%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
+
+  # 레버리지·인버스 — 개인 수급이 몰리는 구간이라 코너 소재가 자주 나옵니다.
+  레버리지:
+    - { 이름: "구글뉴스 레버리지", url: "https://news.google.com/rss/search?q=%EB%A0%88%EB%B2%84%EB%A6%AC%EC%A7%80%20ETF%20OR%20%EC%9D%B8%EB%B2%84%EC%8A%A4%20ETF%20OR%20%EA%B3%B1%EB%B2%84%EC%8A%A4%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
+
+  # 지수 편입·정기변경·리밸런싱 — ETF 구성 종목이 바뀌는 이벤트입니다.
+  지수:
+    - { 이름: "구글뉴스 지수변경", url: "https://news.google.com/rss/search?q=%EC%A7%80%EC%88%98%20%ED%8E%B8%EC%9E%85%20OR%20%EC%A0%95%EA%B8%B0%EB%B3%80%EA%B2%BD%20OR%20%EB%A6%AC%EB%B0%B8%EB%9F%B0%EC%8B%B1%20ETF%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
+
   기사_최대개수: 40
 
 # ─────────────────────────────────────────────
@@ -123,7 +138,7 @@ AI:
   제공자: "gemini"                 # gemini | claude | openai
   모델: "gemini-3.6-flash"
   대체모델: ""                     # 비워두면 사용 가능한 모델을 자동으로 찾습니다
-  최대_출력토큰: 8192
+  최대_출력토큰: 32768   # 응답이 잘리면 이 값을 늘리세요
   온도: 0.4
 
 # ─────────────────────────────────────────────
@@ -146,9 +161,17 @@ AI:
 목요일_전달문:
   사용: true
   받는사람: "박승진 실장 (ETF 처방전)"
-  뉴스_시작요일: "화"        # 이번 주 이 요일 00시부터의 기사만 모읍니다
+  뉴스_시작요일: "월"        # 이번 주 이 요일 00시부터의 기사만 모읍니다 (월/화/수…)
   뉴스_선정개수: 6
   본문_수집개수: 14          # 발언 인용을 찾기 위해 본문까지 긁을 기사 수
+  # 어느 뉴스 그룹에서 몇 건을 AI에게 넘길지. 합계가 AI 입력 한도를 넘으면
+  # 본문 길이를 자동으로 줄여 맞춥니다. 기사가 없는 그룹의 몫은 다른 그룹이 가져갑니다.
+  수집배분:
+    ETF: 8
+    보도자료: 5
+    레버리지: 3
+    지수: 3
+    국내: 4
   발언_최대인원: 6
   출연자추천_최대: 3
   발언_수집범위: "ETF·자산배분"   # ETF 상품·수급·전략, 자산배분, 운용사 리서치
