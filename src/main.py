@@ -19,34 +19,40 @@ log = logging.getLogger("brief")
 
 def collect_handoff(cfg: dict) -> dict[str, Any]:
     """목요일 전달문용 — 시장 데이터는 필요 없고 뉴스만 깊게 모은다."""
-    from .config import KST, now_kst as _now
-    from datetime import timedelta
+    from .config import now_kst as _now
 
     now = _now()
-    tue = (now - timedelta(days=(now.weekday() - 1) % 7)).replace(
-        hour=0, minute=0, second=0, microsecond=0
-    )
+    start, label = news.week_start(cfg)
+    wd = "월화수목금토일"
     data: dict[str, Any] = {
         "날짜표시": kdate(),
         "모드": "thursday",
-        "수집범위": f"{tue.month}/{tue.day}(화) ~ {now.month}/{now.day}({'월화수목금토일'[now.weekday()]}) 오전",
+        "수집범위": (f"{start.month}/{start.day}({label}) ~ "
+                     f"{now.month}/{now.day}({wd[now.weekday()]}) 오전"),
     }
 
-    log.info("1/3 이번 주 뉴스 수집 (화요일 00시 기준)")
+    log.info("1/3 이번 주 뉴스 수집 (%s요일 00시 기준)", label)
     try:
-        data["뉴스"] = news.collect_since_tuesday(cfg)
+        data["뉴스"] = news.collect_since_weekday(cfg)
     except Exception as e:  # noqa: BLE001
         log.error("뉴스 수집 실패: %s", e)
         data["뉴스"] = {}
 
+    # 어느 그룹에서 몇 건을 AI에 넘길지. llm._balanced_news 가 이 값을 쓴다.
+    mix = (cfg.get("목요일_전달문") or {}).get("수집배분") or llm.HANDOFF_MIX
+    data["수집배분"] = mix
+
     log.info("2/3 상위 기사 본문 추출 (발언 인용을 찾기 위함)")
     try:
-        etf_items = (data["뉴스"] or {}).get("ETF") or []
-        dom_items = (data["뉴스"] or {}).get("국내") or []
-        if etf_items:
-            data["뉴스"]["ETF"] = news.enrich_with_body(etf_items, limit=14)
-        if dom_items:
-            data["뉴스"]["국내"] = news.enrich_with_body(dom_items, limit=6)
+        for group, want in mix.items():
+            items = (data["뉴스"] or {}).get(group) or []
+            if not items:
+                log.info("  %s: 기사 없음", group)
+                continue
+            # 배분량보다 조금 넉넉히 긁어야 AI가 고를 여지가 생긴다
+            data["뉴스"][group] = news.enrich_with_body(
+                items, limit=min(len(items), int(want) + 2)
+            )
         got = sum(
             1 for g in data["뉴스"].values() for it in (g or []) if it.get("본문")
         )

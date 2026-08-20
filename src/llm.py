@@ -267,6 +267,19 @@ ETF 상품·수급·전략, 자산배분, 운용사 리서치 발언을 우선�
 개별 종목 목표주가나 섹터 전망만 있는 발언은 제외합니다.
 금리·환율 발언은 그것이 ETF 선택으로 이어지는 경우에만 넣습니다.
 
+■ 규칙 3-1 — 입력 뉴스 그룹별 성격
+입력의 '뉴스'는 여러 그룹으로 나뉘어 들어옵니다. 그룹마다 쓰임이 다릅니다.
+- ETF: 일반 ETF 기사. 6선의 기본 재료입니다.
+- 보도자료: 운용사가 배포한 신규 상장·보수 인하·순자산 발표가 원출처인 기사입니다.
+  "무엇이 새로 나왔는가"를 확인하는 데 씁니다. 다만 홍보 문구("업계 최초",
+  "차별화된", "주목받고 있다")는 옮기지 말고 상품명·보수율·상장일 같은
+  검증 가능한 사실만 뽑으세요. 운용사 주장을 시장의 평가처럼 쓰지 마세요.
+- 레버리지: 레버리지·인버스 ETF 수급과 규제 기사입니다. 개인 수급 쏠림을 볼 때 씁니다.
+- 지수: 지수 편입·제외·정기변경·리밸런싱 기사입니다. ETF 구성 종목이 바뀌는 이벤트라
+  "언제 무엇이 바뀌는지"가 명시된 경우에만 6선에 넣으세요.
+- 국내: 증시 전반 기사입니다. ETF 이슈의 배경을 설명할 때만 씁니다.
+6선은 한 그룹에 몰리지 않게 고르되, 억지로 그룹을 채우지는 마세요.
+
 ■ 규칙 4 — 출연자 추천은 "왜 지금"이 명확할 때만
 그 주 발언이 있었다는 이유만으로 추천하지 마세요.
 지금 이 사람을 부르면 어떤 주제를 어떤 각도로 다룰 수 있는지가 분명해야 합니다.
@@ -286,7 +299,7 @@ HANDOFF_SCHEMA = """반드시 아래 JSON 형식으로만 답하세요. 다른 �
      "매체": "매체명",
      "날짜": "8/19",
      "url": "입력 데이터에 실제로 있는 링크",
-     "주제": "수급|신규 상장|규제·제도|해외 동향|상품 구조|시장 규모|테마",
+     "주제": "수급|신규 상장|보수·비용|지수 변경|레버리지·인버스|규제·제도|해외 동향|상품 구조|시장 규모|테마",
      "한줄": "이 기사에서 뽑을 만한 ETF 키워드 한 줄 (40자 이내)"}
   ],
 
@@ -336,7 +349,52 @@ def _slim_quote(r: dict) -> dict:
     return {k: v for k, v in out.items() if v is not None}
 
 
-def _slim_news(items: list[dict], n: int, summary_len: int = 110) -> list[dict]:
+# 발언이 실린 문장을 알아보는 표지. 기사 본문을 줄일 때 이 문장들을 먼저 남긴다.
+_QUOTE_MARKS = ("said", "밝혔다", "말했다", "설명했다", "전망했다", "분석했다",
+                "진단했다", "강조했다", "지적했다", "예상했다", "평가했다",
+                "조언했다", "내다봤다", "덧붙였다")
+
+
+def _condense_body(text: str, limit: int) -> str:
+    """본문을 limit 자로 줄이되, 앞에서부터 자르지 않고 발언 문장을 우선 남긴다.
+
+    전달문의 핵심은 '누가 무슨 말을 했나'인데, 발언은 보통 기사 중후반에 나온다.
+    그래서 그냥 앞부분만 자르면 정작 필요한 대목이 통째로 날아간다.
+    """
+    import re
+
+    text = str(text)
+    if len(text) <= limit:
+        return text
+
+    sents = [s.strip() for s in re.split(r"(?<=[.!?다])\s+", text) if s.strip()]
+    if not sents:
+        return text[:limit]
+
+    lead_budget = min(limit // 3, 300)
+    lead, used = [], 0
+    for s in sents:
+        if used + len(s) > lead_budget:
+            break
+        lead.append(s)
+        used += len(s) + 1
+
+    picked = list(lead)
+    for s in sents[len(lead):]:
+        if used + len(s) > limit:
+            continue
+        if any(m in s for m in _QUOTE_MARKS) or '"' in s or "“" in s:
+            picked.append(s)
+            used += len(s) + 1
+
+    # 발언 문장이 없으면 그냥 앞에서부터 채운다
+    if len(picked) == len(lead):
+        return text[:limit]
+    return " ".join(picked)[:limit]
+
+
+def _slim_news(items: list[dict], n: int, summary_len: int = 110,
+               body_len: int = 1200) -> list[dict]:
     out = []
     for it in (items or [])[:n]:
         row = {
@@ -347,10 +405,59 @@ def _slim_news(items: list[dict], n: int, summary_len: int = 110) -> list[dict]:
             "경과시간": it.get("경과시간"),
         }
         if it.get("본문"):
-            row["본문"] = str(it["본문"])[:1200]
+            row["본문"] = _condense_body(it["본문"], body_len)
         elif it.get("요약"):
             row["요약"] = str(it["요약"])[:summary_len]
         out.append({k: v for k, v in row.items() if v})
+    return out
+
+
+# 목요일 전달문에서 AI에 넘길 뉴스 그룹별 기본 건수.
+# config.yaml 의 목요일_전달문.수집배분 으로 덮어쓸 수 있다.
+HANDOFF_MIX = {"ETF": 8, "보도자료": 5, "레버리지": 3, "지수": 3, "국내": 4}
+
+
+def _balanced_news(news: dict, mix: dict, budget: int) -> dict[str, list[dict]]:
+    """그룹별 기사 수를 배분하고, 예산을 넘으면 본문 길이를 줄여 맞춘다.
+
+    무료 티어는 분당 입력 토큰이 빠듯해서, 그룹을 늘리면 뒤쪽 그룹이 통째로
+    잘려나가기 쉽다. 그래서 ① 기사가 없는 그룹의 몫을 남은 그룹에 넘기고
+    ② 그래도 크면 본문 길이를 단계적으로 줄인다.
+    """
+    groups = [(g, int(n)) for g, n in mix.items() if int(n) > 0]
+    avail = {g: (news.get(g) or []) for g, _ in groups}
+
+    # ① 비어 있는 그룹의 몫을 기사가 남아 있는 그룹에 넘긴다
+    quota = {g: min(n, len(avail[g])) for g, n in groups}
+    spare = sum(n for _, n in groups) - sum(quota.values())
+    for g, _ in groups:
+        if spare <= 0:
+            break
+        extra = min(spare, len(avail[g]) - quota[g])
+        if extra > 0:
+            quota[g] += extra
+            spare -= extra
+
+    empty = [g for g, _ in groups if not avail[g]]
+    if empty:
+        log.info("전달문: 기사 없는 그룹 %s — 몫을 다른 그룹에 넘겼습니다", ", ".join(empty))
+
+    # ② 본문 길이를 줄여가며 예산 안에 맞춘다
+    out: dict[str, list[dict]] = {}
+    size = 0
+    for body_len in (1200, 900, 700, 500, 350):
+        out = {g: _slim_news(avail[g], quota[g], body_len=body_len)
+               for g, _ in groups if quota[g]}
+        size = len(json.dumps(out, ensure_ascii=False, default=str))
+        if size <= budget:
+            log.info("전달문 뉴스 %d건 (%s) · 본문 %d자 · 총 %d자",
+                     sum(quota.values()),
+                     " ".join(f"{g}{quota[g]}" for g, _ in groups if quota[g]),
+                     body_len, size)
+            return out
+
+    log.warning("전달문 뉴스가 예산(%d자)을 넘어 본문을 350자로 줄였습니다 (%d자)",
+                budget, size)
     return out
 
 
@@ -368,10 +475,9 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
 
     if mode == "thursday":
         news = data.get("뉴스") or {}
-        d["뉴스"] = {
-            "ETF": _slim_news(news.get("ETF"), 14),
-            "국내": _slim_news(news.get("국내"), 6),
-        }
+        mix = data.get("수집배분") or HANDOFF_MIX
+        # 날짜·수집범위 등 머리말 몫으로 2,000자를 남겨둔다
+        d["뉴스"] = _balanced_news(news, mix, budget=MAX_PAYLOAD_CHARS - 2_000)
         return d
 
     d["국내지수"] = [_slim_quote(r) for r in (data.get("국내지수") or [])]

@@ -48,17 +48,30 @@ def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
     return out
 
 
-def collect_since_tuesday(cfg: dict) -> dict[str, list[dict]]:
-    """이번 주 화요일 00시(KST)부터의 기사만. 목요일 전달문용."""
+WEEKDAY_INDEX = {"월": 0, "화": 1, "수": 2, "목": 3, "금": 4, "토": 5, "일": 6}
+
+
+def week_start(cfg: dict):
+    """설정한 요일의 이번 주 00시(KST)를 돌려준다."""
+    label = str(((cfg.get("목요일_전달문") or {}).get("뉴스_시작요일") or "월")).strip()
+    target = WEEKDAY_INDEX.get(label, 0)
     now = now_kst()
-    # 월=0 … 화=1. 이번 주 화요일 00시를 기준으로 몇 시간 전인지 계산.
-    days_since_tue = (now.weekday() - 1) % 7
-    tue = (now - timedelta(days=days_since_tue)).replace(
+    days_since = (now.weekday() - target) % 7
+    return (now - timedelta(days=days_since)).replace(
         hour=0, minute=0, second=0, microsecond=0
-    )
-    hours = max(int((now - tue).total_seconds() // 3600), 24)
-    log.info("목요일 전달문 뉴스 범위: 최근 %d시간 (화요일 00시 기준)", hours)
+    ), label
+
+
+def collect_since_weekday(cfg: dict) -> dict[str, list[dict]]:
+    """설정한 요일 00시(KST)부터 지금까지의 기사만. 목요일 전달문용."""
+    start, label = week_start(cfg)
+    hours = max(int((now_kst() - start).total_seconds() // 3600), 24)
+    log.info("전달문 뉴스 범위: 최근 %d시간 (%s요일 00시 기준)", hours, label)
     return collect_news(cfg, hours=hours)
+
+
+# 예전 이름 호환
+collect_since_tuesday = collect_since_weekday
 
 
 # ─────────────────────────────────────────────
