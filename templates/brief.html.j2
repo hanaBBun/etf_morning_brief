@@ -248,7 +248,7 @@
   <p class="fact"><span class="k">사실</span>{{ c.사실 }}</p>
   {% if c.출처 %}
   <div class="src">출처 ·
-    {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if s.날짜 %}<span class="sdate">{{ s.날짜 }}</span>{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
+    {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
   </div>
   {% endif %}
   {% if c.종목 %}
@@ -282,7 +282,7 @@
     <p>{{ r.사실 }}</p>
     {% if r.출처 %}
     <div class="src">출처 ·
-      {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if s.날짜 %}<span class="sdate">{{ s.날짜 }}</span>{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
+      {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
     </div>
     {% endif %}
     {% if r.관찰 %}<p class="sig">{{ r.관찰 }}</p>{% endif %}
@@ -372,7 +372,7 @@
 <h2>🔗 출처</h2>
 <div class="srclist">
   {% for s in 출처목록 %}
-  {% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %}<span class="sdate">{{ s.날짜 }}</span>{% endif %}</a>{% else %}<a>{{ s.이름 }}</a>{% endif %}
+  {% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }}){% endif %}</a>{% else %}<a>{{ s.이름 }}</a>{% endif %}
   {% endfor %}
 </div>
 
