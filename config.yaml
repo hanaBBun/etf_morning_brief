@@ -76,8 +76,17 @@ ETF_레이더:
     - { 이름: "구글뉴스 국내ETF", url: "https://news.google.com/rss/search?q=ETF+%EC%88%9C%EC%9E%90%EC%82%B0+OR+%EC%83%81%EC%9E%A5+OR+%EC%88%9C%EB%A7%A4%EC%88%98+when:7d&hl=ko&gl=KR&ceid=KR:ko" }
     - { 이름: "구글뉴스 해외ETF", url: "https://news.google.com/rss/search?q=ETF+flows+OR+launch+when:7d&hl=en-US&gl=US&ceid=US:en" }
 
+  # ETF 시장 전반 — 특정 상품이 아니라 '시장'에 관한 기사.
+  # 거래대금, 규제·제도, 판매 채널(퇴직연금·ISA), 유형별 자금 이동.
+  # ETF 레이더가 운용사 홍보성 기사로 채워지지 않게 하는 균형추입니다.
+  ETF시장:
+    - { 이름: "구글뉴스 ETF시장", url: "https://news.google.com/rss/search?q=ETF%20%EA%B1%B0%EB%9E%98%EB%8C%80%EA%B8%88%20OR%20%EC%88%9C%EC%9C%A0%EC%9E%85%20OR%20%EC%8B%9C%EC%9E%A5%EA%B7%9C%EB%AA%A8%20OR%20%EA%B7%9C%EC%A0%9C%20OR%20%EC%83%81%EC%9E%A5%ED%8F%90%EC%A7%80%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
+    - { 이름: "구글뉴스 ETF제도", url: "https://news.google.com/rss/search?q=ETF%20%ED%87%B4%EC%A7%81%EC%97%B0%EA%B8%88%20OR%20%EC%97%B0%EA%B8%88%EC%A0%80%EC%B6%95%20OR%20ISA%20OR%20%EC%84%B8%EC%A0%9C%20OR%20%EA%B8%88%EC%9C%B5%EB%8B%B9%EA%B5%AD%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
+    - { 이름: "구글뉴스 ETF수급", url: "https://news.google.com/rss/search?q=ETF%20%EA%B0%9C%EC%9D%B8%20%EC%88%9C%EB%A7%A4%EC%88%98%20OR%20%EC%9E%90%EA%B8%88%EC%9D%B4%EB%8F%99%20OR%20%ED%95%B4%EC%99%B8%EC%A3%BC%EC%8B%9D%ED%98%95%20OR%20%EC%B1%84%EA%B6%8C%ED%98%95%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
+
   # 운용사 보도자료 — 신규 상장·보수 인하·순자산 발표는 대부분 보도자료가 원출처입니다.
   # 목요일 전달문에서 '무엇이 새로 나왔는지'를 잡는 핵심 소스입니다.
+  # 홍보성이 강해서 아침 브리핑에는 적게 넘깁니다.
   보도자료:
     - { 이름: "구글뉴스 운용사보도자료", url: "https://news.google.com/rss/search?q=%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9%20ETF%20%EC%83%81%EC%9E%A5%20OR%20%EB%B3%B4%EC%88%98%20OR%20%EC%88%9C%EC%9E%90%EC%82%B0%20OR%20%EB%B3%B4%EB%8F%84%EC%9E%90%EB%A3%8C%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
     - { 이름: "구글뉴스 뉴스와이어", url: "https://news.google.com/rss/search?q=site%3Anewswire.co.kr%20ETF%20OR%20%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
