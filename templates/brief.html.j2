@@ -317,10 +317,14 @@
 
 {# ─────────── 6. 콘텐츠 후보 ─────────── #}
 {% if ai.콘텐츠후보 %}
-<h2>🎬 ETF 아는형 콘텐츠 후보 <span class="tag">최대 2개</span></h2>
+<h2>🎬 ETF 아는형 콘텐츠 후보<span class="tip" tabindex="0">?<span class="bubble">
+  <b>아직 만들지 않은 기획안입니다.</b> 오늘 데이터를 근거로 AI가 제안한
+  영상 제목·질문 초안이며, 실제로 존재하는 영상이 아닙니다.
+  (이미 올라온 다른 채널 영상은 '경쟁 채널 동향'에 따로 나옵니다.)</span></span>
+  <span class="tag">기획안 · 최대 2개</span></h2>
 {% for i in ai.콘텐츠후보 %}
 <div class="idea">
-  <div class="k">{{ i.코너 }}</div>
+  <div class="k">{{ i.코너 }} · 제목안</div>
   <h3>{{ i.제목 }}</h3>
   <div class="row">
     <div class="k2">오늘 해야 하는 이유</div><div class="v">{{ i.이유 }}</div>
