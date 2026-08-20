@@ -75,9 +75,37 @@ TOP 5에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵�
 ★ ETF 레이더는 출처를 반드시 두 종류로 답니다.
   ① 데이터 출처 (KRX 등) — 숫자의 근거
   ② 관련 뉴스 링크 최소 1건 — 사람이 읽을 수 있는 기사
-  ②는 입력 데이터의 뉴스 목록(특히 'ETF'·'보도자료' 그룹)에서 주제가 맞는 기사를 골라 id 로 넣습니다.
+  ②는 입력 데이터의 뉴스 목록에서 주제가 맞는 기사를 골라 id 로 넣습니다.
   주제가 맞는 기사가 없으면 국내 뉴스 그룹에서 가장 가까운 것을 고르고,
   그것도 없으면 ①만 넣습니다. 없는 링크를 지어내지 마세요.
+
+■ 규칙 5-1 — ETF 레이더는 '상품'이 아니라 '시장'을 봅니다 (중요)
+이 섹션은 특정 상품의 실적을 옮겨 적는 자리가 아닙니다.
+ETF 시장 전체에서 지금 무슨 일이 벌어지는지를 보여주는 자리입니다.
+
+  고를 때의 우선순위 (위쪽이 먼저):
+  ① 시장 구조 — 거래대금 증감, 규제·제도 변경, 상장폐지, 세제
+  ② 판매·접근 채널 — 퇴직연금·ISA·연금저축에서의 ETF 매매 조건 변화
+  ③ 자금 흐름 — 유형별(채권형·커버드콜·해외주식형) 자금 이동, 국내→해외 이동
+  ④ 지수 편입·정기변경, 레버리지·인버스 규제
+  ⑤ 유형·테마 쏠림 — "어떤 성격의 ETF로 돈이 몰리는가"
+  ⑥ 개별 상품 소식 — 신규 상장·보수 인하처럼 시장에 의미가 있을 때만
+
+  ⑥은 세 항목 중 **최대 1개**까지만 쓸 수 있습니다.
+
+  "○○운용 ○○ETF 순자산 4,000억 돌파", "△△ETF 개인 순매수 1위" 같은
+  단일 상품 실적은 그 자체로는 레이더 항목이 아닙니다. 운용사 홍보 자료를
+  그대로 옮긴 것이기 때문입니다. 같은 흐름이 같은 유형의 다른 상품에서도
+  확인될 때만 '유형' 단위로 묶어서 쓰세요.
+  ✗ "ACE 고배당주커버드콜 개인 순매수 1,000억 돌파"
+  ✓ "커버드콜 ETF로 개인 자금 유입 지속 — 상위 3종 합산 순매수 …"
+
+  운용사 보도자료의 홍보 문구는 옮기지 마세요.
+  금지: "업계 최초", "차별화된", "주목받고 있다", "인기를 끌고 있다", "돌풍"
+  상품명·보수율·상장일·순자산 같은 검증 가능한 숫자만 씁니다.
+
+  입력 뉴스 그룹 중 'ETF시장'·'레버리지'·'지수' 가 ①~⑤에 해당하는 재료이고,
+  '보도자료'는 ⑥ 재료입니다. 보도자료 그룹만으로 세 항목을 채우지 마세요.
 
 ■ 규칙 6 — 시점을 섞지 않습니다 (가장 중요)
 지수 레벨·등락폭·등락률은 반드시 **같은 시점의 한 세트**로만 씁니다.
@@ -142,7 +170,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   ],
 
   "etf_레이더": [
-    {"구분": "수급|자금 유입|순자산|신규 상장|거래량|신상품",
+    {"구분": "시장 구조|제도·채널|자금 흐름|지수 변경|레버리지|유형 쏠림|신규 상장",
      "제목": "12~24자",
      "사실": "1~2문장",
      "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
@@ -595,11 +623,18 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
     }
 
     news = data.get("뉴스") or {}
+    # ETF시장(시장 구조·제도·자금 이동)을 ETF(상품 소식)보다 많이 넣는다.
+    # 레이더가 운용사 홍보 기사로 채워지던 문제의 직접적인 원인이 입력 편중이었다.
     d["뉴스"] = {
-        "ETF": _slim_news(news.get("ETF"), 8),
+        "ETF시장": _slim_news(news.get("ETF시장"), 9),
+        "ETF": _slim_news(news.get("ETF"), 6),
+        "레버리지": _slim_news(news.get("레버리지"), 3),
+        "지수": _slim_news(news.get("지수"), 3),
+        "보도자료": _slim_news(news.get("보도자료"), 3),
         "국내": _slim_news(news.get("국내"), 8),
         "국제": _slim_news(news.get("국제"), 6),
     }
+    d["뉴스"] = {k: v for k, v in d["뉴스"].items() if v}
 
     yt = data.get("유튜브") or {}
     if yt.get("급상승"):
@@ -923,6 +958,53 @@ BANNED = [
 ]
 FILLER = ["해당 없음", "특이사항 없음", "없음", "생략", "특이 종목 없음", "기준 미달"]
 
+# 국내 ETF 브랜드. 제목에 이게 들어가면 '단일 상품 기사'로 본다.
+ETF_BRANDS = ("KODEX", "TIGER", "ACE", "RISE", "PLUS", "SOL", "HANARO",
+              "KOSEF", "ARIRANG", "TIMEFOLIO", "KIWOOM", "WON", "BNK",
+              "코덱스", "타이거")
+# 운용사 보도자료 특유의 홍보 표현
+PR_WORDS = ("업계 최초", "차별화", "주목받고", "인기를 끌", "돌풍", "호평",
+            "각광", "선보였", "출시했다")
+
+
+def _is_product_item(item: dict) -> bool:
+    """특정 상품 하나를 다룬 항목인지. 브랜드명 + '돌파/1위' 조합이면 그렇다."""
+    text = f"{item.get('제목', '')} {item.get('사실', '')}"
+    has_brand = any(b in text for b in ETF_BRANDS)
+    boast = any(w in text for w in ("돌파", "순매수 1위", "최대", "사상 최"))
+    return has_brand and boast
+
+
+def _limit_product_items(radar: list[dict], keep: int = 1) -> list[dict]:
+    """단일 상품 자랑 항목을 keep 개까지만 남긴다.
+
+    운용사 보도자료가 검색에 많이 잡혀서, 그냥 두면 레이더 세 칸이
+    전부 '○○ETF 순자산 N억 돌파'로 채워진다. 그건 시장 정보가 아니다.
+    """
+    out, used = [], 0
+    for r in radar:
+        if _is_product_item(r):
+            if used >= keep:
+                log.warning("단일 상품 홍보성 항목 제외: %s", str(r.get("제목"))[:40])
+                continue
+            used += 1
+        out.append(r)
+    return out
+
+
+def _warn_pr(item: dict) -> None:
+    """홍보 표현이 남아 있으면 로그로만 알린다.
+
+    단어를 지우면 "업계 최초로 차별화된 서비스를 선보였습니다"가
+    "로 된 서비스를 습니다"가 되어 문장이 망가진다.
+    생성 단계(규칙 5-1)에서 막는 것이 맞고, 여기서는 감시만 한다.
+    """
+    text = f"{item.get('제목', '')} {item.get('사실', '')} {item.get('관찰', '')}"
+    hit = [w for w in PR_WORDS if w in text]
+    if hit:
+        log.warning("홍보성 표현이 남아 있습니다 (%s): %s",
+                    ", ".join(hit), str(item.get("제목"))[:40])
+
 
 def _drop_filler(items: list, keys: tuple[str, ...]) -> list:
     """'해당 없음' 류로 채워진 항목을 제거."""
@@ -1068,10 +1150,14 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     ages = _article_age(data)
     radar_max = int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3))
     radar = _drop_filler(d.get("etf_레이더"), ("제목", "사실"))
-    radar = _strip_stale_sources(radar, ages)[:radar_max]
+    radar = _strip_stale_sources(radar, ages)
+    radar = _limit_product_items(radar, keep=1)[:radar_max]
     for r in radar:
         r["관찰"] = _trim_hedge(r.get("관찰", ""))
+        _warn_pr(r)
     d["etf_레이더"] = radar
+    log.info("ETF 레이더 %d개 (구분: %s)", len(radar),
+             ", ".join(str(r.get("구분", "")) for r in radar) or "-")
 
     # 핵심이슈의 출처도 오래된 링크는 떨어낸다 (항목 자체는 시세 근거가 있으므로 유지)
     for c in d["핵심이슈"]:
