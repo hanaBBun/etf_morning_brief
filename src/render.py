@@ -155,7 +155,9 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
             "핵심주제": n.get("핵심주제", ""),
             "훅": n.get("훅", ""),
             "겹침": ov,
+            "겹침근거": n.get("겹침근거", ""),
             "겹침등급": OVERLAP_CLASS.get(ov, "low"),
+            "ETF관련": bool(v.get("ETF관련")),
         })
     return out
 
@@ -166,6 +168,16 @@ YT_NOTICE = {
     "꺼짐": "설정에서 유튜브 수집을 꺼두었습니다.",
     "새영상없음": "등록된 채널에서 최근 36시간 내 새 영상이 없었습니다.",
 }
+
+
+def _youtube_footnote(data: dict, videos: list[dict]) -> str:
+    """ETF 영상이 하나도 없을 때 그 사실을 밝힌다."""
+    if not videos:
+        return ""
+    if any(v.get("ETF관련") for v in videos):
+        return ""
+    return ("최근 36시간 안에 등록 채널이 ETF를 정면으로 다룬 영상이 없어, "
+            "일반 경제 영상만 담았습니다. 오늘 ETF 주제는 선점되지 않았다는 뜻입니다.")
 
 
 def _youtube_notice(data: dict) -> str:
@@ -224,6 +236,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "한눈에": _glance(data),
         "유튜브영상": _youtube(data, ai),
         "유튜브안내": _youtube_notice(data),
+        "유튜브각주": _youtube_footnote(data, _youtube(data, ai)),
         "출처목록": _sources(data, ai),
         "레이더_최대": (cfg.get("ETF_레이더") or {}).get("최대_항목수", 3),
         "ai": ai or {},

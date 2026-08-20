@@ -17,6 +17,16 @@ from .config import ROOT, env, now_kst
 
 log = logging.getLogger(__name__)
 API = "https://www.googleapis.com/youtube/v3"
+
+# ETF 관련도 판정용 키워드.
+# 핵심어는 3점, 보조어는 1점. 0점이면 '일반 경제 영상'으로 본다.
+# 조회수만으로 고르면 대형 종합 경제 채널의 증시 브리핑이 늘 1등이라
+# ETF 채널의 영상이 한 번도 못 올라온다. 그래서 관련도를 먼저 본다.
+ETF_CORE = ("ETF", "상장지수", "커버드콜", "월배당", "분배금", "TDF", "레버리지",
+            "인버스", "리츠", "REITs", "자산배분", "연금저축", "퇴직연금", "IRP",
+            "ISA", "나스닥100", "S&P500", "S&P 500", "코스피200", "인덱스", "패시브")
+ETF_SUB = ("배당", "채권", "지수", "포트폴리오", "적립식", "서학개미", "분산투자",
+           "괴리율", "보수", "운용사", "장기투자")
 CACHE = ROOT / "channel_ids.json"
 
 
@@ -99,6 +109,11 @@ def collect(cfg: dict) -> dict[str, Any]:
     if not videos:
         return {"상태": "새영상없음", "급상승": [], "채널수": len(ids)}
 
+    core_extra = [w for w in (yt.get("ETF_키워드") or []) if w]
+    for v in videos:
+        v["ETF점수"] = _etf_score(v["제목"], core_extra)
+        v["ETF관련"] = v["ETF점수"] > 0
+
     # 조회수 채우기 (50개씩)
     stats: dict[str, dict] = {}
     vid_list = [v["영상ID"] for v in videos]
@@ -117,8 +132,15 @@ def collect(cfg: dict) -> dict[str, Any]:
         v["댓글수"] = int(st.get("commentCount", 0))
         v["링크"] = f"https://www.youtube.com/watch?v={v['영상ID']}"
 
-    videos.sort(key=lambda r: r.get("조회수", 0), reverse=True)
+    # ① ETF 관련 영상 먼저, ② 관련도 높은 순, ③ 조회수 순
+    videos.sort(key=lambda r: (r.get("ETF관련", False), r.get("ETF점수", 0),
+                               r.get("조회수", 0)), reverse=True)
     top = videos[:top_n]
+    n_etf = sum(1 for v in top if v.get("ETF관련"))
+    log.info("유튜브 %d건 중 상위 %d건 선정 (ETF 관련 %d건)",
+             len(videos), len(top), n_etf)
+    if not n_etf:
+        log.warning("최근 36시간 안에 ETF를 다룬 영상이 없습니다 — 일반 경제 영상만 담깁니다")
 
     # 상위 영상 댓글 키워드
     keywords: list[str] = []
@@ -134,9 +156,17 @@ def collect(cfg: dict) -> dict[str, Any]:
 
     return {
         "상태": "정상",
+        "ETF관련영상수": n_etf,
         "급상승": top,
         "전체영상수": len(videos),
         "댓글샘플": keywords[:80],
         "채널수": len(ids),
         "미해결채널": [n for n in names if n not in ids],
     }
+
+
+def _etf_score(title: str, extra: list[str] | None = None) -> int:
+    """제목이 ETF를 얼마나 정면으로 다루는지 점수화."""
+    t = str(title or "")
+    core = ETF_CORE + tuple(extra or ())
+    return 3 * sum(1 for w in core if w in t) + sum(1 for w in ETF_SUB if w in t)
