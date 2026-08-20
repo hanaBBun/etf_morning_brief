@@ -1,9 +1,9 @@
-name: ETF 처방전 전달문 (목요일 11:00 KST)
+name: ETF 처방전 전달문 (목요일 10:00 KST)
 
 on:
   schedule:
-    # 02:00 UTC 목요일 = 11:00 KST 목요일
-    - cron: "0 2 * * 4"
+    # 01:00 UTC 목요일 = 10:00 KST 목요일
+    - cron: "0 1 * * 4"
   workflow_dispatch:
     inputs:
       no_send:
