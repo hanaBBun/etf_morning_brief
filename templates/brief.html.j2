@@ -84,6 +84,9 @@
   .src{margin-top:7px;font-size:11.5px;color:var(--ink3)}
   .src a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
   .src a:hover{color:var(--accent);border-color:var(--accent)}
+  .sdate{display:inline-block;margin-left:5px;font-size:10.5px;color:var(--ink3);
+         border:1px solid var(--line);border-radius:4px;padding:0 5px;
+         font-variant-numeric:tabular-nums;vertical-align:1px}
   .interp{margin-top:10px;background:var(--surface2);border:1px solid var(--line);
           border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 13px;
           font-size:12.5px;color:var(--ink2)}
@@ -134,6 +137,8 @@
                     font-size:12px;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
                     resize:vertical}
 
+  .notice{background:var(--surface2);border:1px dashed var(--line);border-radius:9px;
+          padding:12px 14px;margin:10px 0;font-size:12.5px;color:var(--ink3)}
   /* ── 유튜브 ─────────────────────────────────── */
   .yt{display:flex;flex-direction:column;gap:8px;margin:10px 0}
   .ytc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
@@ -243,7 +248,7 @@
   <p class="fact"><span class="k">사실</span>{{ c.사실 }}</p>
   {% if c.출처 %}
   <div class="src">출처 ·
-    {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
+    {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if s.날짜 %}<span class="sdate">{{ s.날짜 }}</span>{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
   </div>
   {% endif %}
   {% if c.종목 %}
@@ -277,7 +282,7 @@
     <p>{{ r.사실 }}</p>
     {% if r.출처 %}
     <div class="src">출처 ·
-      {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
+      {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}{{ s.이름 }}{% endif %}{% if s.날짜 %}<span class="sdate">{{ s.날짜 }}</span>{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
     </div>
     {% endif %}
     {% if r.관찰 %}<p class="sig">{{ r.관찰 }}</p>{% endif %}
@@ -287,6 +292,10 @@
 {% endif %}
 
 {# ─────────── 5. 경쟁 유튜브 ─────────── #}
+{% if not 유튜브영상 and 유튜브안내 %}
+<h2>📺 경쟁 채널 동향 <span class="tag">미수집</span></h2>
+<div class="notice">{{ 유튜브안내 }}</div>
+{% endif %}
 {% if 유튜브영상 %}
 <h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
   설정 파일에 등록된 채널의 최근 업로드 중 주목할 영상만 최대 3개.
@@ -363,7 +372,7 @@
 <h2>🔗 출처</h2>
 <div class="srclist">
   {% for s in 출처목록 %}
-  {% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% else %}<a>{{ s.이름 }}</a>{% endif %}
+  {% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %}<span class="sdate">{{ s.날짜 }}</span>{% endif %}</a>{% else %}<a>{{ s.이름 }}</a>{% endif %}
   {% endfor %}
 </div>
 
