@@ -43,7 +43,7 @@
   .tip .bubble b{color:var(--ink)}
   @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
 
-  /* ── TOP 5 ──────────────────────────────────── */
+  /* ── TOP 3 ──────────────────────────────────── */
   .top5{display:flex;flex-direction:column;gap:6px;margin:4px 0}
   .rank{display:grid;grid-template-columns:auto 1fr;gap:11px;background:var(--surface);
         border:1px solid var(--line);border-radius:9px;padding:11px 14px;align-items:start}
@@ -197,12 +197,13 @@
   <div class="eyebrow">Morning Brief · ETF Edition</div>
   <h1>{{ 날짜표시 }} {{ 제목 }}</h1>
   <p class="sub">{{ 기준설명 }}</p>
+  {% if 수집상태 %}<p class="sub">데이터 상태 · {% for k, v in 수집상태.items() %}{{ k }} {{ v }}{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
 </header>
 
-{# ─────────── 1. TOP 5 ─────────── #}
+{# ─────────── 1. TOP 3 ─────────── #}
 {% if ai.top5 %}
 <h2>🎯 오늘 알아야 할 것<span class="tip" tabindex="0">?<span class="bubble">
-  그날 시장에서 가장 중요한 순서대로 5개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.
+  그날 시장에서 가장 중요한 순서대로 3개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.
   자세한 설명은 아래 '핵심 이슈'에서 한 번만 합니다.</span></span>
   <span class="tag">30초 스캔</span></h2>
 <div class="top5">
@@ -239,7 +240,7 @@
 {# ─────────── 3. 핵심 이슈 ─────────── #}
 {% if ai.핵심이슈 %}
 <h2>🔍 핵심 이슈<span class="tip" tabindex="0">?<span class="bubble">
-  한 이슈는 여기서 <b>딱 한 번만</b> 자세히 다룹니다. 위 TOP 5나 아래 섹션에서 같은 내용을 반복하지 않습니다.<br><br>
+  한 이슈는 여기서 <b>딱 한 번만</b> 자세히 다룹니다. 위 TOP 3나 아래 섹션에서 같은 내용을 반복하지 않습니다.<br><br>
   회색 <b>사실</b> 태그는 검증 가능한 수치·발표 내용, 보라색 <b>해석</b> 박스는 그 데이터에 대해
   가능한 설명 중 하나입니다.</span></span></h2>
 {% for c in ai.핵심이슈 %}

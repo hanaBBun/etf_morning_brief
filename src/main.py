@@ -67,6 +67,7 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
     data: dict[str, Any] = {
         "날짜표시": kdate(),
         "모드": mode,
+        "수집상태": {},
     }
 
     log.info("1/6 국내 증시 데이터 수집")
@@ -85,18 +86,23 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
             # 지수·ETF 움직임을 설명할 때 근거로 쓸 수 있는 재료로만 전달한다.
             data["종목_후보_국내"] = krx.notable_stocks(day, cfg)
             data["ETF_후보"] = krx.etf_radar(day, cfg)
+            data["수집상태"]["KRX"] = "정상"
         except Exception as e:  # noqa: BLE001
             log.error("국내 데이터 수집 실패: %s", e)
+            data["수집상태"]["KRX"] = f"실패: {type(e).__name__}"
     else:
         # KRX 계정이 없으면 호출 자체를 건너뛴다 (실패 로그 도배 방지)
         log.info("KRX 건너뜀 — 아래에서 yfinance 값으로 대체합니다")
+        data["수집상태"]["KRX"] = "미설정"
 
     log.info("2/6 글로벌 지표 수집")
     try:
         data["지표"] = market.collect_indicators(cfg)
+        data["수집상태"]["Yahoo Finance"] = "정상"
     except Exception as e:  # noqa: BLE001
         log.error("글로벌 지표 실패: %s", e)
         data["지표"] = {}
+        data["수집상태"]["Yahoo Finance"] = f"실패: {type(e).__name__}"
 
     # KRX가 막히면(로그인 필요 등) 국내 지수는 yfinance 값으로 대체한다.
     if not data.get("국내지수"):
@@ -123,16 +129,21 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
     log.info("4/6 뉴스 수집")
     try:
         data["뉴스"] = news.collect_news(cfg, hours=30 if mode == "daily" else 170)
+        total_news = sum(len(v or []) for v in data["뉴스"].values())
+        data["수집상태"]["뉴스"] = f"정상({total_news}건)" if total_news else "수집 0건"
     except Exception as e:  # noqa: BLE001
         log.error("뉴스 실패: %s", e)
         data["뉴스"] = {}
+        data["수집상태"]["뉴스"] = f"실패: {type(e).__name__}"
 
     log.info("5/6 유튜브 트렌드")
     try:
         data["유튜브"] = youtube.collect(cfg)
+        data["수집상태"]["YouTube"] = str((data["유튜브"] or {}).get("상태") or "정상")
     except Exception as e:  # noqa: BLE001
         log.error("유튜브 실패: %s", e)
         data["유튜브"] = {}
+        data["수집상태"]["YouTube"] = f"실패: {type(e).__name__}"
 
     us_day = ""
     for row in (data.get("지표") or {}).get("해외지수", []):
@@ -164,6 +175,7 @@ def main() -> int:
     if not args.dry_run:
         log.info("AI 생성")
         ai = llm.generate(cfg, data, args.mode)
+        data.setdefault("수집상태", {})["AI 요약"] = "정상" if ai else "실패"
         if not ai:
             log.warning("AI 결과가 비었습니다. 데이터 표만으로 렌더링합니다.")
 

@@ -44,9 +44,16 @@ def _stock():
 
 
 def last_business_day(offset: int = 0) -> str:
-    """가장 최근 영업일을 YYYYMMDD로. offset=1이면 그 전 영업일."""
+    """가장 최근 *확정 마감* 영업일을 YYYYMMDD로.
+
+    pykrx가 장중에도 오늘 날짜의 부분 집계를 돌려줄 수 있으므로
+    15:45 KST 이전에는 오늘을 기준일로 사용하지 않는다.
+    """
     s = _stock()
-    d = now_kst().date()
+    now = now_kst()
+    d = now.date()
+    if (now.hour, now.minute) < (15, 45):
+        d -= timedelta(days=1)
     day = s.get_nearest_business_day_in_a_week(date=d.strftime("%Y%m%d"), prev=True)
     for _ in range(offset):
         prev = (
