@@ -190,23 +190,44 @@ def _strip(fragment: str) -> str:
     return re.sub(r"\s+", " ", _html.unescape(t)).strip()
 
 
+def is_direct(url: str) -> bool:
+    """언론사 원문 주소인지 (구글뉴스 중계가 아닌지)."""
+    return bool(url) and "news.google.com" not in url
+
+
 def enrich_with_body(items: list[dict], limit: int = 14) -> list[dict]:
-    """상위 N건의 링크를 실제 기사 주소로 바꾸고 본문을 붙인다."""
-    out, got, fixed = [], 0, 0
+    """본문을 붙인다. 언론사 원문 링크를 가진 기사부터 먼저 시도한다.
+
+    구글뉴스 링크는 실제 기사가 아니라 중계 페이지다. 예전 형식은 주소 안에
+    원문 URL 이 들어 있어 복원이 됐는데, 지금 형식(AU_yqL…)은 구글만 풀 수
+    있는 토큰이라 복원이 안 된다. 그래서 원문 링크를 가진 기사를 우선 쓴다.
+    """
+    order = sorted(range(len(items)),
+                   key=lambda i: (not is_direct(items[i].get("링크", "")), i))
+    picked = set(order[:limit])
+
+    out, got, skipped = [], 0, 0
     for i, it in enumerate(items):
         row = dict(it)
-        if i < limit and row.get("링크"):
-            real = resolve_link(row["링크"])
-            if real and real != row["링크"]:
-                row["링크"] = real
-                fixed += 1
-            body = fetch_article_text(row["링크"])
+        url = row.get("링크", "")
+        if i in picked and url:
+            if not is_direct(url):
+                real = resolve_link(url)
+                if is_direct(real):
+                    row["링크"] = url = real
+                else:
+                    skipped += 1
+                    out.append(row)
+                    continue
+            body = fetch_article_text(url)
             if body and len(body) > 200:
                 row["본문"] = body
                 got += 1
         out.append(row)
     if items:
-        log.info("  본문 %d/%d건 · 실주소 복원 %d건", got, min(limit, len(items)), fixed)
+        direct = sum(1 for it in items if is_direct(it.get("링크", "")))
+        log.info("  본문 %d건 확보 / 대상 %d건 (원문링크 %d건, 구글중계 미해석 %d건)",
+                 got, min(limit, len(items)), direct, skipped)
     return out
 
 

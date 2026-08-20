@@ -316,6 +316,23 @@ HANDOFF_SYSTEM = """당신은 ETF 전문 유튜브 채널 'ETF 아는형'의 작
 제목·매체·날짜·링크는 그 id 로 우리가 원본에서 가져다 붙입니다.
 발언은 확실하지 않으면 넣지 마세요.
 
+■ 규칙 1-0 — 6선은 '시장' 기사부터 고릅니다
+운용사가 배포한 홍보성 기사("○○운용 △△ETF 순자산 4,000억 돌파",
+"개인 순매수 1,000억 돌파")로 6선을 채우면 출연자에게 아무 쓸모가 없습니다.
+출연자는 이미 그런 자료를 매일 받습니다.
+
+  고르는 순서:
+  ① 시장 구조 — 거래대금 증감, 규제, 상장폐지, 제도 변경
+  ② 판매·접근 채널 — 퇴직연금·ISA·연금저축에서의 ETF 매매 조건
+  ③ 자금 흐름 — 유형별·국가별 자금 이동 ("국내→미국 ETF" 같은)
+  ④ 지수 편입·정기변경, 레버리지·인버스 규제
+  ⑤ 유형·테마 쏠림 — 어떤 성격의 ETF로 돈이 몰리는가
+  ⑥ 개별 상품 소식 — 신규 상장·보수 인하
+
+  ⑥은 6건 중 **최대 2건**까지만. 나머지 4건은 ①~⑤에서 채웁니다.
+  입력의 'ETF시장'·'증권'·'국내'·'레버리지'·'지수' 그룹이 ①~⑤ 재료이고,
+  '보도자료' 그룹은 ⑥ 재료입니다.
+
 ■ 규칙 1-1 — 뉴스 6선은 반드시 6건입니다
 입력에는 스무 건이 넘는 기사가 들어옵니다. 그중 ETF 관점에서 쓸 만한 것을
 **6건 골라서 반드시 6건을 채우세요.** 5건이나 3건으로 끝내지 마세요.
@@ -552,7 +569,8 @@ def _slim_news(items: list[dict], n: int, summary_len: int = 110,
 
 # 목요일 전달문에서 AI에 넘길 뉴스 그룹별 기본 건수.
 # config.yaml 의 목요일_전달문.수집배분 으로 덮어쓸 수 있다.
-HANDOFF_MIX = {"ETF": 8, "보도자료": 5, "레버리지": 3, "지수": 3, "국내": 4}
+HANDOFF_MIX = {"ETF시장": 6, "증권": 5, "국내": 4, "ETF": 4,
+               "레버리지": 2, "지수": 2, "보도자료": 2}
 
 
 def _balanced_news(news: dict, mix: dict, budget: int) -> dict[str, list[dict]]:
@@ -989,12 +1007,24 @@ PR_WORDS = ("업계 최초", "차별화", "주목받고", "인기를 끌", "돌�
             "각광", "선보였", "출시했다")
 
 
+# 운용사 이름이 제목에 있으면 대개 그 회사가 낸 보도자료다.
+# "자산운용"만으로 삼성자산운용·KB자산운용·NH아문디자산운용이 모두 걸린다.
+ASSET_MGRS = ("자산운용", "투신운용", "아문디", "한투운용", "미래에셋", "삼성운용",
+              "타임폴리오", "트러스톤", "마이다스에셋")
+BOAST = ("돌파", "1위", "최대", "사상 최", "임박", "넘었다", "쏠림", "급증")
+
+
 def _is_product_item(item: dict) -> bool:
-    """특정 상품 하나를 다룬 항목인지. 브랜드명 + '돌파/1위' 조합이면 그렇다."""
+    """운용사가 자기 상품을 알리는 기사인지.
+
+    ① 제목·본문에 운용사 이름이 있으면 대개 그 회사 보도자료다.
+    ② 운용사 이름이 없어도 상품 브랜드(KODEX·TIGER…) + 실적 자랑이면 마찬가지.
+    """
     text = f"{item.get('제목', '')} {item.get('사실', '')}"
-    has_brand = any(b in text for b in ETF_BRANDS)
-    boast = any(w in text for w in ("돌파", "순매수 1위", "최대", "사상 최"))
-    return has_brand and boast
+    if any(w in text for w in ASSET_MGRS):
+        return True
+    return (any(b in text for b in ETF_BRANDS)
+            and any(w in text for w in BOAST))
 
 
 def _limit_product_items(radar: list[dict], keep: int = 1) -> list[dict]:
@@ -1223,10 +1253,11 @@ def _news_row(art: dict, theme: str = "", line: str = "") -> dict:
 
 
 _GROUP_THEME = {"보도자료": "신규 상장", "레버리지": "레버리지·인버스",
-                "지수": "지수 변경", "ETF": "수급", "국내": "시장 규모"}
+                "지수": "지수 변경", "ETF": "수급", "국내": "시장 규모",
+                "ETF시장": "시장 구조", "증권": "시장 규모"}
 
 # 6선을 채울 때 어느 그룹부터 볼지
-_TOPUP_ORDER = ("ETF", "보도자료", "레버리지", "지수", "국내")
+_TOPUP_ORDER = ("ETF시장", "증권", "국내", "ETF", "레버리지", "지수", "보도자료")
 
 # 전달문은 이번 주 기사만 다룬다. 이보다 오래된 기사는 채우기에도 쓰지 않는다.
 _TOPUP_MAX_HOURS = 168
@@ -1273,8 +1304,26 @@ def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
                         break
         log.warning("모델이 6선 중 %d건만 골라 %d건을 수집 기사에서 보충했습니다",
                     picked_by_model, len(news) - picked_by_model)
+    # 운용사 홍보성 기사는 6건 중 2건까지만. 빠진 자리는 시장 기사로 다시 채운다.
+    kept = _limit_product_items(news, keep=2)
+    dropped = len(news) - len(kept)
+    news = kept
+    if dropped:
+        for group in _TOPUP_ORDER:
+            for art in (data.get("뉴스") or {}).get(group) or []:
+                if len(news) >= 6:
+                    break
+                if art.get("링크") in seen or not _fresh(art):
+                    continue
+                row = _news_row(art)
+                if _is_product_item(row):
+                    continue
+                seen.add(art["링크"])
+                news.append(row)
+            if len(news) >= 6:
+                break
     d["etf_뉴스6선"] = news[:6]
-    log.info("뉴스 6선 확정 %d건", len(d["etf_뉴스6선"]))
+    log.info("뉴스 6선 확정 %d건 (홍보성 %d건 교체)", len(d["etf_뉴스6선"]), dropped)
 
     # 발언: 이름·소속·발언이 모두 있어야 한다. 출처는 번호로 해석한다.
     quotes = []
