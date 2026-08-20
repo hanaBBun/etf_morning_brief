@@ -1,6 +1,15 @@
 name: 아침 브리핑 (매일 07:00 KST)
 
 on:
+  # 코드가 main에 반영되면 카카오 발송 없이 한 번 검증한다.
+  # docs 자동 커밋은 대상 경로가 아니므로 실행 루프가 생기지 않는다.
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "templates/**"
+      - "config.yaml"
+      - "requirements.txt"
   schedule:
     # 22:00 UTC = 다음날 07:00 KST. 매일 실행.
     - cron: "0 22 * * *"
@@ -48,7 +57,10 @@ jobs:
           GITHUB_REPOSITORY:   ${{ github.repository }}
           TZ: Asia/Seoul
         run: |
-          python -m src.main --mode daily ${{ inputs.no_send && '--no-send' || '' }}
+          python -m src.main --mode daily ${{ (github.event_name == 'push' || inputs.no_send) && '--no-send' || '' }}
+
+      - name: 안전성 단위 테스트
+        run: python -m unittest discover -s tests -v
 
       - name: 결과 저장 (GitHub Pages)
         run: |
