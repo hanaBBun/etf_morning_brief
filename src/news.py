@@ -83,6 +83,51 @@ _UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
        "(KHTML, like Gecko) Chrome/122.0 Safari/537.36")
 
 
+def resolve_link(url: str, timeout: int = 12) -> str:
+    """구글뉴스 중계 링크를 실제 기사 주소로 바꾼다. 못 바꾸면 원래 값 그대로.
+
+    구글뉴스 RSS 의 link 는 news.google.com/rss/articles/... 형태의 중계 주소다.
+    이걸 그대로 requests 로 열면 자바스크립트 리다이렉트 껍데기만 나와서
+    본문이 한 글자도 안 잡힌다. (발언 인용이 통째로 비는 원인이었다.)
+    """
+    import base64
+    import re
+
+    if "news.google.com" not in (url or ""):
+        return url
+
+    # ① 주소 안에 실제 URL 이 base64 로 들어있는 형식
+    m = re.search(r"/articles/([A-Za-z0-9_\-]+)", url)
+    if m:
+        s = m.group(1)
+        try:
+            raw = base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
+            hit = re.search(rb"https?://[^\x00-\x20\"'<>\\]{12,}", raw)
+            if hit:
+                real = hit.group(0).decode("utf-8", "ignore")
+                if "google.com" not in real:
+                    return real
+        except Exception:  # noqa: BLE001
+            pass
+
+    # ② 안 되면 중계 페이지를 열어 진짜 주소를 찾는다
+    import requests
+    try:
+        r = requests.get(url, headers={"User-Agent": _UA}, timeout=timeout)
+        html = r.text
+        if r.url and "news.google.com" not in r.url:
+            return r.url
+        for pat in (r'data-n-au="([^"]+)"',
+                    r'<meta[^>]+http-equiv="refresh"[^>]+url=([^"\']+)',
+                    r'<a[^>]+href="(https?://(?!\w*\.?google\.)[^"]+)"'):
+            hit = re.search(pat, html, re.I)
+            if hit:
+                return hit.group(1).strip()
+    except Exception as e:  # noqa: BLE001
+        log.debug("링크 해석 실패 %s: %s", url[:60], e)
+    return url
+
+
 def fetch_article_text(url: str, max_chars: int = 2500, timeout: int = 12) -> str:
     """기사 본문을 최선 노력으로 추출. 실패하면 빈 문자열."""
     import re
@@ -96,6 +141,10 @@ def fetch_article_text(url: str, max_chars: int = 2500, timeout: int = 12) -> st
         html = r.text
     except Exception as e:  # noqa: BLE001
         log.debug("본문 수집 실패 %s: %s", url[:60], e)
+        return ""
+
+    # 구글 동의 화면·리다이렉트 껍데기는 본문이 아니다
+    if "news.google.com" in url and len(html) < 4000:
         return ""
 
     html = re.sub(r"(?is)<(script|style|nav|header|footer|aside|form)[^>]*>.*?</\1>", " ", html)
@@ -132,15 +181,22 @@ def _strip(fragment: str) -> str:
 
 
 def enrich_with_body(items: list[dict], limit: int = 14) -> list[dict]:
-    """상위 N건에 본문을 붙인다. 나머지는 요약만 유지."""
-    out = []
+    """상위 N건의 링크를 실제 기사 주소로 바꾸고 본문을 붙인다."""
+    out, got, fixed = [], 0, 0
     for i, it in enumerate(items):
         row = dict(it)
         if i < limit and row.get("링크"):
+            real = resolve_link(row["링크"])
+            if real and real != row["링크"]:
+                row["링크"] = real
+                fixed += 1
             body = fetch_article_text(row["링크"])
-            if body:
+            if body and len(body) > 200:
                 row["본문"] = body
+                got += 1
         out.append(row)
+    if items:
+        log.info("  본문 %d/%d건 · 실주소 복원 %d건", got, min(limit, len(items)), fixed)
     return out
 
 

@@ -90,12 +90,16 @@ def send_brief(cfg: dict, messages: list[str], url: str = "") -> bool:
     if new_refresh:
         _persist_refresh_token(new_refresh)
 
+    # 링크는 모든 메시지에 붙인다.
+    # 카카오 텍스트 템플릿은 link 를 비워도 버튼 자리를 만들고 앱 기본 주소로 보내는데,
+    # 그 주소가 등록돼 있지 않으면 404 가 뜬다. 그래서 빈 링크를 남기지 않는다.
     ok = True
     for i, msg in enumerate(messages):
         if len(msg) > limit:
             msg = msg[:limit].rstrip()
         is_last = i == len(messages) - 1
-        sent = send_text(token, msg, url if (is_last and use_link) else "")
+        sent = send_text(token, msg, url if use_link else "",
+                         button="전문 보기" if is_last else "브리핑 열기")
         ok = ok and sent
         if not is_last:
             time.sleep(1.2)  # 순서 보장

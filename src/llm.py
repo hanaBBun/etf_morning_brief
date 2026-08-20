@@ -68,14 +68,14 @@ TOP 5에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵�
 
 ■ 규칙 5 — 출처를 붙입니다
 각 사실에는 그 숫자가 어디서 나왔는지 출처를 답니다.
-데이터에 링크가 있으면 url 을 함께 넣고, 없으면 이름만 넣습니다.
+기사가 근거면 그 기사의 id("n7" 같은 번호)를 넣습니다. url 을 옮겨 적지 마세요.
 특히 투자주체별 수급, ETF 순매수, 국채금리, 환율·원자재, 신규 ETF,
 그리고 "무엇이 주가를 움직였다"고 말하는 내용은 출처가 중요합니다.
 
 ★ ETF 레이더는 출처를 반드시 두 종류로 답니다.
   ① 데이터 출처 (KRX 등) — 숫자의 근거
   ② 관련 뉴스 링크 최소 1건 — 사람이 읽을 수 있는 기사
-  ②는 입력 데이터의 뉴스 목록(특히 'ETF' 그룹)에서 주제가 맞는 기사를 골라 url 과 함께 넣습니다.
+  ②는 입력 데이터의 뉴스 목록(특히 'ETF'·'보도자료' 그룹)에서 주제가 맞는 기사를 골라 id 로 넣습니다.
   주제가 맞는 기사가 없으면 국내 뉴스 그룹에서 가장 가까운 것을 고르고,
   그것도 없으면 ①만 넣습니다. 없는 링크를 지어내지 마세요.
 
@@ -113,6 +113,14 @@ ETF 레이더와 핵심이슈는 **직전 거래일(입력 데이터의 기준�
 
 SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍스트는 넣지 마세요.
 
+■ 출처는 URL 이 아니라 '번호'로 답합니다
+입력 데이터의 기사에는 "id": "n7" 같은 번호가 붙어 있습니다.
+기사를 근거로 쓸 때는 URL 을 옮겨 적지 말고 그 번호를 그대로 쓰세요.
+  ✓ {"이름": "매일경제", "id": "n7"}
+  ✗ {"이름": "매일경제", "url": "https://news.google.com/rss/articles/CBMi..."}
+링크는 우리가 번호로 찾아 붙입니다. URL 을 지어내면 그 항목은 버려집니다.
+(KRX·야후파이낸스처럼 기사가 아닌 출처만 url 을 직접 써도 됩니다.)
+
 {
   "top5": [
     {"순위": 1,
@@ -124,7 +132,8 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   "핵심이슈": [
     {"제목": "",
      "사실": "3~5문장. 수치와 발표 내용 중심.",
-     "출처": [{"이름": "KRX", "url": ""}, {"이름": "연합뉴스", "url": "https://..."}],
+     "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
+              {"이름": "연합뉴스", "id": "입력 기사의 id. 예: n7"}],
      "종목": [
        {"이름": "엔비디아", "업종": "AI 반도체", "등락": "-6.20%", "방향": "down",
         "이유": "이 종목이 왜 이 이슈를 설명하는 데 필요한지 한 줄"}
@@ -137,7 +146,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
      "제목": "12~24자",
      "사실": "1~2문장",
      "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
-              {"이름": "기사 제목이 아니라 매체명", "url": "실제 기사 링크"}],
+              {"이름": "기사 제목이 아니라 매체명", "id": "입력 기사의 id. 예: n12"}],
      "관찰": "해석 어미 규칙 준수. 1~2문장."}
   ],
 
@@ -253,9 +262,16 @@ HANDOFF_SYSTEM = """당신은 ETF 전문 유튜브 채널 'ETF 아는형'의 작
 ② 작가가 다음 섭외를 판단할 수 있게, 그 주 실명으로 발언한 전문가를 정리한다.
 
 ■ 규칙 1 — 지어내지 않습니다
-기사 제목, 매체명, URL, 인용된 발언, 발언자 이름과 소속은 모두 입력 데이터에 있는 것만 씁니다.
-데이터에 없는 링크나 발언을 만들어내면 이 문서는 쓸모가 없어집니다.
-확실하지 않으면 그 항목을 넣지 마세요. 6건을 못 채워도 됩니다.
+인용된 발언, 발언자 이름과 소속은 모두 입력 데이터에 있는 것만 씁니다.
+기사를 가리킬 때는 URL 이나 제목을 옮겨 적지 말고 입력에 붙은 id("n7")만 씁니다.
+제목·매체·날짜·링크는 그 id 로 우리가 원본에서 가져다 붙입니다.
+발언은 확실하지 않으면 넣지 마세요.
+
+■ 규칙 1-1 — 뉴스 6선은 반드시 6건입니다
+입력에는 스무 건이 넘는 기사가 들어옵니다. 그중 ETF 관점에서 쓸 만한 것을
+**6건 골라서 반드시 6건을 채우세요.** 5건이나 3건으로 끝내지 마세요.
+'딱 맞는 기사가 없다'는 이유로 비우지 말고, 관련도가 높은 순서대로 6번째까지 채웁니다.
+(발언정리·출연자추천과 달리 6선은 '고르는' 일이라 지어낼 위험이 없습니다.)
 
 ■ 규칙 2 — 발언은 실명 인용만
 기사에 이름과 소속이 함께 명시된 발언만 싣습니다.
@@ -295,10 +311,7 @@ HANDOFF_SCHEMA = """반드시 아래 JSON 형식으로만 답하세요. 다른 �
 
 {
   "etf_뉴스6선": [
-    {"제목": "기사 제목 그대로",
-     "매체": "매체명",
-     "날짜": "8/19",
-     "url": "입력 데이터에 실제로 있는 링크",
+    {"id": "입력 기사의 id 를 그대로. 예: n7",
      "주제": "수급|신규 상장|보수·비용|지수 변경|레버리지·인버스|규제·제도|해외 동향|상품 구조|시장 규모|테마",
      "한줄": "이 기사에서 뽑을 만한 ETF 키워드 한 줄 (40자 이내)"}
   ],
@@ -309,7 +322,7 @@ HANDOFF_SCHEMA = """반드시 아래 JSON 형식으로만 답하세요. 다른 �
      "직함": "리서치센터장",
      "주제": "ETF 수급|자산배분|커버드콜|해외 ETF|채권 ETF 등 짧게",
      "발언": "발언 요지 2~3문장. 기사 원문의 뜻을 바꾸지 말 것.",
-     "출처": {"이름": "매체명", "url": "기사 링크", "날짜": "8/19"}}
+     "출처": {"이름": "매체명", "id": "그 발언이 실린 기사의 id. 예: n12"}}
   ],
 
   "출연자추천": [
@@ -325,15 +338,33 @@ HANDOFF_SCHEMA = """반드시 아래 JSON 형식으로만 답하세요. 다른 �
   ],
 
   "카톡": {
-    "1": "목요일 전달문이 준비됐다는 알림. 195자 이내. 6선 주제를 나열하고 링크로 유도."
+    "1": "아래 형식 그대로. 195자 이내."
   }
 }
 
 분량 지침:
-- etf_뉴스6선: 최대 6건. 주제가 서로 겹치지 않게 분산할 것. 못 채우면 있는 만큼만.
+- etf_뉴스6선: **정확히 6건.** 주제가 서로 겹치지 않게 분산할 것.
 - 발언정리: 3~6명. 실명 인용이 없으면 빈 배열.
 - 출연자추천: 1~3명. 근거가 약하면 1명 또는 빈 배열.
 - 발언 요지는 각 120자 이내, 추천 이유는 70자 이내, 질문은 60자 이내.
+
+★ 카톡 문구는 줄글로 쓰지 마세요. 아래처럼 번호와 줄바꿈으로 씁니다.
+  한 줄이 길면 휴대폰에서 읽히지 않습니다. 각 줄 20자 안쪽으로 끊으세요.
+
+📋 8/20(목) ETF 처방전 전달문
+
+1. 커버드콜 수급
+2. TDF 순자산 사상 최대
+3. 반도체 ETF 수익률 격차
+4. 레버리지 규제 논의
+5. 미 장기채 베팅
+6. 글로벌 AI ETF
+
+전문 보기에서 복사용 텍스트를 열 수 있습니다.
+
+  - 첫 줄은 📋 + 날짜 + "ETF 처방전 전달문".
+  - 번호 줄은 6선의 '한줄' 키워드를 그대로 짧게. 한 줄에 하나씩.
+  - 마지막 줄 한 문장. 195자를 넘기지 마세요.
 """
 
 
@@ -393,14 +424,61 @@ def _condense_body(text: str, limit: int) -> str:
     return " ".join(picked)[:limit]
 
 
+def _link_index(data: dict) -> dict[str, dict]:
+    """수집한 기사에 n1, n2 … 짧은 번호를 붙이고 '번호 → 기사' 표를 돌려준다.
+
+    구글뉴스 링크는 한 건에 250자가 넘는다. 그대로 넘기면 입력 예산을 링크가
+    다 잡아먹고, 게다가 모델이 그 긴 주소를 한 글자라도 틀리게 옮기면
+    '수집 목록에 없는 링크'로 걸러져 항목이 통째로 사라진다.
+    그래서 모델에게는 번호만 주고, 제목·매체·링크는 우리가 원본에서 되찾아 붙인다.
+    같은 data 로 여러 번 불러도 같은 번호가 나온다.
+    """
+    idx: dict[str, dict] = {}
+    n = 0
+    news = data.get("뉴스") or {}
+    for group in sorted(news.keys()):
+        for it in (news.get(group) or []):
+            if not it.get("링크"):
+                continue
+            n += 1
+            it["_id"] = f"n{n}"
+            it["_그룹"] = group
+            idx[it["_id"]] = it
+    return idx
+
+
+# KRX·야후처럼 기사가 아닌 고정 출처는 모델이 URL 을 직접 써도 통과시킨다.
+SAFE_URL_HOSTS = ("data.krx.co.kr", "krx.co.kr", "finance.yahoo.com")
+
+
+def _resolve_srcs(srcs: Any, idx: dict[str, dict]) -> list[dict]:
+    """모델이 준 출처 목록을 번호로 해석해 실제 링크를 붙인다."""
+    out: list[dict] = []
+    for s in srcs or []:
+        if not isinstance(s, dict):
+            continue
+        art = idx.get(str(s.get("id") or "").strip())
+        if art:
+            out.append({"이름": s.get("이름") or art.get("출처", ""),
+                        "url": art.get("링크", "")})
+            continue
+        url = str(s.get("url") or "")
+        if url and any(h in url for h in SAFE_URL_HOSTS):
+            out.append({"이름": s.get("이름", ""), "url": url})
+        elif s.get("이름"):
+            # 번호도 없고 아는 주소도 아니면 링크 없이 매체명만 남긴다
+            out.append({"이름": s["이름"], "url": ""})
+    return out
+
+
 def _slim_news(items: list[dict], n: int, summary_len: int = 110,
                body_len: int = 1200) -> list[dict]:
     out = []
     for it in (items or [])[:n]:
         row = {
+            "id": it.get("_id"),
             "제목": it.get("제목"),
             "출처": it.get("출처"),
-            "링크": it.get("링크"),
             "날짜": it.get("날짜"),
             "경과시간": it.get("경과시간"),
         }
@@ -467,6 +545,8 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
     무료 티어는 분당 입력 토큰이 1만으로 제한되어 있어, 원본을 그대로 보내면
     429(RESOURCE_EXHAUSTED)가 난다.
     """
+    _link_index(data)  # 기사마다 n1, n2 … 번호를 매긴다
+
     d: dict[str, Any] = {
         k: data.get(k)
         for k in ("날짜표시", "기준설명", "국내기준일_표시", "해외기준일_표시", "수집범위")
@@ -966,6 +1046,13 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         c["해석"] = _trim_hedge(c.get("해석", ""))
     d["핵심이슈"] = issues
 
+    # 출처를 번호에서 실제 링크로 되돌린다 (모델이 URL 을 옮겨 적지 않게 한 대가)
+    idx = _link_index(data)
+    for key in ("핵심이슈", "etf_레이더"):
+        for c in d.get(key) or []:
+            if isinstance(c, dict):
+                c["출처"] = _resolve_srcs(c.get("출처"), idx)
+
     # ETF 레이더 — 빈 항목·필러 제거, 오래된 근거 제거, 관찰 면책 문장 정리
     ages = _article_age(data)
     radar_max = int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3))
@@ -1004,45 +1091,90 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     return d
 
 
+def _news_row(art: dict, theme: str = "", line: str = "") -> dict:
+    """기사 원본에서 6선 한 줄을 만든다. 제목·매체·날짜·링크는 전부 원본 값."""
+    return {
+        "제목": art.get("제목", ""),
+        "매체": art.get("출처", ""),
+        "날짜": art.get("날짜", "")[5:].replace("-", "/") or art.get("날짜", ""),
+        "url": art.get("링크", ""),
+        "주제": theme or _GROUP_THEME.get(art.get("_그룹", ""), "테마"),
+        "한줄": line or str(art.get("요약") or "")[:40],
+    }
+
+
+_GROUP_THEME = {"보도자료": "신규 상장", "레버리지": "레버리지·인버스",
+                "지수": "지수 변경", "ETF": "수급", "국내": "시장 규모"}
+
+# 6선을 채울 때 어느 그룹부터 볼지
+_TOPUP_ORDER = ("ETF", "보도자료", "레버리지", "지수", "국내")
+
+
 def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
-    """목요일 전달문 후처리 — 환각 링크 차단이 핵심."""
-    known = _valid_urls(data)
+    """목요일 전달문 후처리 — 환각 링크 차단 + 6선 채우기."""
+    idx = _link_index(data)
 
-    # 뉴스 6선: 실제 수집된 링크만, 주제 중복 제거
-    news, seen_theme, seen_url = [], set(), set()
-    for n in d.get("etf_뉴스6선") or []:
-        if not isinstance(n, dict) or not n.get("url") or not n.get("제목"):
+    # 뉴스 6선: 모델은 id 만 고른다. 제목·링크는 원본에서 붙인다.
+    news, seen = [], set()
+    raw = d.get("etf_뉴스6선") or []
+    for n in raw:
+        if not isinstance(n, dict):
             continue
-        if known and n["url"] not in known:
-            log.warning("수집 목록에 없는 링크 제외: %s", str(n.get("제목"))[:40])
+        art = idx.get(str(n.get("id") or "").strip())
+        if not art:
+            log.warning("모르는 기사 번호라 제외: %s", str(n.get("id"))[:20])
             continue
-        if n["url"] in seen_url:
+        if art.get("링크") in seen:
             continue
-        theme = str(n.get("주제") or "")
-        if theme and theme in seen_theme and len(news) >= 4:
-            continue  # 4건 넘어가면 주제 중복은 버린다
-        seen_url.add(n["url"])
-        if theme:
-            seen_theme.add(theme)
-        news.append(n)
+        seen.add(art.get("링크"))
+        news.append(_news_row(art, str(n.get("주제") or ""), str(n.get("한줄") or "")))
+
+    # 6건이 안 되면 수집한 기사에서 직접 채운다. (지어내는 게 아니라 고르는 것)
+    if len(news) < 6:
+        picked_by_model = len(news)
+        pools = {g: list((data.get("뉴스") or {}).get(g) or []) for g in _TOPUP_ORDER}
+        # 한 그룹에서 몰아 뽑지 않도록 그룹을 돌아가며 한 건씩 가져온다
+        while len(news) < 6 and any(pools.values()):
+            for g in _TOPUP_ORDER:
+                if len(news) >= 6:
+                    break
+                while pools[g]:
+                    art = pools[g].pop(0)
+                    if art.get("링크") and art["링크"] not in seen:
+                        seen.add(art["링크"])
+                        news.append(_news_row(art))
+                        break
+        log.warning("모델이 6선 중 %d건만 골라 %d건을 수집 기사에서 보충했습니다",
+                    picked_by_model, len(news) - picked_by_model)
     d["etf_뉴스6선"] = news[:6]
+    log.info("뉴스 6선 확정 %d건", len(d["etf_뉴스6선"]))
 
-    # 발언: 이름·소속·발언이 모두 있어야 하고, 출처 링크도 수집분이어야 한다
+    # 발언: 이름·소속·발언이 모두 있어야 한다. 출처는 번호로 해석한다.
     quotes = []
     for q in d.get("발언정리") or []:
         if not isinstance(q, dict):
             continue
         if not (q.get("이름") and q.get("소속") and q.get("발언")):
             continue
-        src = q.get("출처") or {}
-        if isinstance(src, dict) and src.get("url") and known and src["url"] not in known:
-            log.warning("발언 출처 링크가 수집 목록에 없어 링크 제거: %s", q.get("이름"))
-            src.pop("url", None)
-            q["출처"] = src
+        src = q.get("출처") if isinstance(q.get("출처"), dict) else {}
+        art = idx.get(str(src.get("id") or "").strip())
+        if art:
+            q["출처"] = {"이름": src.get("이름") or art.get("출처", ""),
+                         "url": art.get("링크", ""),
+                         "날짜": art.get("날짜", "")[5:].replace("-", "/")}
+        else:
+            q["출처"] = {"이름": src.get("이름", ""), "url": "", "날짜": ""}
         for bad in BANNED:
             q["발언"] = str(q["발언"]).replace(bad, "")
         quotes.append(q)
     d["발언정리"] = quotes[:6]
+    log.info("발언정리 %d명 (모델 응답 %d명)",
+             len(quotes), len(d.get("발언정리") or []) or len(quotes))
+    if not quotes:
+        bodies = sum(1 for g in (data.get("뉴스") or {}).values()
+                     for it in (g or []) if it.get("본문"))
+        log.warning("발언정리가 비었습니다 — 본문을 확보한 기사가 %d건입니다. "
+                    "본문이 0건이면 기사 원문 수집이 막힌 것입니다.", bodies)
 
     # 출연자 추천: 발언정리에 없는 사람은 근거가 없으므로 뺀다
     named = {str(q.get("이름", "")).strip() for q in quotes}

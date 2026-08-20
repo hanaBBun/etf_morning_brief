@@ -83,15 +83,21 @@ def _glance(data: dict) -> list[dict]:
     groups: list[dict] = []
 
     def add(label: str, cells: list[dict]):
+        # 시세가 안 잡힌 항목은 빼되, 무엇이 빠졌는지는 라벨에 남긴다.
+        # (항목 개수가 날마다 달라 보이는 이유를 알 수 있게)
+        missing = [c["이름"] for c in cells if c["값"] == "—"]
         cells = [c for c in cells if c["값"] != "—"]
         if not cells:
+            if missing:
+                log.warning("%s 그룹 전체 미집계: %s", label, ", ".join(missing))
             return
         _annotate_mixed(cells)
         stamp = _stamp(cells)
-        groups.append({
-            "라벨": f"{label} · {stamp}" if stamp else label,
-            "항목": cells,
-        })
+        text = f"{label} · {stamp}" if stamp else label
+        if missing:
+            log.warning("%s 미집계 항목: %s", label, ", ".join(missing))
+            text += f" · {', '.join(missing)} 미집계"
+        groups.append({"라벨": text, "항목": cells})
 
     # 국내 지수 · 환율 · 수급은 모두 같은 거래일 마감 기준이라 한 그룹으로 묶는다.
     국내 = [_cell(r, 2) for r in (data.get("국내지수") or [])]
