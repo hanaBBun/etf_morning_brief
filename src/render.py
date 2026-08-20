@@ -160,6 +160,26 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
     return out
 
 
+YT_NOTICE = {
+    "키없음": ("YOUTUBE_API_KEY 가 설정되지 않아 이번 브리핑에서는 경쟁 채널을 "
+               "수집하지 못했습니다. 아래 '콘텐츠 후보'는 실제 영상이 아니라 기획안입니다."),
+    "꺼짐": "설정에서 유튜브 수집을 꺼두었습니다.",
+    "새영상없음": "등록된 채널에서 최근 36시간 내 새 영상이 없었습니다.",
+}
+
+
+def _youtube_notice(data: dict) -> str:
+    """영상이 없을 때 '왜 없는지'를 밝힌다.
+
+    섹션을 조용히 숨기면 읽는 사람은 '오늘은 경쟁 채널이 잠잠했나 보다'로
+    오해한다. 수집을 못 한 것과 수집했는데 없는 것은 다른 얘기다.
+    """
+    yt = data.get("유튜브") or {}
+    if yt.get("급상승"):
+        return ""
+    return YT_NOTICE.get(str(yt.get("상태") or ""), "")
+
+
 BASE_SOURCES = [
     {"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
     {"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"},
@@ -170,11 +190,11 @@ def _sources(data: dict, ai: dict) -> list[dict]:
     """카드에 달린 출처 + 뉴스 소스를 모아 중복 제거."""
     seen: dict[str, dict] = {}
 
-    def put(name: str, url: str = ""):
+    def put(name: str, url: str = "", date: str = ""):
         name = (name or "").strip()
         if not name or name in seen:
             return
-        seen[name] = {"이름": name, "url": url}
+        seen[name] = {"이름": name, "url": url, "날짜": date}
 
     for s in BASE_SOURCES:
         put(s["이름"], s["url"])
@@ -182,11 +202,11 @@ def _sources(data: dict, ai: dict) -> list[dict]:
         for c in ai.get(key) or []:
             for s in c.get("출처") or []:
                 if isinstance(s, dict):
-                    put(s.get("이름", ""), s.get("url", ""))
+                    put(s.get("이름", ""), s.get("url", ""), s.get("날짜", ""))
     for group in (data.get("뉴스") or {}).values():
         for it in (group or [])[:3]:
             put(it.get("출처", ""))
-    if data.get("유튜브"):
+    if (data.get("유튜브") or {}).get("급상승"):
         put("YouTube Data API", "https://www.youtube.com")
     return list(seen.values())
 
@@ -203,6 +223,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "기준일태그": data.get("기준일태그", ""),
         "한눈에": _glance(data),
         "유튜브영상": _youtube(data, ai),
+        "유튜브안내": _youtube_notice(data),
         "출처목록": _sources(data, ai),
         "레이더_최대": (cfg.get("ETF_레이더") or {}).get("최대_항목수", 3),
         "ai": ai or {},

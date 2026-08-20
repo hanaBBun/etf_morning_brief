@@ -22,12 +22,20 @@ def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
         if not isinstance(sources, list):
             continue
         items: list[dict] = []
+        undated = stale = 0
         for src in sources:
             try:
                 feed = feedparser.parse(src["url"])
                 for e in feed.entries[:60]:
                     pub = _parsed_time(e)
-                    if pub and pub < cutoff:
+                    # 발행일이 없으면 버린다.
+                    # 예전에는 통과시켰는데, 그 기사들이 신선도 검사를 전부 우회해
+                    # 석 달 전 기사가 '최근'으로 실리는 사고가 났다.
+                    if not pub:
+                        undated += 1
+                        continue
+                    if pub < cutoff:
+                        stale += 1
                         continue
                     items.append({
                         "제목": _clean(getattr(e, "title", "")),
@@ -45,6 +53,8 @@ def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
         for it in items:
             it.pop("_ts", None)
         out[group] = items[:limit]
+        log.info("뉴스 %s: %d건 수집 (날짜없음 %d건·기간초과 %d건 제외, 최근 %d시간)",
+                 group, len(out[group]), undated, stale, hours)
     return out
 
 

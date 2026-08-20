@@ -65,11 +65,11 @@ def resolve_channel_ids(names: list[str], key: str) -> dict[str, str]:
 def collect(cfg: dict) -> dict[str, Any]:
     yt = cfg.get("유튜브") or {}
     if not yt.get("사용", True):
-        return {}
+        return {"상태": "꺼짐"}
     key = env("YOUTUBE_API_KEY")
     if not key:
-        log.info("YOUTUBE_API_KEY 없음 — 유튜브 섹션 생략")
-        return {}
+        log.warning("YOUTUBE_API_KEY 없음 — 경쟁 채널 동향을 수집하지 못했습니다")
+        return {"상태": "키없음"}
 
     names = yt.get("채널") or []
     top_n = int(yt.get("급상승_표시개수", 5))
@@ -97,7 +97,7 @@ def collect(cfg: dict) -> dict[str, Any]:
             log.warning("영상 조회 실패 %s: %s", name, e)
 
     if not videos:
-        return {"급상승": [], "댓글키워드": [], "채널수": len(ids)}
+        return {"상태": "새영상없음", "급상승": [], "채널수": len(ids)}
 
     # 조회수 채우기 (50개씩)
     stats: dict[str, dict] = {}
@@ -133,6 +133,7 @@ def collect(cfg: dict) -> dict[str, Any]:
             continue
 
     return {
+        "상태": "정상",
         "급상승": top,
         "전체영상수": len(videos),
         "댓글샘플": keywords[:80],

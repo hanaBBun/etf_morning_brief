@@ -447,6 +447,14 @@ def _link_index(data: dict) -> dict[str, dict]:
     return idx
 
 
+def _mmdd(iso: str) -> str:
+    """2026-08-19 → 8/19. 값이 이상하면 빈 문자열."""
+    iso = str(iso or "")
+    if len(iso) >= 10 and iso[4] == "-":
+        return f"{int(iso[5:7])}/{int(iso[8:10])}"
+    return ""
+
+
 # KRX·야후처럼 기사가 아닌 고정 출처는 모델이 URL 을 직접 써도 통과시킨다.
 SAFE_URL_HOSTS = ("data.krx.co.kr", "krx.co.kr", "finance.yahoo.com")
 
@@ -459,8 +467,11 @@ def _resolve_srcs(srcs: Any, idx: dict[str, dict]) -> list[dict]:
             continue
         art = idx.get(str(s.get("id") or "").strip())
         if art:
+            # 발행일을 함께 넘긴다. 읽는 사람이 클릭하지 않고도
+            # 이 근거가 언제 기사인지 알 수 있어야 한다.
             out.append({"이름": s.get("이름") or art.get("출처", ""),
-                        "url": art.get("링크", "")})
+                        "url": art.get("링크", ""),
+                        "날짜": _mmdd(art.get("날짜", ""))})
             continue
         url = str(s.get("url") or "")
         if url and any(h in url for h in SAFE_URL_HOSTS):
@@ -1096,7 +1107,7 @@ def _news_row(art: dict, theme: str = "", line: str = "") -> dict:
     return {
         "제목": art.get("제목", ""),
         "매체": art.get("출처", ""),
-        "날짜": art.get("날짜", "")[5:].replace("-", "/") or art.get("날짜", ""),
+        "날짜": _mmdd(art.get("날짜", "")),
         "url": art.get("링크", ""),
         "주제": theme or _GROUP_THEME.get(art.get("_그룹", ""), "테마"),
         "한줄": line or str(art.get("요약") or "")[:40],
@@ -1108,6 +1119,14 @@ _GROUP_THEME = {"보도자료": "신규 상장", "레버리지": "레버리지·
 
 # 6선을 채울 때 어느 그룹부터 볼지
 _TOPUP_ORDER = ("ETF", "보도자료", "레버리지", "지수", "국내")
+
+# 전달문은 이번 주 기사만 다룬다. 이보다 오래된 기사는 채우기에도 쓰지 않는다.
+_TOPUP_MAX_HOURS = 168
+
+
+def _fresh(art: dict) -> bool:
+    h = art.get("경과시간")
+    return h is not None and int(h) <= _TOPUP_MAX_HOURS
 
 
 def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
@@ -1140,7 +1159,7 @@ def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
                     break
                 while pools[g]:
                     art = pools[g].pop(0)
-                    if art.get("링크") and art["링크"] not in seen:
+                    if art.get("링크") and art["링크"] not in seen and _fresh(art):
                         seen.add(art["링크"])
                         news.append(_news_row(art))
                         break
@@ -1161,7 +1180,7 @@ def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
         if art:
             q["출처"] = {"이름": src.get("이름") or art.get("출처", ""),
                          "url": art.get("링크", ""),
-                         "날짜": art.get("날짜", "")[5:].replace("-", "/")}
+                         "날짜": _mmdd(art.get("날짜", ""))}
         else:
             q["출처"] = {"이름": src.get("이름", ""), "url": "", "날짜": ""}
         for bad in BANNED:
