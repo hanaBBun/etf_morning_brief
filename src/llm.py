@@ -18,7 +18,7 @@ SYSTEM = """당신은 한국의 ETF 전문 유튜브 채널 'ETF 아는형'의 �
 매일 오전 7시 브리핑을 작성하는 리서치 어시스턴트입니다.
 
 이 브리핑의 목적은 단 하나입니다.
-"오늘 ETF 아는형에서 무엇을 알아야 하고, 무엇을 물어봐야 하는지를 5분 안에 파악한다."
+"오늘 ETF 아는형에서 무엇을 알아야 하고, 무엇을 물어봐야 하는지를 3분 안에 파악한다."
 
 "오늘 경제뉴스를 많이 읽었다"는 느낌을 주는 브리핑은 실패입니다. 짧고 결정적이어야 합니다.
 
@@ -26,8 +26,8 @@ SYSTEM = """당신은 한국의 ETF 전문 유튜브 채널 'ETF 아는형'의 �
 전문 용어는 써도 되지만 왜 중요한지를 함께 설명하세요.
 
 ■ 규칙 1 — 한 이슈는 딱 한 번만 자세히 설명합니다
-같은 이슈(예: 미 장기금리 급등)를 TOP 5와 핵심이슈에서 두 번 자세히 쓰지 마세요.
-TOP 5에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵심이슈에서 한 번만 합니다.
+같은 이슈(예: 미 장기금리 급등)를 TOP 3와 핵심이슈에서 두 번 자세히 쓰지 마세요.
+TOP 3에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵심이슈에서 한 번만 합니다.
 새로운 내용이 없다면 다른 섹션에서 그 이슈를 다시 꺼내지 마세요.
 
 ■ 규칙 2 — 개별 종목은 기본적으로 싣지 않습니다
@@ -62,9 +62,10 @@ TOP 5에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵�
   기술적 분석(매물대, 지지선, 되돌림 비율, 캔들 해석)은 이 브리핑의 목적이 아닙니다.
   근거가 약한 차트 해석은 과감히 생략하세요.
 
-■ 규칙 4 — 투자 권유는 금지입니다
+■ 규칙 4 — 투자 권유·근거 없는 과장 표현은 금지입니다
 특정 종목·ETF의 매수·매도를 권하거나 목표가를 제시하지 않습니다.
 금지: "~를 사세요", "~가 유리합니다", "지금이 기회입니다", "추천합니다", "~해야 합니다"
+근거 수치가 입력에 없으면 "폭발", "쏠림", "집중", "주도", "견인", "급증"도 쓰지 마세요.
 
 ■ 규칙 5 — 출처를 붙입니다
 각 사실에는 그 숫자가 어디서 나왔는지 출처를 답니다.
@@ -236,12 +237,12 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   }
 }
 
-■ 분량 예산 — 이 브리핑 전체가 공백 포함 2,600자를 넘으면 실패입니다.
-5분 안에 읽히는 것이 다른 무엇보다 우선입니다. 아래 글자 수를 지키세요.
+■ 분량 예산 — 이 브리핑 전체가 공백 포함 2,200자를 넘으면 실패입니다.
+3분 안에 읽히는 것이 다른 무엇보다 우선입니다. 아래 글자 수를 지키세요.
 
 | 항목 | 개수 | 글자 수 |
 |---|---|---|
-| top5.제목 | 5개 고정 | 8~16자 |
+| top5.제목 | 3개 고정 | 8~16자 |
 | top5.숫자 | | 30자 이내 |
 | top5.영향 | | 30자 이내 |
 | 핵심이슈 | 2~3개 | — |
@@ -268,7 +269,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 오늘의개념은 VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지, 베이시스포인트,
 멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중 그날 뉴스와 실제로 연결되는 것을 고릅니다.
 
-★ 카톡 메시지는 위 top5 를 그대로 압축해 담습니다. 별도 내용을 새로 쓰지 마세요.
+★ 카톡 메시지는 위 TOP 3을 그대로 옮깁니다. 별도 내용을 새로 쓰지 마세요.
   카톡만 봐도 오늘 뭐가 중요한지 알 수 있어야 합니다. 아래 형식을 지키세요.
 
   "1" 예시 (실제 숫자로 채울 것):
@@ -281,15 +282,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 3. 이란·호르무즈 재점화
    브렌트 $91 · WTI $85
 
-  "2" 예시:
-4. 환율 10개월래 최저
-   1,411.8원(-1.2원)
-5. VKOSPI 56.97
-   평시(20)의 2.8배
-
-👉 오늘 관전포인트
-금리가 나스닥·반도체 ETF를 누르는 국면.
-레버리지 ETF는 변동성 잠식 구간.
+  "2": 빈 문자열로 두세요. 일간 브리핑은 카톡 1건만 보냅니다.
 
   - 번호와 줄바꿈을 위 형식대로 씁니다.
   - 각 항목은 '제목' 한 줄 + '숫자' 한 줄, 총 두 줄입니다.
@@ -535,7 +528,7 @@ def _resolve_srcs(srcs: Any, idx: dict[str, dict]) -> list[dict]:
         if art:
             # 발행일을 함께 넘긴다. 읽는 사람이 클릭하지 않고도
             # 이 근거가 언제 기사인지 알 수 있어야 한다.
-            out.append({"이름": s.get("이름") or art.get("출처", ""),
+            out.append({"이름": art.get("출처", ""),
                         "url": art.get("링크", ""),
                         "날짜": _mmdd(art.get("날짜", ""))})
             continue
@@ -690,11 +683,25 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
 
 
 def _payload(data: dict[str, Any], mode: str = "daily") -> str:
-    text = json.dumps(_compact(data, mode), ensure_ascii=False, default=str)
-    if len(text) > MAX_PAYLOAD_CHARS:
-        log.warning("데이터가 커서 %d자로 잘라냅니다 (원본 %d자)",
-                    MAX_PAYLOAD_CHARS, len(text))
-        text = text[:MAX_PAYLOAD_CHARS]
+    compact = _compact(data, mode)
+    text = json.dumps(compact, ensure_ascii=False, default=str)
+    # JSON 중간을 자르면 깨진 입력이 된다. 예산을 넘으면 우선순위가 낮은
+    # 뉴스부터 기사 한 건 단위로 제거해 항상 유효한 JSON을 유지한다.
+    trim_order = ("보도자료", "ETF", "지수", "레버리지", "국제", "국내", "ETF시장")
+    removed = 0
+    while len(text) > MAX_PAYLOAD_CHARS:
+        news = compact.get("뉴스") or {}
+        target = next((g for g in trim_order if news.get(g)), None)
+        if not target:
+            log.error("구조를 보존한 채 AI 입력 예산을 맞출 수 없습니다 (%d자)", len(text))
+            break
+        news[target].pop()
+        if not news[target]:
+            news.pop(target, None)
+        removed += 1
+        text = json.dumps(compact, ensure_ascii=False, default=str)
+    if removed:
+        log.warning("AI 입력 예산을 위해 기사 %d건을 항목 단위로 제외했습니다", removed)
     log.info("AI 입력 크기: %d자 (약 %d토큰)", len(text), len(text) // 2)
     return text
 
@@ -996,6 +1003,7 @@ BANNED = [
     "추천합니다", "매수하세요", "매도하세요", "사야 합니다", "팔아야 합니다",
     "지금이 기회", "반드시 오를", "확실합니다", "보장", "유리합니다",
 ]
+UNSUPPORTED_HYPE = ("폭발", "매수세 집중", "수급 집중", "돈이 몰렸", "자금이 몰렸")
 FILLER = ["해당 없음", "특이사항 없음", "없음", "생략", "특이 종목 없음", "기준 미달"]
 
 # 국내 ETF 브랜드. 제목에 이게 들어가면 '단일 상품 기사'로 본다.
@@ -1056,6 +1064,12 @@ def _warn_pr(item: dict) -> None:
     if hit:
         log.warning("홍보성 표현이 남아 있습니다 (%s): %s",
                     ", ".join(hit), str(item.get("제목"))[:40])
+
+
+def _has_hype(item: dict) -> bool:
+    text = " ".join(str(item.get(k, ""))
+                    for k in ("제목", "사실", "해석", "관찰", "이유"))
+    return any(w in text for w in PR_WORDS + UNSUPPORTED_HYPE)
 
 
 def _drop_filler(items: list, keys: tuple[str, ...]) -> list:
@@ -1175,14 +1189,16 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         kakao[k] = text
     d["카톡"] = kakao
 
-    # TOP 5
+    # TOP 3 — 과장 표현이 남은 항목은 표시하지 않는다.
     top5 = [r for r in (d.get("top5") or []) if isinstance(r, dict)]
+    top5 = [r for r in top5 if not _has_hype(r)]
     for i, r in enumerate(top5, 1):
         r.setdefault("순위", i)
-    d["top5"] = top5[:5]
+    d["top5"] = top5[:3]
 
     # 핵심이슈 — 3개 제한, 종목은 전체 합쳐 3개 제한, 해석 면책 문장 정리
-    issues = _drop_filler(d.get("핵심이슈"), ("제목", "사실"))[:3]
+    issues = _drop_filler(d.get("핵심이슈"), ("제목", "사실"))
+    issues = [c for c in issues if not _has_hype(c)][:2]
     quota = 3
     for c in issues:
         stocks = [s for s in (c.get("종목") or []) if isinstance(s, dict)]
@@ -1203,7 +1219,8 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     radar_max = int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3))
     radar = _drop_filler(d.get("etf_레이더"), ("제목", "사실"))
     radar = _strip_stale_sources(radar, ages)
-    radar = _limit_product_items(radar, keep=1)[:radar_max]
+    radar = _limit_product_items(radar, keep=1)
+    radar = [r for r in radar if not _has_hype(r)][:radar_max]
     for r in radar:
         r["관찰"] = _trim_hedge(r.get("관찰", ""))
         _warn_pr(r)
@@ -1218,8 +1235,13 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
                      if not (isinstance(s, dict) and s.get("url") in ages
                              and ages[s["url"]] > STALE_HOURS)]
 
-    d["유튜브"] = (d.get("유튜브") or [])[:3]
-    d["콘텐츠후보"] = _drop_filler(d.get("콘텐츠후보"), ("제목", "이유"))[:2]
+    valid_video_ids = {str(v.get("영상ID"))
+                       for v in ((data.get("유튜브") or {}).get("급상승") or [])}
+    d["유튜브"] = [v for v in (d.get("유튜브") or [])
+                    if isinstance(v, dict)
+                    and str(v.get("영상ID")) in valid_video_ids][:3]
+    plans = _drop_filler(d.get("콘텐츠후보"), ("제목", "이유"))
+    d["콘텐츠후보"] = [p for p in plans if not _has_hype(p)][:2]
 
     # 체크포인트 — 일정/확인 두 유형. 구버전 키('일정')도 받아준다.
     cps = d.get("체크포인트") or d.get("일정") or []
@@ -1339,7 +1361,8 @@ def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
                          "url": art.get("링크", ""),
                          "날짜": _mmdd(art.get("날짜", ""))}
         else:
-            q["출처"] = {"이름": src.get("이름", ""), "url": "", "날짜": ""}
+            log.warning("원문 기사 번호가 없는 발언 제외: %s", q.get("이름"))
+            continue
         for bad in BANNED:
             q["발언"] = str(q["발언"]).replace(bad, "")
         quotes.append(q)
@@ -1358,7 +1381,7 @@ def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
     for g in d.get("출연자추천") or []:
         if not isinstance(g, dict) or not g.get("이름") or not g.get("이유"):
             continue
-        if named and str(g["이름"]).strip() not in named:
+        if str(g["이름"]).strip() not in named:
             log.warning("발언 근거가 없는 출연자 추천 제외: %s", g.get("이름"))
             continue
         guests.append(g)

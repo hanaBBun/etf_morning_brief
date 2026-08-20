@@ -215,9 +215,8 @@ def _sources(data: dict, ai: dict) -> list[dict]:
             for s in c.get("출처") or []:
                 if isinstance(s, dict):
                     put(s.get("이름", ""), s.get("url", ""), s.get("날짜", ""))
-    for group in (data.get("뉴스") or {}).values():
-        for it in (group or [])[:3]:
-            put(it.get("출처", ""))
+    # 실제 카드에서 인용한 기사만 출처로 표시한다. 단순히 RSS에서 수집했다는
+    # 이유로 매체명을 나열하면 독자가 해당 문장의 근거로 오해할 수 있다.
     if (data.get("유튜브") or {}).get("급상승"):
         put("YouTube Data API", "https://www.youtube.com")
     return list(seen.values())
@@ -233,6 +232,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "날짜표시": data.get("날짜표시", ""),
         "기준설명": data.get("기준설명", ""),
         "기준일태그": data.get("기준일태그", ""),
+        "수집상태": data.get("수집상태", {}),
         "한눈에": _glance(data),
         "유튜브영상": _youtube(data, ai),
         "유튜브안내": _youtube_notice(data),
