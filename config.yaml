@@ -4,7 +4,7 @@
 브리핑:
   제목: "아침 경제·ETF 브리핑"
   발송시각_KST: "07:00"
-  사이트_주소: ""   # GitHub Pages 주소. 설정 후 예) https://내아이디.github.io/etf-morning-brief
+  사이트_주소: "https://hanabbun.github.io/etf_morning_brief/"   # GitHub Pages 주소. 설정 후 예) https://내아이디.github.io/etf-morning-brief
 
 # ─────────────────────────────────────────────
 # 종목 편성 기준 (시가총액 제한 없음)
