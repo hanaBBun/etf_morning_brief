@@ -1,4 +1,7 @@
-"""진입점. python -m src.main [--mode daily|weekly] [--no-send] [--dry-run]"""
+"""진입점. python -m src.main [--mode daily|weekly] [--no-send] [--dry-run].
+
+main 브랜치의 코드 변경 검증은 GitHub Actions에서 --no-send로 실행된다.
+"""
 from __future__ import annotations
 
 import argparse
