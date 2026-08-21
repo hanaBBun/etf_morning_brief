@@ -1,9 +1,11 @@
 import json
+import tempfile
 import unittest
 from datetime import datetime, timezone
+from pathlib import Path
 from unittest.mock import patch
 
-from src import krx, llm, news
+from src import krx, llm, news, youtube
 
 
 class _FakeStock:
@@ -13,6 +15,22 @@ class _FakeStock:
 
 
 class SafetyTests(unittest.TestCase):
+    def test_youtube_same_day_cache_survives_rerun_without_api(self):
+        with tempfile.TemporaryDirectory() as td:
+            cache = Path(td) / "youtube_daily_cache.json"
+            cache.write_text(json.dumps({
+                "날짜": "2026-08-21",
+                "급상승": [{"영상ID": "kept", "제목": "아침에 찾은 영상"}],
+                "댓글샘플": [],
+            }, ensure_ascii=False), encoding="utf-8")
+            fixed = datetime(2026, 8, 21, 7, 0, tzinfo=timezone.utc)
+            with patch.object(youtube, "DAILY_CACHE", cache), \
+                 patch.object(youtube, "now_kst", return_value=fixed), \
+                 patch.object(youtube, "env", return_value=""):
+                result = youtube.collect({"유튜브": {"사용": True}})
+        self.assertEqual(result["상태"], "당일캐시")
+        self.assertEqual(result["급상승"][0]["영상ID"], "kept")
+
     def test_krx_before_close_uses_previous_day(self):
         morning = datetime(2026, 8, 20, 7, 0, tzinfo=timezone.utc)
         with patch.object(krx, "_stock", return_value=_FakeStock()), \

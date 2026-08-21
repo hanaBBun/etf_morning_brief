@@ -1453,7 +1453,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
                        for v in ((data.get("유튜브") or {}).get("급상승") or [])}
     d["유튜브"] = [v for v in (d.get("유튜브") or [])
                     if isinstance(v, dict)
-                    and str(v.get("영상ID")) in valid_video_ids][:3]
+                    and str(v.get("영상ID")) in valid_video_ids][:5]
     plans = _drop_filler(d.get("콘텐츠후보"), ("제목", "이유"))
     plans = [_fix_etf_classification(p, single_stock_context) for p in plans]
     d["콘텐츠후보"] = [p for p in plans

@@ -141,9 +141,9 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
     notes = {n.get("영상ID"): n for n in (ai.get("유튜브") or []) if isinstance(n, dict)}
     if not raw:
         return []
-    picked = [v for v in raw if v.get("영상ID") in notes] or raw[:3]
+    picked = [v for v in raw if v.get("영상ID") in notes] or raw[:5]
     out = []
-    for v in picked[:3]:
+    for v in picked[:5]:
         n = notes.get(v.get("영상ID"), {})
         ov = n.get("겹침", "")
         out.append({
