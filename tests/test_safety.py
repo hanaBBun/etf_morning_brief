@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
-from src import krx, llm, news, youtube
+from src import krx, llm, news, render, youtube
 
 
 class _FakeStock:
@@ -30,6 +30,15 @@ class SafetyTests(unittest.TestCase):
                 result = youtube.collect({"유튜브": {"사용": True}})
         self.assertEqual(result["상태"], "당일캐시")
         self.assertEqual(result["급상승"][0]["영상ID"], "kept")
+
+    def test_youtube_render_keeps_videos_without_ai_notes(self):
+        raw = [{"영상ID": str(i), "제목": f"영상 {i}", "채널": "채널",
+                "조회수": i, "링크": f"https://youtu.be/{i}"} for i in range(4)]
+        notes = [{"영상ID": "0", "겹침": "보통", "겹침근거": "같은 연금 주제"}]
+        out = render._youtube({"유튜브": {"급상승": raw}}, {"유튜브": notes})
+        self.assertEqual(len(out), 4)
+        self.assertEqual(out[0]["겹침"], "보통")
+        self.assertTrue(all(v["겹침"] for v in out))
 
     def test_krx_before_close_uses_previous_day(self):
         morning = datetime(2026, 8, 20, 7, 0, tzinfo=timezone.utc)

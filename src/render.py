@@ -141,11 +141,13 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
     notes = {n.get("영상ID"): n for n in (ai.get("유튜브") or []) if isinstance(n, dict)}
     if not raw:
         return []
-    picked = [v for v in raw if v.get("영상ID") in notes] or raw[:5]
+    # AI가 일부 영상만 분석했더라도 수집기가 당일 보존한 영상은 모두 표시한다.
+    # 과거에는 notes가 하나라도 있으면 미분석 영상 전체가 화면에서 탈락했다.
+    picked = raw[:5]
     out = []
     for v in picked[:5]:
         n = notes.get(v.get("영상ID"), {})
-        ov = n.get("겹침", "")
+        ov = n.get("겹침") or "낮음"
         out.append({
             "제목": v.get("제목", ""),
             "채널": v.get("채널", ""),
@@ -155,7 +157,7 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
             "핵심주제": n.get("핵심주제", ""),
             "훅": n.get("훅", ""),
             "겹침": ov,
-            "겹침근거": n.get("겹침근거", ""),
+            "겹침근거": n.get("겹침근거") or "오늘 핵심 주제와 직접 겹치는 근거 없음",
             "겹침등급": OVERLAP_CLASS.get(ov, "low"),
             "ETF관련": bool(v.get("ETF관련")),
         })
