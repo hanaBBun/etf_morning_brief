@@ -55,11 +55,16 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(out["etf_레이더"], [])
 
     def test_market_flow_is_not_assigned_to_a_stock(self):
-        raw = {"핵심이슈": [{"제목": "반도체", "사실": "코스피 상승", "해석": "",
-                              "출처": [], "종목": [{"이름": "SK하이닉스", "등락": "+12.7%",
-                                                "이유": "외국인 순매수 집중"}]}]}
-        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
-        self.assertNotIn("외국인", out["핵심이슈"][0]["종목"][0]["이유"])
+        raw = {"시장브리핑": [{"시장": "국내", "제목": "반도체 반등",
+                                 "결과": "코스피가 상승했습니다.",
+                                 "원인": "외국인이 SK하이닉스를 집중 순매수했습니다. 자사주 발표가 있었습니다.",
+                                 "ETF연결": "반도체 ETF 변동성을 봅니다.", "출처": []}]}
+        data = {"뉴스": {"국내": [{"링크": "https://example.com/a", "경과시간": 1}]},
+                "종목_후보_국내": [{"종목명": "SK하이닉스"}]}
+        raw["시장브리핑"][0]["출처"] = [{"id": "n1", "이름": "테스트"}]
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertNotIn("외국인", out["시장브리핑"][0]["원인"])
+        self.assertIn("자사주", out["시장브리핑"][0]["원인"])
 
     def test_single_stock_leverage_is_not_called_sector_etf(self):
         raw = {"etf_레이더": [{"제목": "반도체 레버리지 ETF", "사실": "상품 출시",
@@ -67,6 +72,25 @@ class SafetyTests(unittest.TestCase):
         data = {"뉴스": {"ETF": [{"제목": "삼성전자·SK하이닉스 단일종목 레버리지 ETF"}]}}
         out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
         self.assertIn("단일종목", out["etf_레이더"][0]["제목"])
+
+    def test_current_day_intraday_is_removed_from_top3(self):
+        raw = {"top5": [{"제목": "코스닥 매도사이드카", "숫자": "8/21 장중 -4%", "영향": ""},
+                        {"제목": "미 금리 상승", "숫자": "+4bp", "영향": "나스닥 부담"}]}
+        data = {"날짜표시": "2026년 8월 21일 (금)", "뉴스": {}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertEqual([x["제목"] for x in out["top5"]], ["미 금리 상승"])
+
+    def test_us_story_cannot_use_krx_as_market_source(self):
+        raw = {"시장브리핑": [{"시장": "미국", "제목": "미 증시 하락", "결과": "나스닥 하락",
+                                 "원인": "금리 상승", "ETF연결": "성장주 ETF 부담",
+                                 "출처": [{"url": "https://data.krx.co.kr", "이름": "KRX"},
+                                        {"id": "n1", "이름": "테스트"}]}]}
+        data = {"뉴스": {"국제": [{"링크": "https://example.com/us", "출처": "테스트",
+                                  "경과시간": 1}]}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        urls = [s["url"] for s in out["시장브리핑"][0]["출처"]]
+        self.assertIn("https://finance.yahoo.com", urls)
+        self.assertNotIn("https://data.krx.co.kr", urls)
 
 
 if __name__ == "__main__":

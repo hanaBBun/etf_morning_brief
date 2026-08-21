@@ -210,7 +210,7 @@ def _sources(data: dict, ai: dict) -> list[dict]:
 
     for s in BASE_SOURCES:
         put(s["이름"], s["url"])
-    for key in ("핵심이슈", "etf_레이더"):
+    for key in ("시장브리핑", "etf_레이더"):
         for c in ai.get(key) or []:
             for s in c.get("출처") or []:
                 if isinstance(s, dict):
@@ -224,9 +224,6 @@ def _sources(data: dict, ai: dict) -> list[dict]:
 
 def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str) -> dict:
     br = cfg.get("브리핑") or {}
-    for c in ai.get("핵심이슈") or []:
-        for s in c.get("종목") or []:
-            s.setdefault("방향", "flat")
     return {
         "제목": br.get("제목", "아침 경제·ETF 브리핑"),
         "날짜표시": data.get("날짜표시", ""),

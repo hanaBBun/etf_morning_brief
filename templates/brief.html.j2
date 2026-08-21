@@ -73,15 +73,22 @@
   .glabel{font-size:10.5px;font-weight:700;color:var(--ink3);letter-spacing:.08em;
           padding:11px 0 2px;grid-column:1/-1}
 
-  /* ── 전사 공유용 1분 요약 ───────────────── */
-  .brief1m{background:linear-gradient(135deg,rgba(124,108,240,.12),var(--surface));
-           border:1px solid rgba(124,108,240,.35);border-radius:10px;padding:15px 16px;margin:10px 0}
-  .brief1m .lead{font-size:15px;font-weight:700;line-height:1.55;margin:0 0 12px}
-  .briefcols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .briefcols h3{font-size:11px;color:var(--accent);letter-spacing:.06em;margin:0 0 5px}
-  .briefcols ol{margin:0;padding-left:20px;color:var(--ink2);font-size:12.5px}
-  .briefcols li{margin:3px 0}
-  @media (max-width:560px){.briefcols{grid-template-columns:1fr}}
+  /* ── 시장 스토리 ─────────────────────────── */
+  .story{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:15px 17px;margin:9px 0}
+  .storyhead{display:flex;align-items:baseline;gap:9px;margin-bottom:9px}
+  .marketbadge{font-size:10px;font-weight:700;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+               border-radius:4px;padding:1px 7px;flex-shrink:0}
+  .story h3{font-size:15px;margin:0;line-height:1.45}
+  .storyline{display:grid;grid-template-columns:54px 1fr;gap:7px 10px;margin:6px 0;font-size:13px}
+  .storyline .k{color:var(--ink3);font-size:10.5px;font-weight:700;letter-spacing:.04em;padding-top:2px}
+  .storyline .v{color:var(--ink2)}
+  .storyline.meaning{background:var(--surface2);border-left:3px solid var(--accent);
+                     border-radius:0 7px 7px 0;padding:9px 11px;margin-top:10px}
+  .watch{background:linear-gradient(135deg,rgba(124,108,240,.10),var(--surface));
+         border:1px solid rgba(124,108,240,.3);border-radius:9px;padding:11px 15px;margin:10px 0}
+  .watch b{font-size:11px;color:var(--accent);letter-spacing:.05em}
+  .watch ol{margin:5px 0 0;padding-left:20px;color:var(--ink2);font-size:12.5px}
 
   /* ── 카드 (사실/해석) ────────────────────────── */
   .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;
@@ -247,47 +254,26 @@
 </div>
 {% endif %}
 
-{# ─────────── 3. 전사 공유용 시장 요약 ─────────── #}
-{% if ai.시장요약 %}
-<h2>🧭 1분 시장 요약 <span class="tag">전사 공유용</span></h2>
-<div class="brief1m">
-  <p class="lead">{{ ai.시장요약.한줄 }}</p>
-  <div class="briefcols">
-    {% if ai.시장요약.움직인요인 %}<div><h3>시장을 움직인 3가지</h3><ol>{% for x in ai.시장요약.움직인요인 %}<li>{{ x }}</li>{% endfor %}</ol></div>{% endif %}
-    {% if ai.시장요약.오늘관전 %}<div><h3>오늘 관전 포인트</h3><ol>{% for x in ai.시장요약.오늘관전 %}<li>{{ x }}</li>{% endfor %}</ol></div>{% endif %}
-  </div>
-</div>
-{% endif %}
-
-{# ─────────── 4. 핵심 이슈 ─────────── #}
-{% if ai.핵심이슈 %}
-<h2>🔍 핵심 이슈<span class="tip" tabindex="0">?<span class="bubble">
-  한 이슈는 여기서 <b>딱 한 번만</b> 자세히 다룹니다. 위 TOP 3나 아래 섹션에서 같은 내용을 반복하지 않습니다.<br><br>
-  회색 <b>사실</b> 태그는 검증 가능한 수치·발표 내용, 보라색 <b>해석</b> 박스는 그 데이터에 대해
-  가능한 설명 중 하나입니다.</span></span></h2>
-{% for c in ai.핵심이슈 %}
-<div class="card">
-  <h3>{{ c.제목 }}</h3>
-  <p class="fact"><span class="k">사실</span>{{ c.사실 }}</p>
+{# ─────────── 3. 시장 스토리 ─────────── #}
+{% if ai.시장브리핑 %}
+<h2>🧭 오늘 시장은 왜 움직였나<span class="tip" tabindex="0">?<span class="bubble">
+  미국·국내 시장을 <b>결과 → 원인 → ETF 연결</b> 순으로 정리합니다.
+  숫자를 나열하는 대신 어제 시장의 인과관계와 오늘 콘텐츠에서 봐야 할 지점을 설명합니다.</span></span>
+  <span class="tag">전사 공유·작가용</span></h2>
+{% for c in ai.시장브리핑 %}
+<div class="story">
+  <div class="storyhead"><span class="marketbadge">{{ c.시장 }}</span><h3>{{ c.제목 }}</h3></div>
+  <div class="storyline"><span class="k">결과</span><span class="v">{{ c.결과 }}</span></div>
+  <div class="storyline"><span class="k">원인</span><span class="v">{{ c.원인 }}</span></div>
+  {% if c.ETF연결 %}<div class="storyline meaning"><span class="k">ETF 연결</span><span class="v">{{ c.ETF연결 }}</span></div>{% endif %}
   {% if c.출처 %}
   <div class="src">출처 ·
     {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
   </div>
   {% endif %}
-  {% if c.종목 %}
-  <div class="stocks">
-    {% for s in c.종목 %}
-    <div class="srow">
-      <div class="nm">{{ s.이름 }}<span>{{ s.업종 }}</span></div>
-      <div class="pc {{ s.방향 }}">{{ s.등락 }}</div>
-      <div class="rz">{{ s.이유 }}</div>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% if c.해석 %}<div class="interp"><span class="k">해석</span>{{ c.해석 }}</div>{% endif %}
 </div>
 {% endfor %}
+{% if ai.오늘관전 %}<div class="watch"><b>오늘 관전 포인트</b><ol>{% for x in ai.오늘관전 %}<li>{{ x }}</li>{% endfor %}</ol></div>{% endif %}
 {% endif %}
 
 {# ─────────── 4. ETF 레이더 ─────────── #}
@@ -314,7 +300,8 @@
 </div>
 {% endif %}
 
-{# ─────────── 5. 경쟁 유튜브 ─────────── #}
+{# ─────────── 5. 작가·PD 활용 ─────────── #}
+{% if 유튜브영상 or ai.콘텐츠후보 %}<h2>🛠️ 작가·PD 활용 <span class="tag">콘텐츠 기획</span></h2>{% endif %}
 {% if not 유튜브영상 and 유튜브안내 %}
 <h2>📺 경쟁 채널 동향 <span class="tag">미수집</span></h2>
 <div class="notice">{{ 유튜브안내 }}</div>

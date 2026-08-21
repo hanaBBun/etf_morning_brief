@@ -26,14 +26,14 @@ SYSTEM = """당신은 한국의 ETF 전문 유튜브 채널 'ETF 아는형'의 �
 전문 용어는 써도 되지만 왜 중요한지를 함께 설명하세요.
 
 ■ 규칙 1 — 한 이슈는 딱 한 번만 자세히 설명합니다
-같은 이슈(예: 미 장기금리 급등)를 TOP 3와 핵심이슈에서 두 번 자세히 쓰지 마세요.
-TOP 3에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵심이슈에서 한 번만 합니다.
+같은 이슈(예: 미 장기금리 급등)를 TOP 3와 시장브리핑에서 두 번 자세히 쓰지 마세요.
+TOP 3에는 이슈명·숫자·ETF 영향만, 상세 해설은 '오늘 시장은 왜 움직였나'에서만 합니다.
 새로운 내용이 없다면 다른 섹션에서 그 이슈를 다시 꺼내지 마세요.
 
 ■ 규칙 2 — 개별 종목은 기본적으로 싣지 않습니다
 "등락률이 컸다"는 이유만으로 종목을 등장시키지 마세요.
 그 종목의 움직임이 지수 또는 ETF의 움직임을 설명하는 데 꼭 필요할 때만,
-해당 핵심이슈 카드 안에 넣습니다. 브리핑 전체에서 최대 3종목입니다.
+해당 시장브리핑 안에 넣습니다. 브리핑 전체에서 최대 3종목입니다.
 좋은 예: 엔비디아 급락이 반도체 ETF 전체 하락의 핵심 원인인 경우.
 나쁜 예: 어떤 중소형주가 15% 올랐다는 사실만으로 등장시키는 경우.
 
@@ -89,6 +89,9 @@ TOP 3에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵�
 기사가 근거면 그 기사의 id("n7" 같은 번호)를 넣습니다. url 을 옮겨 적지 마세요.
 입력에서 같은 지표의 수치가 출처별로 다르면 섞어서 하나의 수치로 만들지 마세요.
 구조화된 KRX 데이터가 있으면 그 값을 우선하고, 기사만 있으면 "출처별 수치 차이" 또는 범위를 명시합니다.
+미국 지수·금리·원자재의 데이터 출처는 Yahoo Finance이며 KRX를 붙이지 않습니다.
+국내 지수·수급의 데이터 출처는 KRX이며 Yahoo Finance를 붙이지 않습니다.
+시장이 움직인 '원인'을 설명하려면 반드시 그 원인을 다룬 최근 기사 id를 함께 붙입니다.
 특히 투자주체별 수급, ETF 순매수, 국채금리, 환율·원자재, 신규 ETF,
 그리고 "무엇이 주가를 움직였다"고 말하는 내용은 출처가 중요합니다.
 
@@ -137,7 +140,9 @@ ETF 시장 전체에서 지금 무슨 일이 벌어지는지를 보여주는 자
 데이터에 없는 시점의 수치를 추정해서 채우지 마세요.
 
 ■ 규칙 7 — 항상 최신 데이터만 씁니다
-ETF 레이더와 핵심이슈는 **직전 거래일(입력 데이터의 기준일)** 을 다룹니다.
+ETF 레이더와 시장브리핑은 **직전 거래일(입력 데이터의 기준일)** 을 다룹니다.
+오늘 국내장의 장중 속보·사이드카·등락률은 TOP 3·시장브리핑·카톡에 넣지 마세요.
+이 문서는 오전 7시 발송용이므로 직전 마감 데이터만 일관되게 설명합니다.
 입력 뉴스에는 `날짜`와 `경과시간`(시간 단위)이 붙어 있습니다.
   · 경과시간이 48시간을 넘은 기사는 "그날의 새 소식"으로 쓰지 마세요.
   · 오래된 기사를 근거로 든 항목은 아예 싣지 마세요. 그 자리를 비우는 편이 낫습니다.
@@ -190,29 +195,26 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 (KRX·야후파이낸스처럼 기사가 아닌 출처만 url 을 직접 써도 됩니다.)
 
 {
-  "시장요약": {
-    "한줄": "한국·미국 시장을 함께 관통하는 오늘의 시장 문장 1개",
-    "움직인요인": ["원인과 결과를 연결한 핵심 요인 1", "핵심 요인 2", "핵심 요인 3"],
-    "오늘관전": ["오늘 확인할 포인트 1", "포인트 2", "포인트 3"]
-  },
+  "시장브리핑": [
+    {"시장": "미국",
+     "제목": "결과와 핵심 원인이 함께 드러나는 제목",
+     "결과": "주요 지수·금리·원자재·특징주의 핵심 숫자로 무슨 일이 있었는지 1~2문장",
+     "원인": "가장 중요한 원인 2~3개와 각 원인이 시장에 전달된 경로를 2~3문장",
+     "ETF연결": "국내 ETF 투자자와 ETF 아는형 작가가 오늘 어떤 자산군·테마를 연결해 봐야 하는지 1~2문장",
+     "출처": [{"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"},
+              {"이름": "원인을 다룬 매체명", "id": "입력 기사 id"}]},
+    {"시장": "국내", "제목": "", "결과": "", "원인": "", "ETF연결": "",
+     "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
+              {"이름": "원인을 다룬 매체명", "id": "입력 기사 id"}]}
+  ],
+
+  "오늘관전": ["지표·수급·이벤트 중 확인할 포인트 1", "포인트 2", "포인트 3"],
 
   "top5": [
     {"순위": 1,
      "제목": "8~16자 이슈명",
      "숫자": "핵심 수치만. 예: 30년물 5.31% · 10년물 4.72%",
      "영향": "ETF 영향 한 줄. 예: 나스닥·AI·반도체 ETF 밸류에이션 부담"}
-  ],
-
-  "핵심이슈": [
-    {"제목": "",
-     "사실": "3~5문장. 수치와 발표 내용 중심.",
-     "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
-              {"이름": "연합뉴스", "id": "입력 기사의 id. 예: n7"}],
-     "종목": [
-       {"이름": "엔비디아", "업종": "AI 반도체", "등락": "-6.20%", "방향": "down",
-        "이유": "이 종목이 왜 이 이슈를 설명하는 데 필요한지 한 줄"}
-     ],
-     "해석": "해석 어미 규칙 + 한계 표현 필수. 2~4문장."}
   ],
 
   "etf_레이더": [
@@ -268,16 +270,14 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 
 | 항목 | 개수 | 글자 수 |
 |---|---|---|
-| 시장요약.한줄 | 1개 | 70자 이내 |
-| 시장요약.움직인요인 | 3개 | 각 60자 이내 |
-| 시장요약.오늘관전 | 3개 | 각 60자 이내 |
+| 시장브리핑 | 미국·국내 2개 | 각 전체 350자 이내 |
+| 시장브리핑.결과 | | 100자 이내 |
+| 시장브리핑.원인 | | 160자 이내 |
+| 시장브리핑.ETF연결 | | 100자 이내 |
+| 오늘관전 | 3개 | 각 60자 이내 |
 | top5.제목 | 3개 고정 | 8~16자 |
 | top5.숫자 | | 30자 이내 |
 | top5.영향 | | 30자 이내 |
-| 핵심이슈 | 2~3개 | — |
-| 핵심이슈.사실 | | 120~180자 |
-| 핵심이슈.해석 | | 90~140자 |
-| 핵심이슈.종목 | 전체 합쳐 0~3개 | 이유는 40자 이내 |
 | etf_레이더 | 0~3개 | — |
 | etf_레이더.사실 | | 80자 이내 |
 | etf_레이더.관찰 | | 100자 이내 |
@@ -297,11 +297,13 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   뉴스에 날짜가 명시된 경제지표·중앙은행·실적·ETF 상장 일정이 있으면
   `일정`을 최소 1개 우선 편성합니다. 확인되지 않은 날짜는 만들지 않습니다.
 
-★ 시장요약은 전사 공유용 1분 브리핑입니다.
-  · 단순 등락 나열이 아니라 "왜 움직였는가"를 3개 요인으로 정리합니다.
-  · 하루 등락만으로 추세 전환을 단정하지 말고, 전주 흐름이 입력에 없으면 언급하지 않습니다.
-  · 국내 상승이 일부 대형주에 집중됐는지, 미국 하락이 금리·유가·기업실적 중 무엇 때문인지
-    입력 뉴스에서 빠짐없이 비교합니다. 한 원인만 과대대표하지 마세요.
+★ 시장브리핑은 전사 공유용이자 ETF 아는형 작가용 핵심 해설입니다.
+  · 미국·국내를 각각 1개씩 쓰고, '결과 → 원인 → ETF연결' 순서를 지킵니다.
+  · 가장 큰 지수 변동을 설명하는 재료를 먼저 고릅니다. 대형 소비주 실적, 중앙은행 발언,
+    국채 수급, 유가·지정학 등이 지수에 영향을 줬다면 누락하지 않습니다.
+  · 원인은 나열하지 말고 '금리 상승 → 성장주 할인율 부담 → 나스닥 약세'처럼 전달 경로를 설명합니다.
+  · ETF연결은 매수 추천이 아니라, 작가가 어떤 ETF군·테마·질문을 이어서 봐야 하는지 설명합니다.
+  · 하루 등락만으로 추세 전환을 단정하지 마세요.
 
 ★ ETF 레이더의 `사실`은 입력에 수치가 있다면 등락률·순매수·순자산·거래대금 중
   최소 1개를 그대로 포함합니다. 수치 없이 "관심 증가", "강세", "주목"만 쓴 항목은 만들지 마세요.
@@ -705,7 +707,7 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
         "일정": _slim_news(news.get("일정"), 5),
         "보도자료": _slim_news(news.get("보도자료"), 3),
         "국내": _slim_news(news.get("국내"), 8),
-        "국제": _slim_news(news.get("국제"), 6),
+        "국제": _slim_news(news.get("국제"), 10),
     }
     d["뉴스"] = {k: v for k, v in d["뉴스"].items() if v}
 
@@ -1145,6 +1147,31 @@ def _fix_etf_classification(item: dict, single_stock_context: bool) -> dict:
     return item
 
 
+def _strip_stock_flow_claim(text: Any, data: dict) -> str:
+    """종목별 수급 데이터 없이 시장 전체 수급을 개별주에 붙인 문장을 제거한다."""
+    value = str(text or "").strip()
+    names = {str(s.get("종목명") or "").strip()
+             for s in (data.get("종목_후보_국내") or [])}
+    names.update(("삼성전자", "SK하이닉스", "하이닉스"))
+    parts = [p.strip() for p in re.split(r"(?<=[.!?])\s+", value) if p.strip()]
+    kept = [p for p in parts
+            if not (any(n and n in p for n in names)
+                    and any(w in p for w in STOCK_FLOW_WORDS))]
+    return " ".join(kept)
+
+
+def _is_current_intraday(item: dict, data: dict) -> bool:
+    """오전 7시용 브리핑에 실행 당일 장중 속보가 섞였는지 확인한다."""
+    text = " ".join(str(item.get(k, "")) for k in ("제목", "숫자", "영향"))
+    if not any(w in text for w in ("장중", "사이드카")):
+        return False
+    m = re.search(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일", str(data.get("날짜표시", "")))
+    if not m:
+        return False
+    mmdd = f"{int(m.group(2))}/{int(m.group(3))}"
+    return mmdd in text
+
+
 def _drop_filler(items: list, keys: tuple[str, ...]) -> list:
     """'해당 없음' 류로 채워진 항목을 제거."""
     out = []
@@ -1241,6 +1268,29 @@ def _strip_stale_sources(items: list[dict], ages: dict[str, int]) -> list[dict]:
     return out
 
 
+def _normalize_market_sources(items: list[dict], ages: dict[str, int]) -> list[dict]:
+    """미국·국내 데이터 출처를 바로잡고, 원인 기사가 없는 인과 설명은 제외한다."""
+    out = []
+    for it in items:
+        market_name = it.get("시장")
+        srcs = [s for s in (it.get("출처") or []) if isinstance(s, dict)]
+        if market_name == "미국":
+            srcs = [s for s in srcs if "krx.co.kr" not in str(s.get("url", ""))]
+            fixed = {"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"}
+        else:
+            srcs = [s for s in srcs if "finance.yahoo.com" not in str(s.get("url", ""))]
+            fixed = {"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"}
+        if not any(s.get("url") == fixed["url"] for s in srcs):
+            srcs.insert(0, fixed)
+        # 숫자 출처만으로 '왜 움직였나'를 쓰지 않는다.
+        if not any(s.get("url") in ages for s in srcs):
+            log.warning("원인 기사 근거가 없어 시장 해설 제외: %s", it.get("제목", ""))
+            continue
+        it["출처"] = srcs
+        out.append(it)
+    return out
+
+
 def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
     d = _as_dict(d) or {}
     data = data or {}
@@ -1262,46 +1312,45 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         kakao[k] = text
     d["카톡"] = kakao
 
-    # 전사 공유용 1분 시장 요약
-    summary = d.get("시장요약") if isinstance(d.get("시장요약"), dict) else {}
-    summary["한줄"] = str(summary.get("한줄") or "").strip()[:100]
-    for key in ("움직인요인", "오늘관전"):
-        summary[key] = [str(x).strip()[:90] for x in (summary.get(key) or [])
-                        if str(x).strip()][:3]
-    d["시장요약"] = summary if summary.get("한줄") else None
-
     # TOP 3 — 과장 표현이 남은 항목은 표시하지 않는다.
     top5 = [r for r in (d.get("top5") or []) if isinstance(r, dict)]
-    top5 = [r for r in top5 if not _has_hype(r)]
+    top5 = [r for r in top5 if not _has_hype(r) and not _is_current_intraday(r, data)]
     for i, r in enumerate(top5, 1):
         r.setdefault("순위", i)
     d["top5"] = top5[:3]
 
-    # 핵심이슈 — 3개 제한, 종목은 전체 합쳐 3개 제한, 해석 면책 문장 정리
-    issues = _drop_filler(d.get("핵심이슈"), ("제목", "사실"))
-    issues = [c for c in issues if not _has_hype(c)][:2]
-    quota = 3
-    for c in issues:
-        stocks = [s for s in (c.get("종목") or []) if isinstance(s, dict)]
-        for s in stocks:
-            reason = str(s.get("이유") or "")
-            if any(w in reason for w in STOCK_FLOW_WORDS):
-                pct = str(s.get("등락") or "").strip()
-                s["이유"] = f"{pct} 등락으로 관련 지수 움직임에 영향" if pct else "관련 지수 움직임에 영향을 준 주요 종목"
-        c["종목"] = stocks[:max(quota, 0)]
-        quota -= len(c["종목"])
-        c["해석"] = _trim_hedge(c.get("해석", ""))
-    d["핵심이슈"] = issues
+    # 결과 → 원인 → ETF 연결로 읽히는 미국·국내 시장 해설
+    briefs = _drop_filler(d.get("시장브리핑"), ("제목", "결과"))
+    out_briefs = []
+    seen_markets = set()
+    for b in briefs:
+        market_name = str(b.get("시장") or "").strip()
+        if market_name not in ("미국", "국내") or market_name in seen_markets or _has_hype(b):
+            continue
+        for key, limit_n in (("제목", 70), ("결과", 140), ("원인", 220), ("ETF연결", 140)):
+            b[key] = _strip_stock_flow_claim(b.get(key), data)[:limit_n]
+        if not b["결과"] or not b["원인"]:
+            continue
+        seen_markets.add(market_name)
+        out_briefs.append(b)
+    d["시장브리핑"] = out_briefs[:2]
+    d["오늘관전"] = [_strip_stock_flow_claim(x, data)[:90]
+                         for x in (d.get("오늘관전") or [])
+                         if _strip_stock_flow_claim(x, data)][:3]
+    d.pop("시장요약", None)
+    d.pop("핵심이슈", None)
 
     # 출처를 번호에서 실제 링크로 되돌린다 (모델이 URL 을 옮겨 적지 않게 한 대가)
     idx = _link_index(data)
-    for key in ("핵심이슈", "etf_레이더"):
+    for key in ("시장브리핑", "etf_레이더"):
         for c in d.get(key) or []:
             if isinstance(c, dict):
                 c["출처"] = _resolve_srcs(c.get("출처"), idx)
 
     # ETF 레이더 — 빈 항목·필러 제거, 오래된 근거 제거, 관찰 면책 문장 정리
     ages = _article_age(data)
+    d["시장브리핑"] = _normalize_market_sources(
+        _strip_stale_sources(d["시장브리핑"], ages), ages)
     radar_max = int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3))
     radar = _drop_filler(d.get("etf_레이더"), ("제목", "사실"))
     radar = _strip_stale_sources(radar, ages)
@@ -1315,13 +1364,6 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     d["etf_레이더"] = radar
     log.info("ETF 레이더 %d개 (구분: %s)", len(radar),
              ", ".join(str(r.get("구분", "")) for r in radar) or "-")
-
-    # 핵심이슈의 출처도 오래된 링크는 떨어낸다 (항목 자체는 시세 근거가 있으므로 유지)
-    for c in d["핵심이슈"]:
-        srcs = c.get("출처") or []
-        c["출처"] = [s for s in srcs
-                     if not (isinstance(s, dict) and s.get("url") in ages
-                             and ages[s["url"]] > STALE_HOURS)]
 
     valid_video_ids = {str(v.get("영상ID"))
                        for v in ((data.get("유튜브") or {}).get("급상승") or [])}
