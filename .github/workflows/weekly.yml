@@ -45,4 +45,10 @@ jobs:
           git add docs 2>/dev/null || true
           git add channel_ids.json 2>/dev/null || true
           git status --short
-          git diff --staged --quiet || (git commit -m "주간 브리핑 $(date +%Y-%m-%d)" && git push)
+          if git diff --staged --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "주간 브리핑 $(date +%Y-%m-%d)"
+            git pull --rebase origin main
+            git push
+          fi

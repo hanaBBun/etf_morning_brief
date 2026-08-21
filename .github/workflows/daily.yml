@@ -73,6 +73,9 @@ jobs:
             echo "변경 없음"
           else
             git commit -m "브리핑 $(date +%Y-%m-%d)"
+            # 실행 중 main에 코드 변경이 올라와도 생성 결과를 유실하지 않도록
+            # 봇 커밋을 최신 main 위에 재적용한 뒤 푸시한다.
+            git pull --rebase origin main
             git push
           fi
 
