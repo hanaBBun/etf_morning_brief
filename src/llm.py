@@ -10,9 +10,10 @@ import logging
 import re
 from typing import Any
 
-from .config import env
+from .config import ROOT, env, now_kst
 
 log = logging.getLogger(__name__)
+DAILY_AI_CACHE = ROOT / "brief_daily_cache.json"
 
 SYSTEM = """당신은 한국의 ETF 전문 유튜브 채널 'ETF 아는형'의 작가를 위해
 매일 오전 7시 브리핑을 작성하는 리서치 어시스턴트입니다.
@@ -26,8 +27,8 @@ SYSTEM = """당신은 한국의 ETF 전문 유튜브 채널 'ETF 아는형'의 �
 전문 용어는 써도 되지만 왜 중요한지를 함께 설명하세요.
 
 ■ 규칙 1 — 한 이슈는 딱 한 번만 자세히 설명합니다
-같은 이슈(예: 미 장기금리 급등)를 TOP 3와 시장브리핑에서 두 번 자세히 쓰지 마세요.
-TOP 3에는 이슈명·숫자·ETF 영향만, 상세 해설은 '오늘 시장은 왜 움직였나'에서만 합니다.
+같은 이슈(예: 미 장기금리 급등)를 TOP 5와 시장브리핑에서 두 번 자세히 쓰지 마세요.
+TOP 5에는 이슈명·숫자·ETF 영향만, 상세 해설은 '오늘 시장은 왜 움직였나'에서만 합니다.
 새로운 내용이 없다면 다른 섹션에서 그 이슈를 다시 꺼내지 마세요.
 
 ■ 규칙 2 — 개별 종목은 기본적으로 싣지 않습니다
@@ -737,6 +738,161 @@ def _payload(data: dict[str, Any], mode: str = "daily") -> str:
     return text
 
 
+def _daily_key(data: dict) -> str:
+    m = re.search(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일", str(data.get("날짜표시", "")))
+    return (f"{int(m.group(1)):04d}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
+            if m else now_kst().strftime("%Y-%m-%d"))
+
+
+def _load_daily_ai(data: dict) -> dict:
+    try:
+        saved = json.loads(DAILY_AI_CACHE.read_text(encoding="utf-8"))
+        return saved.get("ai") or {} if saved.get("날짜") == _daily_key(data) else {}
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return {}
+
+
+def _save_daily_ai(data: dict, result: dict) -> None:
+    try:
+        DAILY_AI_CACHE.write_text(json.dumps(
+            {"날짜": _daily_key(data), "ai": result}, ensure_ascii=False, indent=2),
+            encoding="utf-8")
+    except OSError as e:
+        log.warning("일간 브리핑 캐시 저장 실패: %s", e)
+
+
+def _fallback_seed(data: dict) -> dict:
+    """AI 없이도 검증된 숫자로 필수 골격을 만드는 최소 폴백."""
+    rows = list(data.get("국내지수") or [])
+    ind = data.get("지표") or {}
+    for group in ("해외지수", "금리", "원자재", "변동성"):
+        rows.extend(ind.get(group) or [])
+
+    top = []
+    for row in sorted(rows, key=lambda x: abs(float(x.get("등락률") or 0)), reverse=True):
+        if row.get("종가") is None or len(top) >= 5:
+            continue
+        name = str(row.get("이름") or "시장 지표")
+        pct = row.get("등락률")
+        direction = "상승" if (pct or 0) > 0 else ("하락" if (pct or 0) < 0 else "변동")
+        number = f"{row['종가']:,.2f}" + (f" ({pct:+.2f}%)" if pct is not None else "")
+        top.append({"제목": f"{name} {direction}", "숫자": number,
+                    "영향": f"{name} 연계 ETF 흐름 확인"})
+
+    radar = []
+    candidates = data.get("ETF_후보") or {}
+    for r in candidates.get("거래량_급증") or []:
+        radar.append({"구분": "거래량 급증", "제목": str(r.get("이름") or "ETF 거래량 변화"),
+                      "사실": f"20일 평균 대비 거래량 {r.get('배수')}배",
+                      "관찰": "거래량 증가가 다음 거래일까지 이어지는지 확인", "출처": []})
+    for r in candidates.get("신규상장") or []:
+        radar.append({"구분": "신규 상장", "제목": str(r.get("이름") or "신규 ETF"),
+                      "사실": "KRX 신규 상장 목록에서 확인", "관찰": "초기 거래량과 괴리율 확인",
+                      "출처": []})
+    if not radar:
+        for group in ("ETF시장", "ETF", "레버리지", "보도자료"):
+            for art in ((data.get("뉴스") or {}).get(group) or []):
+                if art.get("제목") and art.get("링크"):
+                    radar.append({"구분": "시장 뉴스", "제목": str(art["제목"])[:24],
+                                  "사실": str(art.get("요약") or art["제목"])[:80],
+                                  "관찰": "관련 ETF의 거래량과 자금 흐름 확인",
+                                  "출처": [{"이름": art.get("출처", "기사"),
+                                           "url": art["링크"], "날짜": art.get("날짜", "")}]})
+                if radar:
+                    break
+            if radar:
+                break
+
+    first = top[0] if top else {"제목": "오늘 시장", "숫자": ""}
+    concept = ({"용어": "베이시스포인트(bp)",
+                "연결": "국채금리 변화를 읽을 때 사용하는 단위",
+                "설명": "1bp는 0.01%포인트입니다. 금리가 4.65%에서 4.70%로 오르면 5bp 상승한 것입니다. 채권·성장주 ETF의 금리 민감도를 비교할 때 쓰입니다."}
+               if ind.get("금리") else
+               {"용어": "변동성", "연결": f"{first['제목']} 흐름을 해석하는 기준",
+                "설명": "가격이 일정 기간 얼마나 크게 오르내리는지를 나타냅니다. 같은 수익률이라도 변동성이 크면 손실 회복에 더 큰 상승률이 필요하므로 ETF 비교 때 함께 봐야 합니다."})
+    return {
+        "top5": top,
+        "시장브리핑": [_fallback_market_brief("국내", data), _fallback_market_brief("미국", data)],
+        "오늘관전": [f"{first['제목']} 흐름이 다음 거래일까지 이어지는지 확인"],
+        "etf_레이더": radar[:3],
+        "유튜브": [],
+        "콘텐츠후보": [{"코너": "ETF 처방전", "제목": f"{first['제목']}, ETF에는 어떤 영향?",
+                         "이유": f"오늘 핵심 수치 {first['숫자']}를 ETF 관점에서 설명할 필요",
+                         "관련ETF": first["제목"], "차별점": "수치와 ETF 전달 경로 중심",
+                         "질문": "오늘의 시장 변동이 ETF 투자자에게 중요한 이유는 무엇인가요?"}],
+        "오늘의개념": concept,
+        "체크포인트": [{"유형": "확인", "때": "다음 거래일",
+                         "내용": f"{first['제목']} 흐름의 지속 여부"}],
+    }
+
+
+def _merge_unique(groups: list[list], key, limit: int) -> list:
+    out, seen = [], set()
+    for group in groups:
+        for item in group or []:
+            marker = key(item)
+            if not marker or marker in seen:
+                continue
+            seen.add(marker)
+            out.append(item)
+            if len(out) >= limit:
+                return out
+    return out
+
+
+def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
+    """부분 응답이 이전의 완성된 당일 결과를 지우지 않게 필수 섹션을 합친다."""
+    fallback = _postprocess(_fallback_seed(data), cfg, data)
+    result = dict(fresh or {})
+    # 장중 재실행이면 현재 숫자 3개를 먼저 반영하고, 아침에 잡힌 주요 뉴스도
+    # 남은 자리에 유지한다. 이전 결과만 통째로 재사용해 시세가 낡는 것을 막는다.
+    current_top = fallback.get("top5", [])
+    result["top5"] = _merge_unique(
+        [fresh.get("top5", []), current_top[:3], cached.get("top5", []), current_top[3:]],
+        lambda x: str(x.get("제목") or ""), 5)
+    for i, item in enumerate(result["top5"], 1):
+        item["순위"] = i
+    fresh_markets = {x.get("시장"): x for x in fresh.get("시장브리핑", [])}
+    cached_markets = {x.get("시장"): x for x in cached.get("시장브리핑", [])}
+    fallback_markets = {x.get("시장"): x for x in fallback["시장브리핑"]}
+    market_briefs = []
+    for market_name in ("국내", "미국"):
+        if market_name in fresh_markets:
+            market_briefs.append(fresh_markets[market_name])
+        elif market_name in cached_markets:
+            item = dict(cached_markets[market_name])
+            # 설명은 당일 정상 결과에서 유지하되 결과 숫자는 이번 호출 값으로 교체.
+            item["결과"] = fallback_markets[market_name]["결과"]
+            market_briefs.append(item)
+        else:
+            market_briefs.append(fallback_markets[market_name])
+    global_story = fresh_markets.get("글로벌") or cached_markets.get("글로벌")
+    if global_story:
+        market_briefs.append(global_story)
+    result["시장브리핑"] = market_briefs
+    result["etf_레이더"] = _merge_unique(
+        [fresh.get("etf_레이더", []), cached.get("etf_레이더", []), fallback.get("etf_레이더", [])],
+        lambda x: str(x.get("제목") or ""), int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3)))
+    result["유튜브"] = _merge_unique(
+        [fresh.get("유튜브", []), cached.get("유튜브", [])],
+        lambda x: str(x.get("영상ID") or ""), 5)
+    result["콘텐츠후보"] = _merge_unique(
+        [fresh.get("콘텐츠후보", []), cached.get("콘텐츠후보", []), fallback["콘텐츠후보"]],
+        lambda x: str(x.get("제목") or ""), 2)
+    result["오늘관전"] = _merge_unique(
+        [fresh.get("오늘관전", []), cached.get("오늘관전", []), fallback["오늘관전"]],
+        lambda x: str(x), 3)
+    result["체크포인트"] = _merge_unique(
+        [fresh.get("체크포인트", []), cached.get("체크포인트", []), fallback["체크포인트"]],
+        lambda x: f"{x.get('때')}|{x.get('내용')}", 4)
+    result["오늘의개념"] = (fresh.get("오늘의개념") or cached.get("오늘의개념")
+                            or fallback["오늘의개념"])
+    result["댓글키워드"] = fresh.get("댓글키워드") or cached.get("댓글키워드") or ""
+    result["카톡"] = _build_daily_kakao(result, data,
+                                      int((cfg.get("카카오") or {}).get("글자수_제한", 195)))
+    return result
+
+
 def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, Any]:
     ai = cfg.get("AI") or {}
     provider = (ai.get("제공자") or "gemini").lower()
@@ -791,7 +947,11 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
                 raise ValueError(f"알 수 없는 제공자: {provider}")
             parsed = _parse_json(raw)
             if parsed:
-                return _postprocess(parsed, cfg, data, mode)
+                result = _postprocess(parsed, cfg, data, mode)
+                if mode == "daily":
+                    result = _stabilize_daily(result, _load_daily_ai(data), data, cfg)
+                    _save_daily_ai(data, result)
+                return result
             head = (raw or "")[:300].replace("\n", " ")
             log.warning("모델 %s: JSON 파싱 실패. 응답 앞부분: %s", model, head or "(빈 응답)")
         except Exception as e:  # noqa: BLE001
@@ -807,10 +967,18 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
                     raw = _call_gemini(model, user, ai, system) if provider == "gemini" else ""
                     parsed = _parse_json(raw)
                     if parsed:
-                        return _postprocess(parsed, cfg, data, mode)
+                        result = _postprocess(parsed, cfg, data, mode)
+                        if mode == "daily":
+                            result = _stabilize_daily(result, _load_daily_ai(data), data, cfg)
+                            _save_daily_ai(data, result)
+                        return result
                 except Exception as e2:  # noqa: BLE001
                     log.warning("재시도도 실패: %s", str(e2)[:200])
-    log.error("AI 생성 전부 실패 — 데이터만으로 브리핑을 만듭니다.")
+    log.error("AI 생성 전부 실패 — 당일 캐시와 검증된 원자료로 완성본을 복구합니다.")
+    if mode == "daily":
+        result = _stabilize_daily({}, _load_daily_ai(data), data, cfg)
+        _save_daily_ai(data, result)
+        return result
     return {}
 
 
@@ -1389,7 +1557,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         kakao[k] = text
     d["카톡"] = kakao
 
-    # TOP 3 — 과장 표현이 남은 항목은 표시하지 않는다.
+    # TOP 5 — 과장 표현이 남은 항목은 표시하지 않는다.
     top5 = [r for r in (d.get("top5") or []) if isinstance(r, dict)]
     top5 = [r for r in top5 if not _has_hype(r)]
     for i, r in enumerate(top5, 1):

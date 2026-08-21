@@ -31,14 +31,105 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(result["상태"], "당일캐시")
         self.assertEqual(result["급상승"][0]["영상ID"], "kept")
 
-    def test_youtube_render_keeps_videos_without_ai_notes(self):
+    def test_youtube_render_keeps_videos_with_grounded_fallback_overlap(self):
         raw = [{"영상ID": str(i), "제목": f"영상 {i}", "채널": "채널",
                 "조회수": i, "링크": f"https://youtu.be/{i}"} for i in range(4)]
         notes = [{"영상ID": "0", "겹침": "보통", "겹침근거": "같은 연금 주제"}]
-        out = render._youtube({"유튜브": {"급상승": raw}}, {"유튜브": notes})
+        out = render._youtube({"유튜브": {"급상승": raw}},
+                              {"유튜브": notes, "top5": [{"제목": "금리 상승"}]})
         self.assertEqual(len(out), 4)
         self.assertEqual(out[0]["겹침"], "보통")
-        self.assertTrue(all(v["겹침"] for v in out))
+        self.assertEqual(out[1]["겹침"], "낮음")
+
+    def test_cached_youtube_analysis_survives_partial_ai_response(self):
+        raw = [{"영상ID": "kept", "제목": "연금 ETF", "채널": "채널",
+                "조회수": 10, "링크": "https://youtu.be/kept"}]
+        data = {"유튜브": {"급상승": raw, "분석": [
+            {"영상ID": "kept", "겹침": "높음", "겹침근거": "같은 ETF 주제"}]}}
+        out = render._youtube(data, {"유튜브": []})
+        self.assertEqual(out[0]["겹침"], "높음")
+
+    def test_empty_ai_is_stabilized_into_complete_daily_brief(self):
+        data = {
+            "날짜표시": "2026년 8월 21일 (금)",
+            "국내지수": [
+                {"이름": "코스피", "종가": 2900, "등락률": 1.2},
+                {"이름": "코스닥", "종가": 800, "등락률": -1.5}],
+            "지표": {"해외지수": [
+                {"이름": "S&P 500", "종가": 6000, "등락률": -0.7},
+                {"이름": "나스닥 종합", "종가": 20000, "등락률": -1.0},
+                {"이름": "다우 30", "종가": 45000, "등락률": -0.5}],
+                "금리": [{"이름": "미 10년물", "종가": 4.5, "등락률": 0.2}]},
+            "ETF_후보": {"거래량_급증": [{"이름": "테스트 ETF", "배수": 4.2}]},
+            "뉴스": {}, "유튜브": {},
+        }
+        out = llm._stabilize_daily({}, {}, data, {"카카오": {}, "ETF_레이더": {}})
+        self.assertEqual(len(out["top5"]), 5)
+        self.assertEqual({x["시장"] for x in out["시장브리핑"]}, {"국내", "미국"})
+        self.assertTrue(out["etf_레이더"])
+        self.assertTrue(out["콘텐츠후보"])
+        self.assertTrue(out["오늘의개념"])
+        self.assertTrue(out["체크포인트"])
+        self.assertEqual(render.validate_daily({"카카오": {}}, data, out), [])
+
+    def test_complete_daily_contract_renders_every_required_section(self):
+        data = {
+            "날짜표시": "2026년 8월 21일 (금)", "기준일태그": "08/21",
+            "국내지수": [{"이름": "코스피", "종가": 2900, "등락률": 1.2,
+                            "기준일": "2026-08-21"},
+                           {"이름": "코스닥", "종가": 800, "등락률": -1.5,
+                            "기준일": "2026-08-21"}],
+            "지표": {"해외지수": [
+                {"이름": "S&P 500", "종가": 6000, "등락률": -0.7,
+                 "기준일": "2026-08-20"},
+                {"이름": "나스닥 종합", "종가": 20000, "등락률": -1.0,
+                 "기준일": "2026-08-20"},
+                {"이름": "다우 30", "종가": 45000, "등락률": -0.5,
+                 "기준일": "2026-08-20"}]},
+            "ETF_후보": {"거래량_급증": [{"이름": "테스트 ETF", "배수": 4.2}]},
+            "뉴스": {}, "유튜브": {"급상승": [{"영상ID": "v1", "제목": "코스피 ETF",
+                "채널": "경쟁 채널", "조회수": 100, "링크": "https://youtu.be/v1"}]},
+        }
+        ai = llm._stabilize_daily({}, {}, data, {"카카오": {}, "ETF_레이더": {}})
+        with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
+            path, _ = render.render({"브리핑": {}}, data, ai, "daily")
+            html = path.read_text(encoding="utf-8")
+        for heading in ("오늘 알아야 할 것", "시장 한눈에", "한·미 시장과 글로벌 변수",
+                        "ETF 레이더", "경쟁 채널 동향", "ETF 아는형 콘텐츠 후보",
+                        "오늘의 개념", "체크포인트 · 주요 일정", "출처"):
+            self.assertIn(heading, html)
+        self.assertIn("겹침", html)
+
+    def test_intraday_fallback_updates_numbers_without_losing_cached_story(self):
+        data = {"날짜표시": "2026년 8월 21일 (금)",
+                "국내지수": [{"이름": "코스피", "종가": 3000, "등락률": -2.0},
+                             {"이름": "코스닥", "종가": 790, "등락률": -3.0}],
+                "지표": {"해외지수": [{"이름": "S&P 500", "종가": 6000,
+                                          "등락률": -1.0},
+                                         {"이름": "나스닥 종합", "종가": 20000,
+                                          "등락률": -1.2},
+                                         {"이름": "다우 30", "종가": 45000,
+                                          "등락률": -0.8}]},
+                "ETF_후보": {"거래량_급증": [{"이름": "ETF", "배수": 3.1}]},
+                "뉴스": {}, "유튜브": {}}
+        cached = {"시장브리핑": [{"시장": "국내", "제목": "아침 해설",
+                                   "결과": "코스피 2900", "원인": "확인된 원인",
+                                   "ETF연결": "ETF 연결", "출처": []}]}
+        out = llm._stabilize_daily({}, cached, data, {"카카오": {}, "ETF_레이더": {}})
+        kr = next(x for x in out["시장브리핑"] if x["시장"] == "국내")
+        self.assertEqual(kr["제목"], "아침 해설")
+        self.assertIn("코스피 -2.00%", kr["결과"])
+        self.assertEqual(kr["원인"], "확인된 원인")
+
+    def test_youtube_without_ai_note_gets_deterministic_overlap_tag(self):
+        data = {"유튜브": {"급상승": [{"영상ID": "v1", "제목": "영상"}]}}
+        ai = {"top5": [{"제목": str(i)} for i in range(5)],
+              "시장브리핑": [{"시장": "국내"}, {"시장": "미국"}],
+              "etf_레이더": [{"제목": "ETF"}], "콘텐츠후보": [{"제목": "기획"}],
+              "오늘의개념": {"용어": "개념"}, "체크포인트": [{"내용": "확인"}],
+              "카톡": {"1": "1. a\n2. b\n3. c\n4. d\n5. e"}}
+        errors = render.validate_daily({}, data, ai)
+        self.assertNotIn("경쟁 채널 겹침 분석 누락", errors)
 
     def test_krx_before_close_uses_previous_day(self):
         morning = datetime(2026, 8, 20, 7, 0, tzinfo=timezone.utc)

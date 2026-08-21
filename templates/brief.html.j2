@@ -43,7 +43,7 @@
   .tip .bubble b{color:var(--ink)}
   @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
 
-  /* ── TOP 3 ──────────────────────────────────── */
+  /* ── TOP 5 ──────────────────────────────────── */
   .top5{display:flex;flex-direction:column;gap:6px;margin:4px 0}
   .rank{display:grid;grid-template-columns:auto 1fr;gap:11px;background:var(--surface);
         border:1px solid var(--line);border-radius:9px;padding:11px 14px;align-items:start}
@@ -216,7 +216,7 @@
   <p class="sub">{{ 기준설명 }}</p>
 </header>
 
-{# ─────────── 1. TOP 3 ─────────── #}
+{# ─────────── 1. TOP 5 ─────────── #}
 {% if ai.top5 %}
 <h2>🎯 오늘 알아야 할 것<span class="tip" tabindex="0">?<span class="bubble">
   그날 시장에서 가장 중요한 순서대로 최대 5개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.

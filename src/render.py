@@ -135,10 +135,28 @@ def _elapsed(iso: str) -> str:
 OVERLAP_CLASS = {"높음": "high", "보통": "mid", "낮음": "low"}
 
 
+def _keyword_overlap(video: dict, ai: dict) -> tuple[str, str]:
+    """AI 메모가 없을 때 제목과 오늘 TOP5·레이더의 공통 핵심어로만 보수 판정."""
+    stop = {"오늘", "시장", "증시", "투자", "전망", "주식", "경제", "이유", "시황"}
+    title_words = {w for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", str(video.get("제목", "")))
+                   if len(w) >= 2 and w not in stop}
+    reference = " ".join(
+        str(x.get("제목", "")) + " " + str(x.get("사실", ""))
+        for x in (ai.get("top5") or []) + (ai.get("etf_레이더") or []))
+    ref_words = {w for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", reference)
+                 if len(w) >= 2 and w not in stop}
+    common = sorted(title_words & ref_words, key=len, reverse=True)
+    if common:
+        return "보통", f"오늘 핵심어와 겹침: {', '.join(common[:3])}"
+    return "낮음", "오늘 TOP5·ETF 레이더와 직접 겹치는 핵심어 없음"
+
+
 def _youtube(data: dict, ai: dict) -> list[dict]:
     """수집한 영상 + AI가 붙인 주제·훅·겹침 판정을 합친다."""
     raw = (data.get("유튜브") or {}).get("급상승") or []
-    notes = {n.get("영상ID"): n for n in (ai.get("유튜브") or []) if isinstance(n, dict)}
+    cached_notes = (data.get("유튜브") or {}).get("분석") or []
+    notes = {n.get("영상ID"): n for n in cached_notes if isinstance(n, dict)}
+    notes.update({n.get("영상ID"): n for n in (ai.get("유튜브") or []) if isinstance(n, dict)})
     if not raw:
         return []
     # AI가 일부 영상만 분석했더라도 수집기가 당일 보존한 영상은 모두 표시한다.
@@ -147,7 +165,8 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
     out = []
     for v in picked[:5]:
         n = notes.get(v.get("영상ID"), {})
-        ov = n.get("겹침") or "낮음"
+        auto_ov, auto_reason = _keyword_overlap(v, ai)
+        ov = n.get("겹침") or auto_ov
         out.append({
             "제목": v.get("제목", ""),
             "채널": v.get("채널", ""),
@@ -157,7 +176,7 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
             "핵심주제": n.get("핵심주제", ""),
             "훅": n.get("훅", ""),
             "겹침": ov,
-            "겹침근거": n.get("겹침근거") or "오늘 핵심 주제와 직접 겹치는 근거 없음",
+            "겹침근거": n.get("겹침근거") or auto_reason,
             "겹침등급": OVERLAP_CLASS.get(ov, "low"),
             "ETF관련": bool(v.get("ETF관련")),
         })
@@ -242,6 +261,34 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "모드": mode,
         "생성시각": now_kst().strftime("%Y-%m-%d %H:%M KST"),
     }
+
+
+def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
+    """불완전한 브리핑이 기존 정상 HTML을 덮어쓰지 않도록 최종 계약을 검사한다."""
+    errors = []
+    if len(ai.get("top5") or []) < 5:
+        errors.append("TOP5 5개 미만")
+    markets = {x.get("시장") for x in (ai.get("시장브리핑") or [])}
+    if not {"국내", "미국"}.issubset(markets):
+        errors.append("국내·미국 시장브리핑 누락")
+    if not (ai.get("etf_레이더") or []):
+        errors.append("ETF 레이더 누락")
+    if not (ai.get("콘텐츠후보") or []):
+        errors.append("ETF 아는형 콘텐츠 후보 누락")
+    if not (ai.get("오늘의개념") or {}).get("용어"):
+        errors.append("오늘의 개념 누락")
+    if not (ai.get("체크포인트") or []):
+        errors.append("체크포인트·일정 누락")
+    videos = _youtube(data, ai)
+    if (data.get("유튜브") or {}).get("급상승"):
+        if not videos:
+            errors.append("경쟁 채널 영상 누락")
+        elif any(not v.get("겹침") for v in videos):
+            errors.append("경쟁 채널 겹침 분석 누락")
+    kakao = str((ai.get("카톡") or {}).get("1") or "")
+    if not all(f"{i}." in kakao for i in range(1, 6)):
+        errors.append("카카오 TOP1~5 누락")
+    return errors
 
 
 def build_handoff_context(cfg: dict, data: dict, ai: dict) -> dict:

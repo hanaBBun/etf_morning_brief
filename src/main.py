@@ -189,9 +189,16 @@ def main() -> int:
     if not args.dry_run:
         log.info("AI 생성")
         ai = llm.generate(cfg, data, args.mode)
+        if args.mode == "daily" and ai.get("유튜브"):
+            youtube.save_analysis(ai["유튜브"])
         data.setdefault("수집상태", {})["AI 요약"] = "정상" if ai else "실패"
         if not ai:
             log.warning("AI 결과가 비었습니다. 데이터 표만으로 렌더링합니다.")
+
+    if args.mode == "daily" and not args.dry_run:
+        incomplete = render.validate_daily(cfg, data, ai)
+        if incomplete:
+            raise RuntimeError("불완전한 브리핑 발행 중단: " + ", ".join(incomplete))
 
     path, url = render.render(cfg, data, ai, args.mode)
     render.dump_debug(data, ai)

@@ -68,11 +68,24 @@ def _load_daily_cache(day: str) -> dict[str, Any]:
 def _save_daily_cache(day: str, result: dict[str, Any]) -> None:
     try:
         payload = {"날짜": day, "급상승": result.get("급상승") or [],
-                   "댓글샘플": result.get("댓글샘플") or []}
+                   "댓글샘플": result.get("댓글샘플") or [],
+                   "분석": result.get("분석") or _load_daily_cache(day).get("분석") or []}
         DAILY_CACHE.write_text(json.dumps(payload, ensure_ascii=False, indent=2),
                                encoding="utf-8")
     except Exception as e:  # noqa: BLE001
         log.warning("유튜브 당일 캐시 저장 실패: %s", e)
+
+
+def save_analysis(items: list[dict]) -> None:
+    """AI가 붙인 핵심주제·훅·겹침 판정도 같은 날 영상과 함께 보존한다."""
+    day = now_kst().strftime("%Y-%m-%d")
+    cached = _load_daily_cache(day)
+    if not cached:
+        return
+    merged = {str(x.get("영상ID")): x for x in (cached.get("분석") or [])}
+    merged.update({str(x.get("영상ID")): x for x in items if x.get("영상ID")})
+    cached["분석"] = list(merged.values())
+    _save_daily_cache(day, cached)
 
 
 def resolve_channel_ids(names: list[str], key: str) -> dict[str, str]:
@@ -105,7 +118,8 @@ def collect(cfg: dict) -> dict[str, Any]:
         log.warning("YOUTUBE_API_KEY 없음 — 경쟁 채널 동향을 수집하지 못했습니다")
         if cached.get("급상승"):
             return {"상태": "당일캐시", "급상승": cached["급상승"],
-                    "댓글샘플": cached.get("댓글샘플") or []}
+                    "댓글샘플": cached.get("댓글샘플") or [],
+                    "분석": cached.get("분석") or []}
         return {"상태": "키없음"}
 
     names = yt.get("채널") or []
@@ -145,7 +159,8 @@ def collect(cfg: dict) -> dict[str, Any]:
             log.warning("유튜브 신규 수집 0건 — 아침에 저장한 당일 목록 %d건 유지",
                         len(cached["급상승"]))
             return {"상태": "당일캐시", "급상승": cached["급상승"],
-                    "댓글샘플": cached.get("댓글샘플") or [], "채널수": len(ids)}
+                    "댓글샘플": cached.get("댓글샘플") or [],
+                    "분석": cached.get("분석") or [], "채널수": len(ids)}
         state = "수집실패" if failed_channels else "새영상없음"
         return {"상태": state, "급상승": [], "채널수": len(ids)}
 
@@ -208,6 +223,7 @@ def collect(cfg: dict) -> dict[str, Any]:
         "댓글샘플": keywords[:80],
         "채널수": len(ids),
         "미해결채널": [n for n in names if n not in ids],
+        "분석": cached.get("분석") or [],
     }
     if not result["댓글샘플"] and cached.get("댓글샘플"):
         result["댓글샘플"] = cached["댓글샘플"]
