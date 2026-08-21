@@ -214,13 +214,12 @@
   <div class="eyebrow">Morning Brief · ETF Edition</div>
   <h1>{{ 날짜표시 }} {{ 제목 }}</h1>
   <p class="sub">{{ 기준설명 }}</p>
-  {% if 수집상태 %}<p class="sub">데이터 상태 · {% for k, v in 수집상태.items() %}{{ k }} {{ v }}{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
 </header>
 
 {# ─────────── 1. TOP 3 ─────────── #}
 {% if ai.top5 %}
 <h2>🎯 오늘 알아야 할 것<span class="tip" tabindex="0">?<span class="bubble">
-  그날 시장에서 가장 중요한 순서대로 3개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.
+  그날 시장에서 가장 중요한 순서대로 최대 5개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.
   자세한 설명은 아래 '핵심 이슈'에서 한 번만 합니다.</span></span>
   <span class="tag">30초 스캔</span></h2>
 <div class="top5">
@@ -303,13 +302,13 @@
 {# ─────────── 5. 경쟁 유튜브 ─────────── #}
 {% if 유튜브영상 %}
 <h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
-  설정 파일에 등록된 채널의 전일 0시 이후 업로드 중 최대 3개.
+  설정 파일에 등록된 채널의 최근 이틀 0시 이후 업로드 중 최대 3개.
   <b>ETF를 다룬 영상을 먼저 고릅니다.</b><br>
   <b>겹침</b>은 오늘 우리가 다루려는 주제를 이미 선점했는지를 뜻합니다.
   <b>높음</b>=TOP5·레이더의 바로 그 이슈를 ETF 관점까지 겹치게 다룸,
   <b>보통</b>=같은 테마·다른 각도, <b>낮음</b>=개별 종목·재테크 일반 등
   직접 닿지 않음. 대부분은 '낮음'이 정상입니다.</span></span>
-  <span class="tag">최근 36시간</span></h2>
+  <span class="tag">최근 이틀</span></h2>
 <div class="yt">
   {% for v in 유튜브영상 %}
   <div class="ytc">

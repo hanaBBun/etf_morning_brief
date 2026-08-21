@@ -91,7 +91,7 @@ class SafetyTests(unittest.TestCase):
                 "지표": {}}
         out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}}, data)
         self.assertEqual([b["시장"] for b in out["시장브리핑"]], ["국내", "미국"])
-        self.assertLessEqual(len(out["카톡"]), 2)
+        self.assertEqual(list(out["카톡"]), ["1"])
         self.assertTrue(all(len(x) <= 195 for x in out["카톡"].values()))
 
     def test_kakao_never_cuts_an_item_mid_sentence(self):
@@ -100,9 +100,17 @@ class SafetyTests(unittest.TestCase):
                "오늘관전": ["외국인 수급과 금리 방향을 확인하세요"]}
         out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}},
                                {"날짜표시": "2026년 8월 21일 (금)", "뉴스": {}})
-        self.assertIn("1. 핵심 이슈 1\n   수치 1", out["카톡"]["1"])
-        self.assertIn("4. 핵심 이슈 4\n   수치 4", out["카톡"]["2"])
-        self.assertNotIn("…", out["카톡"]["1"] + out["카톡"]["2"])
+        self.assertIn("1. 핵심 이슈 1 | 수치 1", out["카톡"]["1"])
+        self.assertIn("4. 핵심 이슈 4 | 수치 4", out["카톡"]["1"])
+        self.assertIn("5. 핵심 이슈 5", out["카톡"]["1"])
+        self.assertNotIn("…", out["카톡"]["1"])
+
+    def test_filtered_top_items_are_renumbered_without_gap(self):
+        raw = {"top5": [{"순위": 1, "제목": "첫째", "숫자": "1", "영향": ""},
+                          {"순위": 4, "제목": "넷째", "숫자": "4", "영향": ""},
+                          {"순위": 5, "제목": "다섯째", "숫자": "5", "영향": ""}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        self.assertEqual([x["순위"] for x in out["top5"]], [1, 2, 3])
 
     def test_daily_news_window_starts_at_previous_midnight(self):
         fixed = datetime(2026, 8, 21, 7, 0, tzinfo=timezone.utc)

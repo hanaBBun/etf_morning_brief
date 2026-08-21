@@ -314,7 +314,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 오늘의개념은 VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지, 베이시스포인트,
 멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중 그날 뉴스와 실제로 연결되는 것을 고릅니다.
 
-★ 카톡은 후처리에서 TOP 1~3과 TOP 4~5·관전 포인트로 자동 생성합니다.
+★ 카톡은 후처리에서 TOP 1~5를 한 메시지로 자동 생성합니다.
   모델은 카톡 문안을 따로 작문하지 마세요.
   - 각 메시지 195자를 절대 넘기지 마세요. 넘칠 것 같으면 숫자 줄을 줄이세요.
 
@@ -1328,29 +1328,27 @@ def _build_daily_kakao(d: dict, data: dict, limit: int) -> dict:
     stamp = f"{int(m.group(1))}/{int(m.group(2))}" if m else "오늘"
     top = d.get("top5") or []
 
-    def item_line(item: dict) -> str:
+    def item_line(item: dict, include_number: bool = True) -> str:
         title = str(item.get("제목") or "").strip()
         number = str(item.get("숫자") or "").strip()
-        return f"{item.get('순위')}. {title}" + (f"\n   {number}" if number else "")
+        return f"{item.get('순위')}. {title}" + (f" | {number}" if number and include_number else "")
 
-    first = [f"☀️ {stamp} 브리핑"] + [item_line(x) for x in top[:3]]
-    second = [item_line(x) for x in top[3:5]]
-    watch = next((str(x).strip() for x in (d.get("오늘관전") or []) if str(x).strip()), "")
-    if watch:
-        second += [f"\n👉 관전: {watch}"]
-
-    def fit(blocks: list[str]) -> str:
-        kept = []
-        for block in blocks:
-            candidate = "\n".join(kept + [block])
-            if len(candidate) <= limit:
-                kept.append(block)
-        return "\n".join(kept)
-
-    out = {"1": fit(first)}
-    if second:
-        out["2"] = fit(second)
-    return out
+    # TOP 1~5 제목은 반드시 모두 보존한다. 195자를 넘을 때만 중요도가 낮은
+    # 5번부터 숫자 설명을 통째로 빼며, 문장을 중간에서 자르지 않는다.
+    include_numbers = [True] * len(top[:5])
+    while True:
+        lines = [f"☀️ {stamp} 브리핑"] + [
+            item_line(item, include_numbers[i]) for i, item in enumerate(top[:5])]
+        message = "\n".join(lines)
+        if len(message) <= limit:
+            return {"1": message}
+        idx = next((i for i in range(len(include_numbers) - 1, -1, -1)
+                    if include_numbers[i]), None)
+        if idx is None:
+            # 스키마의 제목 제한을 지키면 도달하지 않는다. 그래도 항목 삭제보다는
+            # 제목만 온전히 남긴 메시지를 반환한다.
+            return {"1": "\n".join(lines)}
+        include_numbers[idx] = False
 
 
 def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
@@ -1378,7 +1376,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     top5 = [r for r in (d.get("top5") or []) if isinstance(r, dict)]
     top5 = [r for r in top5 if not _has_hype(r)]
     for i, r in enumerate(top5, 1):
-        r.setdefault("순위", i)
+        r["순위"] = i
     d["top5"] = top5[:5]
 
     # 결과 → 원인 → ETF 연결로 읽히는 미국·국내 시장 해설
@@ -1460,7 +1458,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     if not str(d.get("댓글키워드") or "").strip():
         d["댓글키워드"] = ""
 
-    # 항목 중간을 자르지 않는 TOP 1~3 / 4~5·관전 요약.
+    # 같은 링크를 두 번 보내지 않는, 항목 중간 절단 없는 TOP 1~5 요약.
     d["카톡"] = _build_daily_kakao(d, data, limit)
 
     return d

@@ -176,7 +176,7 @@ def _youtube_footnote(data: dict, videos: list[dict]) -> str:
         return ""
     if any(v.get("ETF관련") for v in videos):
         return ""
-    return ("전일 0시 이후 등록 채널이 ETF를 정면으로 다룬 영상이 없어, "
+    return ("최근 이틀 0시 이후 등록 채널이 ETF를 정면으로 다룬 영상이 없어, "
             "일반 경제 영상만 담았습니다. 오늘 ETF 주제는 선점되지 않았다는 뜻입니다.")
 
 

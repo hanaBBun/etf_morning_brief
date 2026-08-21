@@ -87,11 +87,11 @@ def collect(cfg: dict) -> dict[str, Any]:
 
     ids = resolve_channel_ids(names, key)
     name_by_id = {v: k for k, v in ids.items()}
-    # 같은 브리핑을 늦게 재실행해도 아침에 잡힌 영상이 시간 창 밖으로
-    # 밀려나지 않도록, 브리핑 날짜의 전날 0시(KST)를 고정 경계로 쓴다.
+    # 영상은 뉴스보다 업로드 빈도가 낮다. 같은 날 재실행해도 아침에 잡힌
+    # 영상이 사라지지 않도록 이틀 전 0시(KST)를 고정 경계로 쓴다.
     now = now_kst()
     after_kst = __import__("datetime").datetime.combine(
-        now.date() - timedelta(days=1), time.min, tzinfo=now.tzinfo)
+        now.date() - timedelta(days=2), time.min, tzinfo=now.tzinfo)
     after = after_kst.astimezone(
         __import__("datetime").timezone.utc
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -145,7 +145,7 @@ def collect(cfg: dict) -> dict[str, Any]:
     log.info("유튜브 %d건 중 상위 %d건 선정 (ETF 관련 %d건)",
              len(videos), len(top), n_etf)
     if not n_etf:
-        log.warning("전일 0시 이후 ETF를 다룬 영상이 없습니다 — 일반 경제 영상만 담깁니다")
+        log.warning("최근 이틀 0시 이후 ETF를 다룬 영상이 없습니다 — 일반 경제 영상만 담깁니다")
 
     # 상위 영상 댓글 키워드
     keywords: list[str] = []
