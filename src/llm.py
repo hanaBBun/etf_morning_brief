@@ -1351,6 +1351,23 @@ def _build_daily_kakao(d: dict, data: dict, limit: int) -> dict:
         include_numbers[idx] = False
 
 
+def _topup_top5(d: dict) -> None:
+    """안전 필터로 항목이 빠져도 검증된 ETF 레이더에서 TOP 5를 보충한다."""
+    top = d.get("top5") or []
+    seen = {str(x.get("제목") or "").strip() for x in top}
+    for radar in d.get("etf_레이더") or []:
+        title = str(radar.get("제목") or "").strip()
+        if not title or title in seen or len(top) >= 5:
+            continue
+        fact = str(radar.get("사실") or "").strip()
+        top.append({"제목": title, "숫자": fact[:30],
+                    "영향": str(radar.get("관찰") or "")[:30]})
+        seen.add(title)
+    for i, item in enumerate(top[:5], 1):
+        item["순위"] = i
+    d["top5"] = top[:5]
+
+
 def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
     d = _as_dict(d) or {}
     data = data or {}
@@ -1457,6 +1474,8 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
 
     if not str(d.get("댓글키워드") or "").strip():
         d["댓글키워드"] = ""
+
+    _topup_top5(d)
 
     # 같은 링크를 두 번 보내지 않는, 항목 중간 절단 없는 TOP 1~5 요약.
     d["카톡"] = _build_daily_kakao(d, data, limit)

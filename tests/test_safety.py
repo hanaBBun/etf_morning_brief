@@ -112,6 +112,15 @@ class SafetyTests(unittest.TestCase):
         out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
         self.assertEqual([x["순위"] for x in out["top5"]], [1, 2, 3])
 
+    def test_top5_is_topped_up_from_verified_radar(self):
+        raw = {"top5": [{"제목": f"시장 {i}", "숫자": str(i), "영향": ""}
+                         for i in range(1, 5)],
+               "etf_레이더": [{"제목": "ETF 제도 변화", "사실": "상관계수 기준 유지",
+                               "관찰": "액티브 ETF 확인", "구분": "제도", "출처": []}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        self.assertEqual(len(out["top5"]), 5)
+        self.assertIn("5. ETF 제도 변화", out["카톡"]["1"])
+
     def test_daily_news_window_starts_at_previous_midnight(self):
         fixed = datetime(2026, 8, 21, 7, 0, tzinfo=timezone.utc)
         with patch.object(news, "now_kst", return_value=fixed):
