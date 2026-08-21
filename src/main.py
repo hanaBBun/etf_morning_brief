@@ -72,6 +72,10 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
         "모드": mode,
         "수집상태": {},
     }
+    run_at = now_kst()
+    data["브리핑제목"] = ("아침 경제·ETF 브리핑" if run_at.hour < 9
+                           else "경제·ETF 시장 업데이트")
+    data["호출시각"] = run_at.strftime("%m/%d %H:%M KST")
 
     log.info("1/6 국내 증시 데이터 수집")
     data["국내지수"] = []
@@ -131,7 +135,12 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
 
     log.info("4/6 뉴스 수집")
     try:
-        data["뉴스"] = news.collect_news(cfg, hours=30 if mode == "daily" else 170)
+        if mode == "daily":
+            news_hours, news_range = news.daily_window()
+            data["수집범위"] = news_range
+        else:
+            news_hours = 170
+        data["뉴스"] = news.collect_news(cfg, hours=news_hours)
         total_news = sum(len(v or []) for v in data["뉴스"].values())
         data["수집상태"]["뉴스"] = f"정상({total_news}건)" if total_news else "수집 0건"
     except Exception as e:  # noqa: BLE001
@@ -158,6 +167,8 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
         f"전일({data.get('국내기준일_표시','')}) 국내 증시 마감 · "
         f"{data.get('해외기준일_표시','')} 미국 증시 기준"
     )
+    if data.get("수집범위"):
+        data["기준설명"] += f" · 뉴스 {data['수집범위']}"
     data["기준일태그"] = data.get("국내기준일_표시", "")
     return data
 

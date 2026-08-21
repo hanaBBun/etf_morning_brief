@@ -225,7 +225,7 @@ def _sources(data: dict, ai: dict) -> list[dict]:
 def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str) -> dict:
     br = cfg.get("브리핑") or {}
     return {
-        "제목": br.get("제목", "아침 경제·ETF 브리핑"),
+        "제목": data.get("브리핑제목") or br.get("제목", "아침 경제·ETF 브리핑"),
         "날짜표시": data.get("날짜표시", ""),
         "기준설명": data.get("기준설명", ""),
         "기준일태그": data.get("기준일태그", ""),

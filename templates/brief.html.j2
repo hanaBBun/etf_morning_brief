@@ -256,10 +256,10 @@
 
 {# ─────────── 3. 시장 스토리 ─────────── #}
 {% if ai.시장브리핑 %}
-<h2>🧭 오늘의 한·미 시장 흐름<span class="tip" tabindex="0">?<span class="bubble">
-  미국·국내 시장의 결과와 ETF 연결을 정리하고, 최근 기사로 확인된 경우에만 원인을 덧붙입니다.
+<h2>🧭 한·미 시장과 글로벌 변수<span class="tip" tabindex="0">?<span class="bubble">
+  미국·국내 시장과 경제에 영향을 줄 글로벌 사건을 정리하고, 최근 기사로 확인된 경우에만 원인을 덧붙입니다.
   확보되지 않은 정보나 수집 상태 안내는 본문에 노출하지 않습니다.</span></span>
-  <span class="tag">전사 공유·작가용</span></h2>
+  <span class="tag">시황 핵심</span></h2>
 {% for c in ai.시장브리핑 %}
 <div class="story">
   <div class="storyhead"><span class="marketbadge">{{ c.시장 }}</span><h3>{{ c.제목 }}</h3></div>
@@ -300,8 +300,7 @@
 </div>
 {% endif %}
 
-{# ─────────── 5. 작가·PD 활용 ─────────── #}
-{% if 유튜브영상 or ai.콘텐츠후보 %}<h2>🛠️ 작가·PD 활용 <span class="tag">콘텐츠 기획</span></h2>{% endif %}
+{# ─────────── 5. 경쟁 유튜브 ─────────── #}
 {% if 유튜브영상 %}
 <h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
   설정 파일에 등록된 채널의 전일 0시 이후 업로드 중 최대 3개.

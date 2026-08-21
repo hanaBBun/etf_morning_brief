@@ -3,7 +3,7 @@ import unittest
 from datetime import datetime, timezone
 from unittest.mock import patch
 
-from src import krx, llm
+from src import krx, llm, news
 
 
 class _FakeStock:
@@ -80,7 +80,7 @@ class SafetyTests(unittest.TestCase):
         out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
         self.assertNotIn("KODEX 레버리지", out["etf_레이더"][0]["사실"])
 
-    def test_both_markets_and_one_complete_kakao_top3_are_always_present(self):
+    def test_both_markets_and_complete_kakao_items_are_always_present(self):
         raw = {"시장브리핑": [{"시장": "미국", "제목": "미 증시 하락", "결과": "나스닥 -1%",
                                  "원인": "금리 상승", "ETF연결": "나스닥100 확인", "출처": []}],
                "etf_레이더": [{"제목": "ETF 제도 변경", "사실": "제도가 변경됐습니다.", "관찰": "", "출처": []}],
@@ -91,11 +91,25 @@ class SafetyTests(unittest.TestCase):
                 "지표": {}}
         out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}}, data)
         self.assertEqual([b["시장"] for b in out["시장브리핑"]], ["국내", "미국"])
-        self.assertEqual(list(out["카톡"]), ["1"])
-        self.assertIn("1. 국내", out["카톡"]["1"])
-        self.assertIn("2. 미국", out["카톡"]["1"])
-        self.assertIn("3. ETF", out["카톡"]["1"])
-        self.assertLessEqual(len(out["카톡"]["1"]), 195)
+        self.assertLessEqual(len(out["카톡"]), 2)
+        self.assertTrue(all(len(x) <= 195 for x in out["카톡"].values()))
+
+    def test_kakao_never_cuts_an_item_mid_sentence(self):
+        raw = {"top5": [{"제목": f"핵심 이슈 {i}", "숫자": f"수치 {i}", "영향": ""}
+                         for i in range(1, 6)],
+               "오늘관전": ["외국인 수급과 금리 방향을 확인하세요"]}
+        out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}},
+                               {"날짜표시": "2026년 8월 21일 (금)", "뉴스": {}})
+        self.assertIn("1. 핵심 이슈 1\n   수치 1", out["카톡"]["1"])
+        self.assertIn("4. 핵심 이슈 4\n   수치 4", out["카톡"]["2"])
+        self.assertNotIn("…", out["카톡"]["1"] + out["카톡"]["2"])
+
+    def test_daily_news_window_starts_at_previous_midnight(self):
+        fixed = datetime(2026, 8, 21, 7, 0, tzinfo=timezone.utc)
+        with patch.object(news, "now_kst", return_value=fixed):
+            hours, label = news.daily_window()
+        self.assertEqual(hours, 31)
+        self.assertIn("08/20 00:00", label)
 
     def test_unsourced_market_cause_is_hidden_not_replaced_with_notice(self):
         raw = {"시장브리핑": [{"시장": "국내", "제목": "국내 증시", "결과": "코스피 상승",
@@ -106,12 +120,13 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(kr["원인"], "")
         self.assertNotIn("근거", json.dumps(out, ensure_ascii=False))
 
-    def test_current_day_intraday_is_removed_from_top3(self):
+    def test_current_day_intraday_is_kept_for_intraday_run(self):
         raw = {"top5": [{"제목": "코스닥 매도사이드카", "숫자": "8/21 장중 -4%", "영향": ""},
                         {"제목": "미 금리 상승", "숫자": "+4bp", "영향": "나스닥 부담"}]}
         data = {"날짜표시": "2026년 8월 21일 (금)", "뉴스": {}}
         out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
-        self.assertEqual([x["제목"] for x in out["top5"]], ["미 금리 상승"])
+        self.assertEqual([x["제목"] for x in out["top5"]],
+                         ["코스닥 매도사이드카", "미 금리 상승"])
 
     def test_us_story_cannot_use_krx_as_market_source(self):
         raw = {"시장브리핑": [{"시장": "미국", "제목": "미 증시 하락", "결과": "나스닥 하락",

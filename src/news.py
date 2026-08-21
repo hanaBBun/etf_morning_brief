@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import math
 from datetime import timedelta
 from typing import Any
 
@@ -56,6 +57,15 @@ def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
         log.info("뉴스 %s: %d건 수집 (날짜없음 %d건·기간초과 %d건 제외, 최근 %d시간)",
                  group, len(out[group]), undated, stale, hours)
     return out
+
+
+def daily_window() -> tuple[int, str]:
+    """전일 00:00(KST)부터 실제 실행 시각까지의 고정 일간 범위."""
+    now = now_kst()
+    start = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    hours = max(math.ceil((now - start).total_seconds() / 3600), 24)
+    label = f"{start:%m/%d %H:%M} ~ {now:%m/%d %H:%M} KST"
+    return hours, label
 
 
 WEEKDAY_INDEX = {"월": 0, "화": 1, "수": 2, "목": 3, "금": 4, "토": 5, "일": 6}

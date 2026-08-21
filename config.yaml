@@ -72,6 +72,9 @@ ETF_레이더:
   국제:
     - { 이름: "구글뉴스 국제경제", url: "https://news.google.com/rss/search?q=global+economy+markets+when:7d&hl=en-US&gl=US&ceid=US:en" }
     - { 이름: "구글뉴스 연준",     url: "https://news.google.com/rss/search?q=federal+reserve+treasury+yields+when:7d&hl=en-US&gl=US&ceid=US:en" }
+  세계정세:
+    - { 이름: "구글뉴스 지정학", url: "https://news.google.com/rss/search?q=war+conflict+sanctions+trade+oil+markets+when:7d&hl=en-US&gl=US&ceid=US:en" }
+    - { 이름: "구글뉴스 국제정책", url: "https://news.google.com/rss/search?q=tariffs+geopolitics+energy+shipping+economy+when:7d&hl=en-US&gl=US&ceid=US:en" }
   ETF:
     - { 이름: "구글뉴스 국내ETF", url: "https://news.google.com/rss/search?q=ETF+%EC%88%9C%EC%9E%90%EC%82%B0+OR+%EC%83%81%EC%9E%A5+OR+%EC%88%9C%EB%A7%A4%EC%88%98+when:7d&hl=ko&gl=KR&ceid=KR:ko" }
     - { 이름: "구글뉴스 해외ETF", url: "https://news.google.com/rss/search?q=ETF+flows+OR+launch+when:7d&hl=en-US&gl=US&ceid=US:en" }
@@ -160,7 +163,7 @@ ETF_레이더:
 # 카카오톡 발송
 # ─────────────────────────────────────────────
 카카오:
-  발송건수: 1          # 국내·미국·ETF 핵심을 1·2·3 한 메시지로 발송
+  발송건수: 2          # 1~3 / 4~5와 관전 포인트를 두 메시지로 발송
   글자수_제한: 195     # 카카오 텍스트 템플릿 200자 제한 - 여유분
   링크_붙이기: true
 

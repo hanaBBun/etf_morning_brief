@@ -140,9 +140,10 @@ ETF 시장 전체에서 지금 무슨 일이 벌어지는지를 보여주는 자
 데이터에 없는 시점의 수치를 추정해서 채우지 마세요.
 
 ■ 규칙 7 — 항상 최신 데이터만 씁니다
-ETF 레이더와 시장브리핑은 **직전 거래일(입력 데이터의 기준일)** 을 다룹니다.
-오늘 국내장의 장중 속보·사이드카·등락률은 TOP 3·시장브리핑·카톡에 넣지 마세요.
-이 문서는 오전 7시 발송용이므로 직전 마감 데이터만 일관되게 설명합니다.
+ETF 레이더와 시장브리핑은 입력 데이터에 표시된 실제 기준시각을 따릅니다.
+오전 실행이면 직전 마감, 장중 실행이면 당일 장중 수치를 `장중`이라고 명시해 반영합니다.
+전쟁·제재·관세·정치 충돌·자연재해처럼 경제 뉴스가 아니어도 금리·환율·유가·공급망·증시에
+영향을 줄 사건은 핵심 이슈에 포함합니다. 단, 경제로 전달되는 경로를 설명할 수 있어야 합니다.
 입력 뉴스에는 `날짜`와 `경과시간`(시간 단위)이 붙어 있습니다.
   · 경과시간이 48시간을 넘은 기사는 "그날의 새 소식"으로 쓰지 마세요.
   · 오래된 기사를 근거로 든 항목은 아예 싣지 마세요. 그 자리를 비우는 편이 낫습니다.
@@ -205,7 +206,10 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
               {"이름": "원인을 다룬 매체명", "id": "입력 기사 id"}]},
     {"시장": "국내", "제목": "", "결과": "", "원인": "", "ETF연결": "",
      "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
-              {"이름": "원인을 다룬 매체명", "id": "입력 기사 id"}]}
+              {"이름": "원인을 다룬 매체명", "id": "입력 기사 id"}]},
+    {"시장": "글로벌", "제목": "시장에 영향을 줄 핵심 사건. 없으면 이 항목 자체를 생략",
+     "결과": "확인된 사건", "원인": "경제·시장에 전달되는 경로", "ETF연결": "봐야 할 자산군",
+     "출처": [{"이름": "매체명", "id": "입력 기사 id"}]}
   ],
 
   "오늘관전": ["지표·수급·이벤트 중 확인할 포인트 1", "포인트 2", "포인트 3"],
@@ -269,12 +273,12 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 
 | 항목 | 개수 | 글자 수 |
 |---|---|---|
-| 시장브리핑 | 미국·국내 2개 | 각 전체 350자 이내 |
+| 시장브리핑 | 미국·국내 각 1개 + 글로벌 0~1개 | 각 전체 350자 이내 |
 | 시장브리핑.결과 | | 100자 이내 |
 | 시장브리핑.원인 | | 160자 이내 |
 | 시장브리핑.ETF연결 | | 100자 이내 |
 | 오늘관전 | 3개 | 각 60자 이내 |
-| top5.제목 | 3개 고정 | 8~16자 |
+| top5.제목 | 5개 고정 | 8~16자 |
 | top5.숫자 | | 30자 이내 |
 | top5.영향 | | 30자 이내 |
 | etf_레이더 | 0~3개 | — |
@@ -296,8 +300,8 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   뉴스에 날짜가 명시된 경제지표·중앙은행·실적·ETF 상장 일정이 있으면
   `일정`을 최소 1개 우선 편성합니다. 확인되지 않은 날짜는 만들지 않습니다.
 
-★ 시장브리핑은 전사 공유용이자 ETF 아는형 작가용 핵심 해설입니다.
-  · 미국·국내를 각각 1개씩 쓰고, '결과 → 원인 → ETF연결' 순서를 지킵니다.
+★ 시장브리핑은 경제 전반을 이해하는 핵심 해설입니다.
+  · 미국·국내를 각각 1개씩 쓰고, 중요한 지정학·정책 사건이 있으면 글로벌 1개를 추가합니다.
   · 가장 큰 지수 변동을 설명하는 재료를 먼저 고릅니다. 대형 소비주 실적, 중앙은행 발언,
     국채 수급, 유가·지정학 등이 지수에 영향을 줬다면 누락하지 않습니다.
   · 원인은 나열하지 말고 '금리 상승 → 성장주 할인율 부담 → 나스닥 약세'처럼 전달 경로를 설명합니다.
@@ -310,7 +314,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 오늘의개념은 VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지, 베이시스포인트,
 멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중 그날 뉴스와 실제로 연결되는 것을 고릅니다.
 
-★ 카톡은 후처리에서 국내·미국·ETF 핵심을 1·2·3 한 메시지로 자동 생성합니다.
+★ 카톡은 후처리에서 TOP 1~3과 TOP 4~5·관전 포인트로 자동 생성합니다.
   모델은 카톡 문안을 따로 작문하지 마세요.
   - 각 메시지 195자를 절대 넘기지 마세요. 넘칠 것 같으면 숫자 줄을 줄이세요.
 
@@ -691,6 +695,7 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
         "보도자료": _slim_news(news.get("보도자료"), 3),
         "국내": _slim_news(news.get("국내"), 8),
         "국제": _slim_news(news.get("국제"), 10),
+        "세계정세": _slim_news(news.get("세계정세"), 8),
     }
     d["뉴스"] = {k: v for k, v in d["뉴스"].items() if v}
 
@@ -713,7 +718,7 @@ def _payload(data: dict[str, Any], mode: str = "daily") -> str:
     text = json.dumps(compact, ensure_ascii=False, default=str)
     # JSON 중간을 자르면 깨진 입력이 된다. 예산을 넘으면 우선순위가 낮은
     # 뉴스부터 기사 한 건 단위로 제거해 항상 유효한 JSON을 유지한다.
-    trim_order = ("보도자료", "ETF", "지수", "레버리지", "국제", "국내", "ETF시장")
+    trim_order = ("보도자료", "ETF", "지수", "레버리지", "ETF시장", "세계정세", "국제", "국내")
     removed = 0
     while len(text) > MAX_PAYLOAD_CHARS:
         news = compact.get("뉴스") or {}
@@ -1259,13 +1264,19 @@ def _normalize_market_sources(items: list[dict], ages: dict[str, int]) -> list[d
     for it in items:
         market_name = it.get("시장")
         srcs = [s for s in (it.get("출처") or []) if isinstance(s, dict)]
-        if market_name == "미국":
+        if market_name == "글로벌":
+            # 글로벌 사건은 기사 자체가 근거다. 기사 링크가 없으면 카드를 싣지 않는다.
+            if not any(s.get("url") in ages for s in srcs):
+                log.warning("기사 근거 없는 글로벌 변수 생략: %s", it.get("제목", ""))
+                continue
+            fixed = None
+        elif market_name == "미국":
             srcs = [s for s in srcs if "krx.co.kr" not in str(s.get("url", ""))]
             fixed = {"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"}
         else:
             srcs = [s for s in srcs if "finance.yahoo.com" not in str(s.get("url", ""))]
             fixed = {"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"}
-        if not any(s.get("url") == fixed["url"] for s in srcs):
+        if fixed and not any(s.get("url") == fixed["url"] for s in srcs):
             srcs.insert(0, fixed)
         # 숫자 출처만으로 '왜 움직였나'를 쓰지 않는다.
         if not any(s.get("url") in ages for s in srcs):
@@ -1312,18 +1323,34 @@ def _clip(text: Any, n: int) -> str:
 
 
 def _build_daily_kakao(d: dict, data: dict, limit: int) -> dict:
-    by_market = {b.get("시장"): b for b in d.get("시장브리핑") or []}
-    kr, us = by_market.get("국내", {}), by_market.get("미국", {})
     date = str(data.get("날짜표시") or "")
     m = re.search(r"(\d{1,2})월\s*(\d{1,2})일", date)
     stamp = f"{int(m.group(1))}/{int(m.group(2))}" if m else "오늘"
-    radar = (d.get("etf_레이더") or [{}])[0]
-    lines = [f"☀️ {stamp} 아침 브리핑",
-             f"1. 국내 {_clip(kr.get('결과'), 46)}",
-             f"2. 미국 {_clip(us.get('결과'), 46)}"]
-    etf = str(radar.get("제목") or radar.get("사실") or "ETF 레이더를 확인하세요")
-    lines.append(f"3. ETF {_clip(etf, 48)}")
-    return {"1": _clip("\n".join(lines), limit)}
+    top = d.get("top5") or []
+
+    def item_line(item: dict) -> str:
+        title = str(item.get("제목") or "").strip()
+        number = str(item.get("숫자") or "").strip()
+        return f"{item.get('순위')}. {title}" + (f"\n   {number}" if number else "")
+
+    first = [f"☀️ {stamp} 브리핑"] + [item_line(x) for x in top[:3]]
+    second = [item_line(x) for x in top[3:5]]
+    watch = next((str(x).strip() for x in (d.get("오늘관전") or []) if str(x).strip()), "")
+    if watch:
+        second += [f"\n👉 관전: {watch}"]
+
+    def fit(blocks: list[str]) -> str:
+        kept = []
+        for block in blocks:
+            candidate = "\n".join(kept + [block])
+            if len(candidate) <= limit:
+                kept.append(block)
+        return "\n".join(kept)
+
+    out = {"1": fit(first)}
+    if second:
+        out["2"] = fit(second)
+    return out
 
 
 def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
@@ -1349,10 +1376,10 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
 
     # TOP 3 — 과장 표현이 남은 항목은 표시하지 않는다.
     top5 = [r for r in (d.get("top5") or []) if isinstance(r, dict)]
-    top5 = [r for r in top5 if not _has_hype(r) and not _is_current_intraday(r, data)]
+    top5 = [r for r in top5 if not _has_hype(r)]
     for i, r in enumerate(top5, 1):
         r.setdefault("순위", i)
-    d["top5"] = top5[:3]
+    d["top5"] = top5[:5]
 
     # 결과 → 원인 → ETF 연결로 읽히는 미국·국내 시장 해설
     briefs = _drop_filler(d.get("시장브리핑"), ("제목", "결과"))
@@ -1360,7 +1387,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     seen_markets = set()
     for b in briefs:
         market_name = str(b.get("시장") or "").strip()
-        if market_name not in ("미국", "국내") or market_name in seen_markets or _has_hype(b):
+        if market_name not in ("미국", "국내", "글로벌") or market_name in seen_markets or _has_hype(b):
             continue
         for key, limit_n in (("제목", 70), ("결과", 140), ("원인", 220), ("ETF연결", 140)):
             b[key] = _strip_stock_flow_claim(b.get(key), data)[:limit_n]
@@ -1368,7 +1395,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
             continue
         seen_markets.add(market_name)
         out_briefs.append(b)
-    d["시장브리핑"] = out_briefs[:2]
+    d["시장브리핑"] = out_briefs[:3]
     d["오늘관전"] = [_strip_stock_flow_claim(x, data)[:90]
                          for x in (d.get("오늘관전") or [])
                          if _strip_stock_flow_claim(x, data)][:3]
@@ -1391,7 +1418,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         if market_name not in present:
             log.warning("모델이 %s 시장을 누락해 구조화 데이터로 보충합니다", market_name)
             d["시장브리핑"].append(_fallback_market_brief(market_name, data))
-    order = {"국내": 0, "미국": 1}
+    order = {"국내": 0, "미국": 1, "글로벌": 2}
     d["시장브리핑"].sort(key=lambda b: order.get(b.get("시장"), 9))
     radar_max = int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3))
     radar = _drop_filler(d.get("etf_레이더"), ("제목", "사실"))
@@ -1433,7 +1460,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     if not str(d.get("댓글키워드") or "").strip():
         d["댓글키워드"] = ""
 
-    # 링크를 누르지 않아도 양국 시장과 ETF 핵심을 읽는 1·2·3 요약.
+    # 항목 중간을 자르지 않는 TOP 1~3 / 4~5·관전 요약.
     d["카톡"] = _build_daily_kakao(d, data, limit)
 
     return d
