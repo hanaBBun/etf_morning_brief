@@ -67,9 +67,28 @@ TOP 3에는 이슈명과 숫자와 ETF 영향 한 줄만, 상세 해설은 핵�
 금지: "~를 사세요", "~가 유리합니다", "지금이 기회입니다", "추천합니다", "~해야 합니다"
 근거 수치가 입력에 없으면 "폭발", "쏠림", "집중", "주도", "견인", "급증"도 쓰지 마세요.
 
+■ 규칙 4-1 — 거래대금·순매수·자금유입을 절대 바꿔 쓰지 않습니다
+세 지표는 전혀 다른 뜻입니다.
+  · 거래대금: 매수와 매도가 오간 총 거래 규모
+  · 순매수: 매수 금액에서 매도 금액을 뺀 값
+  · 자금유입: 설정액·순자산 또는 펀드 플로 데이터로 확인된 유입
+입력에 거래대금만 있으면 "돈이 몰렸다", "1조원이 유입됐다", "순매수했다"고 쓰지 마세요.
+거래대금은 반드시 "거래대금이 1조원을 기록했다"처럼 그대로 표현합니다.
+
+■ 규칙 4-2 — ETF의 종류를 정확히 구분합니다
+삼성전자·SK하이닉스 각각을 기초자산으로 하는 상품은 "단일종목 레버리지 ETF"입니다.
+이를 업종 전체를 담는 "반도체 ETF"나 "반도체 레버리지 ETF"로 바꿔 부르지 마세요.
+업종형·지수형·단일종목형·레버리지·인버스를 입력 기사에 적힌 분류 그대로 씁니다.
+
+■ 규칙 4-3 — 시장 전체 수급을 개별 종목 수급으로 확대하지 않습니다
+코스피 외국인 순매수 데이터만으로 "외국인이 SK하이닉스에 집중 매수했다"고 쓰지 마세요.
+종목별 투자주체 데이터가 입력에 없으면 종목 설명에는 등락률과 지수 기여만 씁니다.
+
 ■ 규칙 5 — 출처를 붙입니다
 각 사실에는 그 숫자가 어디서 나왔는지 출처를 답니다.
 기사가 근거면 그 기사의 id("n7" 같은 번호)를 넣습니다. url 을 옮겨 적지 마세요.
+입력에서 같은 지표의 수치가 출처별로 다르면 섞어서 하나의 수치로 만들지 마세요.
+구조화된 KRX 데이터가 있으면 그 값을 우선하고, 기사만 있으면 "출처별 수치 차이" 또는 범위를 명시합니다.
 특히 투자주체별 수급, ETF 순매수, 국채금리, 환율·원자재, 신규 ETF,
 그리고 "무엇이 주가를 움직였다"고 말하는 내용은 출처가 중요합니다.
 
@@ -171,6 +190,12 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 (KRX·야후파이낸스처럼 기사가 아닌 출처만 url 을 직접 써도 됩니다.)
 
 {
+  "시장요약": {
+    "한줄": "한국·미국 시장을 함께 관통하는 오늘의 시장 문장 1개",
+    "움직인요인": ["원인과 결과를 연결한 핵심 요인 1", "핵심 요인 2", "핵심 요인 3"],
+    "오늘관전": ["오늘 확인할 포인트 1", "포인트 2", "포인트 3"]
+  },
+
   "top5": [
     {"순위": 1,
      "제목": "8~16자 이슈명",
@@ -213,7 +238,8 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
      "제목": "실제 쓸 수 있는 영상 제목안",
      "이유": "오늘 해야 하는 이유 한 줄. 반드시 오늘 데이터 근거.",
      "관련ETF": "나스닥100 · 반도체 · AI 처럼 유형으로",
-     "질문": "출연자에게 물어볼 핵심 질문 하나. 물음표로 끝낼 것."}
+     "질문": "출연자에게 물어볼 핵심 질문 하나. 물음표로 끝낼 것.",
+     "차별점": "경쟁 채널과 소재가 겹치면 우리가 달리 볼 각도. 없으면 빈 문자열."}
   ],
 
   "오늘의개념": {
@@ -242,6 +268,9 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 
 | 항목 | 개수 | 글자 수 |
 |---|---|---|
+| 시장요약.한줄 | 1개 | 70자 이내 |
+| 시장요약.움직인요인 | 3개 | 각 60자 이내 |
+| 시장요약.오늘관전 | 3개 | 각 60자 이내 |
 | top5.제목 | 3개 고정 | 8~16자 |
 | top5.숫자 | | 30자 이내 |
 | top5.영향 | | 30자 이내 |
@@ -265,6 +294,17 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
     예: "외국인 순매수 연속 여부", "호르무즈 통항 제한 실제 발생 여부",
     "30년물 5.3% 수준 유지 여부". `때`에는 "상시" 또는 "이번 주"를 씁니다.
   둘을 섞어서 중요한 순서로 최대 4개까지 넣으세요.
+  뉴스에 날짜가 명시된 경제지표·중앙은행·실적·ETF 상장 일정이 있으면
+  `일정`을 최소 1개 우선 편성합니다. 확인되지 않은 날짜는 만들지 않습니다.
+
+★ 시장요약은 전사 공유용 1분 브리핑입니다.
+  · 단순 등락 나열이 아니라 "왜 움직였는가"를 3개 요인으로 정리합니다.
+  · 하루 등락만으로 추세 전환을 단정하지 말고, 전주 흐름이 입력에 없으면 언급하지 않습니다.
+  · 국내 상승이 일부 대형주에 집중됐는지, 미국 하락이 금리·유가·기업실적 중 무엇 때문인지
+    입력 뉴스에서 빠짐없이 비교합니다. 한 원인만 과대대표하지 마세요.
+
+★ ETF 레이더의 `사실`은 입력에 수치가 있다면 등락률·순매수·순자산·거래대금 중
+  최소 1개를 그대로 포함합니다. 수치 없이 "관심 증가", "강세", "주목"만 쓴 항목은 만들지 마세요.
 
 오늘의개념은 VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지, 베이시스포인트,
 멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중 그날 뉴스와 실제로 연결되는 것을 고릅니다.
@@ -662,6 +702,7 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
         "ETF": _slim_news(news.get("ETF"), 6),
         "레버리지": _slim_news(news.get("레버리지"), 3),
         "지수": _slim_news(news.get("지수"), 3),
+        "일정": _slim_news(news.get("일정"), 5),
         "보도자료": _slim_news(news.get("보도자료"), 3),
         "국내": _slim_news(news.get("국내"), 8),
         "국제": _slim_news(news.get("국제"), 6),
@@ -1004,6 +1045,9 @@ BANNED = [
     "지금이 기회", "반드시 오를", "확실합니다", "보장", "유리합니다",
 ]
 UNSUPPORTED_HYPE = ("폭발", "매수세 집중", "수급 집중", "돈이 몰렸", "자금이 몰렸")
+FLOW_WORDS = ("몰렸다", "몰린", "유입", "순매수")
+TURNOVER_WORDS = ("거래대금", "거래액", "거래 규모")
+STOCK_FLOW_WORDS = ("외국인", "기관", "순매수", "수급", "매수세")
 FILLER = ["해당 없음", "특이사항 없음", "없음", "생략", "특이 종목 없음", "기준 미달"]
 
 # 국내 ETF 브랜드. 제목에 이게 들어가면 '단일 상품 기사'로 본다.
@@ -1070,6 +1114,35 @@ def _has_hype(item: dict) -> bool:
     text = " ".join(str(item.get(k, ""))
                     for k in ("제목", "사실", "해석", "관찰", "이유"))
     return any(w in text for w in PR_WORDS + UNSUPPORTED_HYPE)
+
+
+def _mixes_turnover_and_flow(item: dict) -> bool:
+    """거래대금을 순유입처럼 바꿔 쓴 항목인지 검사한다."""
+    evidence = " ".join(str(item.get(k, "")) for k in ("사실", "이유", "관찰"))
+    claim = " ".join(str(item.get(k, "")) for k in ("제목", "이유", "관련ETF"))
+    return any(w in evidence for w in TURNOVER_WORDS) and any(w in claim for w in FLOW_WORDS)
+
+
+def _has_single_stock_leverage_news(data: dict) -> bool:
+    for group in (data.get("뉴스") or {}).values():
+        for art in group or []:
+            title = str(art.get("제목", ""))
+            if ("레버리지" in title
+                    and any(w in title for w in ("단일종목", "삼전닉스", "삼성전자", "SK하이닉스"))):
+                return True
+    return False
+
+
+def _fix_etf_classification(item: dict, single_stock_context: bool) -> dict:
+    """단일종목 상품을 업종형 반도체 ETF로 부르는 오류를 교정한다."""
+    if not single_stock_context:
+        return item
+    for key in ("제목", "사실", "관찰", "이유", "관련ETF", "질문", "차별점"):
+        text = str(item.get(key, ""))
+        text = text.replace("반도체 레버리지 ETF", "삼성전자·SK하이닉스 단일종목 레버리지 ETF")
+        text = text.replace("반도체 레버리지", "삼성전자·SK하이닉스 단일종목 레버리지")
+        item[key] = text
+    return item
 
 
 def _drop_filler(items: list, keys: tuple[str, ...]) -> list:
@@ -1189,6 +1262,14 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         kakao[k] = text
     d["카톡"] = kakao
 
+    # 전사 공유용 1분 시장 요약
+    summary = d.get("시장요약") if isinstance(d.get("시장요약"), dict) else {}
+    summary["한줄"] = str(summary.get("한줄") or "").strip()[:100]
+    for key in ("움직인요인", "오늘관전"):
+        summary[key] = [str(x).strip()[:90] for x in (summary.get(key) or [])
+                        if str(x).strip()][:3]
+    d["시장요약"] = summary if summary.get("한줄") else None
+
     # TOP 3 — 과장 표현이 남은 항목은 표시하지 않는다.
     top5 = [r for r in (d.get("top5") or []) if isinstance(r, dict)]
     top5 = [r for r in top5 if not _has_hype(r)]
@@ -1202,6 +1283,11 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     quota = 3
     for c in issues:
         stocks = [s for s in (c.get("종목") or []) if isinstance(s, dict)]
+        for s in stocks:
+            reason = str(s.get("이유") or "")
+            if any(w in reason for w in STOCK_FLOW_WORDS):
+                pct = str(s.get("등락") or "").strip()
+                s["이유"] = f"{pct} 등락으로 관련 지수 움직임에 영향" if pct else "관련 지수 움직임에 영향을 준 주요 종목"
         c["종목"] = stocks[:max(quota, 0)]
         quota -= len(c["종목"])
         c["해석"] = _trim_hedge(c.get("해석", ""))
@@ -1220,7 +1306,9 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     radar = _drop_filler(d.get("etf_레이더"), ("제목", "사실"))
     radar = _strip_stale_sources(radar, ages)
     radar = _limit_product_items(radar, keep=1)
-    radar = [r for r in radar if not _has_hype(r)][:radar_max]
+    single_stock_context = _has_single_stock_leverage_news(data)
+    radar = [_fix_etf_classification(r, single_stock_context) for r in radar]
+    radar = [r for r in radar if not _has_hype(r) and not _mixes_turnover_and_flow(r)][:radar_max]
     for r in radar:
         r["관찰"] = _trim_hedge(r.get("관찰", ""))
         _warn_pr(r)
@@ -1241,7 +1329,9 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
                     if isinstance(v, dict)
                     and str(v.get("영상ID")) in valid_video_ids][:3]
     plans = _drop_filler(d.get("콘텐츠후보"), ("제목", "이유"))
-    d["콘텐츠후보"] = [p for p in plans if not _has_hype(p)][:2]
+    plans = [_fix_etf_classification(p, single_stock_context) for p in plans]
+    d["콘텐츠후보"] = [p for p in plans
+                        if not _has_hype(p) and not _mixes_turnover_and_flow(p)][:2]
 
     # 체크포인트 — 일정/확인 두 유형. 구버전 키('일정')도 받아준다.
     cps = d.get("체크포인트") or d.get("일정") or []

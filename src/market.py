@@ -118,32 +118,37 @@ def collect_us_movers(cfg: dict, universe: list[str] | None = None) -> list[dict
     cap_n = int(rule.get("최대_표시개수", 10))
 
     universe = universe or DEFAULT_US_UNIVERSE
-    movers: list[dict] = []
-    for sym in universe:
+    def fetch(sym: str) -> dict | None:
         try:
             t = yf.Ticker(sym)
             hist = t.history(period="5d", interval="1d")
             closes = hist["Close"].dropna()
             if len(closes) < 2:
-                continue
+                return None
             last, prev = float(closes.iloc[-1]), float(closes.iloc[-2])
             pct = (last - prev) / prev * 100 if prev else 0.0
             if abs(pct) < thr:
-                continue
+                return None
             info = getattr(t, "fast_info", {}) or {}
             cap = float(info.get("market_cap") or 0)
             if cap and cap < min_cap:
-                continue
-            movers.append({
+                return None
+            return {
                 "티커": sym,
                 "이름": US_NAMES.get(sym, sym),
                 "업종": US_SECTORS.get(sym, ""),
                 "종가": last,
                 "등락률": pct,
                 "시가총액": cap or None,
-            })
+            }
         except Exception as e:  # noqa: BLE001
             log.debug("%s 스킵: %s", sym, e)
+            return None
+
+    # yfinance 조회는 네트워크 대기가 대부분이므로 적은 수의 스레드로 병렬화한다.
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        movers = [row for row in pool.map(fetch, universe) if row]
     movers.sort(key=lambda r: abs(r["등락률"]), reverse=True)
     return movers[:cap_n]
 

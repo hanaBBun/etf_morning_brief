@@ -48,6 +48,26 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(out["발언정리"], [])
         self.assertEqual(out["출연자추천"], [])
 
+    def test_turnover_is_not_rewritten_as_inflow(self):
+        raw = {"etf_레이더": [{"제목": "1조원 돈이 몰렸다", "사실": "거래대금 1조원",
+                              "관찰": "", "구분": "수급", "출처": []}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        self.assertEqual(out["etf_레이더"], [])
+
+    def test_market_flow_is_not_assigned_to_a_stock(self):
+        raw = {"핵심이슈": [{"제목": "반도체", "사실": "코스피 상승", "해석": "",
+                              "출처": [], "종목": [{"이름": "SK하이닉스", "등락": "+12.7%",
+                                                "이유": "외국인 순매수 집중"}]}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        self.assertNotIn("외국인", out["핵심이슈"][0]["종목"][0]["이유"])
+
+    def test_single_stock_leverage_is_not_called_sector_etf(self):
+        raw = {"etf_레이더": [{"제목": "반도체 레버리지 ETF", "사실": "상품 출시",
+                              "관찰": "", "구분": "상품", "출처": []}]}
+        data = {"뉴스": {"ETF": [{"제목": "삼성전자·SK하이닉스 단일종목 레버리지 ETF"}]}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertIn("단일종목", out["etf_레이더"][0]["제목"])
+
 
 if __name__ == "__main__":
     unittest.main()

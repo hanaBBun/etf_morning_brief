@@ -73,6 +73,16 @@
   .glabel{font-size:10.5px;font-weight:700;color:var(--ink3);letter-spacing:.08em;
           padding:11px 0 2px;grid-column:1/-1}
 
+  /* ── 전사 공유용 1분 요약 ───────────────── */
+  .brief1m{background:linear-gradient(135deg,rgba(124,108,240,.12),var(--surface));
+           border:1px solid rgba(124,108,240,.35);border-radius:10px;padding:15px 16px;margin:10px 0}
+  .brief1m .lead{font-size:15px;font-weight:700;line-height:1.55;margin:0 0 12px}
+  .briefcols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .briefcols h3{font-size:11px;color:var(--accent);letter-spacing:.06em;margin:0 0 5px}
+  .briefcols ol{margin:0;padding-left:20px;color:var(--ink2);font-size:12.5px}
+  .briefcols li{margin:3px 0}
+  @media (max-width:560px){.briefcols{grid-template-columns:1fr}}
+
   /* ── 카드 (사실/해석) ────────────────────────── */
   .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;
         padding:14px 16px;margin:10px 0}
@@ -237,7 +247,19 @@
 </div>
 {% endif %}
 
-{# ─────────── 3. 핵심 이슈 ─────────── #}
+{# ─────────── 3. 전사 공유용 시장 요약 ─────────── #}
+{% if ai.시장요약 %}
+<h2>🧭 1분 시장 요약 <span class="tag">전사 공유용</span></h2>
+<div class="brief1m">
+  <p class="lead">{{ ai.시장요약.한줄 }}</p>
+  <div class="briefcols">
+    {% if ai.시장요약.움직인요인 %}<div><h3>시장을 움직인 3가지</h3><ol>{% for x in ai.시장요약.움직인요인 %}<li>{{ x }}</li>{% endfor %}</ol></div>{% endif %}
+    {% if ai.시장요약.오늘관전 %}<div><h3>오늘 관전 포인트</h3><ol>{% for x in ai.시장요약.오늘관전 %}<li>{{ x }}</li>{% endfor %}</ol></div>{% endif %}
+  </div>
+</div>
+{% endif %}
+
+{# ─────────── 4. 핵심 이슈 ─────────── #}
 {% if ai.핵심이슈 %}
 <h2>🔍 핵심 이슈<span class="tip" tabindex="0">?<span class="bubble">
   한 이슈는 여기서 <b>딱 한 번만</b> 자세히 다룹니다. 위 TOP 3나 아래 섹션에서 같은 내용을 반복하지 않습니다.<br><br>
@@ -345,6 +367,7 @@
   <div class="row">
     <div class="k2">오늘 해야 하는 이유</div><div class="v">{{ i.이유 }}</div>
     <div class="k2">관련 ETF</div><div class="v">{{ i.관련ETF }}</div>
+    {% if i.차별점 %}<div class="k2">차별화 각도</div><div class="v">{{ i.차별점 }}</div>{% endif %}
   </div>
   {% if i.질문 %}<div class="q"><b>출연자 질문</b> — “{{ i.질문 }}”</div>{% endif %}
 </div>
