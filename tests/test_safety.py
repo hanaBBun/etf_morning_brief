@@ -80,7 +80,7 @@ class SafetyTests(unittest.TestCase):
         out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
         self.assertNotIn("KODEX 레버리지", out["etf_레이더"][0]["사실"])
 
-    def test_both_markets_and_two_kakao_messages_are_always_present(self):
+    def test_both_markets_and_one_complete_kakao_top3_are_always_present(self):
         raw = {"시장브리핑": [{"시장": "미국", "제목": "미 증시 하락", "결과": "나스닥 -1%",
                                  "원인": "금리 상승", "ETF연결": "나스닥100 확인", "출처": []}],
                "etf_레이더": [{"제목": "ETF 제도 변경", "사실": "제도가 변경됐습니다.", "관찰": "", "출처": []}],
@@ -91,9 +91,20 @@ class SafetyTests(unittest.TestCase):
                 "지표": {}}
         out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}}, data)
         self.assertEqual([b["시장"] for b in out["시장브리핑"]], ["국내", "미국"])
-        self.assertTrue(out["카톡"]["1"] and out["카톡"]["2"])
-        self.assertIn("🇰🇷", out["카톡"]["1"])
-        self.assertIn("🇺🇸", out["카톡"]["1"])
+        self.assertEqual(list(out["카톡"]), ["1"])
+        self.assertIn("1. 국내", out["카톡"]["1"])
+        self.assertIn("2. 미국", out["카톡"]["1"])
+        self.assertIn("3. ETF", out["카톡"]["1"])
+        self.assertLessEqual(len(out["카톡"]["1"]), 195)
+
+    def test_unsourced_market_cause_is_hidden_not_replaced_with_notice(self):
+        raw = {"시장브리핑": [{"시장": "국내", "제목": "국내 증시", "결과": "코스피 상승",
+                                 "원인": "확인되지 않은 추정", "ETF연결": "코스피200 확인",
+                                 "출처": []}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        kr = next(b for b in out["시장브리핑"] if b["시장"] == "국내")
+        self.assertEqual(kr["원인"], "")
+        self.assertNotIn("근거", json.dumps(out, ensure_ascii=False))
 
     def test_current_day_intraday_is_removed_from_top3(self):
         raw = {"top5": [{"제목": "코스닥 매도사이드카", "숫자": "8/21 장중 -4%", "영향": ""},
