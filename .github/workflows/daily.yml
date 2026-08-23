@@ -1,4 +1,4 @@
-name: 아침 브리핑 (매일 07:00 KST)
+name: 아침 브리핑 (평일 07:00 KST)
 
 on:
   # 코드가 main에 반영되면 카카오 발송 없이 한 번 검증한다.
@@ -11,8 +11,8 @@ on:
       - "config.yaml"
       - "requirements.txt"
   schedule:
-    # 22:00 UTC = 다음날 07:00 KST. 매일 실행.
-    - cron: "0 22 * * *"
+    # UTC 일~목 22:00 = KST 월~금 07:00. 토·일에는 일간 브리핑을 보내지 않는다.
+    - cron: "0 22 * * 0-4"
   workflow_dispatch:
     inputs:
       no_send:
