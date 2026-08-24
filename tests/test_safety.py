@@ -31,6 +31,43 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(result["상태"], "당일캐시")
         self.assertEqual(result["급상승"][0]["영상ID"], "kept")
 
+    def test_youtube_uses_upload_playlist_without_search_calls(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            ids = root / "channel_ids.json"
+            uploads = root / "channel_uploads.json"
+            daily = root / "youtube_daily_cache.json"
+            ids.write_text('{"테스트채널":"UC1"}', encoding="utf-8")
+            uploads.write_text('{"테스트채널":"UU1"}', encoding="utf-8")
+            calls = []
+
+            def fake_get(path, key, **params):
+                calls.append(path)
+                if path == "playlistItems":
+                    return {"items": [{"snippet": {"title": "ETF 새 영상"},
+                        "contentDetails": {"videoId": "v1",
+                                           "videoPublishedAt": "2026-08-21T01:00:00Z"}}]}
+                if path == "videos":
+                    return {"items": [{"id": "v1", "statistics": {
+                        "viewCount": "100", "commentCount": "2"}}]}
+                if path == "commentThreads":
+                    return {"items": []}
+                raise AssertionError(f"예상하지 않은 API: {path}")
+
+            fixed = datetime(2026, 8, 21, 7, 0, tzinfo=timezone.utc)
+            with patch.object(youtube, "CACHE", ids), \
+                 patch.object(youtube, "UPLOADS_CACHE", uploads), \
+                 patch.object(youtube, "DAILY_CACHE", daily), \
+                 patch.object(youtube, "now_kst", return_value=fixed), \
+                 patch.object(youtube, "env", return_value="key"), \
+                 patch.object(youtube, "_get", side_effect=fake_get):
+                result = youtube.collect({"유튜브": {"사용": True, "채널": ["테스트채널"],
+                                                       "급상승_표시개수": 5,
+                                                       "댓글_분석_영상수": 1}})
+        self.assertEqual(result["급상승"][0]["영상ID"], "v1")
+        self.assertIn("playlistItems", calls)
+        self.assertNotIn("search", calls)
+
     def test_youtube_render_keeps_videos_with_grounded_fallback_overlap(self):
         raw = [{"영상ID": str(i), "제목": f"영상 {i}", "채널": "채널",
                 "조회수": i, "링크": f"https://youtu.be/{i}"} for i in range(4)]
