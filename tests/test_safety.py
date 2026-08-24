@@ -176,6 +176,35 @@ class SafetyTests(unittest.TestCase):
         self.assertTrue(krx._is_leveraged_etf("KODEX 코스닥150레버리지"))
         self.assertFalse(krx._is_leveraged_etf("KODEX 코스닥150"))
 
+    def test_etf_flow_uses_free_fallback_when_krx_snapshot_is_empty(self):
+        import pandas as pd
+
+        class EmptyETFStock:
+            @staticmethod
+            def get_etf_ohlcv_by_ticker(day):
+                return pd.DataFrame()
+
+            @staticmethod
+            def get_nearest_business_day_in_a_week(date, prev=True):
+                return date
+
+        names = {"1": "KODEX 반도체", "2": "TIGER 반도체", "3": "ACE 바이오",
+                 "4": "RISE 화장품", "5": "PLUS 방산", "6": "KODEX 코스닥150레버리지"}
+        frame = pd.DataFrame([
+            {"티커": str(i), "종가": 10000, "등락률": rate,
+             "거래량": 1000000, "거래대금": 10000000000}
+            for i, rate in enumerate((5.0, 4.8, 3.0, -2.0, -4.0, -8.0), 1)
+        ]).set_index("티커")
+        with patch.object(krx, "_stock", return_value=EmptyETFStock()), \
+             patch.object(krx, "_naver_etf_snapshot", return_value=(frame, names)), \
+             patch.object(krx, "_save_snapshot"):
+            out = krx.etf_radar("20260821", {"ETF_레이더": {
+                "흐름판_최소거래대금_억원": 50, "흐름판_상하위개수": 3}})
+        flow = out["흐름판"]
+        self.assertEqual([x["이름"] for x in flow["상승"]],
+                         ["KODEX 반도체", "ACE 바이오", "RISE 화장품"])
+        self.assertEqual(flow["고변동상품"][0]["이름"], "KODEX 코스닥150레버리지")
+
     def test_intraday_fallback_updates_numbers_without_losing_cached_story(self):
         data = {"날짜표시": "2026년 8월 21일 (금)",
                 "국내지수": [{"이름": "코스피", "종가": 3000, "등락률": -2.0},

@@ -48,6 +48,7 @@ jobs:
           git add channel_ids.json 2>/dev/null || true
           git add channel_uploads.json 2>/dev/null || true
           git add youtube_daily_cache.json 2>/dev/null || true
+          git add etf_snapshot_cache.json 2>/dev/null || true
           git status --short
           if git diff --staged --quiet; then
             echo "변경 없음"

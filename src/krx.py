@@ -7,15 +7,18 @@ from __future__ import annotations
 
 import logging
 import math
+import json
+import urllib.request
 from datetime import timedelta
 from typing import Any
 
-from .config import now_kst
+from .config import ROOT, now_kst
 
 log = logging.getLogger(__name__)
 
 
 _WARNED = {"krx": False}
+ETF_SNAPSHOT_CACHE = ROOT / "etf_snapshot_cache.json"
 
 
 def krx_ready() -> bool:
@@ -143,6 +146,84 @@ def _dedupe_ranked(rows: list[dict], limit: int) -> list[dict]:
         if len(out) >= limit:
             break
     return out
+
+
+def _naver_etf_snapshot():
+    """KRX ETF 표가 비었을 때 쓰는 무료·무키 국내 ETF 시세 보조 소스."""
+    try:
+        req = urllib.request.Request(
+            "https://finance.naver.com/api/sise/etfItemList.nhn",
+            headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.naver.com/"},
+        )
+        with urllib.request.urlopen(req, timeout=15) as response:  # noqa: S310
+            payload = json.loads(response.read().decode("utf-8"))
+        items = ((payload.get("result") or {}).get("etfItemList") or [])
+        if not items:
+            return None, {}
+        import pandas as pd
+        rows, names = [], {}
+        for item in items:
+            ticker = str(item.get("itemcode") or "")
+            name = str(item.get("itemname") or ticker)
+            if not ticker:
+                continue
+            close = float(item.get("nowVal") or 0)
+            rate = float(item.get("changeRate") or 0)
+            rise_fall = str(item.get("risefall") or "")
+            if rise_fall in ("4", "5"):
+                rate = -abs(rate)
+            elif rise_fall in ("1", "2"):
+                rate = abs(rate)
+            volume = float(item.get("quant") or 0)
+            rows.append({"티커": ticker, "종가": close, "등락률": rate,
+                         "거래량": volume, "거래대금": close * volume,
+                         "순자산총액": float(item.get("marketSum") or 0)})
+            names[ticker] = name
+        if not rows:
+            return None, {}
+        df = pd.DataFrame(rows).set_index("티커")
+        log.warning("KRX ETF 표가 비어 네이버 금융 ETF 시세 %d건으로 대체합니다", len(df))
+        return df, names
+    except Exception as e:  # noqa: BLE001
+        log.warning("네이버 금융 ETF 보조 시세 수집 실패: %s", e)
+        return None, {}
+
+
+def _snapshot_cache() -> dict:
+    try:
+        return json.loads(ETF_SNAPSHOT_CACHE.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _save_snapshot(day: str, df, names: dict) -> None:
+    try:
+        cache = _snapshot_cache()
+        cache[day] = {str(tk): {"종가": float(r.get("종가", 0)), "이름": names.get(tk, str(tk))}
+                      for tk, r in df.iterrows() if float(r.get("종가", 0)) > 0}
+        keys = sorted(cache)[-12:]
+        ETF_SNAPSHOT_CACHE.write_text(
+            json.dumps({k: cache[k] for k in keys}, ensure_ascii=False, indent=1), encoding="utf-8")
+    except Exception as e:  # noqa: BLE001
+        log.debug("ETF 스냅샷 캐시 저장 실패: %s", e)
+
+
+def _cached_prior_close(day: str) -> dict[str, float]:
+    """주간 비교용으로 현재 기준일보다 최소 4일 앞선 가장 최근 스냅샷을 고른다."""
+    import datetime as _dt
+    cache = _snapshot_cache()
+    current = _dt.datetime.strptime(day, "%Y%m%d").date()
+    candidates = []
+    for key in cache:
+        try:
+            d = _dt.datetime.strptime(key, "%Y%m%d").date()
+            if (current - d).days >= 4:
+                candidates.append(key)
+        except ValueError:
+            continue
+    if not candidates:
+        return {}
+    return {tk: float(v.get("종가", 0)) for tk, v in cache[max(candidates)].items()}
 
 
 # ─────────────────────────────────────────────
@@ -328,16 +409,27 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily") -> dict[str, Any]:
     }
 
     try:
-        df = s.get_etf_ohlcv_by_ticker(day)
+        try:
+            df = s.get_etf_ohlcv_by_ticker(day)
+        except Exception as e:  # noqa: BLE001
+            log.warning("KRX ETF 전체 시세 호출 실패: %s", e)
+            df = None
+        fallback_names = {}
         if df is None or df.empty:
+            df, fallback_names = _naver_etf_snapshot()
+        if df is None or df.empty:
+            log.warning("ETF 전체 시세가 비어 흐름판을 생성하지 못했습니다")
             return result
 
-        names = {}
+        names = dict(fallback_names)
         for tk in df.index:
+            if tk in names:
+                continue
             try:
                 names[tk] = s.get_etf_ticker_name(tk)
             except Exception:  # noqa: BLE001
                 names[tk] = tk
+        _save_snapshot(day, df, names)
 
         # 수익률 흐름판: 거래대금이 충분한 ETF만, 일반형과 고변동 상품을 분리한다.
         min_turnover = float(rule.get("흐름판_최소거래대금_억원", 50)) * 1e8
@@ -360,8 +452,23 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily") -> dict[str, Any]:
                         (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
                     )
                     rate_col = "주간등락률"
+                else:
+                    prior_map = _cached_prior_close(day)
+                    if prior_map:
+                        ranked["직전주종가"] = [prior_map.get(str(tk)) for tk in ranked.index]
+                        ranked["주간등락률"] = (
+                            (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
+                        )
+                        rate_col = "주간등락률"
             except Exception as e:  # noqa: BLE001
                 log.debug("ETF 주간 수익률 계산 실패, 전일 등락률 사용: %s", e)
+                prior_map = _cached_prior_close(day)
+                if prior_map:
+                    ranked["직전주종가"] = [prior_map.get(str(tk)) for tk in ranked.index]
+                    ranked["주간등락률"] = (
+                        (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
+                    )
+                    rate_col = "주간등락률"
 
         perf_rows = []
         for tk, row in ranked.iterrows():
@@ -382,6 +489,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily") -> dict[str, Any]:
             "고변동상품": _dedupe_ranked(
                 sorted(leveraged, key=lambda x: abs(x["등락률"]), reverse=True), 2),
             "최소거래대금_억원": int(min_turnover / 1e8),
+            "출처": "KRX·네이버 금융 보조 시세",
         }
 
         # 거래대금 기준 상위/하위 (순매수 데이터가 없으므로 거래대금·등락으로 대체)
