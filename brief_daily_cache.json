@@ -1,96 +1,118 @@
 {
   "날짜": "2026-08-24",
   "ai": {
-    "top5": [
-      {
-        "제목": "VIX 하락",
-        "숫자": "15.13 (-5.50%)",
-        "영향": "VIX 연계 ETF 흐름 확인",
-        "순위": 1
-      },
-      {
-        "제목": "코스닥 하락",
-        "숫자": "801.94 (-4.63%)",
-        "영향": "코스닥 연계 ETF 흐름 확인",
-        "순위": 2
-      },
-      {
-        "제목": "WTI 하락",
-        "숫자": "85.60 (-1.68%)",
-        "영향": "WTI 연계 ETF 흐름 확인",
-        "순위": 3
-      },
-      {
-        "순위": 4,
-        "제목": "미 국채 금리 상승세 지속",
-        "숫자": "10년물 4.738% (+4.2bp)",
-        "영향": "빅테크 및 성장주 ETF 할인율 부담"
-      },
-      {
-        "순위": 5,
-        "제목": "대이란 제재 및 호르무즈 위협",
-        "숫자": "WTI 85.62달러 (-1.65%)",
-        "영향": "원유 및 방산 테마 ETF 변동성 유발"
-      }
-    ],
+    "시장국면": null,
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "코스피 장중 3%대 급락하며 6,700선 하회",
-        "결과": "코스피 +0.88% · 코스닥 -4.63%",
-        "원인": "주말 사이 고조된 중동 지정학적 긴장감과 미국의 대이란 추가 제재 움직임이 아시아 시장 전반의 투자심리 위축과 외국인 매도세로 연결됐을 가능성이 있습니다.",
-        "ETF연결": "코스피 지수형 ETF 및 대형주 중심의 하락 압력이 커지는 가운데, 지수 인버스 ETF의 수급 변화를 추적할 필요가 있습니다.",
+        "제목": "코스피 상승과 코스닥 급락의 디커플링",
+        "결과": "코스피는 6,912.95(+0.88%)로 마감했으나, 코스닥은 801.94(-4.63%)로 급락하며 엇갈린 행보를 보였습니다.",
+        "원인": "삼성전자(+3.87%) 등 대형주의 주주환원 기대감이 코스피 상승을 이끌었을 가능성이 있습니다. 반면 코스닥은 신규 상장주의 연이은 급락세가 투자심리 위축과 하락 압력으로 작용했을 수 있습니다.",
+        "ETF연결": "코스피200 지수형 ETF와 단일종목 레버리지 ETF의 수급 차별화 현상을 추적할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "연합뉴스 경제",
-            "url": "https://www.yna.co.kr/view/AKR20260824079400008",
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12134696",
             "날짜": "8/24"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "금리 상승 압력 속 주요 지수 소폭 상승 마감",
-        "결과": "S&P 500 +0.43% · 나스닥 종합 +0.43% · 다우 30 +0.98%",
-        "원인": "미국 국채 금리 상승세가 지속되며 기술주 중심의 밸류에이션 부담이 이어졌으나, 경기 연착륙 기대감이 유입되며 다우 지수 등 가치주 중심의 매수세가 지수 상승을 지지한 것으로 해석할 여지가 있습니다.",
-        "ETF연결": "금리 상승세와 반도체 지수 약세가 겹치며 국내 반도체 및 빅테크 테마 ETF의 단기 변동성 확대 여부를 관찰해야 합니다.",
+        "제목": "금리 부담 속 지수 소폭 상승 마감",
+        "결과": "S&P 500(+0.43%)과 나스닥(+0.43%)은 상승했으나, 미 10년물 국채 금리는 4.738%(+4.2bp)로 상승 마감했습니다.",
+        "원인": "트럼프 정부의 부채 우려와 베센트 재무장관 지명자의 금리 통제 한계 지적이 국채 금리를 밀어 올렸을 가능성이 있습니다. 다만 연준 인사들의 시장 안정 발언이 하락 압력을 방어한 것으로 해석할 여지가 있습니다.",
+        "ETF연결": "금리 상승 압력이 지속됨에 따라 미국 장기채 ETF의 변동성과 기술주 중심 나스닥100 ETF의 밸류에이션 부담을 점검해야 합니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "뉴시스",
-            "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1uclBKemtuRmVlTmVNMEJDbmpiUU1jTV9tVGNBdjdkT0N3MnFxcGdNTDZnZjlkRGdZdFNTQndxNGhCVmY0c0ZWN2R5V1V3YjREVm1HdlVLNzVLN084bUhnazBCTXcxbWEtRHdrVFZVQ0FjZ3hlTHQ5WdIBeEFVX3lxTE1uclBKemtuRmVlTmVNMEJDbmpiUU1jTV9tVGNBdjdkT0N3MnFxcGdNTDZnZjlkRGdZdFNTQndxNGhCVmY0c0ZWN2R5V1V3YjREVm1HdlVLNzVLN084bUhnazBCTXcxbWEtRHdrVFZVQ0FjZ3hlTHQ5WQ?oc=5",
+            "이름": "Bloomberg",
+            "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPZ2JzSzV2M19uOU5aN2ZJSVlQTjBuM0VIR1pMYVJocnpabzhnekRpb3hRRnJZRFpoa29RY2t6WnhYX2JtdzlObjY1WGhINkViMGZ3cFZicE9LaEdPeVRlRlotTzZzVk1oUDFEek1wLUE1Rl9zWUViRHdiU3pRS0xWT1ZmZmJCMjktdTJ6Rk0yQ1RnV1NZNlU5QWREOVpEZXFDYVBCNVJzbkdYWWtxdDRaVTIzYm1xZw?oc=5",
             "날짜": "8/24"
           }
         ]
       },
       {
         "시장": "글로벌",
-        "제목": "미국 대이란 '경제적 D-Day' 제재 예고에 중동 긴장 고조",
-        "결과": "미국이 이란에 대한 강력한 경제 제재를 예고하자 이란은 호르무즈 해협을 통한 유통 차단을 경고했습니다. WTI 유가는 스냅샷 기준 1.65% 하락한 85.62달러를 기록했습니다.",
-        "원인": "미국의 고강도 제재 예고가 이란의 호르무즈 해협 봉쇄 위협으로 이어지며 글로벌 원유 공급망 차단 우려가 시장에 전달된 것으로 볼 수 있습니다.",
-        "ETF연결": "유가 변동성 확대에 따른 원유 선물 ETF 및 중동 지정학적 리스크 수혜주로 꼽히는 방산 테마 ETF의 흐름을 주시해야 합니다.",
+        "제목": "미국의 이란 제재와 호르무즈 해협 봉쇄 위협",
+        "결과": "미국이 이란에 대한 강력한 경제 제재를 예고하자, 이란은 호르무즈 해협을 통한 원유 수출 전면 중단을 경고했습니다.",
+        "원인": "지정학적 긴장 고조가 글로벌 공급망 불안을 자극하며 원유 시장의 변동성을 키우는 경로로 작동하고 있습니다.",
+        "ETF연결": "원유 선물 ETF 및 에너지 섹터 ETF의 단기 변동성 확대 여부를 관찰해야 합니다.",
         "출처": [
           {
-            "이름": "International Business Times, Singapore Edition",
-            "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPbGRlNGdKWDVBQVFIdm11aW9QdGFIT05hV2lnRXhmek9nY0F4NEhfT0VFTzIxOEpVUGNaMGJwQ0k5WFV2a3lRa1JYc0QxbS1CYTJ2eVNUbml4Zi1HZnVCa19RLXVjMUN2V0JodW1Ybl8ycWxQeGEtTkxMWUZOeThpTkFfekdlWW5feFAtLVVTay1UVTdoTlpJ?oc=5",
-            "날짜": "8/24"
-          },
-          {
             "이름": "The Sunday Guardian",
-            "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxPTmY3eVpRdk1keGNQN0ZmMDRZRFRBSlFTcXVoeDEzM3o3V05IdlByNEFjTXBaTndEd1F3RUtiTHNoU25QS1JjY1c0X0x4OVgyRWZqOFVGNFRXU3R3VFVySVYtQ1VVNGRVWTdSWnVQaXpHMzg4SU1VNC01Zk9CMnBHOVpaVG05R2JGX1F3eHBsai1UYVFwamZRbUdvelRGT0JsZHFrN1poQkxydGFSbWNCZ180R2o2NnA4cUo3T0Zac0d6MkZkMzVnN0UzNVBvNkRnQjY3V2x6SEpVNVcwbFlBZm1VUkowMFQzY0syYi04ZWxGcmJkdkRmZGNR0gH_AUFVX3lxTE5QUE5oSkt6WmZ4RTN2ZENGNFV0UGNQai12UW9PbmlQWU0zVFhKM2EzMGIxdVlHN3d2Vy05RE9LbHVkVS1BNHB6UWNUUERYU0ctVTFTQ3lNd2x6ZDk5cEtkdlpfWnZvcldxQVlrWnRuSEhfRFB0Q2NWWmcyeGhWdzRNQ09JS2FGVHRiRFVzNHZnS0xGVjVVOUpfdzVPZlBLQWN1S3dEaDU4SGR5NTVyc2hhc2U1Q2hLUU9adjRLV3dKbnpMSzZXeHNWdDZSQ3lwS0RTSi1yc3RlZWRRS2ExMlhuemZJU0NuTzRnMzNUeUtKem9xVmFQLWdFVWlLc3BLZw?oc=5",
+            "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxPWkpyMGlNQ0R5WkdIWTdzSV90NXFMNmxnUWFIb2V6OTMwb0xWVElBU1hya1FsTERzZmR2ZFJhZzlMakdMSHF3LXN5VnViZXZSWTJQcndNX2tkTWNmMFBsZ3Q4WUZBSUdjTnhJei1TOFZUMHBJVzRmcnphdWZoR1VfNnFJcDdiajBUQ1EwM1M0SFk5Z1VQQldvNDBSTGwyVkFGRzZEdDJURnctckJGS0NmRWUzcFpQMXVCNG5xSnh6bGotUjlBcmhOWmI2WEp3VllXdFkxdl9rWUdSdi1OWWU3emRmYm9DMGdTR0JvOTZUdFdUMWZ4Z1lBMkt2S2lnUdIB_gFBVV95cUxPWkpyMGlNQ0R5WkdIWTdzSV90NXFMNmxnUWFIb2V6OTMwb0xWVElBU1hya1FsTERzZmR2ZFJhZzlMakdMSHF3LXN5VnViZXZSWTJQcndNX2tkTWNmMFBsZ3Q4WUZBSUdjTnhJei1TOFZUMHBJVzRmcnphdWZoR1VfNnFJcDdiajBUQ1EwM1M0SFk5Z1VQQldvNDBSTGwyVkFGRzZEdDJURnctckJGS0NmRWUzcFpQMXVCNG5xSnh6bGotUjlBcmhOWmI2WEp3VllXdFkxdl9rWUdSdi1OWWU3emRmYm9DMGdTR0JvOTZUdFdUMWZ4Z1lBMkt2S2lnUQ?oc=5",
             "날짜": "8/24"
           }
         ]
       }
     ],
+    "오늘관전": [
+      "미국 이란 제재 구체화에 따른 국제 유가 및 원자재 ETF 변동성",
+      "코스닥 시장의 신규 상장주 급락 여파와 지수형 ETF 수급 변화",
+      "이번 주 잭슨홀 미팅과 PCE 물가 발표를 앞둔 관망세 여부"
+    ],
+    "top5": [
+      {
+        "순위": 1,
+        "제목": "미 국채 금리 상승세",
+        "숫자": "10년물 4.738% · 30년물 5.276%",
+        "영향": "미국 장기채 및 기술주 ETF 부담"
+      },
+      {
+        "순위": 2,
+        "제목": "호르무즈 봉쇄 위협",
+        "숫자": "WTI 85.54달러 (-1.75%)",
+        "영향": "원유 및 에너지 ETF 변동성 확대"
+      },
+      {
+        "순위": 3,
+        "제목": "코스닥 지수 급락",
+        "숫자": "코스닥 801.94 (-4.63%)",
+        "영향": "중소형주 및 코스닥 레버리지 타격"
+      },
+      {
+        "순위": 4,
+        "제목": "삼성전자 주가 희비",
+        "숫자": "삼성전자 +3.87% · 8%대 변동",
+        "영향": "단일종목 레버리지·인버스 변동성"
+      },
+      {
+        "순위": 5,
+        "제목": "새내기주 연쇄 폭락",
+        "숫자": "니어스랩 장중 -20%대",
+        "영향": "코스닥 IPO 및 중소형 테마 위축"
+      }
+    ],
     "etf_레이더": [
+      {
+        "구분": "시장 구조",
+        "제목": "소규모 ETF 무더기 상장폐지 리스크",
+        "사실": "순자산 50억 원 미만의 소규모 ETF들이 시장 양극화 심화로 인해 줄줄이 퇴출 위기에 직면해 있습니다.",
+        "출처": [
+          {
+            "이름": "",
+            "url": "https://data.krx.co.kr"
+          },
+          {
+            "이름": "서울경제",
+            "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBad1gxRU1OX2R5VXBfWjJpLTNoS0gwWWFtUzdKMFZhTVpaWXduQ2xDQUdZb016eENfZi12R1RtLXhwX0NuNWVtd0NQWmFUenJhZEtWZXBsRQ?oc=5",
+            "날짜": "8/23"
+          }
+        ],
+        "관찰": "투자자들은 괴리율이 크고 거래량이 적은 소형 테마형 ETF의 상장폐지 요건을 사전 점검할 필요가 있습니다.",
+        "이유": "",
+        "관련ETF": "",
+        "질문": "",
+        "차별점": ""
+      },
       {
         "구분": "자금 흐름",
         "제목": "미 비트코인 현물 ETF에 주간 19억 달러 순유입",
@@ -221,43 +243,22 @@
         "관련ETF": "",
         "질문": "",
         "차별점": ""
-      },
-      {
-        "구분": "레버리지",
-        "제목": "단일종목 레버리지 ETF 변동성 우려 및 거래 위축",
-        "사실": "연기금이 단일종목 레버리지 ETF의 하방 위험을 경고한 가운데 TIGER 삼성전자단일종목레버리지 ETF는 전일 -16.47% 등락률을 기록했습니다.",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "구글뉴스 레버리지",
-            "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1pUklyaFJkUHVtcktycEJUVGV3YzQ2dDFKZ0RUWGZ3c3RwWjBzamo3QVZBVHBKMTh3X2pIZTBWUUIzMzhJMTBTRG1xMVpSNjhOQXNOZEdKNUdCNTFsQnfSAWNBVV95cUxQdkluSmMxWGJOaXBoWnRXekxVUnltU25GaW5FQ2xsM3doWVlOVVBvN2FnS1lIdTl5QXdzZDR2ZUVYYldzMElCeHV4dDVqWFlYWmFPNTk0VnRTTmFhVGNlb21nc2s?oc=5",
-            "날짜": "8/23"
-          }
-        ],
-        "관찰": "과도한 변동성으로 인한 손실 우려가 커지면서 레버리지 상품군 전반으로 투자 심리가 위축되었을 가능성이 있습니다.",
-        "이유": "",
-        "관련ETF": "",
-        "질문": "",
-        "차별점": ""
       }
     ],
     "유튜브": [
       {
         "영상ID": "plJqUoaurSY",
         "핵심주제": "미국 레버리지 ETF 장기 투자법",
-        "훅": "부자 만드는 투자법 제시형",
+        "훅": "부자 만드는 투자법",
         "겹침": "보통",
-        "겹침근거": "레버리지 ETF 다루나 장기 적립식 관점"
+        "겹침근거": "레버리지 장기투자 다룸"
       },
       {
         "영상ID": "AW3MxeiIAg4",
-        "핵심주제": "노후 대비 고배당 ETF 투자",
-        "훅": "연 22% 배당 공포 마케팅형",
+        "핵심주제": "노후 대비 고배당 ETF 활용법",
+        "훅": "연 22% 연금 통장 배당",
         "겹침": "보통",
-        "겹침근거": "배당형 ETF 다루나 은퇴 은퇴자 타깃"
+        "겹침근거": "연금 배당형 ETF 주제"
       },
       {
         "영상ID": "5K_8QMV0Avw",
@@ -281,7 +282,18 @@
         "겹침근거": "절세 계좌 매매 전략 위주 분석"
       }
     ],
+    "댓글키워드": "레버리지 ETF 장기 투자 시 변동성 잠식 우려와 무한매수법의 실제 지속 가능성에 대한 질문이 많습니다.",
     "콘텐츠후보": [
+      {
+        "코너": "ETF 처방전",
+        "제목": "반도체 쏠림이 무섭다면? 채권혼합 50%형 ETF가 답이 될까",
+        "이유": "삼성전자·SK하이닉스 개별 변동성이 커진 상황에서 신규 상장하는 채권혼합형 ETF의 자산배분 효과를 분석합니다.",
+        "관련ETF": "채권혼합형 · 반도체 ETF",
+        "질문": "퇴직연금 계좌에서 주식 비중 제한을 피하기 위해 채권혼합형을 선택하는 것이 장기 수익률에 유리할까요?",
+        "차별점": "단순 상품 소개를 넘어 퇴직연금 규정 활용법과 변동성 제어 효과를 시뮬레이션으로 비교합니다.",
+        "사실": "",
+        "관찰": ""
+      },
       {
         "코너": "ETF 처방전",
         "제목": "국채 금리 4.7% 돌파, 내 미국 장기채 ETF 물타기 해도 될까?",
@@ -291,54 +303,37 @@
         "차별점": "단순 보유 권유가 아닌 금리 고점 시그널을 판단하는 구체적 지표 제시",
         "사실": "",
         "관찰": ""
-      },
-      {
-        "코너": "ETF 처방전",
-        "제목": "변동성 장세 대응: '단일종목 레버리지' vs '채권혼합형' 퇴직연금 전략",
-        "이유": "단일종목 레버리지 변동성 경고와 채권혼합형 신규 상장이 동시에 부각됨.",
-        "관련ETF": "반도체 · 레버리지 · 채권혼합",
-        "질문": "퇴직연금 계좌에서 개별주식 노출을 유지하며 변동성을 낮추는 ETF 조합은 무엇인가요?",
-        "차별점": "위험성 경고에 그치지 않고 계좌 유형별 실질적 대안을 비교 제시",
-        "사실": "",
-        "관찰": ""
       }
     ],
-    "오늘관전": [
-      "장중 3% 넘게 급락 중인 코스피의 외국인 수급 공세 지속 여부",
-      "미국의 대이란 제재 구체화에 따른 호르무즈 해협 긴장과 유가 추이",
-      "주 후반 예정된 엔비디아 실적 발표를 앞둔 반도체 ETF 변동성"
-    ],
+    "오늘의개념": {
+      "용어": "채권혼합형 ETF",
+      "연결": "한투운용의 삼성전자·SK하이닉스 채권혼합 50% 상품 상장 소식에서 비롯되었습니다.",
+      "설명": "주식과 채권을 동시에 편입하는 상품입니다. 퇴직연금(IRP) 계좌는 위험자산 투자 한도가 70%로 제한되지만, 주식 비중이 50% 이하인 채권혼합형 ETF는 안전자산으로 분류되어 계좌의 100%까지 꽉 채워 매수할 수 있습니다."
+    },
     "체크포인트": [
-      {
-        "유형": "일정",
-        "때": "8/25 (화)",
-        "내용": "ACE 삼성전자SK하이닉스플러스채권혼합50 ETF 신규 상장"
-      },
       {
         "유형": "확인",
         "때": "이번 주",
-        "내용": "엔비디아 실적 발표 및 7월 PCE 가격지수 추이"
+        "내용": "미국 이란 제재 강도 및 호르무즈 해협 통항 긴장 추이"
       },
       {
         "유형": "확인",
         "때": "상시",
-        "내용": "호르무즈 해협 통항 제한 및 지정학적 리스크 현실화 여부"
+        "내용": "코스닥 시장 내 신규 상장주 급락세 진정 여부"
       },
       {
         "유형": "일정",
         "때": "8/25 (화)",
-        "내용": "ACE 삼전닉스플러스채권50 ETF 상장"
+        "내용": "ACE 삼성전자SK하이닉스플러스채권혼합50 상장"
+      },
+      {
+        "유형": "일정",
+        "때": "8/26 (수) 21:30",
+        "내용": "미국 2분기 GDP 잠정치 발표"
       }
     ],
-    "오늘의개념": {
-      "용어": "변동성 잠식 (Volatility Drag)",
-      "연결": "레버리지 ETF 장기 투자 시 발생할 수 있는 자산 감소 현상을 설명하기 위해 언급됨",
-      "설명": "기초자산이 횡보할 때 레버리지 ETF의 가치가 복리 효과와 음의 복리 효과로 인해 점차 갉아먹히는 현상입니다. 예를 들어 지수가 하루 10% 오르고 다음 날 10% 내리면 원금은 99가 되지만, 2배 레버리지는 하루 20% 오르고 다음 날 20% 내려 원금이 96으로 더 크게 감소합니다."
-    },
-    "시장국면": null,
-    "댓글키워드": "레버리지 ETF 장기 투자 시 변동성 잠식 우려와 무한매수법 실제 수익률 질문",
     "카톡": {
-      "1": "☀️ 8/24 브리핑\n1. VIX 하락 | 15.13 (-5.50%)\n2. 코스닥 하락 | 801.94 (-4.63%)\n3. WTI 하락 | 85.60 (-1.68%)\n4. 미 국채 금리 상승세 지속 | 10년물 4.738% (+4.2bp)\n5. 대이란 제재 및 호르무즈 위협 | WTI 85.62달러 (-1.65%)"
+      "1": "☀️ 8/24 브리핑\n1. 미 국채 금리 상승세 | 10년물 4.738% · 30년물 5.276%\n2. 호르무즈 봉쇄 위협 | WTI 85.54달러 (-1.75%)\n3. 코스닥 지수 급락 | 코스닥 801.94 (-4.63%)\n4. 삼성전자 주가 희비 | 삼성전자 +3.87% · 8%대 변동\n5. 새내기주 연쇄 폭락 | 니어스랩 장중 -20%대"
     }
   }
 }
