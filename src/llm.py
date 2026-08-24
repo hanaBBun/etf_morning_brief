@@ -184,6 +184,17 @@ ETF 레이더와 시장브리핑은 입력 데이터에 표시된 실제 기준�
 그런 섹션은 브리핑에서 자동으로 사라집니다.
 
 데이터에 없는 수치를 지어내지 마세요. 모르면 그 항목을 비웁니다.
+
+■ 규칙 10 — 시장 해설은 숫자 나열이 아니라 인과의 흐름으로 씁니다
+시장브리핑의 원인은 '확인된 사건·발표 → 금리·환율·업종·수급 중 전달 경로
+→ 지수 결과' 순서로 연결하세요. 국내 증시는 외국인·기관 수급, 지수 기여 대형주,
+상승·하락 업종 중 입력에 실제로 있는 근거를 우선합니다. 미국 기사만으로 한국 시장
+원인을 대신하지 마세요. 기사에 없는 그럴듯한 이유를 채우지 마세요.
+
+■ 규칙 11 — '현재 시장 국면'은 변화가 있을 때만 씁니다
+매일 비슷한 위험선호·금리부담 설명을 반복하지 마세요. 전일 대비 국면 전환, 한·미의
+뚜렷한 디커플링, 금리·달러·유가 등 자산 간 이례적 동행처럼 새로 설명할 변화가 있고
+최근 기사 근거가 2건 이상일 때만 `시장국면`을 작성합니다. 아니면 null 로 답하세요.
 """
 
 SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍스트는 넣지 마세요.
@@ -197,6 +208,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 (KRX·야후파이낸스처럼 기사가 아닌 출처만 url 을 직접 써도 됩니다.)
 
 {
+  "시장국면": null,
   "시장브리핑": [
     {"시장": "미국",
      "제목": "결과와 핵심 원인이 함께 드러나는 제목",
@@ -243,7 +255,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   "콘텐츠후보": [
     {"코너": "ETF 반응형|ETF 처방전|요즘하태형|신상탐구형|ETF 어깨형|아는형의 아는형",
      "제목": "실제 쓸 수 있는 영상 제목안",
-     "이유": "이 주제를 제안하는 이유 한 줄. 반드시 최근 데이터 근거.",
+     "이유": "이 주제를 제안하는 이유 한 줄. 최근 데이터 근거와 3~5일 뒤 업로드해도 의미가 남는지 반영.",
      "관련ETF": "나스닥100 · 반도체 · AI 처럼 유형으로",
      "질문": "출연자에게 물어볼 핵심 질문 하나. 물음표로 끝낼 것.",
      "차별점": "경쟁 채널과 소재가 겹치면 우리가 달리 볼 각도. 없으면 빈 문자열."}
@@ -268,6 +280,10 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
     "1": "빈 문자열. 국내·미국·ETF 핵심 1·2·3은 후처리에서 자동 생성."
   }
 }
+
+`시장국면`을 쓸 때만 다음 형식으로 바꾸세요.
+{"제목":"국면 변화 12~24자", "설명":"이전과 달라진 점과 함께 볼 자산을 2~3문장",
+ "출처":[{"이름":"매체명","id":"n1"},{"이름":"매체명","id":"n2"}]}
 
 ■ 분량 예산 — 이 브리핑 전체가 공백 포함 2,200자를 넘으면 실패입니다.
 3분 안에 읽히는 것이 다른 무엇보다 우선입니다. 아래 글자 수를 지키세요.
@@ -669,6 +685,8 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
         g: [_slim_quote(r) for r in rows if r.get("종가") is not None]
         for g, rows in (data.get("지표") or {}).items()
     }
+    if mode == "weekly" and data.get("주간_대표흐름"):
+        d["주간_대표흐름"] = data["주간_대표흐름"]
     d["수급"] = data.get("수급") or []
 
     d["종목_후보_국내"] = [
@@ -890,6 +908,9 @@ def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
         lambda x: f"{x.get('때')}|{x.get('내용')}", 4)
     result["오늘의개념"] = (fresh.get("오늘의개념") or cached.get("오늘의개념")
                             or fallback["오늘의개념"])
+    # 국면 카드는 '오늘 새로 감지된 변화'만 허용한다. 전날 캐시를 재사용하면
+    # 매일 같은 문구가 반복되므로 fresh 결과만 쓴다.
+    result["시장국면"] = fresh.get("시장국면")
     result["댓글키워드"] = fresh.get("댓글키워드") or cached.get("댓글키워드") or ""
     result["카톡"] = _build_daily_kakao(result, data,
                                       int((cfg.get("카카오") or {}).get("글자수_제한", 195)))
@@ -918,6 +939,8 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
                 "\n이 브리핑의 역할은 '지난 한 주 복기'입니다. 국내 투자자 해외주식 주간 수급,\n"
                 "ETF 주간 수익률·자금흐름, 순자산 순위 변동, 한 주 지수 흐름을 중심으로\n"
                 "무엇이 움직였고 왜 움직였는지 정리한 뒤 다음 주 일정을 연결하세요.\n"
+                "입력의 `주간_대표흐름`은 대표 자산 1일·1주·1개월 비교표로 화면에 따로 표시됩니다.\n"
+                "본문에서 표의 숫자를 전부 반복하지 말고 기간별 방향이 달라진 핵심만 해설하세요.\n"
                 "ETF 뉴스 6선은 목요일 전달문으로 분리했으므로 여기서는 빈 배열로 두세요.\n"
             )
         elif data.get("브리핑역할") == "이번 주 준비":
@@ -1548,6 +1571,45 @@ def _topup_top5(d: dict) -> None:
     d["top5"] = top[:5]
 
 
+def _topic_words(value: Any) -> set[str]:
+    """제목의 브랜드·조사 차이를 무시하고 같은 뉴스 주제를 찾는다."""
+    stop = {"etf", "상승", "하락", "급등", "급락", "관련", "주목", "전망",
+            "국내", "해외", "시장", "상품", "출시", "상장", "뉴스", "자금",
+            "유입", "유출", "억원"}
+    return {w.lower() for w in re.findall(r"[가-힣A-Za-z0-9]+", str(value or ""))
+            if len(w) >= 2 and w.lower() not in stop}
+
+
+def _dedupe_topics(items: list[dict]) -> list[dict]:
+    """같은 링크 또는 핵심어가 겹치는 레이더·일정을 한 번만 남긴다."""
+    out: list[dict] = []
+    links: set[str] = set()
+    wordsets: list[set[str]] = []
+    for item in items:
+        item_links = {str(s.get("url")) for s in (item.get("출처") or [])
+                      if isinstance(s, dict) and s.get("url")}
+        words = _topic_words(f"{item.get('제목', '')} {item.get('사실', '')}")
+        duplicate_words = any(len(words & old) >= 2 and
+                              len(words & old) / max(min(len(words), len(old)), 1) >= .55
+                              for old in wordsets)
+        if (item_links and item_links & links) or duplicate_words:
+            continue
+        out.append(item)
+        links |= item_links
+        wordsets.append(words)
+    return out
+
+
+def _qualify_retirement_claim(text: Any) -> str:
+    """상품별 공식 확인 없는 퇴직연금 가능 여부를 단정하지 않는다."""
+    value = str(text or "")
+    risky = ("비위험자산", "비위험 자산", "100% 편입", "100% 투자",
+             "퇴직연금에서 전액", "연금계좌에서 전액")
+    if any(x in value for x in risky):
+        return "퇴직연금 편입 한도와 위험자산 분류는 상품별 투자설명서·판매사 기준 확인이 필요합니다."
+    return value
+
+
 def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
     d = _as_dict(d) or {}
     data = data or {}
@@ -1603,9 +1665,25 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         for c in d.get(key) or []:
             if isinstance(c, dict):
                 c["출처"] = _resolve_srcs(c.get("출처"), idx)
+    regime = d.get("시장국면")
+    if isinstance(regime, dict):
+        regime["출처"] = _resolve_srcs(regime.get("출처"), idx)
+        fresh = [s for s in regime["출처"] if s.get("url")]
+        if not regime.get("제목") or not regime.get("설명") or len(fresh) < 2:
+            d["시장국면"] = None
+        else:
+            regime["제목"] = _clip(regime["제목"], 40)
+            regime["설명"] = _clip(regime["설명"], 240)
+    else:
+        d["시장국면"] = None
 
     # ETF 레이더 — 빈 항목·필러 제거, 오래된 근거 제거, 관찰 면책 문장 정리
     ages = _article_age(data)
+    if d.get("시장국면"):
+        fresh_regime_sources = [s for s in d["시장국면"].get("출처", [])
+                                if s.get("url") in ages and ages[s["url"]] <= STALE_HOURS]
+        if len(fresh_regime_sources) < 2:
+            d["시장국면"] = None
     d["시장브리핑"] = _normalize_market_sources(
         _strip_stale_sources(d["시장브리핑"], ages), ages)
     present = {b.get("시장") for b in d["시장브리핑"]}
@@ -1621,8 +1699,10 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     radar = _limit_product_items(radar, keep=1)
     single_stock_context = _has_single_stock_leverage_news(data)
     radar = [_fix_etf_classification(r, single_stock_context) for r in radar]
-    radar = [r for r in radar if not _has_hype(r) and not _mixes_turnover_and_flow(r)][:radar_max]
+    radar = [r for r in radar if not _has_hype(r) and not _mixes_turnover_and_flow(r)]
+    radar = _dedupe_topics(radar)[:radar_max]
     for r in radar:
+        r["사실"] = _qualify_retirement_claim(r.get("사실"))
         r["관찰"] = _trim_hedge(r.get("관찰", ""))
         _warn_pr(r)
     d["etf_레이더"] = radar
@@ -1638,6 +1718,8 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     plans = [_fix_etf_classification(p, single_stock_context) for p in plans]
     d["콘텐츠후보"] = [p for p in plans
                         if not _has_hype(p) and not _mixes_turnover_and_flow(p)][:2]
+    for p in d["콘텐츠후보"]:
+        p["이유"] = _qualify_retirement_claim(p.get("이유"))
 
     # 체크포인트 — 일정/확인 두 유형. 구버전 키('일정')도 받아준다.
     cps = d.get("체크포인트") or d.get("일정") or []
@@ -1645,7 +1727,15 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     for c in cps:
         if c.get("유형") not in ("일정", "확인"):
             c["유형"] = "일정" if any(ch.isdigit() for ch in str(c.get("때", ""))) else "확인"
-    d["체크포인트"] = cps[:4]
+    seen_cp = set()
+    d["체크포인트"] = []
+    for c in cps:
+        key = re.sub(r"\s+", "", str(c.get("내용") or "")).lower()
+        if key and key not in seen_cp:
+            seen_cp.add(key)
+            d["체크포인트"].append(c)
+        if len(d["체크포인트"]) == 4:
+            break
     d.pop("일정", None)
 
     concept = d.get("오늘의개념")

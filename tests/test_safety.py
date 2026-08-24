@@ -167,6 +167,45 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(main._brief_identity(monday, "daily")[1], "이번 주 준비")
         self.assertEqual(main._brief_identity(monday, "weekly")[1], "지난 한 주 복기")
 
+    def test_period_comparison_is_weekly_only(self):
+        data = {"주간_대표흐름": [{"이름": "코스피", "1일": 1.0, "1주": -2.0,
+                                      "1개월": 3.0, "기준일": "2026-08-21"}]}
+        self.assertEqual(render._weekly_table(data, "daily"), [])
+        weekly = render._weekly_table(data, "weekly")
+        self.assertEqual(weekly[0]["1주"], "-2.00%")
+
+    def test_market_regime_requires_two_fresh_article_sources(self):
+        raw = {"시장국면": {"제목": "국면 전환", "설명": "달라진 흐름",
+                              "출처": [{"id": "n1"}, {"id": "n2"}]}}
+        data = {"뉴스": {"국내": [
+            {"링크": "https://example.com/1", "출처": "매체1", "경과시간": 1},
+            {"링크": "https://example.com/2", "출처": "매체2", "경과시간": 2},
+        ]}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertEqual(out["시장국면"]["제목"], "국면 전환")
+        data["뉴스"]["국내"][1]["경과시간"] = 80
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertIsNone(out["시장국면"])
+
+    def test_radar_semantic_duplicates_are_removed(self):
+        raw = {"etf_레이더": [
+            {"제목": "단일종목 레버리지 ETF 규제", "사실": "단일종목 레버리지 규제 강화", "출처": []},
+            {"제목": "레버리지 ETF 규제 강화", "사실": "단일종목 레버리지 규제 논의", "출처": []},
+        ]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {"최대_항목수": 8}},
+                               {"뉴스": {}})
+        self.assertEqual(len(out["etf_레이더"]), 1)
+
+    def test_retirement_claim_is_qualified_without_product_document(self):
+        raw = {"etf_레이더": [{"제목": "퇴직연금 ETF", "사실": "비위험자산으로 100% 편입 가능",
+                                 "관찰": "", "출처": []}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        self.assertIn("상품별", out["etf_레이더"][0]["사실"])
+
+    def test_youtube_channel_types_separate_official_and_general(self):
+        self.assertEqual(render._channel_type("KODEX", True), "운용사 공식")
+        self.assertEqual(render._channel_type("삼프로TV", False), "일반 경제")
+
     def test_etf_flow_deduplicates_themes_and_separates_leverage(self):
         rows = [{"이름": "KODEX 반도체", "등락률": 5.0},
                 {"이름": "TIGER 반도체", "등락률": 4.8},

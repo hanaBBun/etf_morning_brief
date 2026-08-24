@@ -38,11 +38,15 @@ def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
                     if pub < cutoff:
                         stale += 1
                         continue
+                    # 검색 피드의 설정명은 매체명이 아니다. Google News가
+                    # 제공하는 원 발행사 이름이 있으면 그것을 우선한다.
+                    source = getattr(getattr(e, "source", None), "title", "")
+                    publisher = _clean(source) or src["이름"]
                     items.append({
                         "제목": _clean(getattr(e, "title", "")),
                         "요약": _clean(getattr(e, "summary", ""))[:400],
                         "링크": getattr(e, "link", ""),
-                        "출처": src["이름"],
+                        "출처": publisher,
                         "날짜": pub.strftime("%Y-%m-%d") if pub else "",
                         "시각": pub.strftime("%m/%d %H:%M") if pub else "",
                         "경과시간": _elapsed_hours(pub),

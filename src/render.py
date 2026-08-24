@@ -179,8 +179,31 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
             "겹침근거": n.get("겹침근거") or auto_reason,
             "겹침등급": OVERLAP_CLASS.get(ov, "low"),
             "ETF관련": bool(v.get("ETF관련")),
+            "채널유형": _channel_type(v.get("채널", ""), bool(v.get("ETF관련"))),
         })
     return out
+
+
+def _channel_type(channel: str, etf_related: bool) -> str:
+    official = ("KODEX", "스마트 타이거", "RISE ETF", "미래에셋 스마트머니")
+    if any(name.lower() in str(channel).lower() for name in official):
+        return "운용사 공식"
+    return "ETF 경쟁" if etf_related else "일반 경제"
+
+
+def _weekly_table(data: dict, mode: str) -> list[dict]:
+    """기간 비교는 토요일 주간판에서만 노출한다."""
+    if mode != "weekly":
+        return []
+    rows = []
+    for r in data.get("주간_대표흐름") or []:
+        row = {"이름": r.get("이름", ""), "기준일": _md(r.get("기준일", ""))}
+        for key in ("1일", "1주", "1개월"):
+            value = r.get(key)
+            row[key] = "—" if value is None else f"{float(value):+.2f}%"
+            row[f"{key}방향"] = _dir(value)
+        rows.append(row)
+    return rows
 
 
 YT_NOTICE = {
@@ -236,6 +259,9 @@ def _sources(data: dict, ai: dict) -> list[dict]:
             for s in c.get("출처") or []:
                 if isinstance(s, dict):
                     put(s.get("이름", ""), s.get("url", ""), s.get("날짜", ""))
+    for s in (ai.get("시장국면") or {}).get("출처", []):
+        if isinstance(s, dict):
+            put(s.get("이름", ""), s.get("url", ""), s.get("날짜", ""))
     # 실제 카드에서 인용한 기사만 출처로 표시한다. 단순히 RSS에서 수집했다는
     # 이유로 매체명을 나열하면 독자가 해당 문장의 근거로 오해할 수 있다.
     if (data.get("유튜브") or {}).get("급상승"):
@@ -253,6 +279,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "브리핑역할": data.get("브리핑역할", ""),
         "수집상태": data.get("수집상태", {}),
         "한눈에": _glance(data),
+        "주간대표흐름": _weekly_table(data, mode),
         "ETF흐름판": (data.get("ETF_후보") or {}).get("흐름판") or {},
         "유튜브영상": _youtube(data, ai),
         "유튜브안내": _youtube_notice(data),

@@ -104,6 +104,35 @@ def collect_indicators(cfg: dict) -> dict[str, list[dict]]:
     return out
 
 
+WEEKLY_COMPARE = {
+    "코스피", "코스닥", "S&P 500", "나스닥 종합", "미 10년물", "WTI", "금"
+}
+
+
+def collect_weekly_performance(cfg: dict) -> list[dict]:
+    """토요일판에만 쓸 대표 자산 1일·1주·1개월 변화율."""
+    import yfinance as yf
+
+    picked = [it for group in (cfg.get("지표") or {}).values()
+              for it in group if it.get("이름") in WEEKLY_COMPARE]
+    out = []
+    for item in picked:
+        try:
+            closes = yf.Ticker(item["티커"]).history(
+                period="3mo", interval="1d")["Close"].dropna()
+            if len(closes) < 22:
+                continue
+            last = float(closes.iloc[-1])
+            def ret(back: int) -> float:
+                base = float(closes.iloc[-1 - back])
+                return (last / base - 1) * 100 if base else 0.0
+            out.append({"이름": item["이름"], "1일": ret(1), "1주": ret(5),
+                        "1개월": ret(21), "기준일": str(closes.index[-1].date())})
+        except Exception as e:  # noqa: BLE001
+            log.warning("주간 흐름 %s 조회 실패: %s", item.get("이름"), e)
+    return out
+
+
 def collect_us_movers(cfg: dict, universe: list[str] | None = None) -> list[dict]:
     """미국 개별 종목 중 편성 기준을 넘긴 것만 반환.
 

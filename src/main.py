@@ -113,6 +113,8 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
     log.info("2/6 글로벌 지표 수집")
     try:
         data["지표"] = market.collect_indicators(cfg)
+        if mode == "weekly":
+            data["주간_대표흐름"] = market.collect_weekly_performance(cfg)
         data["수집상태"]["Yahoo Finance"] = "정상"
     except Exception as e:  # noqa: BLE001
         log.error("글로벌 지표 실패: %s", e)

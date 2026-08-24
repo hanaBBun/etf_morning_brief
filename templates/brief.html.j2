@@ -72,6 +72,13 @@
   .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--ink3)}
   .glabel{font-size:10.5px;font-weight:700;color:var(--ink3);letter-spacing:.08em;
           padding:11px 0 2px;grid-column:1/-1}
+  .period{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);
+          border-radius:10px;overflow:hidden;font-size:12.5px;margin:10px 0}
+  .period th,.period td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right}
+  .period th:first-child,.period td:first-child{text-align:left}.period tr:last-child td{border-bottom:0}
+  .regime{background:linear-gradient(135deg,rgba(124,108,240,.10),var(--surface));
+          border:1px solid rgba(124,108,240,.35);border-radius:10px;padding:14px 16px;margin:12px 0}
+  .regime h3{margin:0 0 6px;font-size:15px}.regime p{margin:0;color:var(--ink2);font-size:13px}
 
   /* ── 시장 스토리 ─────────────────────────── */
   .story{background:var(--surface);border:1px solid var(--line);border-radius:10px;
@@ -243,7 +250,7 @@
 {% if ai.top5 %}
 <h2>🎯 오늘 알아야 할 것<span class="tip" tabindex="0">?<span class="bubble">
   그날 시장에서 가장 중요한 순서대로 최대 5개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.
-  자세한 설명은 아래 '핵심 이슈'에서 한 번만 합니다.</span></span>
+  자세한 설명은 아래 '한·미 시장과 글로벌 변수'에서 한 번만 합니다.</span></span>
   <span class="tag">30초 스캔</span></h2>
 <div class="top5">
   {% for r in ai.top5 %}
@@ -274,6 +281,18 @@
   </div>
   {% endfor %}
 </div>
+{% endif %}
+
+{% if 주간대표흐름 %}
+<h2>🗓️ 대표 자산 기간별 흐름 <span class="tag">토요일만</span></h2>
+<table class="period"><thead><tr><th>대표 자산</th><th>1일</th><th>1주</th><th>1개월</th></tr></thead><tbody>
+{% for r in 주간대표흐름 %}<tr><td>{{ r.이름 }}</td><td class="{{ r['1일방향'] }}">{{ r['1일'] }}</td><td class="{{ r['1주방향'] }}">{{ r['1주'] }}</td><td class="{{ r['1개월방향'] }}">{{ r['1개월'] }}</td></tr>{% endfor %}
+</tbody></table>
+{% endif %}
+
+{% if ai.시장국면 %}
+<div class="regime"><div class="marketbadge">변화 감지</div><h3>{{ ai.시장국면.제목 }}</h3><p>{{ ai.시장국면.설명 }}</p>
+{% if ai.시장국면.출처 %}<div class="src">출처 · {% for s in ai.시장국면.출처 %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>
 {% endif %}
 
 {# ─────────── 3. 시장 스토리 ─────────── #}
@@ -369,7 +388,7 @@
       {% if v.겹침 %}<span class="ov {{ v.겹침등급 }}">겹침 {{ v.겹침 }}</span>{% endif %}
     </div>
     <div class="meta">{{ v.채널 }} · 조회 {{ v.조회수표시 }} · 업로드 {{ v.경과 }}
-      · {% if v.ETF관련 %}ETF 주제{% else %}일반 경제{% endif %}
+      · {{ v.채널유형 }}
       {% if v.겹침근거 %} · {{ v.겹침근거 }}{% endif %}</div>
     <div class="row">
       {% if v.핵심주제 %}<div class="k">핵심 주제</div><div class="v">{{ v.핵심주제 }}</div>{% endif %}
