@@ -395,7 +395,7 @@ def notable_stocks(day: str, cfg: dict) -> list[dict]:
 # ─────────────────────────────────────────────
 # ETF 레이더
 # ─────────────────────────────────────────────
-def etf_radar(day: str, cfg: dict, mode: str = "daily") -> dict[str, Any]:
+def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = False) -> dict[str, Any]:
     """ETF 뉴스 후보와 유동성 필터를 거친 수익률 흐름판을 함께 수집한다."""
     s = _stock()
     rule = cfg.get("ETF_레이더", {})
@@ -409,14 +409,17 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily") -> dict[str, Any]:
     }
 
     try:
-        try:
-            df = s.get_etf_ohlcv_by_ticker(day)
-        except Exception as e:  # noqa: BLE001
-            log.warning("KRX ETF 전체 시세 호출 실패: %s", e)
-            df = None
         fallback_names = {}
-        if df is None or df.empty:
+        if _force_naver:
             df, fallback_names = _naver_etf_snapshot()
+        else:
+            try:
+                df = s.get_etf_ohlcv_by_ticker(day)
+            except Exception as e:  # noqa: BLE001
+                log.warning("KRX ETF 전체 시세 호출 실패: %s", e)
+                df = None
+            if df is None or df.empty:
+                df, fallback_names = _naver_etf_snapshot()
         if df is None or df.empty:
             log.warning("ETF 전체 시세가 비어 흐름판을 생성하지 못했습니다")
             return result
@@ -545,4 +548,13 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily") -> dict[str, Any]:
 
     for k in ("전일_순매수", "전일_순매도", "거래량_급증"):
         result[k] = result[k][:8]
+    flow = result.get("흐름판") or {}
+    log.info("ETF 흐름판 %s 상승 %d개·하락 %d개·고변동 %d개",
+             flow.get("기간", "-"), len(flow.get("상승") or []),
+             len(flow.get("하락") or []), len(flow.get("고변동상품") or []))
+    if not _force_naver and not (flow.get("상승") or flow.get("하락")):
+        log.warning("KRX 기반 ETF 흐름판이 비어 네이버 금융 보조 시세로 다시 계산합니다")
+        fallback = etf_radar(day, cfg, mode, _force_naver=True)
+        if (fallback.get("흐름판") or {}).get("상승") or (fallback.get("흐름판") or {}).get("하락"):
+            result["흐름판"] = fallback["흐름판"]
     return result
