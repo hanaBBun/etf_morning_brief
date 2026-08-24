@@ -95,6 +95,10 @@ TOP 5에는 이슈명·숫자·ETF 영향만, 상세 해설은 '오늘 시장은
 시장이 움직인 '원인'을 설명하려면 반드시 그 원인을 다룬 최근 기사 id를 함께 붙입니다.
 특히 투자주체별 수급, ETF 순매수, 국채금리, 환율·원자재, 신규 ETF,
 그리고 "무엇이 주가를 움직였다"고 말하는 내용은 출처가 중요합니다.
+입력에 같은 사실을 다룬 기사가 여러 개면 한국 독자가 자주 보는 종합·경제지
+(연합뉴스·뉴시스·한국경제·매일경제·머니투데이·서울경제·파이낸셜뉴스·뉴스핌·
+아시아경제·한국경제TV)를 우선합니다. 다만 매체 인지도보다 원문 근거의 직접성과
+기사의 최신성이 우선이며, 보도자료를 받아쓴 홍보 기사는 시장 원인 근거로 쓰지 마세요.
 
 ★ ETF 레이더는 출처를 반드시 두 종류로 답니다.
   ① 데이터 출처 (KRX 등) — 숫자의 근거
@@ -709,6 +713,8 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
     # ETF시장(시장 구조·제도·자금 이동)을 ETF(상품 소식)보다 많이 넣는다.
     # 레이더가 운용사 홍보 기사로 채워지던 문제의 직접적인 원인이 입력 편중이었다.
     d["뉴스"] = {
+        "주요언론": _slim_news(news.get("주요언론"), 10),
+        "증권": _slim_news(news.get("증권"), 10),
         "ETF시장": _slim_news(news.get("ETF시장"), 9),
         "ETF": _slim_news(news.get("ETF"), 6),
         "레버리지": _slim_news(news.get("레버리지"), 3),
@@ -740,7 +746,8 @@ def _payload(data: dict[str, Any], mode: str = "daily") -> str:
     text = json.dumps(compact, ensure_ascii=False, default=str)
     # JSON 중간을 자르면 깨진 입력이 된다. 예산을 넘으면 우선순위가 낮은
     # 뉴스부터 기사 한 건 단위로 제거해 항상 유효한 JSON을 유지한다.
-    trim_order = ("보도자료", "ETF", "지수", "레버리지", "ETF시장", "세계정세", "국제", "국내")
+    trim_order = ("보도자료", "ETF", "지수", "레버리지", "ETF시장", "증권",
+                  "주요언론", "세계정세", "국제", "국내")
     removed = 0
     while len(text) > MAX_PAYLOAD_CHARS:
         news = compact.get("뉴스") or {}

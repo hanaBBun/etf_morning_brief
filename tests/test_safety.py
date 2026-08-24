@@ -422,6 +422,13 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(hours, 31)
         self.assertIn("08/20 00:00", label)
 
+    def test_familiar_publishers_receive_higher_source_tier(self):
+        cfg = {"뉴스_편성": {"핵심언론사": ["한국경제", "머니투데이"],
+                              "보조언론사": ["전자신문"]}}
+        self.assertEqual(news._source_tier("한국경제 증권", cfg), 2)
+        self.assertEqual(news._source_tier("전자신문", cfg), 1)
+        self.assertEqual(news._source_tier("알 수 없는 매체", cfg), 0)
+
     def test_unsourced_market_cause_is_hidden_not_replaced_with_notice(self):
         raw = {"시장브리핑": [{"시장": "국내", "제목": "국내 증시", "결과": "코스피 상승",
                                  "원인": "확인되지 않은 추정", "ETF연결": "코스피200 확인",

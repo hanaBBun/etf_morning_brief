@@ -54,13 +54,28 @@ def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
                     })
             except Exception as ex:  # noqa: BLE001
                 log.warning("RSS 실패 %s: %s", src.get("이름"), ex)
-        items.sort(key=lambda r: r["_ts"], reverse=True)
+        # 같은 수집 기간 안에서는 국내 독자가 익숙한 주요 경제·종합지를 먼저
+        # 보여준다. 비선호 매체를 차단하지는 않아 특종·단독을 놓치지 않는다.
+        items.sort(key=lambda r: (_source_tier(r.get("출처", ""), cfg), r["_ts"]),
+                   reverse=True)
         for it in items:
             it.pop("_ts", None)
         out[group] = items[:limit]
         log.info("뉴스 %s: %d건 수집 (날짜없음 %d건·기간초과 %d건 제외, 최근 %d시간)",
                  group, len(out[group]), undated, stale, hours)
     return out
+
+
+def _source_tier(name: str, cfg: dict) -> int:
+    """설정한 매체 우선순위. 2=핵심, 1=전문·보조, 0=그 밖의 매체."""
+    clean = str(name or "").lower().replace(" ", "")
+    rules = cfg.get("뉴스_편성") or {}
+    for tier, key in ((2, "핵심언론사"), (1, "보조언론사")):
+        for publisher in rules.get(key) or []:
+            token = str(publisher).lower().replace(" ", "")
+            if token and token in clean:
+                return tier
+    return 0
 
 
 def daily_window() -> tuple[int, str]:

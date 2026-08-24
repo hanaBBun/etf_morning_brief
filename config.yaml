@@ -66,6 +66,11 @@ ETF_레이더:
 # 뉴스 소스 (RSS)
 # ─────────────────────────────────────────────
 뉴스:
+  # 네이버 뉴스 검색에서 익숙하게 접하는 주요 매체를 한 번 더 넓게 찾습니다.
+  # 실제 화면에는 '구글뉴스 주요언론'이 아니라 RSS가 제공한 원 발행사명이 표시됩니다.
+  주요언론:
+    - { 이름: "구글뉴스 주요 경제지", url: "https://news.google.com/rss/search?q=(site%3Ahankyung.com%20OR%20site%3Amk.co.kr%20OR%20site%3Amt.co.kr%20OR%20site%3Asedaily.com%20OR%20site%3Afnnews.com)%20(%EC%A6%9D%EC%8B%9C%20OR%20ETF%20OR%20%EA%B8%88%EB%A6%AC)%20when%3A3d&hl=ko&gl=KR&ceid=KR%3Ako" }
+    - { 이름: "구글뉴스 주요 종합지", url: "https://news.google.com/rss/search?q=(site%3Ayna.co.kr%20OR%20site%3Anewsis.com%20OR%20site%3Anewspim.com%20OR%20site%3Aasiae.co.kr%20OR%20site%3Awowtv.co.kr)%20(%EC%A6%9D%EC%8B%9C%20OR%20ETF%20OR%20%EA%B2%BD%EC%A0%9C)%20when%3A3d&hl=ko&gl=KR&ceid=KR%3Ako" }
   국내:
     - { 이름: "연합뉴스 경제",   url: "https://www.yna.co.kr/rss/economy.xml" }
     - { 이름: "한국경제 증권",   url: "https://www.hankyung.com/feed/finance" }
@@ -120,6 +125,38 @@ ETF_레이더:
     - { 이름: "구글뉴스 ETF상장일정", url: "https://news.google.com/rss/search?q=ETF%20%EC%83%81%EC%9E%A5%20%EC%98%88%EC%A0%95%20OR%20%EC%83%81%EC%9E%A5%EC%9D%BC%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko" }
 
   기사_최대개수: 40
+
+# 기사 주제가 같을 때의 편성 우선순위입니다. 목록 밖 매체도 특종·직접 근거가
+# 있으면 수집하되, 핵심 브리핑을 생소한 매체 기사만으로 채우지 않게 합니다.
+뉴스_편성:
+  핵심언론사:
+    - 연합뉴스
+    - 뉴시스
+    - 한국경제
+    - 한경
+    - 매일경제
+    - 머니투데이
+    - 서울경제
+    - 파이낸셜뉴스
+    - 뉴스핌
+    - 아시아경제
+    - 한국경제TV
+    - 동아일보
+    - 조선일보
+    - 아주경제
+    - 이코노미스트
+    - 데일리안
+  보조언론사:
+    - 전자신문
+    - IT조선
+    - 바이라인네트워크
+    - 한국금융신문
+    - 글로벌이코노믹
+    - EBN
+    - 아시아투데이
+    - 매일신문
+    - 플래텀
+    - 벤처스퀘어
 
 # ─────────────────────────────────────────────
 # 유튜브 트렌드 (YOUTUBE_API_KEY 없으면 이 섹션은 생략됩니다)
