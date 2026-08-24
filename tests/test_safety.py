@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
-from src import krx, llm, news, render, youtube
+from src import krx, llm, main, news, render, youtube
 
 
 class _FakeStock:
@@ -97,7 +97,12 @@ class SafetyTests(unittest.TestCase):
                 {"이름": "나스닥 종합", "종가": 20000, "등락률": -1.0},
                 {"이름": "다우 30", "종가": 45000, "등락률": -0.5}],
                 "금리": [{"이름": "미 10년물", "종가": 4.5, "등락률": 0.2}]},
-            "ETF_후보": {"거래량_급증": [{"이름": "테스트 ETF", "배수": 4.2}]},
+            "ETF_후보": {"거래량_급증": [{"이름": "테스트 ETF", "배수": 4.2}],
+                "흐름판": {"기간": "전일", "기준일": "08/21", "최소거래대금_억원": 50,
+                    "상승": [{"이름": "금채굴 ETF", "등락률": 6.2}],
+                    "하락": [{"이름": "반도체 ETF", "등락률": -4.1}],
+                    "고변동상품": [{"이름": "코스닥150 레버리지", "등락률": -8.0}],
+                    "거래집중": [{"이름": "바이오 ETF", "배수": 3.4}]}},
             "뉴스": {}, "유튜브": {},
         }
         out = llm._stabilize_daily({}, {}, data, {"카카오": {}, "ETF_레이더": {}})
@@ -127,12 +132,19 @@ class SafetyTests(unittest.TestCase):
             "뉴스": {}, "유튜브": {"급상승": [{"영상ID": "v1", "제목": "코스피 ETF",
                 "채널": "경쟁 채널", "조회수": 100, "링크": "https://youtu.be/v1"}]},
         }
+        data["ETF_후보"]["흐름판"] = {
+            "기간": "전일", "기준일": "08/21", "최소거래대금_억원": 50,
+            "상승": [{"이름": "금채굴 ETF", "등락률": 6.2}],
+            "하락": [{"이름": "반도체 ETF", "등락률": -4.1}],
+            "고변동상품": [{"이름": "코스닥150 레버리지", "등락률": -8.0}],
+            "거래집중": [{"이름": "바이오 ETF", "배수": 3.4}],
+        }
         ai = llm._stabilize_daily({}, {}, data, {"카카오": {}, "ETF_레이더": {}})
         ai["etf_레이더"] = [
             {"구분": "자금 흐름", "제목": f"ETF 뉴스 {i}", "사실": f"자금 {i}억원 유입",
              "관찰": f"화면에서 숨길 관찰 {i}",
              "출처": [{"이름": "테스트경제", "url": f"https://example.com/{i}"}]}
-            for i in range(1, 6)
+            for i in range(1, 9)
         ]
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
@@ -142,10 +154,27 @@ class SafetyTests(unittest.TestCase):
                         "오늘의 개념", "체크포인트 · 주요 일정", "출처"):
             self.assertIn(heading, html)
         self.assertIn("겹침", html)
-        self.assertIn("추가로 읽을 ETF 뉴스 2개", html)
-        self.assertIn("ETF 뉴스 5", html)
+        self.assertIn("추가로 읽을 ETF 뉴스 5개", html)
+        self.assertIn("ETF 뉴스 8", html)
+        self.assertIn("ETF 흐름판", html)
+        self.assertIn("금채굴 ETF", html)
+        self.assertIn("레버리지·인버스 별도", html)
         self.assertNotIn("화면에서 숨길 관찰", html)
         self.assertNotIn("오늘 해야 하는 이유", html)
+
+    def test_weekend_and_monday_briefs_have_distinct_roles(self):
+        monday = datetime(2026, 8, 24, 7, 0, tzinfo=timezone.utc)
+        self.assertEqual(main._brief_identity(monday, "daily")[1], "이번 주 준비")
+        self.assertEqual(main._brief_identity(monday, "weekly")[1], "지난 한 주 복기")
+
+    def test_etf_flow_deduplicates_themes_and_separates_leverage(self):
+        rows = [{"이름": "KODEX 반도체", "등락률": 5.0},
+                {"이름": "TIGER 반도체", "등락률": 4.8},
+                {"이름": "ACE 바이오", "등락률": 4.0}]
+        self.assertEqual([x["이름"] for x in krx._dedupe_ranked(rows, 3)],
+                         ["KODEX 반도체", "ACE 바이오"])
+        self.assertTrue(krx._is_leveraged_etf("KODEX 코스닥150레버리지"))
+        self.assertFalse(krx._is_leveraged_etf("KODEX 코스닥150"))
 
     def test_intraday_fallback_updates_numbers_without_losing_cached_story(self):
         data = {"날짜표시": "2026년 8월 21일 (금)",

@@ -128,6 +128,20 @@
   .ritem .badge{font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--accent);
                 border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 6px;flex-shrink:0}
   .ritem .t{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+  .flowboard{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+             padding:12px 14px;margin:10px 0}
+  .flow-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+  .flow-head b{font-size:13.5px}.flow-head span{font-size:10.5px;color:var(--ink3)}
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .flow-col{background:var(--surface2);border-radius:8px;padding:9px 10px}
+  .flow-col h3{font-size:10.5px;color:var(--ink3);margin:0 0 5px;letter-spacing:.04em}
+  .flow-row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:12px}
+  .flow-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .flow-row .pct{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .flow-extra{border-top:1px solid var(--line);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--ink2)}
+  .flow-extra b{color:var(--ink3);font-size:10.5px;margin-right:6px}
+  .flow-extra span+span:before{content:" · ";color:var(--ink3)}
+  @media(max-width:520px){.flow-grid{grid-template-columns:1fr}}
   .more-news{background:var(--surface);border:1px solid var(--line);border-radius:10px;
              padding:0 14px;margin:8px 0 12px}
   .more-news summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;color:var(--ink2)}
@@ -222,7 +236,7 @@
 <header>
   <div class="eyebrow">Morning Brief · ETF Edition</div>
   <h1>{{ 날짜표시 }} {{ 제목 }}</h1>
-  <p class="sub">{{ 기준설명 }}</p>
+  <p class="sub">{% if 브리핑역할 %}{{ 브리핑역할 }} · {% endif %}{{ 기준설명 }}</p>
 </header>
 
 {# ─────────── 1. TOP 5 ─────────── #}
@@ -285,13 +299,29 @@
 {% endif %}
 
 {# ─────────── 4. ETF 레이더 ─────────── #}
-{% if ai.etf_레이더 %}
+{% if ai.etf_레이더 or ETF흐름판 %}
 <h2>📡 ETF 레이더<span class="tip" tabindex="0">?<span class="bubble">
-  매일 아래 여섯 갈래를 내부적으로 점검하고, <b>그날 의미 있는 것만 최대 {{ 레이더_최대 }}개</b> 싣습니다.
+  수익률·거래 집중으로 실제 시장 반응을 먼저 보고, 관련 뉴스는 <b>핵심 3개와 추가 뉴스 최대 5개</b>로 나눕니다.
   해당 없는 갈래는 표시하지 않습니다.<br><br>
   ① 순매수·순매도 특이 수급 ② 최근 자금유입 급증 ③ 순자산 급증
   ④ 신규 상장 ⑤ 거래량 급증 ⑥ 운용사 주요 신상품·보도자료</span></span>
-  <span class="tag">전일 기준</span></h2>
+  <span class="tag">{% if ETF흐름판.기간 %}{{ ETF흐름판.기간 }}{% else %}전일{% endif %} 기준</span></h2>
+{% if ETF흐름판 and (ETF흐름판.상승 or ETF흐름판.하락) %}
+<div class="flowboard">
+  <div class="flow-head"><b>ETF 흐름판</b><span>{{ ETF흐름판.기준일 }} · 거래대금 {{ ETF흐름판.최소거래대금_억원 }}억원 이상 일반형</span></div>
+  <div class="flow-grid">
+    <div class="flow-col"><h3>수익률 상위</h3>
+      {% for x in ETF흐름판.상승 %}<div class="flow-row"><span class="nm">{{ x.이름 }}</span><span class="pct up">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}
+    </div>
+    <div class="flow-col"><h3>수익률 하위</h3>
+      {% for x in ETF흐름판.하락 %}<div class="flow-row"><span class="nm">{{ x.이름 }}</span><span class="pct down">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}
+    </div>
+  </div>
+  {% if ETF흐름판.고변동상품 %}<div class="flow-extra"><b>레버리지·인버스 별도</b>{% for x in ETF흐름판.고변동상품 %}<span>{{ x.이름 }} {{ "%+.2f"|format(x.등락률) }}%</span>{% endfor %}</div>{% endif %}
+  {% if ETF흐름판.거래집중 %}<div class="flow-extra"><b>거래량 급증</b>{% for x in ETF흐름판.거래집중 %}<span>{{ x.이름 }} {{ x.배수 }}배</span>{% endfor %}</div>{% endif %}
+</div>
+{% endif %}
+{% if ai.etf_레이더 %}
 <div class="radar">
   {% for r in ai.etf_레이더[:3] %}
   <div class="ritem">
@@ -317,6 +347,7 @@
   </div>
   {% endfor %}
 </details>
+{% endif %}
 {% endif %}
 {% endif %}
 

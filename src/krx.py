@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import logging
+import math
 from datetime import timedelta
 from typing import Any
 
@@ -106,6 +107,42 @@ def _shift(day: str, days: int) -> str:
     import datetime as _dt
     d = _dt.datetime.strptime(day, "%Y%m%d").date() + _dt.timedelta(days=days)
     return d.strftime("%Y%m%d")
+
+
+_LEVERAGED_WORDS = ("레버리지", "인버스", "곱버스", "2X", "2배", "-2X")
+_THEMES = ("코스피200", "코스닥150", "S&P500", "나스닥100", "반도체", "2차전지",
+           "바이오", "화장품", "방산", "금선물", "금채굴", "골드", "은선물", "실버",
+           "원유", "비트코인", "커버드콜",
+           "은행", "증권", "자동차", "로봇", "AI", "조선", "전력")
+
+
+def _is_leveraged_etf(name: str) -> bool:
+    upper = str(name).upper()
+    return any(word.upper() in upper for word in _LEVERAGED_WORDS)
+
+
+def _theme_key(name: str) -> str:
+    """운용사만 다른 유사 ETF가 상·하위 목록을 독식하지 않게 묶는다."""
+    text = str(name).replace(" ", "").upper()
+    for theme in _THEMES:
+        if theme.upper() in text:
+            return theme.upper()
+    for brand in ("KODEX", "TIGER", "RISE", "ACE", "SOL", "PLUS", "HANARO", "KOSEF"):
+        text = text.replace(brand, "")
+    return text[:14]
+
+
+def _dedupe_ranked(rows: list[dict], limit: int) -> list[dict]:
+    out, themes = [], set()
+    for row in rows:
+        key = _theme_key(row.get("이름", ""))
+        if key in themes:
+            continue
+        themes.add(key)
+        out.append(row)
+        if len(out) >= limit:
+            break
+    return out
 
 
 # ─────────────────────────────────────────────
@@ -277,8 +314,8 @@ def notable_stocks(day: str, cfg: dict) -> list[dict]:
 # ─────────────────────────────────────────────
 # ETF 레이더
 # ─────────────────────────────────────────────
-def etf_radar(day: str, cfg: dict) -> dict[str, Any]:
-    """ETF 후보를 6갈래로 수집. 실제 3개 선별은 llm 단계에서 한다."""
+def etf_radar(day: str, cfg: dict, mode: str = "daily") -> dict[str, Any]:
+    """ETF 뉴스 후보와 유동성 필터를 거친 수익률 흐름판을 함께 수집한다."""
     s = _stock()
     rule = cfg.get("ETF_레이더", {})
     thr_flow = float(rule.get("순매수_임계치_억원", 300)) * 1e8
@@ -287,7 +324,7 @@ def etf_radar(day: str, cfg: dict) -> dict[str, Any]:
 
     result: dict[str, Any] = {
         "전일_순매수": [], "전일_순매도": [], "거래량_급증": [],
-        "신규상장": [], "순자산_급증": [], "기준일": day,
+        "신규상장": [], "순자산_급증": [], "기준일": day, "흐름판": {},
     }
 
     try:
@@ -301,6 +338,51 @@ def etf_radar(day: str, cfg: dict) -> dict[str, Any]:
                 names[tk] = s.get_etf_ticker_name(tk)
             except Exception:  # noqa: BLE001
                 names[tk] = tk
+
+        # 수익률 흐름판: 거래대금이 충분한 ETF만, 일반형과 고변동 상품을 분리한다.
+        min_turnover = float(rule.get("흐름판_최소거래대금_억원", 50)) * 1e8
+        rank_n = int(rule.get("흐름판_상하위개수", 3))
+        ranked = df.copy()
+        if "거래대금" in ranked.columns:
+            ranked = ranked[ranked["거래대금"] >= min_turnover]
+        period = "전일"
+        rate_col = "등락률"
+        if mode == "weekly":
+            period = "주간"
+            try:
+                prior_guess = _shift(day, -7)
+                prior_day = s.get_nearest_business_day_in_a_week(date=prior_guess, prev=True)
+                prior_df = s.get_etf_ohlcv_by_ticker(prior_day)
+                if prior_df is not None and not prior_df.empty:
+                    prior_close = prior_df["종가"].rename("직전주종가")
+                    ranked = ranked.join(prior_close, how="inner")
+                    ranked["주간등락률"] = (
+                        (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
+                    )
+                    rate_col = "주간등락률"
+            except Exception as e:  # noqa: BLE001
+                log.debug("ETF 주간 수익률 계산 실패, 전일 등락률 사용: %s", e)
+
+        perf_rows = []
+        for tk, row in ranked.iterrows():
+            rate = row.get(rate_col)
+            if rate is None or not math.isfinite(float(rate)):
+                continue
+            perf_rows.append({
+                "티커": tk, "이름": names.get(tk, tk), "등락률": round(float(rate), 2),
+                "거래대금": float(row.get("거래대금", 0)),
+                "유형": "레버리지·인버스" if _is_leveraged_etf(names.get(tk, tk)) else "일반형",
+            })
+        general = [x for x in perf_rows if x["유형"] == "일반형"]
+        leveraged = [x for x in perf_rows if x["유형"] == "레버리지·인버스"]
+        result["흐름판"] = {
+            "기간": period, "기준일": f"{day[4:6]}/{day[6:8]}",
+            "상승": _dedupe_ranked(sorted(general, key=lambda x: x["등락률"], reverse=True), rank_n),
+            "하락": _dedupe_ranked(sorted(general, key=lambda x: x["등락률"]), rank_n),
+            "고변동상품": _dedupe_ranked(
+                sorted(leveraged, key=lambda x: abs(x["등락률"]), reverse=True), 2),
+            "최소거래대금_억원": int(min_turnover / 1e8),
+        }
 
         # 거래대금 기준 상위/하위 (순매수 데이터가 없으므로 거래대금·등락으로 대체)
         if "거래대금" in df.columns:
@@ -334,6 +416,12 @@ def etf_radar(day: str, cfg: dict) -> dict[str, Any]:
                     })
         except Exception as e:  # noqa: BLE001
             log.debug("거래량 급증 계산 스킵: %s", e)
+
+        result["흐름판"]["거래집중"] = _dedupe_ranked([
+            {"티커": x.get("티커"), "이름": x.get("이름"), "배수": x.get("배수"),
+             "등락률": x.get("등락률")}
+            for x in sorted(result["거래량_급증"], key=lambda x: x.get("배수", 0), reverse=True)
+        ], 3)
 
         # 신규 상장 (전 영업일 티커 목록과 비교)
         try:

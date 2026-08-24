@@ -20,6 +20,15 @@ logging.basicConfig(
 log = logging.getLogger("brief")
 
 
+def _brief_identity(run_at, mode: str) -> tuple[str, str]:
+    if mode == "weekly":
+        return "주간 경제·ETF 브리핑", "지난 한 주 복기"
+    if run_at.weekday() == 0:
+        return "월요일 경제·ETF 브리핑", "이번 주 준비"
+    title = "아침 경제·ETF 브리핑" if run_at.hour < 9 else "경제·ETF 시장 업데이트"
+    return title, "전일 시장 정리"
+
+
 def collect_handoff(cfg: dict) -> dict[str, Any]:
     """목요일 전달문용 — 시장 데이터는 필요 없고 뉴스만 깊게 모은다."""
     from .config import now_kst as _now
@@ -73,8 +82,7 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
         "수집상태": {},
     }
     run_at = now_kst()
-    data["브리핑제목"] = ("아침 경제·ETF 브리핑" if run_at.hour < 9
-                           else "경제·ETF 시장 업데이트")
+    data["브리핑제목"], data["브리핑역할"] = _brief_identity(run_at, mode)
     data["호출시각"] = run_at.strftime("%m/%d %H:%M KST")
 
     log.info("1/6 국내 증시 데이터 수집")
@@ -92,7 +100,7 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
             # 아래는 '후보'다. 브리핑에 그대로 싣는 목록이 아니라,
             # 지수·ETF 움직임을 설명할 때 근거로 쓸 수 있는 재료로만 전달한다.
             data["종목_후보_국내"] = krx.notable_stocks(day, cfg)
-            data["ETF_후보"] = krx.etf_radar(day, cfg)
+            data["ETF_후보"] = krx.etf_radar(day, cfg, mode)
             data["수집상태"]["KRX"] = "정상"
         except Exception as e:  # noqa: BLE001
             log.error("국내 데이터 수집 실패: %s", e)
