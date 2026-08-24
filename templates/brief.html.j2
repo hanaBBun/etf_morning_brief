@@ -128,6 +128,15 @@
   .ritem .badge{font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--accent);
                 border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 6px;flex-shrink:0}
   .ritem .t{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+  .more-news{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+             padding:0 14px;margin:8px 0 12px}
+  .more-news summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;color:var(--ink2)}
+  .more-item{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid var(--line);
+             font-size:12.5px;flex-wrap:wrap}
+  .more-item .badge{font-size:9.5px;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+                    border-radius:4px;padding:1px 5px}
+  .more-item a{color:var(--ink);text-decoration:none;font-weight:650}
+  .more-item small{margin-left:auto;color:var(--ink3)}
   .ritem p{margin:0;font-size:12.5px;color:var(--ink2)}
   .ritem .sig{margin-top:5px;font-size:12px;color:var(--ink3)}
 
@@ -284,7 +293,7 @@
   ④ 신규 상장 ⑤ 거래량 급증 ⑥ 운용사 주요 신상품·보도자료</span></span>
   <span class="tag">전일 기준</span></h2>
 <div class="radar">
-  {% for r in ai.etf_레이더 %}
+  {% for r in ai.etf_레이더[:3] %}
   <div class="ritem">
     <div class="h"><span class="badge">{{ r.구분 }}</span><span class="t">{{ r.제목 }}</span></div>
     <p>{{ r.사실 }}</p>
@@ -293,10 +302,22 @@
       {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
     </div>
     {% endif %}
-    {% if r.관찰 %}<p class="sig">{{ r.관찰 }}</p>{% endif %}
   </div>
   {% endfor %}
 </div>
+{% if ai.etf_레이더|length > 3 %}
+<details class="more-news">
+  <summary>추가로 읽을 ETF 뉴스 {{ ai.etf_레이더|length - 3 }}개</summary>
+  {% for r in ai.etf_레이더[3:] %}
+  <div class="more-item">
+    <span class="badge">{{ r.구분 }}</span>
+    {% set linked = r.출처|selectattr('url')|list if r.출처 else [] %}
+    {% if linked %}<a href="{{ linked[0].url }}" target="_blank" rel="noopener">{{ r.제목 }}</a>{% else %}<span>{{ r.제목 }}</span>{% endif %}
+    {% if r.출처 %}<small>{{ r.출처|map(attribute='이름')|join(' · ') }}</small>{% endif %}
+  </div>
+  {% endfor %}
+</details>
+{% endif %}
 {% endif %}
 
 {# ─────────── 5. 경쟁 유튜브 ─────────── #}
@@ -346,7 +367,7 @@
   <div class="k">{{ i.코너 }} · 제목안</div>
   <h3>{{ i.제목 }}</h3>
   <div class="row">
-    <div class="k2">오늘 해야 하는 이유</div><div class="v">{{ i.이유 }}</div>
+    <div class="k2">이유</div><div class="v">{{ i.이유 }}</div>
     <div class="k2">관련 ETF</div><div class="v">{{ i.관련ETF }}</div>
     {% if i.차별점 %}<div class="k2">차별화 각도</div><div class="v">{{ i.차별점 }}</div>{% endif %}
   </div>

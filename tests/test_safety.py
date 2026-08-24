@@ -128,6 +128,12 @@ class SafetyTests(unittest.TestCase):
                 "채널": "경쟁 채널", "조회수": 100, "링크": "https://youtu.be/v1"}]},
         }
         ai = llm._stabilize_daily({}, {}, data, {"카카오": {}, "ETF_레이더": {}})
+        ai["etf_레이더"] = [
+            {"구분": "자금 흐름", "제목": f"ETF 뉴스 {i}", "사실": f"자금 {i}억원 유입",
+             "관찰": f"화면에서 숨길 관찰 {i}",
+             "출처": [{"이름": "테스트경제", "url": f"https://example.com/{i}"}]}
+            for i in range(1, 6)
+        ]
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
             html = path.read_text(encoding="utf-8")
@@ -136,6 +142,10 @@ class SafetyTests(unittest.TestCase):
                         "오늘의 개념", "체크포인트 · 주요 일정", "출처"):
             self.assertIn(heading, html)
         self.assertIn("겹침", html)
+        self.assertIn("추가로 읽을 ETF 뉴스 2개", html)
+        self.assertIn("ETF 뉴스 5", html)
+        self.assertNotIn("화면에서 숨길 관찰", html)
+        self.assertNotIn("오늘 해야 하는 이유", html)
 
     def test_intraday_fallback_updates_numbers_without_losing_cached_story(self):
         data = {"날짜표시": "2026년 8월 21일 (금)",
@@ -275,6 +285,16 @@ class SafetyTests(unittest.TestCase):
         out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
         self.assertEqual(len(out["top5"]), 5)
         self.assertIn("5. ETF 제도 변화", out["카톡"]["1"])
+
+    def test_radar_can_keep_five_items_for_compact_extra_news(self):
+        raw = {"etf_레이더": [
+            {"구분": "자금 흐름", "제목": f"ETF 뉴스 {i}", "사실": f"자금 {i}억원 유입",
+             "관찰": "추가 흐름 확인", "출처": []}
+            for i in range(1, 6)
+        ]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {"최대_항목수": 5}},
+                               {"뉴스": {}})
+        self.assertEqual(len(out["etf_레이더"]), 5)
 
     def test_daily_news_window_starts_at_previous_midnight(self):
         fixed = datetime(2026, 8, 21, 7, 0, tzinfo=timezone.utc)

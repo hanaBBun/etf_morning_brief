@@ -25,10 +25,10 @@
   최대_표시개수: 10
 
 # ─────────────────────────────────────────────
-# ETF 레이더 (전일 기준, 의미 있는 것만 최대 3개)
+# ETF 레이더 (전일 기준, 핵심 3개 + 접어 두는 추가 뉴스 2개)
 # ─────────────────────────────────────────────
 ETF_레이더:
-  최대_항목수: 3
+  최대_항목수: 5
   순매수_임계치_억원: 300      # 전일 순매수/순매도가 이 이상이면 후보
   자금유입_5일_임계치_억원: 1000
   순자산_증가율_임계치_퍼센트: 10
@@ -76,7 +76,8 @@ ETF_레이더:
     - { 이름: "구글뉴스 지정학", url: "https://news.google.com/rss/search?q=war+conflict+sanctions+trade+oil+markets+when:7d&hl=en-US&gl=US&ceid=US:en" }
     - { 이름: "구글뉴스 국제정책", url: "https://news.google.com/rss/search?q=tariffs+geopolitics+energy+shipping+economy+when:7d&hl=en-US&gl=US&ceid=US:en" }
   ETF:
-    - { 이름: "구글뉴스 국내ETF", url: "https://news.google.com/rss/search?q=ETF+%EC%88%9C%EC%9E%90%EC%82%B0+OR+%EC%83%81%EC%9E%A5+OR+%EC%88%9C%EB%A7%A4%EC%88%98+when:7d&hl=ko&gl=KR&ceid=KR:ko" }
+    - { 이름: "구글뉴스 국내ETF", url: "https://news.google.com/rss/search?q=ETF+when:3d&hl=ko&gl=KR&ceid=KR:ko" }
+    - { 이름: "구글뉴스 ETF테마", url: "https://news.google.com/rss/search?q=ETF+(%EB%A0%88%EB%B2%84%EB%A6%AC%EC%A7%80+OR+%EA%B8%88+OR+%EB%B0%94%EC%9D%B4%EC%98%A4+OR+%ED%99%94%EC%9E%A5%ED%92%88+OR+%EB%B9%84%ED%8A%B8%EC%BD%94%EC%9D%B8)+when:3d&hl=ko&gl=KR&ceid=KR:ko" }
     - { 이름: "구글뉴스 해외ETF", url: "https://news.google.com/rss/search?q=ETF+flows+OR+launch+when:7d&hl=en-US&gl=US&ceid=US:en" }
 
   # 증권·경제 직접 피드 — 링크가 언론사 원문이라 본문(발언 인용)을 긁을 수 있습니다.
