@@ -309,7 +309,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 | 댓글키워드 | | 90자 이내 |
 | 콘텐츠후보 | 1~2개 | 이유 70자, 질문 60자 이내 |
 | 오늘의개념.설명 | 1개 고정 | 120~180자 |
-| 체크포인트 | 0~4개 | 내용 40자 이내 |
+| 체크포인트 | 0~8개 | 내용 50자 이내 |
 
 ★ 체크포인트는 두 종류를 함께 담습니다.
   · `유형: "일정"` — 날짜가 확정된 것. FOMC, 금통위, 실적 발표, ETF 상장일 등.
@@ -317,7 +317,9 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   · `유형: "확인"` — 날짜는 없지만 계속 지켜봐야 하는 것.
     예: "외국인 순매수 연속 여부", "호르무즈 통항 제한 실제 발생 여부",
     "30년물 5.3% 수준 유지 여부". `때`에는 "상시" 또는 "이번 주"를 씁니다.
-  둘을 섞어서 중요한 순서로 최대 4개까지 넣으세요.
+  날짜가 같은 일정은 빠뜨리지 말고 같은 날짜끼리 이어서 최대 8개까지 넣으세요.
+  입력에 `공식일정`이 있으면 반드시 포함하며 날짜·시간을 바꾸지 마세요.
+  `이번 주` 확인 항목은 날짜 일정 앞에, `상시` 확인 항목은 날짜 일정 뒤에 배치하세요.
   뉴스에 날짜가 명시된 경제지표·중앙은행·실적·ETF 상장 일정이 있으면
   `일정`을 최소 1개 우선 편성합니다. 확인되지 않은 날짜는 만들지 않습니다.
 
@@ -692,6 +694,7 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
     if mode == "weekly" and data.get("주간_대표흐름"):
         d["주간_대표흐름"] = data["주간_대표흐름"]
     d["수급"] = data.get("수급") or []
+    d["공식일정"] = data.get("공식일정") or []
 
     d["종목_후보_국내"] = [
         {"종목명": s.get("종목명"), "등락률": s.get("등락률"), "사유": s.get("이유_표시")}
@@ -1734,14 +1737,22 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     for c in cps:
         if c.get("유형") not in ("일정", "확인"):
             c["유형"] = "일정" if any(ch.isdigit() for ch in str(c.get("때", ""))) else "확인"
-    seen_cp = set()
+    # 모델이 놓쳐도 공식기관 캘린더에서 수집한 일정은 반드시 보충한다.
+    cps.extend(data.get("공식일정") or [])
+    seen_cp: list[tuple[str, set[str]]] = []
     d["체크포인트"] = []
     for c in cps:
-        key = re.sub(r"\s+", "", str(c.get("내용") or "")).lower()
-        if key and key not in seen_cp:
-            seen_cp.add(key)
+        words = _topic_words(c.get("내용"))
+        raw_date = str(c.get("날짜") or c.get("때") or "")
+        match = re.search(r"(?:\d{4}[-/.])?(\d{1,2})[-/.](\d{1,2})", raw_date)
+        date_key = (f"{int(match.group(1)):02d}-{int(match.group(2)):02d}"
+                    if match else raw_date[:10])
+        duplicate = any(old_date == date_key and len(words & old_words) >= 2
+                        for old_date, old_words in seen_cp)
+        if words and not duplicate:
+            seen_cp.append((date_key, words))
             d["체크포인트"].append(c)
-        if len(d["체크포인트"]) == 4:
+        if len(d["체크포인트"]) == 8:
             break
     d.pop("일정", None)
 

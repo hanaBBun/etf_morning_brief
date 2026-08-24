@@ -223,6 +223,9 @@
   .cal{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:13px;margin:10px 0}
   .cal .d{color:var(--ink3);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
   .cal .e{color:var(--ink2)}
+  .calgroup{grid-column:1/-1;font-size:11px;font-weight:700;color:var(--ink3);
+            letter-spacing:.06em;border-bottom:1px solid var(--line);padding:7px 0 4px;margin-top:4px}
+  .cal .e small{display:block;margin-top:2px;font-size:10.5px}.cal .e small a{color:var(--ink3)}
   .cpk{display:inline-block;font-size:10px;font-weight:700;border-radius:4px;
        padding:1px 6px;margin-right:7px;letter-spacing:.03em;vertical-align:1px}
   .cpk.일정{color:var(--accent);border:1px solid rgba(124,108,240,.42)}
@@ -437,15 +440,18 @@
 {% endif %}
 
 {# ─────────── 8. 일정 ─────────── #}
-{% if ai.체크포인트 %}
+{% if 체크포인트그룹 %}
 <h2>🗓️ 체크포인트 · 주요 일정<span class="tip" tabindex="0">?<span class="bubble">
   두 가지를 함께 담습니다.<br>
   <b>일정</b> — 날짜가 확정된 것 (FOMC, 금통위, 실적 발표, ETF 상장일)<br>
   <b>확인</b> — 날짜는 없지만 계속 지켜봐야 하는 것 (수급 연속 여부, 특정 레벨 유지 여부)</span></span></h2>
 <div class="cal">
-  {% for e in ai.체크포인트 %}
-  <div class="d"><span class="cpk {{ '일정' if e.유형 == '일정' else '확인' }}">{{ e.유형 }}</span>{{ e.때 }}</div>
-  <div class="e">{{ e.내용 }}</div>
+  {% for group in 체크포인트그룹 %}
+  <div class="calgroup">{{ group.라벨 }}</div>
+  {% for e in group.항목 %}
+  <div class="d"><span class="cpk {{ '일정' if e.유형 == '일정' else '확인' }}">{{ e.유형 }}</span>{% if e.유형 == '일정' and e.때|length > 10 %}{{ e.때[-5:] }}{% else %}{{ e.때 }}{% endif %}</div>
+  <div class="e">{{ e.내용 }}{% if e.출처 and e.출처.url %}<small><a href="{{ e.출처.url }}" target="_blank" rel="noopener">{{ e.출처.이름 }}</a></small>{% endif %}</div>
+  {% endfor %}
   {% endfor %}
 </div>
 {% endif %}

@@ -9,7 +9,7 @@ import logging
 import sys
 from typing import Any
 
-from . import kakao, krx, llm, market, news, render, youtube
+from . import events, kakao, krx, llm, market, news, render, youtube
 from .config import kdate, load_config, now_kst
 
 logging.basicConfig(
@@ -157,6 +157,14 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
         log.error("뉴스 실패: %s", e)
         data["뉴스"] = {}
         data["수집상태"]["뉴스"] = f"실패: {type(e).__name__}"
+
+    log.info("4-1/6 공식 경제 일정")
+    try:
+        data["공식일정"] = events.collect_week()
+        log.info("공식 일정 %d건", len(data["공식일정"]))
+    except Exception as e:  # noqa: BLE001
+        log.error("공식 일정 실패: %s", e)
+        data["공식일정"] = []
 
     log.info("5/6 유튜브 트렌드")
     try:

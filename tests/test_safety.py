@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
-from src import krx, llm, main, news, render, youtube
+from src import events, krx, llm, main, news, render, youtube
 
 
 class _FakeStock:
@@ -428,6 +428,32 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(news._source_tier("한국경제 증권", cfg), 2)
         self.assertEqual(news._source_tier("전자신문", cfg), 1)
         self.assertEqual(news._source_tier("알 수 없는 매체", cfg), 0)
+
+    def test_checkpoints_group_week_dates_and_always(self):
+        items = [
+            {"유형": "일정", "때": "8/26 (수) 21:30", "날짜": "2026-08-26", "내용": "PCE"},
+            {"유형": "확인", "때": "상시", "내용": "유가"},
+            {"유형": "일정", "때": "8/26 (수) 21:30", "날짜": "2026-08-26", "내용": "GDP"},
+            {"유형": "확인", "때": "이번 주", "내용": "외국인 수급"},
+        ]
+        groups = render._checkpoint_groups(items)
+        self.assertEqual([g["라벨"] for g in groups], ["이번 주 확인", "8/26 (수)", "상시 확인"])
+        self.assertEqual([x["내용"] for x in groups[1]["항목"]], ["PCE", "GDP"])
+
+    def test_official_event_is_converted_to_kst(self):
+        dt = datetime(2026, 8, 26, 12, 30, tzinfo=timezone.utc)
+        item = events._event(dt, "미국 PCE", "BEA", "https://example.com")
+        self.assertEqual(item["때"], "8/26 (수) 21:30")
+
+    def test_official_schedule_tops_up_ai_checkpoints_without_duplicate(self):
+        official = {"유형": "일정", "때": "8/26 (수) 21:30", "날짜": "2026-08-26",
+                    "내용": "미국 개인소득·소비 및 PCE 물가"}
+        raw = {"체크포인트": [{"유형": "일정", "때": "8/26 (수)",
+                                 "내용": "미국 PCE 물가지수 발표"}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}},
+                               {"뉴스": {}, "공식일정": [official]})
+        pce = [x for x in out["체크포인트"] if "PCE" in x["내용"]]
+        self.assertEqual(len(pce), 1)
 
     def test_unsourced_market_cause_is_hidden_not_replaced_with_notice(self):
         raw = {"시장브리핑": [{"시장": "국내", "제목": "국내 증시", "결과": "코스피 상승",

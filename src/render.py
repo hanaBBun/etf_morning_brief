@@ -206,6 +206,32 @@ def _weekly_table(data: dict, mode: str) -> list[dict]:
     return rows
 
 
+def _checkpoint_groups(items: list[dict]) -> list[dict]:
+    """이번 주 확인 → 날짜별 일정 → 상시 확인 순으로 묶는다."""
+    import re
+
+    buckets: dict[tuple[int, str], list[dict]] = {}
+    for item in items or []:
+        when = str(item.get("때") or "").strip()
+        if item.get("유형") == "확인" and "상시" in when:
+            key = (2, "상시 확인")
+        elif item.get("유형") == "확인":
+            key = (0, "이번 주 확인")
+        else:
+            iso = str(item.get("날짜") or "")
+            match = re.search(r"(\d{1,2})/(\d{1,2})\s*\([월화수목금토일]\)", when)
+            sort_date = iso or (f"9999-{int(match.group(1)):02d}-{int(match.group(2)):02d}"
+                                if match else "9999-99-99")
+            label = re.sub(r"\s+\d{2}:\d{2}$", "", when) or "날짜 일정"
+            key = (1, f"{sort_date}|{label}")
+        buckets.setdefault(key, []).append(item)
+    groups = []
+    for key in sorted(buckets):
+        label = key[1].split("|", 1)[-1]
+        groups.append({"라벨": label, "항목": buckets[key]})
+    return groups
+
+
 YT_NOTICE = {
     # 수집기의 내부 상태는 로그에서만 확인하고 독자에게는 확보한 정보만 보여준다.
     "키없음": "",
@@ -262,6 +288,10 @@ def _sources(data: dict, ai: dict) -> list[dict]:
     for s in (ai.get("시장국면") or {}).get("출처", []):
         if isinstance(s, dict):
             put(s.get("이름", ""), s.get("url", ""), s.get("날짜", ""))
+    for c in ai.get("체크포인트") or []:
+        s = c.get("출처") if isinstance(c, dict) else None
+        if isinstance(s, dict):
+            put(s.get("이름", ""), s.get("url", ""), s.get("날짜", ""))
     # 실제 카드에서 인용한 기사만 출처로 표시한다. 단순히 RSS에서 수집했다는
     # 이유로 매체명을 나열하면 독자가 해당 문장의 근거로 오해할 수 있다.
     if (data.get("유튜브") or {}).get("급상승"):
@@ -280,6 +310,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "수집상태": data.get("수집상태", {}),
         "한눈에": _glance(data),
         "주간대표흐름": _weekly_table(data, mode),
+        "체크포인트그룹": _checkpoint_groups((ai or {}).get("체크포인트") or []),
         "ETF흐름판": (data.get("ETF_후보") or {}).get("흐름판") or {},
         "유튜브영상": _youtube(data, ai),
         "유튜브안내": _youtube_notice(data),
