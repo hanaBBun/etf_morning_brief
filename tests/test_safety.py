@@ -205,6 +205,28 @@ class SafetyTests(unittest.TestCase):
                          ["KODEX 반도체", "ACE 바이오", "RISE 화장품"])
         self.assertEqual(flow["고변동상품"][0]["이름"], "KODEX 코스닥150레버리지")
 
+    def test_naver_etf_fallback_accepts_cp949_response(self):
+        payload = {"result": {"etfItemList": [{
+            "itemcode": "123456", "itemname": "테스트 한글 ETF", "nowVal": 10000,
+            "changeRate": 2.5, "risefall": "2", "quant": 1000000, "marketSum": 100,
+        }]}}
+
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                return False
+
+            @staticmethod
+            def read():
+                return json.dumps(payload, ensure_ascii=False).encode("cp949")
+
+        with patch.object(krx.urllib.request, "urlopen", return_value=Response()):
+            frame, names = krx._naver_etf_snapshot()
+        self.assertEqual(names["123456"], "테스트 한글 ETF")
+        self.assertEqual(float(frame.loc["123456", "등락률"]), 2.5)
+
     def test_intraday_fallback_updates_numbers_without_losing_cached_story(self):
         data = {"날짜표시": "2026년 8월 21일 (금)",
                 "국내지수": [{"이름": "코스피", "종가": 3000, "등락률": -2.0},

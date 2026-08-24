@@ -156,7 +156,12 @@ def _naver_etf_snapshot():
             headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.naver.com/"},
         )
         with urllib.request.urlopen(req, timeout=15) as response:  # noqa: S310
-            payload = json.loads(response.read().decode("utf-8"))
+            raw = response.read()
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError:
+            text = raw.decode("cp949")
+        payload = json.loads(text)
         items = ((payload.get("result") or {}).get("etfItemList") or [])
         if not items:
             return None, {}
