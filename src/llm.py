@@ -1738,7 +1738,8 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         if c.get("유형") not in ("일정", "확인"):
             c["유형"] = "일정" if any(ch.isdigit() for ch in str(c.get("때", ""))) else "확인"
     # 모델이 놓쳐도 공식기관 캘린더에서 수집한 일정은 반드시 보충한다.
-    cps.extend(data.get("공식일정") or [])
+    # 공식 일정은 모델 생성 항목보다 먼저 두어 8개 제한에 밀려나지 않게 한다.
+    cps = list(data.get("공식일정") or []) + cps
     seen_cp: list[tuple[str, set[str]]] = []
     d["체크포인트"] = []
     for c in cps:

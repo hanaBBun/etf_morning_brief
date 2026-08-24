@@ -1,7 +1,7 @@
 import json
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -444,6 +444,34 @@ class SafetyTests(unittest.TestCase):
         dt = datetime(2026, 8, 26, 12, 30, tzinfo=timezone.utc)
         item = events._event(dt, "미국 PCE", "BEA", "https://example.com")
         self.assertEqual(item["때"], "8/26 (수) 21:30")
+
+    @patch("src.events.requests.get")
+    def test_bok_mpc_official_date_is_collected_without_fake_time(self, get):
+        get.return_value.text = "08월 27일(목) 10월 22일(목)"
+        start = datetime(2026, 8, 24, tzinfo=events.KST)
+        out = events._bok_mpc(start, start + timedelta(days=7))
+        self.assertEqual(out[0]["때"], "8/27 (목)")
+        self.assertIn("기준금리", out[0]["내용"])
+
+    @patch("src.events.requests.get")
+    def test_nvidia_earnings_is_converted_from_pt_to_kst(self, get):
+        get.side_effect = [
+            type("R", (), {"text": "<item><title>NVIDIA Sets Conference Call for Second-Quarter Financial Results</title><link>https://example.com/nvda</link></item>"})(),
+            type("R", (), {"text": ("NVIDIA will host a conference call on Wednesday, August 26, at 2 p.m. PT. "
+                                      "Results will be publicly announced at approximately 1:20 p.m. PT")})(),
+        ]
+        start = datetime(2026, 8, 24, tzinfo=events.KST)
+        out = events._nvidia_earnings(start, start + timedelta(days=7))
+        self.assertEqual(out[0]["때"], "8/27 (목) 05:20")
+        self.assertIn("미국 8/26", out[0]["내용"])
+
+    @patch("src.events.requests.get")
+    def test_warsh_keynote_is_collected_from_fed_calendar(self, get):
+        get.return_value.text = ("10:00 a.m. Speech - Chairman Kevin Warsh Watch Live "
+                                 "Keynote Remarks At Jackson Hole 28")
+        start = datetime(2026, 8, 24, tzinfo=events.KST)
+        out = events._fed_speeches(start, start + timedelta(days=7))
+        self.assertEqual(out[0]["때"], "8/28 (금) 23:00")
 
     def test_official_schedule_tops_up_ai_checkpoints_without_duplicate(self):
         official = {"유형": "일정", "때": "8/26 (수) 21:30", "날짜": "2026-08-26",

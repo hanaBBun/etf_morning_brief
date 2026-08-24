@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 import re
+from html import unescape
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -15,6 +16,10 @@ KST = ZoneInfo("Asia/Seoul")
 BEA_URL = "https://apps.bea.gov/API/signup/release_dates.json"
 BLS_ICS = "https://www.bls.gov/schedule/news_release/bls.ics"
 JACKSON_HOLE_URL = "https://www.kansascityfed.org/research/jackson-hole-economic-symposium/"
+BOK_MPC_URL = ("https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do"
+               "?menuNo=200755&mtgSe=A")
+FED_CALENDAR_URL = "https://www.federalreserve.gov/newsevents/{year}-august.htm"
+NVIDIA_RSS_URL = "https://nvidianews.nvidia.com/rss.xml"
 
 BEA_IMPORTANT = {
     "Gross Domestic Product": "미국 GDP",
@@ -42,6 +47,19 @@ def _event(dt: datetime, title: str, source: str, url: str) -> dict:
     return {"유형": "일정", "때": f"{local.month}/{local.day} ({wd}) {local:%H:%M}",
             "날짜": local.strftime("%Y-%m-%d"), "내용": title,
             "출처": {"이름": source, "url": url}}
+
+
+def _date_event(day: datetime, title: str, source: str, url: str) -> dict:
+    """발표 시각을 공식적으로 확인할 수 없는 일정은 날짜만 표시한다."""
+    local = day.astimezone(KST)
+    wd = "월화수목금토일"[local.weekday()]
+    return {"유형": "일정", "때": f"{local.month}/{local.day} ({wd})",
+            "날짜": local.strftime("%Y-%m-%d"), "내용": title,
+            "출처": {"이름": source, "url": url}}
+
+
+def _plain(html: str) -> str:
+    return re.sub(r"\s+", " ", unescape(re.sub(r"<[^>]+>", " ", html))).strip()
 
 
 def _bea(start: datetime, end: datetime) -> list[dict]:
@@ -78,6 +96,71 @@ def _bls(start: datetime, end: datetime) -> list[dict]:
     return out
 
 
+def _bok_mpc(start: datetime, end: datetime) -> list[dict]:
+    text = _plain(requests.get(BOK_MPC_URL, timeout=15).text)
+    out = []
+    # 연간 회의 목록은 시각을 공시하지 않으므로 임의의 시각을 붙이지 않는다.
+    for month, day in re.findall(r"(\d{1,2})월\s*(\d{1,2})일\s*\([월화수목금토일]\)", text):
+        dt = datetime(start.year, int(month), int(day), tzinfo=KST)
+        if start <= dt < end:
+            out.append(_date_event(dt, "한국은행 금융통화위원회 기준금리 결정",
+                                   "한국은행", BOK_MPC_URL))
+    return out
+
+
+def _nvidia_earnings(start: datetime, end: datetime) -> list[dict]:
+    rss = requests.get(NVIDIA_RSS_URL, timeout=15).text
+    for item in rss.split("<item>")[1:]:
+        if "Sets Conference Call" not in item or "Financial Results" not in item:
+            continue
+        link = re.search(r"<link>\s*(?:<!\[CDATA\[)?(https?://[^<\]]+)", item)
+        if not link:
+            continue
+        url = unescape(link.group(1).strip())
+        text = _plain(requests.get(url, timeout=15).text)
+        hit = re.search(
+            r"(?:Monday|Tuesday|Wednesday|Thursday|Friday),\s*"
+            r"(January|February|March|April|May|June|July|August|September|October|November|December)\s*"
+            r"(\d{1,2}),\s*at\s*(\d{1,2})(?::(\d{2}))?\s*(a\.m\.|p\.m\.)\s*PT",
+            text, re.I)
+        if not hit:
+            continue
+        months = {name: i for i, name in enumerate(
+            "January February March April May June July August September October November December".split(), 1)}
+        call_hour = int(hit.group(3)) % 12 + (12 if hit.group(5).lower().startswith("p") else 0)
+        release = re.search(r"publicly announced at approximately\s*(\d{1,2})(?::(\d{2}))?\s*"
+                            r"(a\.m\.|p\.m\.)\s*PT", text, re.I)
+        hour, minute = call_hour, int(hit.group(4) or 0)
+        if release:
+            hour = int(release.group(1)) % 12 + (12 if release.group(3).lower().startswith("p") else 0)
+            minute = int(release.group(2) or 0)
+        dt = datetime(start.year, months[hit.group(1).title()], int(hit.group(2)),
+                      hour, minute, tzinfo=ZoneInfo("America/Los_Angeles"))
+        local = dt.astimezone(KST)
+        if start <= local < end:
+            return [_event(dt, f"엔비디아 실적 발표(미국 {dt.month}/{dt.day} 장 마감 후)·콘퍼런스콜 06:00 KST",
+                           "NVIDIA 뉴스룸", url)]
+    return []
+
+
+def _fed_speeches(start: datetime, end: datetime) -> list[dict]:
+    url = FED_CALENDAR_URL.format(year=start.year)
+    text = _plain(requests.get(url, timeout=15).text)
+    # 연준 월간 캘린더의 '10:00 a.m. Speech - Chairman ... Keynote ... 28' 구조.
+    hit = re.search(r"(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.).{0,180}"
+                    r"Speech\s*-\s*Chairman\s+Kevin\s+Warsh.{0,180}"
+                    r"Keynote Remarks.{0,180}?\b(\d{1,2})\b", text, re.I)
+    if not hit:
+        return []
+    hour = int(hit.group(1)) % 12 + (12 if hit.group(3).lower().startswith("p") else 0)
+    dt = datetime(start.year, 8, int(hit.group(4)), hour, int(hit.group(2)),
+                  tzinfo=ZoneInfo("America/New_York"))
+    if not (start <= dt.astimezone(KST) < end):
+        return []
+    return [_event(dt, "케빈 워시 연준 의장 잭슨홀 기조연설",
+                   "미 연방준비제도", url)]
+
+
 def _jackson_hole(start: datetime, end: datetime) -> list[dict]:
     html = requests.get(JACKSON_HOLE_URL, timeout=15).text
     year = start.year
@@ -86,18 +169,20 @@ def _jackson_hole(start: datetime, end: datetime) -> list[dict]:
     if not hit:
         return []
     first, last = int(hit.group(1)), int(hit.group(2))
-    dt = datetime(year, 8, first, 9, 0, tzinfo=ZoneInfo("America/Denver"))
-    if not (start <= dt.astimezone(KST) < end):
+    dt = datetime(year, 8, first, tzinfo=KST)
+    if not (start <= dt < end):
         return []
-    return [_event(dt, f"잭슨홀 경제정책 심포지엄({first}~{last}일·현지시간)",
-                   "캔자스시티 연방준비은행", JACKSON_HOLE_URL)]
+    return [_date_event(dt, f"잭슨홀 경제정책 심포지엄({first}~{last}일·현지시간)",
+                        "캔자스시티 연방준비은행", JACKSON_HOLE_URL)]
 
 
 def collect_week() -> list[dict]:
     """이번 주의 시장 영향도가 높은 공식 일정만 반환한다."""
     start, end = _week_bounds(now_kst())
     out = []
-    for label, fn in (("BEA", _bea), ("BLS", _bls), ("Jackson Hole", _jackson_hole)):
+    for label, fn in (("BEA", _bea), ("BLS", _bls), ("한국은행 금통위", _bok_mpc),
+                      ("NVIDIA 실적", _nvidia_earnings), ("연준 연설", _fed_speeches),
+                      ("Jackson Hole", _jackson_hole)):
         try:
             out.extend(fn(start, end))
         except Exception as exc:  # noqa: BLE001
