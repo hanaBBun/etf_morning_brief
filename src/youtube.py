@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from datetime import time, timedelta
 from pathlib import Path
 from typing import Any
@@ -30,6 +31,15 @@ ETF_SUB = ("배당", "채권", "지수", "포트폴리오", "적립식", "서학
 CACHE = ROOT / "channel_ids.json"
 UPLOADS_CACHE = ROOT / "channel_uploads.json"
 DAILY_CACHE = ROOT / "youtube_daily_cache.json"
+
+
+def _duration_seconds(value: str) -> int | None:
+    """YouTube ISO 8601 재생시간(PT1H2M3S)을 초로 바꾼다."""
+    hit = re.fullmatch(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", str(value or ""))
+    if not hit:
+        return None
+    hours, minutes, seconds = (int(x or 0) for x in hit.groups())
+    return hours * 3600 + minutes * 60 + seconds
 
 
 def _get(path: str, key: str, **params) -> dict:
@@ -222,7 +232,7 @@ def collect(cfg: dict) -> dict[str, Any]:
     for i in range(0, len(vid_list), 50):
         chunk = vid_list[i:i + 50]
         try:
-            res = _get("videos", key, part="statistics,snippet", id=",".join(chunk))
+            res = _get("videos", key, part="statistics,snippet,contentDetails", id=",".join(chunk))
             for it in res.get("items") or []:
                 stats[it["id"]] = it
         except Exception as e:  # noqa: BLE001
@@ -230,8 +240,10 @@ def collect(cfg: dict) -> dict[str, Any]:
 
     for v in videos:
         st = stats.get(v["영상ID"], {}).get("statistics", {})
+        details = stats.get(v["영상ID"], {}).get("contentDetails", {})
         v["조회수"] = int(st.get("viewCount", 0))
         v["댓글수"] = int(st.get("commentCount", 0))
+        v["길이초"] = _duration_seconds(details.get("duration"))
         v["링크"] = f"https://www.youtube.com/watch?v={v['영상ID']}"
 
     # 같은 날짜에 앞선 실행에서 잡힌 영상은 새 결과와 합친다. 조회수 순위가

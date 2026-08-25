@@ -184,6 +184,7 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
             "겹침근거": auto_reason,
             "겹침등급": OVERLAP_CLASS.get(ov, "low"),
             "ETF관련": bool(v.get("ETF관련")),
+            "길이초": v.get("길이초"),
             "채널유형": _channel_type(v.get("채널", ""), bool(v.get("ETF관련"))),
         })
     return out
@@ -312,7 +313,9 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
     br = cfg.get("브리핑") or {}
     videos = _youtube(data, ai)
     competitors = [v for v in videos if v.get("채널유형") != "운용사 공식"][:4]
-    official = [v for v in videos if v.get("채널유형") == "운용사 공식"][:1]
+    # 2분 미만 운용사 영상은 상품 광고·숏폼 성격이라 작가용 리서치에서 제외한다.
+    official = [v for v in videos if v.get("채널유형") == "운용사 공식"
+                and (v.get("길이초") is None or int(v.get("길이초")) >= 120)][:1]
     return {
         "제목": data.get("브리핑제목") or br.get("제목", "아침 경제·ETF 브리핑"),
         "날짜표시": data.get("날짜표시", ""),

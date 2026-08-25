@@ -49,7 +49,8 @@ class SafetyTests(unittest.TestCase):
                                            "videoPublishedAt": "2026-08-21T01:00:00Z"}}]}
                 if path == "videos":
                     return {"items": [{"id": "v1", "statistics": {
-                        "viewCount": "100", "commentCount": "2"}}]}
+                        "viewCount": "100", "commentCount": "2"},
+                        "contentDetails": {"duration": "PT3M5S"}}]}
                 if path == "commentThreads":
                     return {"items": []}
                 raise AssertionError(f"예상하지 않은 API: {path}")
@@ -205,6 +206,23 @@ class SafetyTests(unittest.TestCase):
     def test_youtube_channel_types_separate_official_and_general(self):
         self.assertEqual(render._channel_type("KODEX", True), "운용사 공식")
         self.assertEqual(render._channel_type("삼프로TV", False), "일반 경제")
+
+    def test_short_official_video_is_excluded_from_marketing_line(self):
+        data = {"유튜브": {"급상승": [{"영상ID": "short", "제목": "상품 광고",
+                 "채널": "스마트 타이거", "조회수": 10, "링크": "https://youtu.be/short",
+                 "ETF관련": True, "길이초": 119}]}}
+        context = render.build_context({}, data, {"유튜브": []}, "daily")
+        self.assertEqual(context["유튜브운용사"], [])
+
+    def test_two_minute_official_video_can_remain(self):
+        data = {"유튜브": {"급상승": [{"영상ID": "long", "제목": "상품 설명",
+                 "채널": "스마트 타이거", "조회수": 10, "링크": "https://youtu.be/long",
+                 "ETF관련": True, "길이초": 120}]}}
+        context = render.build_context({}, data, {"유튜브": []}, "daily")
+        self.assertEqual(len(context["유튜브운용사"]), 1)
+
+    def test_youtube_duration_parser(self):
+        self.assertEqual(youtube._duration_seconds("PT1H2M3S"), 3723)
 
     def test_etf_flow_deduplicates_themes_and_separates_leverage(self):
         rows = [{"이름": "KODEX 반도체", "등락률": 5.0},
