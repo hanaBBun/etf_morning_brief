@@ -238,9 +238,9 @@ def main() -> int:
     if not msgs:
         if args.mode == "thursday":
             n = len(ai.get("etf_뉴스6선") or [])
-            msgs = [f"📰 ETF 처방전 전달문이 준비됐습니다.\n\n"
-                    f"이번 주 ETF 뉴스 {n}건과 전문가 발언 정리를 담았습니다.\n"
-                    f"링크에서 '복사용 텍스트'를 열면 바로 전달하실 수 있습니다."]
+            msgs = [f"📰 ETF 뉴스·출연자 추천이 준비됐습니다.\n\n"
+                    f"최근 ETF 뉴스 {n}건과 출연자 추천을 담았습니다."
+                    f""]
         else:
             msgs = kakao.fallback_messages(data)
     if args.mode == "thursday":
