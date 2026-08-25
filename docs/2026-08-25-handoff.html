@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETF 처방전 전달문 · 2026년 8월 25일 (화)</title>
+<style>
+  :root{
+    --bg:#0e1116; --surface:#161b22; --surface2:#1c2230; --line:#242c3a;
+    --ink:#e8edf5; --ink2:#a6b2c4; --ink3:#6f7d92;
+    --up:#f05a5a; --down:#3b8fe8; --warn:#e0a33c; --accent:#7c6cf0; --pick:#2fae7e;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f6; --line:#e2e6ee;
+           --ink:#161b22; --ink2:#4c5768; --ink3:#8792a4; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+       line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 60px}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+  h1{font-size:23px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink3);font-size:13px;margin:0}
+  h2{font-size:15px;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+     letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
+  h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+
+  .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+       border:1px solid var(--line);border-radius:50%;font-size:10px;color:var(--ink3);
+       cursor:help;position:relative;font-weight:600;vertical-align:2px;margin-left:5px;
+       background:var(--surface2);flex-shrink:0}
+  .tip:hover,.tip:focus{color:var(--accent);border-color:var(--accent);outline:none}
+  .tip .bubble{visibility:hidden;opacity:0;position:absolute;top:22px;left:50%;
+       transform:translateX(-50%);width:min(340px,78vw);background:var(--surface2);
+       border:1px solid var(--line);border-radius:8px;padding:10px 12px;z-index:20;
+       font-size:12px;font-weight:400;color:var(--ink2);line-height:1.6;text-align:left;
+       box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
+  .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
+  @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
+
+  /* 뉴스 6선 */
+  .newslist{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+            padding:2px 16px;margin:10px 0}
+  .nitem{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:12px 0;
+         border-bottom:1px solid var(--line);align-items:start}
+  .nitem:last-child{border-bottom:none}
+  .nno{display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+       border-radius:5px;background:var(--surface2);border:1px solid var(--line);
+       font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;margin-top:1px}
+  .nitem a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .nitem a:hover{color:var(--accent)}
+  .nmeta{font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .nsum{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .ntheme{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent);
+          border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 7px;margin-right:7px}
+
+  .copybox{margin:8px 0 0}
+  .copybox summary{font-size:12.5px;color:var(--ink3);cursor:pointer;padding:6px 2px;
+                   list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .copybox summary::before{content:"📋"}
+  .copybox summary:hover{color:var(--accent)}
+  .copybox textarea{width:100%;margin-top:6px;background:var(--surface2);color:var(--ink2);
+                    border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                    font-size:12px;line-height:1.75;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                    resize:vertical}
+
+  /* 애널리스트 발언 */
+  .quote{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:14px 16px;margin:10px 0}
+  .qhead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+  .qname{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .qorg{font-size:12px;color:var(--ink3)}
+  .qtopic{font-size:10.5px;font-weight:700;color:var(--ink3);background:var(--surface2);
+          border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:auto}
+  .qbody{font-size:13px;color:var(--ink2);margin:0;padding-left:11px;
+         border-left:2px solid var(--line)}
+  .qsrc{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+  .qsrc a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+  .qsrc a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* 출연자 추천 */
+  .guest{background:linear-gradient(135deg,rgba(47,174,126,.10),rgba(47,174,126,.03));
+         border:1px solid rgba(47,174,126,.32);border-radius:10px;padding:15px 17px;margin:10px 0}
+  .ghead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:3px}
+  .gname{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .gorg{font-size:12.5px;color:var(--ink3)}
+  .gcorner{font-size:10.5px;font-weight:700;color:var(--pick);
+           border:1px solid rgba(47,174,126,.45);border-radius:4px;padding:2px 8px;margin-left:auto}
+  .grow{display:grid;grid-template-columns:82px 1fr;gap:5px 10px;font-size:12.5px;margin-top:9px}
+  .grow .k{color:var(--ink3);font-weight:600}
+  .grow .v{color:var(--ink2)}
+  .gq{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
+      font-size:12.5px;color:var(--ink2);border-left:2px solid var(--pick)}
+  .gnote{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+
+  .empty{background:var(--surface);border:1px dashed var(--line);border-radius:10px;
+         padding:16px;margin:10px 0;font-size:13px;color:var(--ink3);text-align:center}
+
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:11px;color:var(--ink3);line-height:1.7}
+  .srclist{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+  .srclist a{font-size:11.5px;background:var(--surface2);border:1px solid var(--line);
+             border-radius:16px;padding:3px 10px;color:var(--ink2);text-decoration:none}
+  .srclist a:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ETF 처방전 · 목요일 전달문</div>
+  <h1>2026년 8월 25일 (화) ETF 뉴스 브리프</h1>
+  <p class="sub">8/24(월) ~ 8/25(화) 오전 보도분 · 박승진 실장 전달용</p>
+</header>
+
+<h2>📰 ETF 뉴스 6선<span class="tip" tabindex="0">?<span class="bubble">
+  이번 주 ETF가 언급된 기사 중 주제가 겹치지 않게 6건을 고릅니다.
+  수급 / 신규 상장 / 규제 / 해외 동향 / 상품 구조 / 시장 규모로 분산합니다.
+  아래 <b>복사용 텍스트</b>를 그대로 카톡에 붙여넣으면 됩니다.</span></span>
+  <span class="tag">전달용</span></h2>
+
+<div class="newslist">
+  <div class="nitem">
+    <div class="nno">1</div>
+    <div>
+<span class="ntheme">규제·제도</span>      <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBKa2RuX0FfZTYtdy1vTG1mV1dzN212NXI5eEJlSmdHVnExNWZtZGQxWFVodUVJQUtPa0lQSVIxbjhEUzNGaGF3UVVPbjdUWTFNU3ZhXzlwOXA3b0VV?oc=5" target="_blank" rel="noopener">레버리지 규제 한 달…운용사들 '반도체+채권' ETF 잇따라 출시 - 뉴스핌</a>
+      <div class="nmeta">뉴스핌 · 8/25</div>
+<div class="nsum">레버리지 규제 후 반도체·채권 혼합 ETF 출시 잇따라</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">2</div>
+    <div>
+<span class="ntheme">해외 동향</span>      <a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxNZ2VFNFVRTUFaRXJpOXdVZVlFVk54djFQNFZXM2VkWWdseFVaelJwQTVGV1JQcXF6QWNFNlFLejUwR29LbWZBQlhONWtYREFScmhnbGQ3Vkd6WVdNWWhNUTI2Wjd2YnVWeXdIM0FjbHduZG5UX3JZeUJ0ek8wLXEwRA?oc=5" target="_blank" rel="noopener">"어지러워서 못하겠다"...널뛰는 국장에 미국 지수형 ETF로 몰려간 개미들 - 조선일보</a>
+      <div class="nmeta">조선일보 · 8/25</div>
+<div class="nsum">국장 변동성 확대에 미국 지수형 ETF로 자금 유입</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">3</div>
+    <div>
+<span class="ntheme">시장 구조</span>      <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1qRVlQNG5DamNZaVk0OXVOSXNDcnEzZTJJdkdxcllfdmlQR3JHSVpJQ3NTZllxVzNYU2E5TU9rcWdCc3VtY1BRTDVON3NDdXgtaWh0NFNuRDgzd9IBWEFVX3lxTE0waWlDdXNVVjd4RjBZcXRkT19nMTRvNFNvck5tVl9aLVd2U2VCQURGVXlXRjY3TEUwYTJudDlpSFk2eFlJVmVjQk5EWHBuNjhQRzdoZ0dBOVM?oc=5" target="_blank" rel="noopener">운용역 한 명이 ETF 19개 도맡았다…액티브 ETF 상관계수 상폐 반복되는 까닭은? - 아주경제</a>
+      <div class="nmeta">아주경제 · 8/24</div>
+<div class="nsum">액티브 ETF 운용역 과부하 및 상관계수 상폐 문제</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">4</div>
+    <div>
+<span class="ntheme">수급</span>      <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFA5bmFpREMxX3FGRnhNOURWN1BkMlBCTzdhNzFGbVhiUnZhbGdBdG1WTlQ4a1ZqQ0J2YkVKRUprWjdoRHdOWjVHMG91YlJQekM2am4xWW16UnRVV2oz?oc=5" target="_blank" rel="noopener">[ETF 특징주] IBIT 필두 비트코인 펀드 10개월래 최대 순유입 '홍수' - 뉴스핌</a>
+      <div class="nmeta">뉴스핌 · 8/24</div>
+<div class="nsum">비트코인 현물 ETF로 10개월 만에 최대 자금 유입</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">5</div>
+    <div>
+<span class="ntheme">레버리지·인버스</span>      <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE5uSmk0NmVZWG1CNXBFWk1jUWtsWHMzT0FUVDdxenJ2ZE5jSVNYeHQxSGxyUmhpYXVUSW4wWGVwYzZ0dWw5alJLaHZ1cnpxY2VLYW9yc1FLZG9JUzdkQkJ6bVdnaVluYUhfOW91UW1B0gFuQVVfeXFMTm5KaTQ2ZVlYbUI1cEVaTWNRa2xYczNPQVRUN3F6cnZkTmNJU1h4dDFIbHJSaGlhdVRJbjBYZXBjNnR1bDlqUktodnVyenFjZUthb3JzUUtkb0lTN2RCQnptV2dpWW5hSF85b3VRbUE?oc=5" target="_blank" rel="noopener">단일레버리지, 해외선 폭락할수록 사는데…국내선 '광풍' 꺾였다 - 머니투데이 - 머니투데이</a>
+      <div class="nmeta">머니투데이 · 8/24</div>
+<div class="nsum">단일 종목 레버리지 ETF 투자 열풍 국내외 온도차</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">6</div>
+    <div>
+<span class="ntheme">시장 규모</span>      <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5NZFRWcXJ4Z2xHMFdpQmhSWmRrLU5tT0lJTTBoMk5rZlkzU3hJUlprV0t1dXZCZnRZd2IzWlJmbkxmZzNOVGx4TnRlbjh6T3JLV1hNcVdkWC1VLU00QW5tb1VDbFhTd3A3?oc=5" target="_blank" rel="noopener">ETF 거래 줄자 LP 수익도 '빨간불'…거래 특수 막 내리나 - ebn.co.kr</a>
+      <div class="nmeta">ebn.co.kr · 8/24</div>
+<div class="nsum">ETF 거래량 감소에 LP 수익성 악화 우려</div>    </div>
+  </div>
+</div>
+<details class="copybox">
+  <summary>복사용 텍스트 열기</summary>
+  <textarea readonly rows="21">[2026년 8월 25일 (화)] ETF 뉴스 6선
+1. 레버리지 규제 한 달…운용사들 '반도체+채권' ETF 잇따라 출시 - 뉴스핌
+   뉴스핌 · 8/25   https://news.google.com/rss/articles/CBMiXEFVX3lxTFBKa2RuX0FfZTYtdy1vTG1mV1dzN212NXI5eEJlSmdHVnExNWZtZGQxWFVodUVJQUtPa0lQSVIxbjhEUzNGaGF3UVVPbjdUWTFNU3ZhXzlwOXA3b0VV?oc=5
+2. "어지러워서 못하겠다"...널뛰는 국장에 미국 지수형 ETF로 몰려간 개미들 - 조선일보
+   조선일보 · 8/25   https://news.google.com/rss/articles/CBMigAFBVV95cUxNZ2VFNFVRTUFaRXJpOXdVZVlFVk54djFQNFZXM2VkWWdseFVaelJwQTVGV1JQcXF6QWNFNlFLejUwR29LbWZBQlhONWtYREFScmhnbGQ3Vkd6WVdNWWhNUTI2Wjd2YnVWeXdIM0FjbHduZG5UX3JZeUJ0ek8wLXEwRA?oc=5
+3. 운용역 한 명이 ETF 19개 도맡았다…액티브 ETF 상관계수 상폐 반복되는 까닭은? - 아주경제
+   아주경제 · 8/24   https://news.google.com/rss/articles/CBMiWkFVX3lxTE1qRVlQNG5DamNZaVk0OXVOSXNDcnEzZTJJdkdxcllfdmlQR3JHSVpJQ3NTZllxVzNYU2E5TU9rcWdCc3VtY1BRTDVON3NDdXgtaWh0NFNuRDgzd9IBWEFVX3lxTE0waWlDdXNVVjd4RjBZcXRkT19nMTRvNFNvck5tVl9aLVd2U2VCQURGVXlXRjY3TEUwYTJudDlpSFk2eFlJVmVjQk5EWHBuNjhQRzdoZ0dBOVM?oc=5
+4. [ETF 특징주] IBIT 필두 비트코인 펀드 10개월래 최대 순유입 '홍수' - 뉴스핌
+   뉴스핌 · 8/24   https://news.google.com/rss/articles/CBMiXEFVX3lxTFA5bmFpREMxX3FGRnhNOURWN1BkMlBCTzdhNzFGbVhiUnZhbGdBdG1WTlQ4a1ZqQ0J2YkVKRUprWjdoRHdOWjVHMG91YlJQekM2am4xWW16UnRVV2oz?oc=5
+5. 단일레버리지, 해외선 폭락할수록 사는데…국내선 '광풍' 꺾였다 - 머니투데이 - 머니투데이
+   머니투데이 · 8/24   https://news.google.com/rss/articles/CBMibkFVX3lxTE5uSmk0NmVZWG1CNXBFWk1jUWtsWHMzT0FUVDdxenJ2ZE5jSVNYeHQxSGxyUmhpYXVUSW4wWGVwYzZ0dWw5alJLaHZ1cnpxY2VLYW9yc1FLZG9JUzdkQkJ6bVdnaVluYUhfOW91UW1B0gFuQVVfeXFMTm5KaTQ2ZVlYbUI1cEVaTWNRa2xYczNPQVRUN3F6cnZkTmNJU1h4dDFIbHJSaGlhdVRJbjBYZXBjNnR1bDlqUktodnVyenFjZUthb3JzUUtkb0lTN2RCQnptV2dpWW5hSF85b3VRbUE?oc=5
+6. ETF 거래 줄자 LP 수익도 '빨간불'…거래 특수 막 내리나 - ebn.co.kr
+   ebn.co.kr · 8/24   https://news.google.com/rss/articles/CBMiaEFVX3lxTE5NZFRWcXJ4Z2xHMFdpQmhSWmRrLU5tT0lJTTBoMk5rZlkzU3hJUlprV0t1dXZCZnRZd2IzWlJmbkxmZzNOVGx4TnRlbjh6T3JLV1hNcVdkWC1VLU00QW5tb1VDbFhTd3A3?oc=5
+</textarea>
+</details>
+
+
+
+<h2>🔗 출처</h2>
+<div class="srclist">
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a><a href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a></div>
+
+<footer>
+  생성 2026-08-25 09:31 KST · 매주 목요일 오전 10시 자동 발송<br>
+  ※ 발언 인용은 기사 원문 기준입니다. 인용문을 그대로 쓰실 때는 원문 링크로 한 번 더 확인해 주세요.<br>
+  ※ 출연자 추천은 공개 발언을 근거로 한 제안이며, 섭외 가능 여부·이력은 별도 확인이 필요합니다.
+</footer>
+
+</div>
+</body>
+</html>
