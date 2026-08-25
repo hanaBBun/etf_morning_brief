@@ -31,6 +31,7 @@ jobs:
           KAKAO_REST_API_KEY:  ${{ secrets.KAKAO_REST_API_KEY }}
           KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          KAKAO_JAVASCRIPT_KEY: ${{ secrets.KAKAO_JAVASCRIPT_KEY }}
           YOUTUBE_API_KEY:     ${{ secrets.YOUTUBE_API_KEY }}
           GH_PAT:              ${{ secrets.GH_PAT }}
           KRX_ID:              ${{ secrets.KRX_ID }}

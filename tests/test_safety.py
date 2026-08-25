@@ -163,6 +163,29 @@ class SafetyTests(unittest.TestCase):
         self.assertNotIn("화면에서 숨길 관찰", html)
         self.assertNotIn("오늘 해야 하는 이유", html)
 
+    def test_kakao_share_button_reuses_single_message_and_daily_url(self):
+        data = {"날짜표시": "2026년 8월 25일 (화)"}
+        ai = {"카톡": {"1": "☀️ 8/25 브리핑\n1. 국내 증시\n2. 미국 증시\n3. ETF\n4. 일정\n5. 관전"}}
+        cfg = {"브리핑": {"사이트_주소": "https://hanabbun.github.io/etf_morning_brief/"}}
+        fixed = datetime(2026, 8, 25, 7, 0, tzinfo=timezone.utc)
+        with patch.object(render, "now_kst", return_value=fixed), \
+             patch.object(render, "config_env", return_value="javascript-key"):
+            context = render.build_context(cfg, data, ai, "daily")
+            template = render.Environment(
+                loader=render.FileSystemLoader(str(render.ROOT / "templates")),
+                autoescape=render.select_autoescape(["html"]),
+            ).get_template("brief.html.j2")
+            html = template.render(**context)
+        self.assertIn("카카오톡으로 공유", html)
+        self.assertIn("Kakao.Share.sendDefault", html)
+        self.assertIn("1. 국내 증시", context["공유본문"])
+        self.assertIn("https://hanabbun.github.io/etf_morning_brief/2026-08-25.html", html)
+
+    def test_kakao_share_button_is_hidden_until_javascript_key_exists(self):
+        with patch.object(render, "config_env", return_value=""):
+            context = render.build_context({}, {}, {"카톡": {"1": "본문"}}, "daily")
+        self.assertEqual(context["카카오JS키"], "")
+
     def test_weekend_and_monday_briefs_have_distinct_roles(self):
         monday = datetime(2026, 8, 24, 7, 0, tzinfo=timezone.utc)
         self.assertEqual(main._brief_identity(monday, "daily")[1], "이번 주 준비")

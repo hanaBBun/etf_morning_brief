@@ -24,6 +24,12 @@
   .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
   h1{font-size:24px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
   .sub{color:var(--ink3);font-size:13px;margin:0}
+  .sharebar{margin-top:14px}
+  .kakao-share{appearance:none;border:0;border-radius:8px;background:#FEE500;color:#191919;
+               padding:10px 15px;font:700 13px/1.2 inherit;cursor:pointer;display:inline-flex;
+               align-items:center;gap:7px;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+  .kakao-share:hover{filter:brightness(.97)}
+  .kakao-share:focus-visible{outline:3px solid rgba(254,229,0,.35);outline-offset:2px}
   h2{font-size:15px;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
      letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
   h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
@@ -247,6 +253,10 @@
   <div class="eyebrow">Morning Brief · ETF Edition</div>
   <h1>{{ 날짜표시 }} {{ 제목 }}</h1>
   <p class="sub">{% if 브리핑역할 %}{{ 브리핑역할 }} · {% endif %}{{ 기준설명 }}</p>
+  {% if 카카오JS키 and 공유주소 and 공유본문 %}
+  <div class="sharebar"><button type="button" class="kakao-share" id="kakao-share-button"
+    aria-label="이 브리핑을 카카오톡 채팅방에 공유">💬 카카오톡으로 공유</button></div>
+  {% endif %}
 </header>
 
 {# ─────────── 1. TOP 5 ─────────── #}
@@ -474,5 +484,31 @@
 </footer>
 
 </div>
+{% if 카카오JS키 and 공유주소 and 공유본문 %}
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
+<script>
+(() => {
+  const button = document.getElementById('kakao-share-button');
+  if (!button) return;
+  const jsKey = {{ 카카오JS키|tojson }};
+  const shareUrl = {{ 공유주소|tojson }};
+  const shareText = {{ 공유본문|tojson }};
+
+  button.addEventListener('click', () => {
+    if (!window.Kakao) {
+      window.alert('카카오톡 공유 기능을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+      return;
+    }
+    if (!Kakao.isInitialized()) Kakao.init(jsKey);
+    Kakao.Share.sendDefault({
+      objectType: 'text',
+      text: shareText,
+      link: {mobileWebUrl: shareUrl, webUrl: shareUrl},
+      buttonTitle: '전문 보기'
+    });
+  });
+})();
+</script>
+{% endif %}
 </body>
 </html>

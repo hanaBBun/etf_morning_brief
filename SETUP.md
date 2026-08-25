@@ -152,6 +152,17 @@ https://localhost:3000/?code=AbCdEf1234567890...
 | `YOUTUBE_API_KEY` | 5단계 참고 (없으면 유튜브 섹션만 생략됨) | ⬜ |
 | `GH_PAT` | 아래 설명 참고 | ⬜ 권장 |
 | `KAKAO_CLIENT_SECRET` | 카카오 앱에서 client_secret을 켠 경우만 | ⬜ |
+| `KAKAO_JAVASCRIPT_KEY` | 카카오 앱의 **JavaScript 키** (웹 공유 버튼) | ⬜ 공유 버튼 사용 시 |
+
+### 브리핑 페이지의 카카오톡 공유 버튼
+
+1. Kakao Developers → **내 애플리케이션 → 앱 키**에서 `JavaScript 키`를 복사합니다.
+2. 위 표의 이름대로 GitHub Actions Secret `KAKAO_JAVASCRIPT_KEY`를 등록합니다.
+3. Kakao Developers → **플랫폼 → Web**에 `https://hanabbun.github.io`를 사이트 도메인으로 등록합니다.
+
+다음 브리핑 생성부터 HTML 상단에 **카카오톡으로 공유** 버튼이 나타납니다. 버튼을 누르면
+자동 발송 카톡과 같은 TOP 1~5 본문과 `전문 보기` 링크로 새 공유 카드를 만듭니다.
+채팅방 선택과 최종 전송은 카카오톡에서 사용자가 직접 해야 합니다.
 
 ### GH_PAT 는 왜 권장인가
 

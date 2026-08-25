@@ -9,7 +9,7 @@ from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from .config import ROOT, now_kst
+from .config import ROOT, env as config_env, now_kst
 
 log = logging.getLogger(__name__)
 DOCS = ROOT / "docs"
@@ -316,6 +316,11 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
     # 2분 미만 운용사 영상은 상품 광고·숏폼 성격이라 작가용 리서치에서 제외한다.
     official = [v for v in videos if v.get("채널유형") == "운용사 공식"
                 and (v.get("길이초") is None or int(v.get("길이초")) >= 120)][:1]
+    suffix = SUFFIX.get(mode, "")
+    stamp = now_kst().strftime("%Y-%m-%d")
+    base = str(br.get("사이트_주소") or "").rstrip("/")
+    share_url = f"{base}/{stamp}{suffix}.html" if base else ""
+    kakao_text = str(((ai or {}).get("카톡") or {}).get("1") or "").strip()
     return {
         "제목": data.get("브리핑제목") or br.get("제목", "아침 경제·ETF 브리핑"),
         "날짜표시": data.get("날짜표시", ""),
@@ -336,6 +341,10 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "ai": ai or {},
         "모드": mode,
         "생성시각": now_kst().strftime("%Y-%m-%d %H:%M KST"),
+        # JavaScript 키는 브라우저에 공개되는 키다. REST API 키와 혼용하지 않는다.
+        "카카오JS키": config_env("KAKAO_JAVASCRIPT_KEY", "") or "",
+        "공유주소": share_url,
+        "공유본문": kakao_text,
     }
 
 
