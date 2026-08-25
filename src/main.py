@@ -1,4 +1,4 @@
-"""진입점. python -m src.main [--mode daily|weekly] [--no-send] [--dry-run].
+"""진입점. python -m src.main [--mode daily|weekly|thursday] [--no-send] [--dry-run].
 
 main 브랜치의 코드 변경 검증은 GitHub Actions에서 --no-send로 실행된다.
 """
@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+from datetime import timedelta
 from typing import Any
 
 from . import events, kakao, krx, llm, market, news, render, youtube
@@ -30,22 +31,21 @@ def _brief_identity(run_at, mode: str) -> tuple[str, str]:
 
 
 def collect_handoff(cfg: dict) -> dict[str, Any]:
-    """목요일 전달문용 — 시장 데이터는 필요 없고 뉴스만 깊게 모은다."""
+    """ETF 처방전 전달문용 — 실행 시점 기준 최근 뉴스를 깊게 모은다."""
     from .config import now_kst as _now
 
     now = _now()
-    start, label = news.week_start(cfg)
-    wd = "월화수목금토일"
+    hours = int((cfg.get("목요일_전달문") or {}).get("최근_뉴스_시간", 96))
+    start = now - timedelta(hours=hours)
     data: dict[str, Any] = {
         "날짜표시": kdate(),
         "모드": "thursday",
-        "수집범위": (f"{start.month}/{start.day}({label}) ~ "
-                     f"{now.month}/{now.day}({wd[now.weekday()]}) 오전"),
+        "수집범위": f"{start:%m/%d %H:%M} ~ {now:%m/%d %H:%M} KST",
     }
 
-    log.info("1/3 이번 주 뉴스 수집 (%s요일 00시 기준)", label)
+    log.info("1/3 최근 뉴스 수집 (실행 시점 기준 %d시간)", hours)
     try:
-        data["뉴스"] = news.collect_since_weekday(cfg)
+        data["뉴스"] = news.collect_news(cfg, hours=hours)
     except Exception as e:  # noqa: BLE001
         log.error("뉴스 수집 실패: %s", e)
         data["뉴스"] = {}

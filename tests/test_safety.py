@@ -350,6 +350,24 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(out["발언정리"], [])
         self.assertEqual(out["출연자추천"], [])
 
+    def test_handoff_keeps_extra_news_and_quotes_for_toggle(self):
+        articles = [{"제목": f"ETF 뉴스 {i}", "출처": "테스트", "날짜": "2026-08-25",
+                     "링크": f"https://example.com/{i}", "경과시간": i}
+                    for i in range(1, 9)]
+        data = {"뉴스": {"ETF시장": articles}}
+        llm._link_index(data)
+        raw = {
+            "etf_뉴스6선": [{"id": f"n{i}", "주제": "시장 구조", "한줄": "요약"}
+                            for i in range(1, 9)],
+            "발언정리": [{"이름": f"전문가{i}", "소속": "테스트증권", "직함": "연구원",
+                         "주제": "ETF", "발언": "ETF 시장 발언",
+                         "출처": {"이름": "테스트", "id": f"n{i}"}}
+                        for i in range(1, 9)],
+        }
+        out = llm._postprocess_handoff(raw, 195, data)
+        self.assertEqual(len(out["etf_뉴스6선"]), 8)
+        self.assertEqual(len(out["발언정리"]), 8)
+
     def test_turnover_is_not_rewritten_as_inflow(self):
         raw = {"etf_레이더": [{"제목": "1조원 돈이 몰렸다", "사실": "거래대금 1조원",
                               "관찰": "", "구분": "수급", "출처": []}]}

@@ -65,6 +65,11 @@
                     border:1px solid var(--line);border-radius:8px;padding:11px 13px;
                     font-size:12px;line-height:1.75;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
                     resize:vertical}
+  .more-items{margin:10px 0 0;background:var(--surface);border:1px solid var(--line);
+              border-radius:10px;padding:0 16px}
+  .more-items summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;
+                      color:var(--ink2)}
+  .more-items .nitem:first-of-type,.more-items .quote:first-of-type{border-top:1px solid var(--line)}
 
   /* 애널리스트 발언 */
   .quote{background:var(--surface);border:1px solid var(--line);border-radius:10px;
@@ -115,16 +120,16 @@
   <p class="sub">{{ 수집범위 }} 보도분 · 박승진 실장 전달용</p>
 </header>
 
-{# ── 1. ETF 뉴스 6선 ── #}
-<h2>📰 ETF 뉴스 6선<span class="tip" tabindex="0">?<span class="bubble">
-  이번 주 ETF가 언급된 기사 중 주제가 겹치지 않게 6건을 고릅니다.
+{# ── 1. 중요 ETF 뉴스 + 추가 뉴스 ── #}
+<h2>📰 중요 ETF 뉴스 6선<span class="tip" tabindex="0">?<span class="bubble">
+  최근 96시간 ETF 기사 중 중요도 상위 6건을 먼저 보여줍니다.
   수급 / 신규 상장 / 규제 / 해외 동향 / 상품 구조 / 시장 규모로 분산합니다.
   아래 <b>복사용 텍스트</b>를 그대로 카톡에 붙여넣으면 됩니다.</span></span>
   <span class="tag">전달용</span></h2>
 
 {% if ai.etf_뉴스6선 %}
 <div class="newslist">
-  {% for n in ai.etf_뉴스6선 %}
+  {% for n in ai.etf_뉴스6선[:6] %}
   <div class="nitem">
     <div class="nno">{{ loop.index }}</div>
     <div>
@@ -136,6 +141,22 @@
   </div>
   {% endfor %}
 </div>
+{% if ai.etf_뉴스6선|length > 6 %}
+<details class="more-items">
+  <summary>추가 ETF 뉴스 {{ ai.etf_뉴스6선|length - 6 }}건 보기</summary>
+  {% for n in ai.etf_뉴스6선[6:] %}
+  <div class="nitem">
+    <div class="nno">{{ loop.index + 6 }}</div>
+    <div>
+      {% if n.주제 %}<span class="ntheme">{{ n.주제 }}</span>{% endif %}
+      <a href="{{ n.url }}" target="_blank" rel="noopener">{{ n.제목 }}</a>
+      <div class="nmeta">{{ n.매체 }}{% if n.날짜 %} · {{ n.날짜 }}{% endif %}</div>
+      {% if n.한줄 %}<div class="nsum">{{ n.한줄 }}</div>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</details>
+{% endif %}
 <details class="copybox">
   <summary>복사용 텍스트 열기</summary>
   <textarea readonly rows="{{ (ai.etf_뉴스6선|length) * 3 + 3 }}">[{{ 날짜표시 }}] ETF 뉴스 {{ ai.etf_뉴스6선|length }}선
@@ -146,7 +167,7 @@
 {% endfor %}</textarea>
 </details>
 {% else %}
-<div class="empty">이번 주 수집된 ETF 기사에서 조건에 맞는 항목을 찾지 못했습니다.</div>
+<div class="empty">최근 96시간 수집 기사에서 조건에 맞는 ETF 뉴스를 찾지 못했습니다.</div>
 {% endif %}
 
 {# ── 2. 애널리스트·전문가 발언 ── #}
@@ -155,7 +176,7 @@
   ETF·자산배분 관련 기사에서 <b>실명으로 인용된 발언</b>만 모읍니다.
   기사에 이름과 소속이 명시된 경우에만 싣고, 익명 코멘트는 제외합니다.</span></span>
   <span class="tag">ETF · 자산배분</span></h2>
-{% for q in ai.발언정리 %}
+{% for q in ai.발언정리[:6] %}
 <div class="quote">
   <div class="qhead">
     <span class="qname">{{ q.이름 }}</span>
@@ -171,6 +192,25 @@
   {% endif %}
 </div>
 {% endfor %}
+{% if ai.발언정리|length > 6 %}
+<details class="more-items">
+  <summary>추가 애널리스트·전문가 발언 {{ ai.발언정리|length - 6 }}명 보기</summary>
+  {% for q in ai.발언정리[6:] %}
+  <div class="quote">
+    <div class="qhead">
+      <span class="qname">{{ q.이름 }}</span>
+      <span class="qorg">{{ q.소속 }}{% if q.직함 %} {{ q.직함 }}{% endif %}</span>
+      {% if q.주제 %}<span class="qtopic">{{ q.주제 }}</span>{% endif %}
+    </div>
+    <p class="qbody">{{ q.발언 }}</p>
+    {% if q.출처 %}<div class="qsrc">출처 ·
+      {% if q.출처.url %}<a href="{{ q.출처.url }}" target="_blank" rel="noopener">{{ q.출처.이름 }}</a>{% else %}{{ q.출처.이름 }}{% endif %}
+      {% if q.출처.날짜 %} · {{ q.출처.날짜 }}{% endif %}
+    </div>{% endif %}
+  </div>
+  {% endfor %}
+</details>
+{% endif %}
 {% endif %}
 
 {# ── 3. 출연자 추천 ── #}
@@ -207,7 +247,7 @@
 {% endif %}
 
 <footer>
-  생성 {{ 생성시각 }} · 매주 목요일 오전 10시 자동 발송<br>
+  생성 {{ 생성시각 }} · 최근 96시간 기준 · 매주 목요일 오전 10시 자동 발송 / 수동 실행 시 HTML 생성<br>
   ※ 발언 인용은 기사 원문 기준입니다. 인용문을 그대로 쓰실 때는 원문 링크로 한 번 더 확인해 주세요.<br>
   ※ 출연자 추천은 공개 발언을 근거로 한 제안이며, 섭외 가능 여부·이력은 별도 확인이 필요합니다.
 </footer>

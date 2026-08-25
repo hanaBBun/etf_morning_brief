@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       no_send:
-        description: "카톡 발송 없이 HTML만 생성"
+        description: "카톡 발송 없이 HTML만 생성 (수동 실행 기본값)"
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: write
