@@ -1591,25 +1591,28 @@ def _build_daily_kakao(d: dict, data: dict, limit: int) -> dict:
     stamp = f"{int(m.group(1))}/{int(m.group(2))}" if m else "오늘"
     top = d.get("top5") or []
 
-    def metric(item: dict) -> str:
-        # 숫자는 4·5번에서도 의미의 핵심이므로 삭제하지 않고 첫 핵심 수치만 보존한다.
-        value = str(item.get("숫자") or "").strip().split(" · ")[0]
-        value = value.replace("필라델피아 반도체", "필반도체")
-        return value
+    # 카톡은 전문의 숫자표가 아니라 5가지 사건을 빠르게 이해하는 입구다.
+    # 별도 숫자 필드를 기계적으로 덧붙이면 제목과 중복되고 문장이 잘리므로,
+    # 모델이 만든 완결된 TOP5 제목만 한 줄씩 사용한다. 자세한 수치는 HTML에 둔다.
+    lines = [f"☀️ {stamp} 브리핑"]
+    for i, item in enumerate(top[:5], 1):
+        title = re.sub(r"\s+", " ", str(item.get("제목") or "")).strip(" |·")
+        lines.append(f"{i}. {title}")
 
-    title_limit = 16
-    while title_limit >= 9:
-        lines = [f"☀️ {stamp} 브리핑"]
-        for item in top[:5]:
-            title = _clip(item.get("제목"), title_limit)
-            number = metric(item)
-            lines.append(f"{item.get('순위')}. {title}" + (f" | {number}" if number else ""))
-        message = "\n".join(lines)
-        if len(message) <= limit:
-            return {"1": message}
-        title_limit -= 1
-    # 제목을 더 자르는 대신 1~5와 각 핵심 숫자를 그대로 우선한다.
-    return {"1": "\n".join(lines)}
+    message = "\n".join(lines)
+    if len(message) <= limit:
+        return {"1": message}
+
+    # 프롬프트의 제목 길이 제한이 지켜지지 않은 예외만 처리한다. 말줄임표나
+    # 숫자 조각을 남기지 않고, 괄호·부제부터 제거해 다섯 사건을 모두 보존한다.
+    compact = [lines[0]]
+    for i, item in enumerate(top[:5], 1):
+        title = re.sub(r"\s+", " ", str(item.get("제목") or "")).strip(" |·")
+        title = re.sub(r"\s*[\(\[].*?[\)\]]\s*", " ", title).strip()
+        title = re.split(r"\s+[|·]\s+", title, maxsplit=1)[0].strip()
+        compact.append(f"{i}. {title}")
+    message = "\n".join(compact)
+    return {"1": message[:limit].rstrip()}
 
 
 def _topup_top5(d: dict) -> None:

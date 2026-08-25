@@ -454,12 +454,13 @@ class SafetyTests(unittest.TestCase):
                "오늘관전": ["외국인 수급과 금리 방향을 확인하세요"]}
         out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}},
                                {"날짜표시": "2026년 8월 21일 (금)", "뉴스": {}})
-        self.assertIn("1. 핵심 이슈 1 | 수치 1", out["카톡"]["1"])
-        self.assertIn("4. 핵심 이슈 4 | 수치 4", out["카톡"]["1"])
+        self.assertIn("1. 핵심 이슈 1", out["카톡"]["1"])
+        self.assertIn("4. 핵심 이슈 4", out["카톡"]["1"])
         self.assertIn("5. 핵심 이슈 5", out["카톡"]["1"])
         self.assertNotIn("…", out["카톡"]["1"])
+        self.assertNotIn(" | ", out["카톡"]["1"])
 
-    def test_kakao_keeps_a_number_for_all_five_items(self):
+    def test_kakao_does_not_force_duplicate_numbers_into_all_five_items(self):
         raw = {"top5": [
             {"제목": f"핵심 이슈 {i}", "숫자": f"대표수치{i} {i}.25% · 보조수치 {i * 10}", "영향": ""}
             for i in range(1, 6)]}
@@ -467,7 +468,26 @@ class SafetyTests(unittest.TestCase):
                                {"날짜표시": "2026년 8월 25일 (화)", "뉴스": {}})
         self.assertLessEqual(len(out["카톡"]["1"]), 195)
         for i in range(1, 6):
-            self.assertIn(f"대표수치{i}", out["카톡"]["1"])
+            self.assertIn(f"{i}. 핵심 이슈 {i}", out["카톡"]["1"])
+            self.assertNotIn(f"대표수치{i}", out["카톡"]["1"])
+
+    def test_kakao_matches_clean_morning_brief_style(self):
+        raw = {"top5": [
+            {"제목": "삼성그룹주 대폭락", "숫자": "코스피 6696.96 · 삼성전자 -8.70%"},
+            {"제목": "미국 반도체주 약세", "숫자": "필라델피아 반도체 11423.17"},
+            {"제목": "국내 수급 악화", "숫자": "외국인 -3.68조원 · 기관 -1.29조원"},
+            {"제목": "미국 장기금리 하락", "숫자": "10년물 4.70%"},
+            {"제목": "원자재 변동성 확대", "숫자": "금 선물 4731.10달러"},
+        ]}
+        out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}},
+                               {"날짜표시": "2026년 8월 25일 (화)", "뉴스": {}})
+        self.assertEqual(out["카톡"]["1"],
+                         "☀️ 8/25 브리핑\n"
+                         "1. 삼성그룹주 대폭락\n"
+                         "2. 미국 반도체주 약세\n"
+                         "3. 국내 수급 악화\n"
+                         "4. 미국 장기금리 하락\n"
+                         "5. 원자재 변동성 확대")
 
     def test_index_divergence_is_added_to_ai_input(self):
         data = {"국내지수": [{"이름": "코스피", "종가": 6696, "등락률": -3.12},
