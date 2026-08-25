@@ -1,4 +1,4 @@
-name: ETF 뉴스·출연자 추천
+name: ETF 뉴스·출연자 추천 (목요일 10:00 자동)
 
 on:
   schedule:
