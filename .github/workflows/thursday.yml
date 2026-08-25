@@ -1,4 +1,4 @@
-name: ETF 처방전 전달문 (목요일 10:00 KST)
+name: ETF 뉴스·출연자 추천
 
 on:
   schedule:
