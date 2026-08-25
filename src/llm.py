@@ -199,6 +199,15 @@ ETF 레이더와 시장브리핑은 입력 데이터에 표시된 실제 기준�
 매일 비슷한 위험선호·금리부담 설명을 반복하지 마세요. 전일 대비 국면 전환, 한·미의
 뚜렷한 디커플링, 금리·달러·유가 등 자산 간 이례적 동행처럼 새로 설명할 변화가 있고
 최근 기사 근거가 2건 이상일 때만 `시장국면`을 작성합니다. 아니면 null 로 답하세요.
+
+■ 규칙 12 — 시장 카드의 ETF 연결은 빠뜨리지 않습니다
+미국·국내 시장브리핑은 결과·원인·ETF연결을 모두 씁니다. ETF연결은 매수 추천이 아니라
+오늘의 움직임을 어떤 지수형·업종형·채권형 ETF와 연결해 점검할지 구체적으로 씁니다.
+
+■ 규칙 13 — 흐름판과 ETF 레이더를 반복하지 않습니다
+ETF 흐름판의 수익률 상·하위, 레버리지·인버스, 거래량 급증 수치는 자동 표시됩니다.
+레이더는 최근 기사로 확인된 시장 구조·규제·세제·자금 이동·지수 변경·유형 쏠림만 씁니다.
+흐름판의 ETF명과 숫자를 그대로 옮기지 말고, 각 항목에 기사 id를 최소 1개 붙이세요.
 """
 
 SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍스트는 넣지 마세요.
@@ -330,12 +339,18 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   · 원인은 나열하지 말고 '금리 상승 → 성장주 할인율 부담 → 나스닥 약세'처럼 전달 경로를 설명합니다.
   · ETF연결은 매수 추천이 아니라, 작가가 어떤 ETF군·테마·질문을 이어서 봐야 하는지 설명합니다.
   · 하루 등락만으로 추세 전환을 단정하지 마세요.
+  · 입력에 `지수괴리`가 있으면 국내 카드에서 언급하고, 대형주 집중 영향인지 기사·수급과
+    연결해 설명하세요. 괴리만으로 원인을 확정하지 마세요.
 
 ★ ETF 레이더는 KRX 수치뿐 아니라 입력에 포함된 일반 언론사의 의미 있는 ETF 기사도 후보입니다.
   레버리지 투자행태, 원자재·가상자산·섹터 ETF 자금 이동처럼 ETF 시장이나 콘텐츠 기획에
   시사점이 큰 기사를 우선합니다. 같은 운용사의 상품 홍보성 기사를 여러 개 싣지 마세요.
   `사실`은 입력에 수치가 있다면 등락률·순매수·순자산·거래대금 중 최소 1개를 그대로 포함합니다.
   수치 없이 "관심 증가", "강세", "주목"만 쓴 항목은 만들지 마세요.
+  흐름판 수치를 복사한 항목은 만들지 말고 모든 레이더 항목에 기사 id를 붙이세요.
+
+★ 콘텐츠 후보는 좋은 것이 1개뿐이면 1개만 답하세요. 정원을 채우기 위한 범용 질문이나
+  `VIX 상승`처럼 ETF 유형이 아닌 현상을 관련ETF에 쓰지 마세요.
 
 오늘의개념은 VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지, 베이시스포인트,
 멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중 그날 뉴스와 실제로 연결되는 것을 고릅니다.
@@ -687,6 +702,12 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
         return d
 
     d["국내지수"] = [_slim_quote(r) for r in (data.get("국내지수") or [])]
+    domestic = {str(r.get("이름")): r for r in (data.get("국내지수") or [])}
+    kp, kq = domestic.get("코스피", {}), domestic.get("코스닥", {})
+    if kp.get("등락률") is not None and kq.get("등락률") is not None:
+        a, b = float(kp["등락률"]), float(kq["등락률"])
+        if a * b < 0 or abs(a - b) >= 2.0:
+            d["지수괴리"] = f"코스피 {a:+.2f}% / 코스닥 {b:+.2f}% — 방향·강도 차이 확인"
     d["지표"] = {
         g: [_slim_quote(r) for r in rows if r.get("종가") is not None]
         for g, rows in (data.get("지표") or {}).items()
@@ -812,27 +833,19 @@ def _fallback_seed(data: dict) -> dict:
 
     radar = []
     candidates = data.get("ETF_후보") or {}
-    for r in candidates.get("거래량_급증") or []:
-        radar.append({"구분": "거래량 급증", "제목": str(r.get("이름") or "ETF 거래량 변화"),
-                      "사실": f"20일 평균 대비 거래량 {r.get('배수')}배",
-                      "관찰": "거래량 증가가 다음 거래일까지 이어지는지 확인", "출처": []})
-    for r in candidates.get("신규상장") or []:
-        radar.append({"구분": "신규 상장", "제목": str(r.get("이름") or "신규 ETF"),
-                      "사실": "KRX 신규 상장 목록에서 확인", "관찰": "초기 거래량과 괴리율 확인",
-                      "출처": []})
-    if not radar:
-        for group in ("ETF시장", "ETF", "레버리지", "보도자료"):
-            for art in ((data.get("뉴스") or {}).get(group) or []):
-                if art.get("제목") and art.get("링크"):
-                    radar.append({"구분": "시장 뉴스", "제목": str(art["제목"])[:24],
-                                  "사실": str(art.get("요약") or art["제목"])[:80],
-                                  "관찰": "관련 ETF의 거래량과 자금 흐름 확인",
-                                  "출처": [{"이름": art.get("출처", "기사"),
-                                           "url": art["링크"], "날짜": art.get("날짜", "")}]})
-                if radar:
-                    break
+    # 흐름판은 별도로 렌더링되므로 폴백 레이더도 기사에서만 만든다.
+    for group in ("ETF시장", "증권", "ETF", "레버리지"):
+        for art in ((data.get("뉴스") or {}).get(group) or []):
+            if art.get("제목") and art.get("링크"):
+                radar.append({"구분": "시장 뉴스", "제목": str(art["제목"])[:24],
+                              "사실": str(art.get("요약") or art["제목"])[:80],
+                              "관찰": "관련 ETF의 거래량과 자금 흐름 확인",
+                              "출처": [{"이름": art.get("출처", "기사"),
+                                       "url": art["링크"], "날짜": art.get("날짜", "")} ]})
             if radar:
                 break
+        if radar:
+            break
 
     first = top[0] if top else {"제목": "오늘 시장", "숫자": ""}
     concept = ({"용어": "베이시스포인트(bp)",
@@ -847,10 +860,11 @@ def _fallback_seed(data: dict) -> dict:
         "오늘관전": [f"{first['제목']} 흐름이 다음 거래일까지 이어지는지 확인"],
         "etf_레이더": radar[:5],
         "유튜브": [],
-        "콘텐츠후보": [{"코너": "ETF 처방전", "제목": f"{first['제목']}, ETF에는 어떤 영향?",
-                         "이유": f"오늘 핵심 수치 {first['숫자']}를 ETF 관점에서 설명할 필요",
-                         "관련ETF": first["제목"], "차별점": "수치와 ETF 전달 경로 중심",
-                         "질문": "오늘의 시장 변동이 ETF 투자자에게 중요한 이유는 무엇인가요?"}],
+        "콘텐츠후보": [{"코너": "ETF 처방전", "제목": f"{first['제목']}, 연계 ETF 영향은?",
+                         "이유": f"{first['제목']}의 핵심 수치 {first['숫자']}와 ETF 전달 경로를 설명할 필요",
+                         "관련ETF": f"{first['제목']} 연계 지수·업종 ETF",
+                         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
+                         "질문": f"{first['제목']} 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?"}],
         "오늘의개념": concept,
         "체크포인트": [{"유형": "확인", "때": "다음 거래일",
                          "내용": f"{first['제목']} 흐름의 지속 여부"}],
@@ -907,9 +921,11 @@ def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
     result["유튜브"] = _merge_unique(
         [fresh.get("유튜브", []), cached.get("유튜브", [])],
         lambda x: str(x.get("영상ID") or ""), 5)
+    plan_groups = [fresh.get("콘텐츠후보", []), cached.get("콘텐츠후보", [])]
+    if not any(plan_groups):
+        plan_groups.append(fallback["콘텐츠후보"])
     result["콘텐츠후보"] = _merge_unique(
-        [fresh.get("콘텐츠후보", []), cached.get("콘텐츠후보", []), fallback["콘텐츠후보"]],
-        lambda x: str(x.get("제목") or ""), 2)
+        plan_groups, lambda x: str(x.get("제목") or ""), 2)
     result["오늘관전"] = _merge_unique(
         [fresh.get("오늘관전", []), cached.get("오늘관전", []), fallback["오늘관전"]],
         lambda x: str(x), 3)
@@ -1541,27 +1557,25 @@ def _build_daily_kakao(d: dict, data: dict, limit: int) -> dict:
     stamp = f"{int(m.group(1))}/{int(m.group(2))}" if m else "오늘"
     top = d.get("top5") or []
 
-    def item_line(item: dict, include_number: bool = True) -> str:
-        title = str(item.get("제목") or "").strip()
-        number = str(item.get("숫자") or "").strip()
-        return f"{item.get('순위')}. {title}" + (f" | {number}" if number and include_number else "")
+    def metric(item: dict) -> str:
+        # 숫자는 4·5번에서도 의미의 핵심이므로 삭제하지 않고 첫 핵심 수치만 보존한다.
+        value = str(item.get("숫자") or "").strip().split(" · ")[0]
+        value = value.replace("필라델피아 반도체", "필반도체")
+        return value
 
-    # TOP 1~5 제목은 반드시 모두 보존한다. 195자를 넘을 때만 중요도가 낮은
-    # 5번부터 숫자 설명을 통째로 빼며, 문장을 중간에서 자르지 않는다.
-    include_numbers = [True] * len(top[:5])
-    while True:
-        lines = [f"☀️ {stamp} 브리핑"] + [
-            item_line(item, include_numbers[i]) for i, item in enumerate(top[:5])]
+    title_limit = 16
+    while title_limit >= 9:
+        lines = [f"☀️ {stamp} 브리핑"]
+        for item in top[:5]:
+            title = _clip(item.get("제목"), title_limit)
+            number = metric(item)
+            lines.append(f"{item.get('순위')}. {title}" + (f" | {number}" if number else ""))
         message = "\n".join(lines)
         if len(message) <= limit:
             return {"1": message}
-        idx = next((i for i in range(len(include_numbers) - 1, -1, -1)
-                    if include_numbers[i]), None)
-        if idx is None:
-            # 스키마의 제목 제한을 지키면 도달하지 않는다. 그래도 항목 삭제보다는
-            # 제목만 온전히 남긴 메시지를 반환한다.
-            return {"1": "\n".join(lines)}
-        include_numbers[idx] = False
+        title_limit -= 1
+    # 제목을 더 자르는 대신 1~5와 각 핵심 숫자를 그대로 우선한다.
+    return {"1": "\n".join(lines)}
 
 
 def _topup_top5(d: dict) -> None:
@@ -1588,6 +1602,33 @@ def _topic_words(value: Any) -> set[str]:
             "유입", "유출", "억원"}
     return {w.lower() for w in re.findall(r"[가-힣A-Za-z0-9]+", str(value or ""))
             if len(w) >= 2 and w.lower() not in stop}
+
+
+def _flowboard_names(data: dict) -> set[str]:
+    board = ((data.get("ETF_후보") or {}).get("흐름판") or {})
+    names = set()
+    for key in ("상승", "하락", "고변동상품", "거래집중"):
+        for row in board.get(key) or []:
+            if row.get("이름"):
+                names.add(str(row["이름"]).strip())
+    return names
+
+
+def _has_news_source(item: dict) -> bool:
+    data_hosts = ("krx.co.kr", "finance.yahoo.com", "finance.naver.com")
+    return any(s.get("url") and not any(h in str(s.get("url")) for h in data_hosts)
+               for s in (item.get("출처") or []) if isinstance(s, dict))
+
+
+def _quality_content_plan(item: dict) -> bool:
+    related = str(item.get("관련ETF") or "")
+    etf_terms = ("ETF", "KODEX", "TIGER", "ACE", "RISE", "PLUS", "SOL", "KOSEF",
+                 "레버리지", "인버스", "커버드콜", "나스닥", "S&P", "코스피",
+                 "코스닥", "반도체", "채권", "배당", "금현물", "원유")
+    question = str(item.get("질문") or "")
+    generic = "오늘의 시장 변동이 ETF 투자자에게 중요한 이유는 무엇인가요" in question
+    return (any(term.lower() in related.lower() for term in etf_terms)
+            and len(str(item.get("차별점") or "").strip()) >= 15 and not generic)
 
 
 def _dedupe_topics(items: list[dict]) -> list[dict]:
@@ -1701,6 +1742,10 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         if market_name not in present:
             log.warning("모델이 %s 시장을 누락해 구조화 데이터로 보충합니다", market_name)
             d["시장브리핑"].append(_fallback_market_brief(market_name, data))
+    for brief in d["시장브리핑"]:
+        if brief.get("시장") in ("국내", "미국") and not str(brief.get("ETF연결") or "").strip():
+            brief["ETF연결"] = _fallback_market_brief(brief["시장"], data)["ETF연결"]
+            log.warning("%s 시장 ETF연결을 구조화 데이터로 보충합니다", brief["시장"])
     order = {"국내": 0, "미국": 1, "글로벌": 2}
     d["시장브리핑"].sort(key=lambda b: order.get(b.get("시장"), 9))
     radar_max = int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3))
@@ -1710,6 +1755,16 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     single_stock_context = _has_single_stock_leverage_news(data)
     radar = [_fix_etf_classification(r, single_stock_context) for r in radar]
     radar = [r for r in radar if not _has_hype(r) and not _mixes_turnover_and_flow(r)]
+    if ages:  # 실제 뉴스 입력이 있는 운영 실행에서만 기사 근거를 강제한다.
+        flow_names = _flowboard_names(data)
+        kept_radar = []
+        for r in radar:
+            copied = any(name and name in str(r.get("제목") or "") for name in flow_names)
+            if copied or not _has_news_source(r):
+                log.warning("흐름판 중복·기사 근거 없는 레이더 제외: %s", r.get("제목", ""))
+                continue
+            kept_radar.append(r)
+        radar = kept_radar
     radar = _dedupe_topics(radar)[:radar_max]
     for r in radar:
         r["사실"] = _qualify_retirement_claim(r.get("사실"))
@@ -1726,8 +1781,10 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
                     and str(v.get("영상ID")) in valid_video_ids][:5]
     plans = _drop_filler(d.get("콘텐츠후보"), ("제목", "이유"))
     plans = [_fix_etf_classification(p, single_stock_context) for p in plans]
-    d["콘텐츠후보"] = [p for p in plans
-                        if not _has_hype(p) and not _mixes_turnover_and_flow(p)][:2]
+    d["콘텐츠후보"] = [p for p in plans if _quality_content_plan(p)
+                        and not _has_hype(p) and not _mixes_turnover_and_flow(p)][:2]
+    log.info("콘텐츠후보 %d개 (품질 미달 %d개 제외)",
+             len(d["콘텐츠후보"]), len(plans) - len(d["콘텐츠후보"]))
     for p in d["콘텐츠후보"]:
         p["이유"] = _qualify_retirement_claim(p.get("이유"))
 

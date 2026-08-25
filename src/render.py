@@ -137,18 +137,22 @@ OVERLAP_CLASS = {"높음": "high", "보통": "mid", "낮음": "low"}
 
 def _keyword_overlap(video: dict, ai: dict) -> tuple[str, str]:
     """AI 메모가 없을 때 제목과 오늘 TOP5·레이더의 공통 핵심어로만 보수 판정."""
-    stop = {"오늘", "시장", "증시", "투자", "전망", "주식", "경제", "이유", "시황"}
-    title_words = {w for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", str(video.get("제목", "")))
-                   if len(w) >= 2 and w not in stop}
+    stop = {"오늘", "시장", "증시", "투자", "전망", "주식", "경제", "이유", "시황",
+            "ETF", "etf", "국내", "해외", "지수", "코스피", "코스닥", "미국", "한국",
+            "상승", "하락", "수익", "자금", "종목", "계좌"}
+    title_words = {w.lower() for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", str(video.get("제목", "")))
+                   if len(w) >= 2 and w not in stop and w.lower() not in stop}
     reference = " ".join(
         str(x.get("제목", "")) + " " + str(x.get("사실", ""))
         for x in (ai.get("top5") or []) + (ai.get("etf_레이더") or []))
-    ref_words = {w for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", reference)
-                 if len(w) >= 2 and w not in stop}
+    ref_words = {w.lower() for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", reference)
+                 if len(w) >= 2 and w not in stop and w.lower() not in stop}
     common = sorted(title_words & ref_words, key=len, reverse=True)
-    if common:
-        return "보통", f"오늘 핵심어와 겹침: {', '.join(common[:3])}"
-    return "낮음", "오늘 TOP5·ETF 레이더와 직접 겹치는 핵심어 없음"
+    if len(common) >= 3:
+        return "높음", f"{', '.join(common[:2])} 이슈와 같은 소재"
+    if len(common) >= 2:
+        return "보통", f"{', '.join(common[:2])} 이슈와 같은 소재"
+    return "낮음", ""
 
 
 def _youtube(data: dict, ai: dict) -> list[dict]:
@@ -166,7 +170,8 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
     for v in picked[:5]:
         n = notes.get(v.get("영상ID"), {})
         auto_ov, auto_reason = _keyword_overlap(v, ai)
-        ov = n.get("겹침") or auto_ov
+        # 범용어 하나만 겹친 모델 판정보다 재현 가능한 후처리 판정을 우선한다.
+        ov = auto_ov
         out.append({
             "제목": v.get("제목", ""),
             "채널": v.get("채널", ""),
@@ -176,7 +181,7 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
             "핵심주제": n.get("핵심주제", ""),
             "훅": n.get("훅", ""),
             "겹침": ov,
-            "겹침근거": n.get("겹침근거") or auto_reason,
+            "겹침근거": auto_reason,
             "겹침등급": OVERLAP_CLASS.get(ov, "low"),
             "ETF관련": bool(v.get("ETF관련")),
             "채널유형": _channel_type(v.get("채널", ""), bool(v.get("ETF관련"))),
@@ -224,7 +229,11 @@ def _checkpoint_groups(items: list[dict]) -> list[dict]:
                                 if match else "9999-99-99")
             label = re.sub(r"\s+\d{2}:\d{2}$", "", when) or "날짜 일정"
             key = (1, f"{sort_date}|{label}")
-        buckets.setdefault(key, []).append(item)
+        shown = dict(item)
+        clock = re.search(r"(\d{2}:\d{2})$", when)
+        shown["표시때"] = clock.group(1) if item.get("유형") == "일정" and clock else (
+            "" if item.get("유형") == "일정" else when)
+        buckets.setdefault(key, []).append(shown)
     groups = []
     for key in sorted(buckets):
         label = key[1].split("|", 1)[-1]
@@ -301,6 +310,9 @@ def _sources(data: dict, ai: dict) -> list[dict]:
 
 def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str) -> dict:
     br = cfg.get("브리핑") or {}
+    videos = _youtube(data, ai)
+    competitors = [v for v in videos if v.get("채널유형") != "운용사 공식"][:4]
+    official = [v for v in videos if v.get("채널유형") == "운용사 공식"][:1]
     return {
         "제목": data.get("브리핑제목") or br.get("제목", "아침 경제·ETF 브리핑"),
         "날짜표시": data.get("날짜표시", ""),
@@ -312,9 +324,10 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "주간대표흐름": _weekly_table(data, mode),
         "체크포인트그룹": _checkpoint_groups((ai or {}).get("체크포인트") or []),
         "ETF흐름판": (data.get("ETF_후보") or {}).get("흐름판") or {},
-        "유튜브영상": _youtube(data, ai),
+        "유튜브영상": competitors,
+        "유튜브운용사": official,
         "유튜브안내": _youtube_notice(data),
-        "유튜브각주": _youtube_footnote(data, _youtube(data, ai)),
+        "유튜브각주": _youtube_footnote(data, competitors),
         "출처목록": _sources(data, ai),
         "레이더_최대": (cfg.get("ETF_레이더") or {}).get("최대_항목수", 3),
         "ai": ai or {},
@@ -331,7 +344,8 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
     markets = {x.get("시장") for x in (ai.get("시장브리핑") or [])}
     if not {"국내", "미국"}.issubset(markets):
         errors.append("국내·미국 시장브리핑 누락")
-    if not (ai.get("etf_레이더") or []):
+    flowboard = ((data.get("ETF_후보") or {}).get("흐름판") or {})
+    if not (ai.get("etf_레이더") or []) and not (flowboard.get("상승") or flowboard.get("하락")):
         errors.append("ETF 레이더 누락")
     if not (ai.get("콘텐츠후보") or []):
         errors.append("ETF 아는형 콘텐츠 후보 누락")

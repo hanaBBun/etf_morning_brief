@@ -75,7 +75,7 @@ class SafetyTests(unittest.TestCase):
         out = render._youtube({"유튜브": {"급상승": raw}},
                               {"유튜브": notes, "top5": [{"제목": "금리 상승"}]})
         self.assertEqual(len(out), 4)
-        self.assertEqual(out[0]["겹침"], "보통")
+        self.assertEqual(out[0]["겹침"], "낮음")
         self.assertEqual(out[1]["겹침"], "낮음")
 
     def test_cached_youtube_analysis_survives_partial_ai_response(self):
@@ -84,7 +84,7 @@ class SafetyTests(unittest.TestCase):
         data = {"유튜브": {"급상승": raw, "분석": [
             {"영상ID": "kept", "겹침": "높음", "겹침근거": "같은 ETF 주제"}]}}
         out = render._youtube(data, {"유튜브": []})
-        self.assertEqual(out[0]["겹침"], "높음")
+        self.assertEqual(out[0]["겹침"], "낮음")
 
     def test_empty_ai_is_stabilized_into_complete_daily_brief(self):
         data = {
@@ -108,7 +108,7 @@ class SafetyTests(unittest.TestCase):
         out = llm._stabilize_daily({}, {}, data, {"카카오": {}, "ETF_레이더": {}})
         self.assertEqual(len(out["top5"]), 5)
         self.assertEqual({x["시장"] for x in out["시장브리핑"]}, {"국내", "미국"})
-        self.assertTrue(out["etf_레이더"])
+        self.assertEqual(out["etf_레이더"], [])
         self.assertTrue(out["콘텐츠후보"])
         self.assertTrue(out["오늘의개념"])
         self.assertTrue(out["체크포인트"])
@@ -389,6 +389,37 @@ class SafetyTests(unittest.TestCase):
         self.assertIn("5. 핵심 이슈 5", out["카톡"]["1"])
         self.assertNotIn("…", out["카톡"]["1"])
 
+    def test_kakao_keeps_a_number_for_all_five_items(self):
+        raw = {"top5": [
+            {"제목": f"핵심 이슈 {i}", "숫자": f"대표수치{i} {i}.25% · 보조수치 {i * 10}", "영향": ""}
+            for i in range(1, 6)]}
+        out = llm._postprocess(raw, {"카카오": {"글자수_제한": 195}, "ETF_레이더": {}},
+                               {"날짜표시": "2026년 8월 25일 (화)", "뉴스": {}})
+        self.assertLessEqual(len(out["카톡"]["1"]), 195)
+        for i in range(1, 6):
+            self.assertIn(f"대표수치{i}", out["카톡"]["1"])
+
+    def test_index_divergence_is_added_to_ai_input(self):
+        data = {"국내지수": [{"이름": "코스피", "종가": 6696, "등락률": -3.12},
+                              {"이름": "코스닥", "종가": 813, "등락률": 1.42}],
+                "뉴스": {}, "지표": {}}
+        compact = llm._compact(data, "daily")
+        self.assertIn("코스피 -3.12%", compact["지수괴리"])
+
+    def test_domestic_market_etf_link_is_filled_deterministically(self):
+        raw = {"시장브리핑": [{"시장": "국내", "제목": "대형주 급락", "결과": "코스피 -3%",
+                                 "원인": "삼성전자 하락", "ETF연결": "", "출처": []}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        kr = next(x for x in out["시장브리핑"] if x["시장"] == "국내")
+        self.assertIn("코스피200", kr["ETF연결"])
+
+    def test_generic_content_filler_is_removed(self):
+        raw = {"콘텐츠후보": [{"제목": "VIX 상승, ETF에는 어떤 영향?", "이유": "수치 설명",
+                                "관련ETF": "VIX 상승", "차별점": "수치와 ETF 전달 경로 중심",
+                                "질문": "오늘의 시장 변동이 ETF 투자자에게 중요한 이유는 무엇인가요?"}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        self.assertEqual(out["콘텐츠후보"], [])
+
     def test_filtered_top_items_are_renumbered_without_gap(self):
         raw = {"top5": [{"순위": 1, "제목": "첫째", "숫자": "1", "영향": ""},
                           {"순위": 4, "제목": "넷째", "숫자": "4", "영향": ""},
@@ -457,6 +488,7 @@ class SafetyTests(unittest.TestCase):
     def test_nvidia_earnings_is_converted_from_pt_to_kst(self, get):
         get.side_effect = [
             type("R", (), {"text": "<item><title>NVIDIA Sets Conference Call for Second-Quarter Financial Results</title><link>https://example.com/nvda</link></item>"})(),
+            type("R", (), {"text": "<urlset></urlset>"})(),
             type("R", (), {"text": ("NVIDIA will host a conference call on Wednesday, August 26, at 2 p.m. PT. "
                                       "Results will be publicly announced at approximately 1:20 p.m. PT")})(),
         ]

@@ -20,6 +20,7 @@ BOK_MPC_URL = ("https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do
                "?menuNo=200755&mtgSe=A")
 FED_CALENDAR_URL = "https://www.federalreserve.gov/newsevents/{year}-august.htm"
 NVIDIA_RSS_URL = "https://nvidianews.nvidia.com/rss.xml"
+NVIDIA_SITEMAP_URL = "https://nvidianews.nvidia.com/sitemap.xml"
 
 BEA_IMPORTANT = {
     "Gross Domestic Product": "미국 GDP",
@@ -110,13 +111,18 @@ def _bok_mpc(start: datetime, end: datetime) -> list[dict]:
 
 def _nvidia_earnings(start: datetime, end: datetime) -> list[dict]:
     rss = requests.get(NVIDIA_RSS_URL, timeout=15).text
+    urls = []
     for item in rss.split("<item>")[1:]:
-        if "Sets Conference Call" not in item or "Financial Results" not in item:
-            continue
-        link = re.search(r"<link>\s*(?:<!\[CDATA\[)?(https?://[^<\]]+)", item)
-        if not link:
-            continue
-        url = unescape(link.group(1).strip())
+        if "Sets Conference Call" in item and "Financial Results" in item:
+            link = re.search(r"<link>\s*(?:<!\[CDATA\[)?(https?://[^<\]]+)", item)
+            if link:
+                urls.append(unescape(link.group(1).strip()))
+    # RSS는 최신 기사 수가 제한돼 한 달 전 공지된 실적 일정이 사라질 수 있다.
+    # 공식 사이트맵에서 같은 보도자료를 보충한다.
+    sitemap = requests.get(NVIDIA_SITEMAP_URL, timeout=15).text
+    urls.extend(re.findall(r"<loc>(https?://[^<]*sets-conference-call[^<]*)</loc>",
+                           sitemap, re.I))
+    for url in dict.fromkeys(unescape(u) for u in urls):
         text = _plain(requests.get(url, timeout=15).text)
         hit = re.search(
             r"(?:Monday|Tuesday|Wednesday|Thursday|Friday),\s*"
@@ -147,13 +153,19 @@ def _fed_speeches(start: datetime, end: datetime) -> list[dict]:
     url = FED_CALENDAR_URL.format(year=start.year)
     text = _plain(requests.get(url, timeout=15).text)
     # 연준 월간 캘린더의 '10:00 a.m. Speech - Chairman ... Keynote ... 28' 구조.
-    hit = re.search(r"(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.).{0,180}"
-                    r"Speech\s*-\s*Chairman\s+Kevin\s+Warsh.{0,180}"
-                    r"Keynote Remarks.{0,180}?\b(\d{1,2})\b", text, re.I)
-    if not hit:
+    anchor = re.search(r"Speech\s*-\s*Chairman\s+Kevin\s+Warsh", text, re.I)
+    if not anchor:
         return []
-    hour = int(hit.group(1)) % 12 + (12 if hit.group(3).lower().startswith("p") else 0)
-    dt = datetime(start.year, 8, int(hit.group(4)), hour, int(hit.group(2)),
+    nearby = text[max(0, anchor.start() - 250):anchor.end() + 600]
+    clock = re.search(r"(\d{1,2}):(\d{2})\s*(a\.?\s*m\.?|p\.?\s*m\.?)", nearby, re.I)
+    keynote = re.search(r"Keynote\s+Remarks", nearby, re.I)
+    # 캘린더 HTML은 날짜가 연설 블록의 앞이나 뒤에 올 수 있다.
+    day_hits = re.findall(r"\b(2[7-9])\b", nearby)
+    if not clock or not keynote or not day_hits:
+        return []
+    meridiem = re.sub(r"[^ap]", "", clock.group(3).lower())
+    hour = int(clock.group(1)) % 12 + (12 if meridiem.startswith("p") else 0)
+    dt = datetime(start.year, 8, int(day_hits[0]), hour, int(clock.group(2)),
                   tzinfo=ZoneInfo("America/New_York"))
     if not (start <= dt.astimezone(KST) < end):
         return []

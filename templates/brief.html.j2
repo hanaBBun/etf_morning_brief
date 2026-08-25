@@ -374,7 +374,7 @@
 {% endif %}
 
 {# ─────────── 5. 경쟁 유튜브 ─────────── #}
-{% if 유튜브영상 %}
+{% if 유튜브영상 or 유튜브운용사 %}
 <h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
   설정 파일에 등록된 채널의 최근 업로드 중 최대 5개. 당일 처음 잡힌 영상은 재실행해도 유지합니다.
   <b>ETF를 다룬 영상을 먼저 고릅니다.</b><br>
@@ -400,6 +400,9 @@
   </div>
   {% endfor %}
 </div>
+{% if 유튜브운용사 %}
+<div class="notice"><b>운용사 마케팅 동향</b> · {% for v in 유튜브운용사 %}<a href="{{ v.링크 }}" target="_blank" rel="noopener">{{ v.채널 }} — {{ v.제목 }}</a>{% endfor %}</div>
+{% endif %}
 {% if 유튜브각주 %}<div class="notice">{{ 유튜브각주 }}</div>{% endif %}
 {% if ai.댓글키워드 %}
 <div class="card">
@@ -449,7 +452,7 @@
   {% for group in 체크포인트그룹 %}
   <div class="calgroup">{{ group.라벨 }}</div>
   {% for e in group.항목 %}
-  <div class="d"><span class="cpk {{ '일정' if e.유형 == '일정' else '확인' }}">{{ e.유형 }}</span>{% if e.유형 == '일정' and e.때|length > 10 %}{{ e.때[-5:] }}{% else %}{{ e.때 }}{% endif %}</div>
+  <div class="d"><span class="cpk {{ '일정' if e.유형 == '일정' else '확인' }}">{{ e.유형 }}</span>{{ e.표시때 }}</div>
   <div class="e">{{ e.내용 }}{% if e.출처 and e.출처.url %}<small><a href="{{ e.출처.url }}" target="_blank" rel="noopener">{{ e.출처.이름 }}</a></small>{% endif %}</div>
   {% endfor %}
   {% endfor %}
