@@ -155,6 +155,21 @@
   .flow-extra b{color:var(--ink3);font-size:10.5px;margin-right:6px}
   .flow-extra span+span:before{content:" · ";color:var(--ink3)}
   @media(max-width:520px){.flow-grid{grid-template-columns:1fr}}
+  .themebox{background:linear-gradient(135deg,rgba(224,163,60,.12),var(--surface));
+            border:1px solid rgba(224,163,60,.38);border-radius:10px;padding:14px 16px;margin:10px 0}
+  .themehead{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}
+  .themehead .badge{font-size:10px;font-weight:700;color:var(--warn);border:1px solid rgba(224,163,60,.45);
+                    border-radius:4px;padding:1px 7px}.themehead h3{font-size:14.5px;margin:0}
+  .themerow{display:grid;grid-template-columns:58px 1fr;gap:8px;font-size:12.5px;margin:6px 0}
+  .themerow .k{color:var(--ink3);font-size:10.5px;font-weight:700}.themerow .v{color:var(--ink2)}
+  .leaders{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 2px}
+  .leader{background:var(--surface2);border:1px solid var(--line);border-radius:16px;
+          padding:4px 9px;font-size:11.5px}.leader b{margin-left:5px;font-variant-numeric:tabular-nums}
+  .stockwatch{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px 15px;margin:10px 0}
+  .stockwatch .sitem{padding:10px 0;border-bottom:1px solid var(--line)}
+  .stockwatch .sitem:last-child{border-bottom:0}.stockwatch .st{display:flex;gap:8px;align-items:baseline}
+  .stockwatch .st b{font-size:13px}.stockwatch .st span{font-size:11.5px;font-weight:700}
+  .stockwatch p{margin:4px 0 0;color:var(--ink2);font-size:12.5px}
   .more-news{background:var(--surface);border:1px solid var(--line);border-radius:10px;
              padding:0 14px;margin:8px 0 12px}
   .more-news summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;color:var(--ink2)}
@@ -351,6 +366,21 @@
   </div>
   {% if ETF흐름판.고변동상품 %}<div class="flow-extra"><b>레버리지·인버스 별도</b>{% for x in ETF흐름판.고변동상품 %}<span>{{ x.이름 }} {{ "%+.2f"|format(x.등락률) }}%</span>{% endfor %}</div>{% endif %}
   {% if ETF흐름판.거래집중 %}<div class="flow-extra"><b>거래량 급증</b>{% for x in ETF흐름판.거래집중 %}<span>{{ x.이름 }} {{ x.배수 }}배</span>{% endfor %}</div>{% endif %}
+</div>
+{% endif %}
+{% if ai.주도테마 %}
+<div class="themebox">
+  <div class="themehead"><span class="badge">오늘의 주도 테마 · {{ ai.주도테마.테마 }}</span><h3>{{ ai.주도테마.제목 }}</h3></div>
+  {% if ai.주도테마.움직임 %}<div class="themerow"><span class="k">움직임</span><span class="v">{{ ai.주도테마.움직임 }}</span></div>{% endif %}
+  <div class="themerow"><span class="k">왜?</span><span class="v">{{ ai.주도테마.원인 }}</span></div>
+  {% if ai.주도테마.주도종목 %}<div class="leaders">{% for s in ai.주도테마.주도종목 %}<span class="leader">{{ s.이름 }}{% if s.등락률 is defined and s.등락률 is not none %}<b class="{{ 'up' if s.등락률 > 0 else 'down' }}">{{ "%+.2f"|format(s.등락률) }}%</b>{% endif %}</span>{% endfor %}</div>{% endif %}
+  {% if ai.주도테마.ETF연결 %}<div class="themerow"><span class="k">볼 것</span><span class="v">{{ ai.주도테마.ETF연결 }}</span></div>{% endif %}
+  {% if ai.주도테마.출처 %}<div class="src">출처 · {% for s in ai.주도테마.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
+</div>
+{% endif %}
+{% if ai.관심종목 %}
+<div class="stockwatch">
+  {% for s in ai.관심종목 %}<div class="sitem"><div class="st"><b>👀 {{ s.이름 }}</b>{% if s.등락률 is defined and s.등락률 is not none %}<span class="{{ 'up' if s.등락률 > 0 else 'down' }}">{{ "%+.2f"|format(s.등락률) }}%</span>{% endif %}</div><p>{{ s.이유 }}</p>{% if s.출처 %}<div class="src">출처 · {% for x in s.출처 %}{% if x.url %}<a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.이름 }}</a>{% else %}{{ x.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>{% endfor %}
 </div>
 {% endif %}
 {% if ai.etf_레이더 %}

@@ -150,7 +150,10 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
             data["수집범위"] = news_range
         else:
             news_hours = 170
-        data["뉴스"] = news.collect_news(cfg, hours=news_hours)
+        data["ETF_주도테마후보"] = news.detect_etf_themes(data.get("ETF_후보") or {})
+        data["뉴스"] = news.collect_news(
+            cfg, hours=news_hours, themes=data["ETF_주도테마후보"]
+        )
         total_news = sum(len(v or []) for v in data["뉴스"].values())
         data["수집상태"]["뉴스"] = f"정상({total_news}건)" if total_news else "수집 0건"
     except Exception as e:  # noqa: BLE001

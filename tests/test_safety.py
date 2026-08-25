@@ -147,6 +147,13 @@ class SafetyTests(unittest.TestCase):
              "출처": [{"이름": "테스트경제", "url": f"https://example.com/{i}"}]}
             for i in range(1, 9)
         ]
+        ai["주도테마"] = {"테마": "원자력", "제목": "원전 수주 기대에 동반 강세",
+                           "움직임": "원자력 ETF 3개가 함께 상승했습니다.",
+                           "원인": "수주 기대가 관련주를 거쳐 ETF 가격에 반영됐을 가능성이 있습니다.",
+                           "주도종목": [{"이름": "현대건설", "등락률": 14.87}],
+                           "ETF연결": "후속 수주 여부를 확인합니다.", "출처": []}
+        ai["관심종목"] = [{"시장": "국내", "이름": "현대건설", "등락률": 14.87,
+                           "이유": "원전 수주 기대가 반영됐습니다.", "출처": []}]
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
             html = path.read_text(encoding="utf-8")
@@ -158,6 +165,8 @@ class SafetyTests(unittest.TestCase):
         self.assertIn("추가로 읽을 ETF 뉴스 5개", html)
         self.assertIn("ETF 뉴스 8", html)
         self.assertIn("ETF 흐름판", html)
+        self.assertIn("오늘의 주도 테마", html)
+        self.assertIn("현대건설", html)
         self.assertIn("금채굴 ETF", html)
         self.assertIn("레버리지·인버스 별도", html)
         self.assertNotIn("화면에서 숨길 관찰", html)
@@ -549,6 +558,79 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(news._source_tier("한국경제 증권", cfg), 2)
         self.assertEqual(news._source_tier("전자신문", cfg), 1)
         self.assertEqual(news._source_tier("알 수 없는 매체", cfg), 0)
+
+    def test_repeated_top_etfs_create_dynamic_theme_query(self):
+        candidates = {"흐름판": {"상승": [
+            {"이름": "TIGER 코리아원자력", "등락률": 11.37},
+            {"이름": "ACE 원자력TOP10", "등락률": 10.18},
+            {"이름": "반도체 ETF", "등락률": 2.0},
+        ]}}
+        themes = news.detect_etf_themes(candidates)
+        self.assertEqual(themes[0]["테마"], "원자력")
+        self.assertEqual(len(themes[0]["ETF"]), 2)
+        source = news._theme_sources(themes)[0]
+        self.assertIn("news.google.com/rss/search", source["url"])
+        self.assertIn("%EC%9B%90%EC%9E%90%EB%A0%A5", source["url"])
+
+    def test_theme_story_requires_detected_theme_article_and_real_stock(self):
+        raw = {"주도테마": {
+            "테마": "원자력", "제목": "미국 원전 수주 기대에 동반 강세",
+            "움직임": "원자력 ETF 여러 종목이 함께 상승했습니다.",
+            "원인": "미국 원전 사업 수주 기대가 관련주를 거쳐 ETF 가격에 반영됐을 가능성이 있습니다.",
+            "주도종목": [{"이름": "현대건설", "등락률": 14.87},
+                         {"이름": "지어낸종목", "등락률": 30.0}],
+            "ETF연결": "후속 수주와 거래대금 지속 여부를 확인합니다.",
+            "출처": [{"id": "n1"}],
+        }}
+        data = {
+            "ETF_주도테마후보": [{"테마": "원자력", "방향": "상승", "ETF": []}],
+            "종목_후보_국내": [{"종목명": "현대건설", "등락률": 14.87}],
+            "뉴스": {"주도테마": [{"링크": "https://example.com/nuclear", "출처": "연합뉴스",
+                                      "날짜": "2026-08-26", "경과시간": 2}]},
+        }
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertEqual(out["주도테마"]["테마"], "원자력")
+        self.assertEqual([x["이름"] for x in out["주도테마"]["주도종목"]], ["현대건설"])
+        self.assertEqual(out["주도테마"]["출처"][0]["이름"], "연합뉴스")
+
+    def test_theme_story_without_article_is_hidden(self):
+        raw = {"주도테마": {"테마": "원자력", "제목": "원전 강세", "원인": "추정",
+                              "출처": []}}
+        data = {"ETF_주도테마후보": [{"테마": "원자력"}],
+                "뉴스": {"국내": [{"링크": "https://example.com/other", "출처": "매체",
+                                     "경과시간": 1}]}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertIsNone(out["주도테마"])
+
+    def test_radar_causal_story_can_name_flowboard_etf(self):
+        raw = {"etf_레이더": [{"구분": "유형 쏠림", "제목": "TIGER 코리아원자력 강세 배경",
+                                "사실": "미국 원전 사업 기대가 관련주에 반영됐습니다.",
+                                "관찰": "후속 수주 여부를 확인할 수 있습니다.",
+                                "출처": [{"id": "n1"}]}]}
+        data = {"ETF_후보": {"흐름판": {"상승": [{"이름": "TIGER 코리아원자력"}]}},
+                "뉴스": {"주도테마": [{"링크": "https://example.com/nuclear", "출처": "한국경제",
+                                         "경과시간": 1}]}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {"최대_항목수": 5}}, data)
+        self.assertEqual(len(out["etf_레이더"]), 1)
+
+    def test_price_only_top5_does_not_claim_fund_inflow(self):
+        raw = {"top5": [{"제목": "원자력 ETF 강세", "숫자": "+11.37%",
+                          "영향": "원자력 ETF 자금 유입"}]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, {"뉴스": {}})
+        self.assertNotIn("자금 유입", out["top5"][0]["영향"])
+        self.assertIn("가격 강세", out["top5"][0]["영향"])
+
+    def test_previous_brief_topics_are_added_to_next_ai_input(self):
+        with tempfile.TemporaryDirectory() as td:
+            cache = Path(td) / "brief_daily_cache.json"
+            cache.write_text(json.dumps({"날짜": "2026-08-25", "ai": {
+                "top5": [{"제목": "미 장기금리 하락"}, {"제목": "반도체 약세"}]
+            }}, ensure_ascii=False), encoding="utf-8")
+            data = {"날짜표시": "2026년 8월 26일 (수)", "뉴스": {}, "지표": {}}
+            with patch.object(llm, "DAILY_AI_CACHE", cache):
+                compact = llm._compact(data, "daily")
+            self.assertEqual(compact["최근브리핑주제"][0]["날짜"], "2026-08-25")
+            self.assertIn("반도체 약세", compact["최근브리핑주제"][0]["주제"])
 
     def test_checkpoints_group_week_dates_and_always(self):
         items = [

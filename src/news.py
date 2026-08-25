@@ -5,13 +5,58 @@ import logging
 import math
 from datetime import timedelta
 from typing import Any
+from urllib.parse import quote
 
 from .config import now_kst
 
 log = logging.getLogger(__name__)
 
 
-def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
+THEME_TERMS = {
+    "원자력": ("원자력", "원전", "SMR"),
+    "반도체": ("반도체", "HBM"),
+    "방산": ("방산", "K방산"),
+    "조선": ("조선", "해운"),
+    "로봇": ("로봇", "휴머노이드"),
+    "2차전지": ("2차전지", "배터리"),
+    "바이오": ("바이오", "헬스케어"),
+    "전력인프라": ("전력", "전력기기", "전력인프라"),
+    "금": ("금현물", "금광", "금채굴", "골드"),
+    "은행": ("은행", "금융지주"),
+}
+
+
+def detect_etf_themes(etf_candidates: dict, minimum: int = 2) -> list[dict]:
+    """수익률 상·하위 ETF에 같은 테마가 겹칠 때만 주도 테마 후보로 만든다."""
+    board = (etf_candidates or {}).get("흐름판") or {}
+    found: list[dict] = []
+    for direction in ("상승", "하락"):
+        rows = board.get(direction) or []
+        for theme, terms in THEME_TERMS.items():
+            matches = [r for r in rows if any(t.lower() in str(r.get("이름", "")).lower()
+                                              for t in terms)]
+            if len(matches) >= minimum:
+                found.append({"테마": theme, "방향": direction, "ETF": matches[:5]})
+    return found[:2]
+
+
+def _theme_sources(themes: list[dict]) -> list[dict]:
+    """상위 ETF 테마에 맞춰 그날만 쓰는 Google News RSS 검색어를 만든다."""
+    sources = []
+    for item in themes or []:
+        theme = str(item.get("테마") or "").strip()
+        terms = THEME_TERMS.get(theme) or (theme,)
+        query = f"({' OR '.join(terms)}) (증시 OR 주가 OR ETF) when:3d"
+        sources.append({
+            "이름": f"{theme} 관련 주요언론",
+            "url": "https://news.google.com/rss/search?q=" + quote(query)
+                   + "&hl=ko&gl=KR&ceid=KR:ko",
+        })
+    return sources
+
+
+def collect_news(cfg: dict, hours: int = 30,
+                 themes: list[dict] | None = None) -> dict[str, list[dict]]:
     """config의 RSS 목록에서 최근 N시간 기사만 수집."""
     import feedparser
 
@@ -19,7 +64,12 @@ def collect_news(cfg: dict, hours: int = 30) -> dict[str, list[dict]]:
     limit = int((cfg.get("뉴스") or {}).get("기사_최대개수", 40))
     out: dict[str, list[dict]] = {}
 
-    for group, sources in (cfg.get("뉴스") or {}).items():
+    configured = dict(cfg.get("뉴스") or {})
+    dynamic = _theme_sources(themes or [])
+    if dynamic:
+        configured["주도테마"] = dynamic
+
+    for group, sources in configured.items():
         if not isinstance(sources, list):
             continue
         items: list[dict] = []
