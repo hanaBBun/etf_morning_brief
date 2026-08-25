@@ -214,7 +214,6 @@
 {% endif %}
 
 {# ── 3. 출연자 추천 ── #}
-{% if ai.출연자추천 %}
 <h2>🎯 출연자 추천<span class="tip" tabindex="0">?<span class="bubble">
   위 발언자 중 지금 섭외할 만한 인물을 코너별로 제안합니다.
   <b>왜 지금인지</b>가 명확한 경우에만 올립니다. 섭외 이력·연락처는 별도 확인이 필요합니다.</span></span></h2>
@@ -234,6 +233,8 @@
   {% if g.주의 %}<div class="gnote">⚠ {{ g.주의 }}</div>{% endif %}
 </div>
 {% endfor %}
+{% if not ai.출연자추천 %}
+<div class="empty">추천 후보를 생성하지 못했습니다. 최근 기사 수집 상태를 확인해 주세요.</div>
 {% endif %}
 
 {# ── 출처 ── #}

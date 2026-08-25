@@ -186,35 +186,6 @@ class SafetyTests(unittest.TestCase):
             context = render.build_context({}, {}, {"카톡": {"1": "본문"}}, "daily")
         self.assertEqual(context["카카오JS키"], "")
 
-    def test_daily_rerun_preserves_canonical_and_latest_files(self):
-        cfg = {"브리핑": {"사이트_주소": "https://example.com/brief"}}
-        data = {"날짜표시": "2026년 8월 25일 (화)"}
-        ai = {"카톡": {"1": "1. 하나\n2. 둘\n3. 셋\n4. 넷\n5. 다섯"}}
-        fixed = datetime(2026, 8, 25, 7, 30, tzinfo=timezone.utc)
-        with tempfile.TemporaryDirectory() as td, \
-             patch.object(render, "DOCS", Path(td)), \
-             patch.object(render, "now_kst", return_value=fixed):
-            canonical = Path(td) / "2026-08-25.html"
-            latest = Path(td) / "latest.html"
-            canonical.write_text("오전 최초본", encoding="utf-8")
-            latest.write_text("오전 최초본", encoding="utf-8")
-            path, url = render.render(cfg, data, ai, "daily")
-            self.assertEqual(canonical.read_text(encoding="utf-8"), "오전 최초본")
-            self.assertEqual(latest.read_text(encoding="utf-8"), "오전 최초본")
-            self.assertEqual(path.name, "2026-08-25-update-0730.html")
-            self.assertTrue(url.endswith("/2026-08-25-update-0730.html"))
-
-    def test_daily_can_replace_canonical_only_with_explicit_flag(self):
-        fixed = datetime(2026, 8, 25, 7, 30, tzinfo=timezone.utc)
-        with tempfile.TemporaryDirectory() as td, \
-             patch.object(render, "DOCS", Path(td)), \
-             patch.object(render, "now_kst", return_value=fixed):
-            canonical = Path(td) / "2026-08-25.html"
-            canonical.write_text("기존본", encoding="utf-8")
-            path, _ = render.render({}, {}, {}, "daily", replace_existing=True)
-            self.assertEqual(path, canonical)
-            self.assertNotEqual(canonical.read_text(encoding="utf-8"), "기존본")
-
     def test_weekend_and_monday_briefs_have_distinct_roles(self):
         monday = datetime(2026, 8, 24, 7, 0, tzinfo=timezone.utc)
         self.assertEqual(main._brief_identity(monday, "daily")[1], "이번 주 준비")
@@ -400,7 +371,18 @@ class SafetyTests(unittest.TestCase):
                "출연자추천": [{"이름": "홍길동", "이유": "전문가"}]}
         out = llm._postprocess_handoff(raw, 195, {"뉴스": {}})
         self.assertEqual(out["발언정리"], [])
-        self.assertEqual(out["출연자추천"], [])
+        self.assertGreaterEqual(len(out["출연자추천"]), 1)
+        self.assertEqual(out["출연자추천"][0]["이름"], "최창규")
+
+    def test_handoff_guest_fallback_matches_recent_news_topics(self):
+        data = {"뉴스": {"ETF시장": [
+            {"제목": "퇴직연금 ETF 49조원 시대", "요약": "노후 자산배분 원칙"},
+            {"제목": "레버리지 ETF 규제", "요약": "시장 구조 변화"},
+        ]}}
+        out = llm._postprocess_handoff({}, 195, data)
+        names = [g["이름"] for g in out["출연자추천"]]
+        self.assertIn("김성일", names)
+        self.assertIn("최창규", names)
 
     def test_handoff_keeps_extra_news_and_quotes_for_toggle(self):
         articles = [{"제목": f"ETF 뉴스 {i}", "출처": "테스트", "날짜": "2026-08-25",

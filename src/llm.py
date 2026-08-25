@@ -426,10 +426,12 @@ ETF 상품·수급·전략, 자산배분, 운용사 리서치 발언을 우선�
 - 국내: 증시 전반 기사입니다. ETF 이슈의 배경을 설명할 때만 씁니다.
 6선은 한 그룹에 몰리지 않게 고르되, 억지로 그룹을 채우지는 마세요.
 
-■ 규칙 4 — 출연자 추천은 "왜 지금"이 명확할 때만
+■ 규칙 4 — 출연자 추천은 반드시 1~3명
 그 주 발언이 있었다는 이유만으로 추천하지 마세요.
 지금 이 사람을 부르면 어떤 주제를 어떤 각도로 다룰 수 있는지가 분명해야 합니다.
-근거가 약하면 추천을 1명만 하거나 아예 비우세요.
+실명 발언자가 있으면 우선 검토하고, 없거나 적으면 입력의 `출연자후보풀`에서
+최근 뉴스 주제와 가장 잘 맞는 사람을 고르세요. 후보풀 밖의 사람을 지어내지 마세요.
+추천 배열은 비우지 말고 최소 1명은 반드시 제시하세요.
 
 ■ 규칙 5 — 투자 권유 금지
 특정 ETF의 매수·매도를 권하는 문장을 쓰지 않습니다.
@@ -475,7 +477,7 @@ HANDOFF_SCHEMA = """반드시 아래 JSON 형식으로만 답하세요. 다른 �
 분량 지침:
 - etf_뉴스6선: **6~12건.** 중요도 순서. 처음 6건은 핵심, 이후는 추가 기사. 주제가 서로 겹치지 않게 분산할 것.
 - 발언정리: 3~12명. 중요도 순서. 처음 6명은 핵심, 이후는 추가 발언. 실명 인용이 없으면 빈 배열.
-- 출연자추천: 1~3명. 근거가 약하면 1명 또는 빈 배열.
+- 출연자추천: **반드시 1~3명.** 실명 발언자가 부족하면 입력의 출연자후보풀에서 고를 것.
 - 발언 요지는 각 120자 이내, 추천 이유는 70자 이내, 질문은 60자 이내.
 
 ★ 카톡 문구는 줄글로 쓰지 마세요. 아래처럼 번호와 줄바꿈으로 씁니다.
@@ -636,6 +638,35 @@ def _slim_news(items: list[dict], n: int, summary_len: int = 110,
 HANDOFF_MIX = {"ETF시장": 6, "증권": 5, "국내": 4, "ETF": 4,
                "레버리지": 2, "지수": 2, "보도자료": 2}
 
+# 기사 본문 수집이 막혀 실명 발언을 찾지 못해도 출연자 추천을 비우지 않기 위한
+# 검증된 후보군. AI는 이 목록 밖의 인물을 임의로 만들 수 없다.
+HANDOFF_GUEST_POOL = [
+    {
+        "이름": "최창규", "소속": "미래에셋증권", "직함": "ETF리서치본부장",
+        "전문주제": "ETF 시장 구조·지수·레버리지·액티브 ETF",
+        "추천코너": "ETF 처방전", "관련ETF": "지수형 · 액티브 · 레버리지",
+        "질문": "최근 ETF 시장의 제도 변화가 투자자 선택에 어떤 영향을 주고 있나요?",
+        "주의": "운용사·상품 이해관계가 있는 주제는 비교 기준을 사전에 명확히 전달",
+        "키워드": "ETF 지수 레버리지 인버스 액티브 상장폐지 규제 시장 구조",
+    },
+    {
+        "이름": "문홍철", "소속": "DB증권", "직함": "자산전략팀장",
+        "전문주제": "금리·채권·환율·거시 자산배분",
+        "추천코너": "아는형의 아는형", "관련ETF": "채권 · 달러 · 자산배분",
+        "질문": "현재 금리와 환율 환경에서 ETF 자산배분의 우선순위는 무엇인가요?",
+        "주의": "거시 전망을 실제 ETF 선택 기준과 연결할 질문을 사전 전달",
+        "키워드": "금리 채권 국채 환율 달러 자산배분 혼합형 거시",
+    },
+    {
+        "이름": "김성일", "소속": "업라이즈투자자문", "직함": "대표",
+        "전문주제": "연금·장기투자·포트폴리오 자산배분",
+        "추천코너": "요즘하태형", "관련ETF": "연금 · 자산배분 · 글로벌 분산",
+        "질문": "퇴직연금에서 ETF를 활용할 때 가장 먼저 정할 원칙은 무엇인가요?",
+        "주의": "단기 전망보다 장기 포트폴리오와 투자 원칙 중심으로 구성",
+        "키워드": "퇴직연금 연금저축 ISA 노후 장기투자 포트폴리오 자산배분 분산",
+    },
+]
+
 
 def _balanced_news(news: dict, mix: dict, budget: int) -> dict[str, list[dict]]:
     """그룹별 기사 수를 배분하고, 예산을 넘으면 본문 길이를 줄여 맞춘다.
@@ -700,6 +731,10 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
         mix = data.get("수집배분") or HANDOFF_MIX
         # 날짜·수집범위 등 머리말 몫으로 2,000자를 남겨둔다
         d["뉴스"] = _balanced_news(news, mix, budget=MAX_PAYLOAD_CHARS - 2_000)
+        d["출연자후보풀"] = [
+            {k: v for k, v in guest.items() if k != "키워드"}
+            for guest in HANDOFF_GUEST_POOL
+        ]
         return d
 
     d["국내지수"] = [_slim_quote(r) for r in (data.get("국내지수") or [])]
@@ -1858,6 +1893,39 @@ def _fresh(art: dict) -> bool:
     return h is not None and int(h) <= _TOPUP_MAX_HOURS
 
 
+def _fallback_handoff_guests(data: dict, limit: int = 3) -> list[dict]:
+    """최근 기사 주제와 검증된 후보군을 연결해 추천 섹션을 채운다."""
+    text = " ".join(
+        f"{it.get('제목', '')} {it.get('요약', '')}"
+        for rows in (data.get("뉴스") or {}).values()
+        for it in (rows or [])
+    ).lower()
+    ranked = []
+    for order, guest in enumerate(HANDOFF_GUEST_POOL):
+        words = str(guest.get("키워드") or "").lower().split()
+        score = sum(1 for word in words if word and word in text)
+        ranked.append((score, -order, guest))
+    ranked.sort(reverse=True, key=lambda row: (row[0], row[1]))
+
+    out = []
+    for score, _, guest in ranked:
+        if out and score == 0:
+            continue
+        item = {k: v for k, v in guest.items() if k != "키워드"}
+        matched = [w for w in str(guest["키워드"]).split() if w.lower() in text]
+        topic = " · ".join(matched[:3]) or str(guest["전문주제"])
+        item["이유"] = f"최근 {topic} 이슈를 ETF 관점에서 설명할 수 있는 전문가"
+        item["다룰주제"] = str(guest["전문주제"])
+        item.pop("전문주제", None)
+        out.append(item)
+        if len(out) >= limit:
+            break
+    return out or [{
+        k: v for k, v in HANDOFF_GUEST_POOL[0].items()
+        if k not in ("키워드", "전문주제")
+    }]
+
+
 def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
     """목요일 전달문 후처리 — 환각 링크 차단 + 6선 채우기."""
     idx = _link_index(data)
@@ -1946,16 +2014,20 @@ def _postprocess_handoff(d: dict, limit: int, data: dict) -> dict:
         log.warning("발언정리가 비었습니다 — 본문을 확보한 기사가 %d건입니다. "
                     "본문이 0건이면 기사 원문 수집이 막힌 것입니다.", bodies)
 
-    # 출연자 추천: 발언정리에 없는 사람은 근거가 없으므로 뺀다
+    # 출연자 추천: 실명 발언자 또는 검증된 후보풀의 사람만 허용한다.
     named = {str(q.get("이름", "")).strip() for q in quotes}
+    pooled = {str(g.get("이름", "")).strip() for g in HANDOFF_GUEST_POOL}
     guests = []
     for g in d.get("출연자추천") or []:
         if not isinstance(g, dict) or not g.get("이름") or not g.get("이유"):
             continue
-        if str(g["이름"]).strip() not in named:
-            log.warning("발언 근거가 없는 출연자 추천 제외: %s", g.get("이름"))
+        if str(g["이름"]).strip() not in named | pooled:
+            log.warning("검증된 후보군 밖의 출연자 추천 제외: %s", g.get("이름"))
             continue
         guests.append(g)
+    if not guests:
+        guests = _fallback_handoff_guests(data)
+        log.warning("모델 추천이 비어 검증된 후보군에서 %d명을 보충했습니다", len(guests))
     d["출연자추천"] = guests[:3]
 
     kakao = d.get("카톡") or {}
