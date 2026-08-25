@@ -196,6 +196,8 @@ def main() -> int:
     ap.add_argument("--mode", choices=["daily", "weekly", "thursday"], default="daily")
     ap.add_argument("--no-send", action="store_true", help="카톡 발송 생략")
     ap.add_argument("--dry-run", action="store_true", help="AI 호출·발송 모두 생략")
+    ap.add_argument("--replace-existing", action="store_true",
+                    help="같은 날짜의 공식 일간본을 의도적으로 교체")
     args = ap.parse_args()
 
     cfg = load_config()
@@ -218,7 +220,8 @@ def main() -> int:
         if incomplete:
             raise RuntimeError("불완전한 브리핑 발행 중단: " + ", ".join(incomplete))
 
-    path, url = render.render(cfg, data, ai, args.mode)
+    path, url = render.render(cfg, data, ai, args.mode,
+                              replace_existing=args.replace_existing)
     render.dump_debug(data, ai)
     log.info("HTML 생성: %s", path)
     log.info("공개 주소: %s", url or "(사이트_주소 미설정)")

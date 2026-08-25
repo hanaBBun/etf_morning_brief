@@ -186,6 +186,35 @@ class SafetyTests(unittest.TestCase):
             context = render.build_context({}, {}, {"카톡": {"1": "본문"}}, "daily")
         self.assertEqual(context["카카오JS키"], "")
 
+    def test_daily_rerun_preserves_canonical_and_latest_files(self):
+        cfg = {"브리핑": {"사이트_주소": "https://example.com/brief"}}
+        data = {"날짜표시": "2026년 8월 25일 (화)"}
+        ai = {"카톡": {"1": "1. 하나\n2. 둘\n3. 셋\n4. 넷\n5. 다섯"}}
+        fixed = datetime(2026, 8, 25, 7, 30, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(render, "DOCS", Path(td)), \
+             patch.object(render, "now_kst", return_value=fixed):
+            canonical = Path(td) / "2026-08-25.html"
+            latest = Path(td) / "latest.html"
+            canonical.write_text("오전 최초본", encoding="utf-8")
+            latest.write_text("오전 최초본", encoding="utf-8")
+            path, url = render.render(cfg, data, ai, "daily")
+            self.assertEqual(canonical.read_text(encoding="utf-8"), "오전 최초본")
+            self.assertEqual(latest.read_text(encoding="utf-8"), "오전 최초본")
+            self.assertEqual(path.name, "2026-08-25-update-0730.html")
+            self.assertTrue(url.endswith("/2026-08-25-update-0730.html"))
+
+    def test_daily_can_replace_canonical_only_with_explicit_flag(self):
+        fixed = datetime(2026, 8, 25, 7, 30, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(render, "DOCS", Path(td)), \
+             patch.object(render, "now_kst", return_value=fixed):
+            canonical = Path(td) / "2026-08-25.html"
+            canonical.write_text("기존본", encoding="utf-8")
+            path, _ = render.render({}, {}, {}, "daily", replace_existing=True)
+            self.assertEqual(path, canonical)
+            self.assertNotEqual(canonical.read_text(encoding="utf-8"), "기존본")
+
     def test_weekend_and_monday_briefs_have_distinct_roles(self):
         monday = datetime(2026, 8, 24, 7, 0, tzinfo=timezone.utc)
         self.assertEqual(main._brief_identity(monday, "daily")[1], "이번 주 준비")

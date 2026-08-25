@@ -392,7 +392,25 @@ TEMPLATE = {"daily": "brief.html.j2", "weekly": "brief.html.j2",
             "thursday": "handoff.html.j2"}
 
 
-def render(cfg: dict, data: dict, ai: dict, mode: str = "daily") -> tuple[Path, str]:
+def _available_update_path(stamp: str) -> Path:
+    """같은 날 재실행 결과가 기존 일간본을 덮어쓰지 않도록 별도 이름을 만든다."""
+    clock = now_kst().strftime("%H%M")
+    candidate = DOCS / f"{stamp}-update-{clock}.html"
+    seq = 2
+    while candidate.exists():
+        candidate = DOCS / f"{stamp}-update-{clock}-{seq}.html"
+        seq += 1
+    return candidate
+
+
+def render(cfg: dict, data: dict, ai: dict, mode: str = "daily",
+           replace_existing: bool = False) -> tuple[Path, str]:
+    DOCS.mkdir(exist_ok=True)
+    stamp = now_kst().strftime("%Y-%m-%d")
+    canonical = DOCS / f"{stamp}{SUFFIX.get(mode, '')}.html"
+    protected_update = mode == "daily" and canonical.exists() and not replace_existing
+    out = _available_update_path(stamp) if protected_update else canonical
+
     env = Environment(
         loader=FileSystemLoader(str(ROOT / "templates")),
         autoescape=select_autoescape(["html"]),
@@ -401,19 +419,23 @@ def render(cfg: dict, data: dict, ai: dict, mode: str = "daily") -> tuple[Path, 
     )
     ctx = (build_handoff_context(cfg, data, ai) if mode == "thursday"
            else build_context(cfg, data, ai, mode))
+    base = (cfg.get("브리핑") or {}).get("사이트_주소", "").rstrip("/")
+    if mode != "thursday":
+        # 재실행 테스트본의 공유 버튼도 실제 테스트본 주소를 가리켜야 한다.
+        ctx["공유주소"] = f"{base}/{out.name}" if base else out.name
     html = env.get_template(TEMPLATE.get(mode, "brief.html.j2")).render(**ctx)
 
-    DOCS.mkdir(exist_ok=True)
-    stamp = now_kst().strftime("%Y-%m-%d")
-    out = DOCS / f"{stamp}{SUFFIX.get(mode, '')}.html"
     out.write_text(html, encoding="utf-8")
-    if mode != "thursday":  # 전달문은 '최근 브리핑'을 덮어쓰지 않는다
+    if mode != "thursday" and not protected_update:
+        # 전달문·테스트본은 '최근 공식 브리핑'을 덮어쓰지 않는다.
         (DOCS / "latest.html").write_text(html, encoding="utf-8")
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")
 
-    base = (cfg.get("브리핑") or {}).get("사이트_주소", "").rstrip("/")
     url = f"{base}/{out.name}" if base else out.name
-    _update_index(cfg)
+    if not protected_update:
+        _update_index(cfg)
+    else:
+        log.warning("기존 공식 일간본 보호: %s → 테스트본 %s", canonical.name, out.name)
     return out, url
 
 
