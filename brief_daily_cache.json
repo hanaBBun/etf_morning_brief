@@ -1,120 +1,123 @@
 {
-  "날짜": "2026-08-26",
+  "날짜": "2026-08-27",
   "ai": {
     "시장국면": null,
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "금통위 앞두고 반도체 기대감에 코스피 0.68% 상승 마감",
-        "결과": "코스피는 0.68% 상승한 6742.74, 코스닥은 1.70% 상승한 827.15로 마감했습니다. 원/달러 환율은 1381.71원(+0.07%) 선에서 움직였습니다.",
-        "원인": "미국 반도체 지수 강세와 국채금리 하락 영향으로 국내 반도체 관련 대형주에 온기가 전달되며 지수 상승을 이끌었을 가능성이 있습니다.",
-        "ETF연결": "한국은행 금통위의 금리 결정을 앞두고 국내 대표 지수형 ETF와 반도체 테마 ETF의 수급 변화를 주시해야 합니다.",
+        "제목": "국내 증시 마감 흐름",
+        "결과": "코스피 +0.97% · 코스닥 -0.03%",
+        "원인": "",
+        "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "뉴시스",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1XZVBNR3Z2dmQ4aWRORTdieXBIaDY2bXdCSE8zTWVraU9palBTLTdMaVFfOTQxSW1kNDJrNXkwSTFUd09kTlVidHJZemZ3dUFXWHhKZkZfMHpnVjNNM0U5SdIBeEFVX3lxTE1TSG1oMXYwNzN4VjhXTlQ0by1HLXhQc3Raa2lNbmhsdFlSM0haeFVpaF95blM5UEhiempOZjlPNlVDYzZWODZ2RVpkMTZXUlVjaS1pN21XdWFyQzJsdG5ja3Z3Y2kwdmFxRmF4RzZsV3owOWlQeDViWg?oc=5",
-            "날짜": "8/26"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "국채금리 하락 속 반도체 반등하며 나스닥 0.66% 상승",
-        "결과": "나스닥 종합지수가 0.66% 상승했고, 필라델피아 반도체 지수는 1.44% 강세를 보였습니다. 미 10년물 국채금리는 4.639%(-6.5bp)로 하락했습니다.",
-        "원인": "엔비디아 실적 발표와 잭슨홀 미팅을 앞두고 경계감이 유입되었으나, 국채금리 하락과 반도체 업종의 저가 매수세 유입이 상승 압력으로 작용했을 가능성이 있습니다.",
-        "ETF연결": "미국 반도체 및 나스닥100 지수를 추종하는 ETF의 단기 변동성 확대 여부를 점검할 필요가 있습니다.",
+        "제목": "엔비디아 실적·잭슨홀 앞두고 관망세속 뉴욕증시 약보합",
+        "결과": "S&P 500(-0.02%)과 나스닥(-0.08%)이 소폭 하락하고 미 10년물 금리는 4.664%(+2.5bp)로 상승했습니다.",
+        "원인": "엔비디아 실적 발표와 잭슨홀 심포지엄을 앞두고 관망세가 유입되었으며, 금리 상승 압력이 성장주 상단을 제한했을 가능성이 있습니다.",
+        "ETF연결": "대표 지수형 ETF 및 금리 변동에 따른 미국 채권 ETF의 흐름을 점검할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "아시아경제",
-            "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFA4NGZjbk1KVFBQT3BMcDQ0MG5zalhNaU5BelUzVk9GN2l1S01nbVhJV05SWHBVZnJSTFpUcHYteWJmSDRSeDlOYlE0cW1FRWdab25IXzhpRjJ4VmxhMXNxTUJR?oc=5",
-            "날짜": "8/26"
-          }
-        ]
-      },
-      {
-        "시장": "글로벌",
-        "제목": "미국의 대이란 제재 강화에도 국제유가 3% 이상 급락",
-        "결과": "WTI 가격이 4.65% 하락한 81.06달러를 기록하며 에너지 시장의 불안이 완화되었습니다.",
-        "원인": "미국이 이란에 대한 제재 카드를 꺼내 들었으나, 시장이 이를 이미 선반영했거나 공급 우려가 완화되면서 유가가 하락 압력을 받았을 가능성이 있습니다.",
-        "ETF연결": "원유 선물 및 에너지 섹터 ETF의 가격 되돌림 흐름과 인플레이션 기대 심리 변화를 연결해 봐야 합니다.",
-        "출처": [
-          {
-            "이름": "FXEmpire",
-            "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQNzFBanJ4SFR5LVN3M1Qxa2oyeVhyVVctUkdCU1Z2ZDRJUWN4UmJrWkhodkRVWkMzb21zYmlUeXRZV3Zmci1LNlU4Z2w1V1pBWDdaZWs4U042OUlqdXV3SzNIekNELUJUazZMSUpyS25mWGZEMVBSR2tSUEIxZ3M2UDRKNFVsUDREVFN0WUhaN3dzSXF5dWRvVWZHcTJYUEI1cHhoUmcxMDNYQmVfbks2YlFnLTZCNjBMUDZtUGsyVEwwcDVUTUtZSGdrY2NTdw?oc=5",
-            "날짜": "8/26"
-          },
-          {
-            "이름": "ascendants.in",
-            "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOT3o5NTJNWE1vdTF0aEZBWUtzbk0zaTdzVDdlODhDSFQxdDIzY1F6UTF6SHhhRkVmUXlxVDFZN0dJZ1BhVm4tUkwwaHlGcm5WN2xxU3Naa3RXaUtjRzhnRDJHaDdmVTBsZFVFdmhrZjlsLUJ1UDJ2VmtTYkdzRTdpMmF4V0Y1UUh4WHc?oc=5",
-            "날짜": "8/26"
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE0xU0pjZmNIcFh5bHNrWDROTWttRDBxaXoyWDNvQ2ZTQnpLaGJlWEE3Szh3dXdYWWw3NjhBZElONk5WOGVVN1JJNW9jMV9nMTBfcG43Z0pNd0F1R2d2dkRmQUZqdVE2Ti02SUJ3T095SENtZUlVQ2VPcdIBeEFVX3lxTE0xU0pjZmNIcFh5bHNrWDROTWttRDBxaXoyWDNvQ2ZTQnpLaGJlWEE3Szh3dXdYWWw3NjhBZElONk5WOGVVN1JJNW9jMV9nMTBfcG43Z0pNd0F1R2d2dkRmQUZqdVE2Ti02SUJ3T095SENtZUlVQ2VPcQ?oc=5",
+            "날짜": "8/27"
           }
         ]
       }
     ],
     "오늘관전": [
-      "엔비디아 실적 발표 직전 반도체 ETF로의 매수세 지속 여부",
-      "한국은행 금통위의 기준금리 동결 여부 및 향후 점도표 변화",
-      "미국 GDP 및 PCE 물가지수 발표에 따른 국채금리 추가 등락"
+      "엔비디아 호실적 발표 이후 국내외 반도체 ETF 반응",
+      "한국은행 금통위 기준금리 결정 및 향후 통화정책 방향",
+      "잭슨홀 심포지엄 개막에 따른 글로벌 자산시장 관망세"
     ],
     "주도테마": null,
-    "관심종목": [],
+    "관심종목": [
+      {
+        "시장": "국내",
+        "이름": "SK이노베이션",
+        "등락률": -11.04,
+        "이유": "SKIET 흡수합병 추진 속 기존 주주 보호 가이드라인 필요성이 제기되며 하락 압력을 받았습니다.",
+        "출처": [
+          {
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12137411",
+            "날짜": "8/27"
+          }
+        ]
+      },
+      {
+        "시장": "국내",
+        "이름": "한미약품",
+        "등락률": 5.79,
+        "이유": "비만 신약 모멘텀 및 외국인·기관 수급 기대감이 반영되며 강세를 보였습니다.",
+        "출처": [
+          {
+            "이름": "머니투데이",
+            "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1TY2NsT08wWEtUTVQwNFdvNnFrOGJFX291VUJ0SVJUSkdIV3F4V0VHMGtULUExbnBpeHFGY05jOTVDMU42dUVHcmcyMWJnYWZCd3pnRmNvNF9BclFfX28yNEw5VlFKbGhKZUpkS2p30gFuQVVfeXFMTVNjY2xPTzBYS1RNVDA0V282cWs4YkVfb3VVQnRJUlRKR0hXcXhXRUcwa1QtQTFucGl4cUZjTmM5NUMxTjZ1RUdyZzIxYmdhZkJ3emdGY280X0FyUV9fbzI0TDlWUUpsaEplSmRLanc?oc=5",
+            "날짜": "8/26"
+          }
+        ]
+      }
+    ],
     "top5": [
       {
         "순위": 1,
-        "제목": "미 국채금리 하락세",
-        "숫자": "10년물 4.639% (-6.5bp)",
-        "영향": "기술주 및 나스닥 ETF 멀티플 부담 완화"
+        "제목": "엔비디아 깜짝 실적",
+        "숫자": "매출·순익 시장 전망 상회",
+        "영향": "반도체·AI ETF 투자심리 개선"
       },
       {
         "순위": 2,
-        "제목": "필라델피아 반도체 반등",
-        "숫자": "지수 11588.04 (+1.44%)",
-        "영향": "국내외 반도체 테마 ETF 강세 유도"
+        "제목": "한은 금통위 개최",
+        "숫자": "8/27 기준금리 결정",
+        "영향": "국내 금리형 및 코스닥 ETF 변동성"
       },
       {
         "순위": 3,
-        "제목": "국제유가 3%대 급락",
-        "숫자": "WTI 81.06달러 (-4.65%)",
-        "영향": "원유선물 ETF 하락 및 인프라 우려 완화"
+        "제목": "미 10년물 금리 상승",
+        "숫자": "10년물 4.664% (+2.5bp)",
+        "영향": "나스닥·성장주 ETF 할인율 부담"
       },
       {
         "순위": 4,
-        "제목": "엔비디아 실적 경계감",
-        "숫자": "8/27 새벽 발표 예정",
-        "영향": "단일종목 레버리지 및 AI ETF 변동성 대비"
+        "제목": "코스피·코스닥 엇갈림",
+        "숫자": "코스피 +0.97% · 코스닥 -0.03%",
+        "영향": "대형주 대 중소형주 ETF 차별화"
       },
       {
         "순위": 5,
-        "제목": "한은 금통위 금리결정",
-        "숫자": "8/27 통화정책방향 회의",
-        "영향": "국내 채권형 ETF 및 원/달러 환율 영향"
+        "제목": "잭슨홀 심포지엄 개막",
+        "숫자": "8/27~29일 현지 개최",
+        "영향": "글로벌 자산배분 ETF 관망세"
       }
     ],
     "etf_레이더": [
       {
-        "구분": "신규 상장",
-        "제목": "삼성전자·SK하이닉스 혼합 채권형 ETF 신규 상장",
-        "사실": "삼성전자와 SK하이닉스 비중을 담고 미국채 및 국내채권을 50% 혼합한 TIGER 및 ACE 신규 ETF가 상장했습니다.",
+        "구분": "유형 쏠림",
+        "제목": "RISE 네트워크인프라 6개월 수익률 1위",
+        "사실": "RISE 네트워크인프라 ETF가 6개월 수익률 67%를 기록하며 국내주식형 1위를 나타냈습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "레디앙",
-            "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5rSWd0SkhJcXd3ZzBjUDI5Sk5Sc1VfQ1JTR3NvM19NVVI2OTh4c0xHM19XekNtRjRBcTE4eERzVHI4RV9IakhQVnNIS1EyTWlfLWhfUnJCOURyUVk0dEU5dGxkb1J5aDZB?oc=5",
-            "날짜": "8/25"
+            "이름": "아시아경제",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1SdzZEcUg1MUZnUVBSdFNlVS1nc2ZsRkhMY3BIMDNCM2ZJbGhTeTkwdUJOTkpURi1BbFp2Q2R0ZUFCZTBJQjQ5SzlMNG56c2N3Z2VXaFlIbURYWFNsTDlqbQ?oc=5",
+            "날짜": "8/27"
           }
         ],
-        "관찰": "퇴직연금 계좌에서 주식 비중을 극대화하려는 스마트 개미들의 자금 유입 창구로 활용될 여지가 있습니다.",
+        "관찰": "AI 인프라 확장 수요가 네트워크 장비 및 테마 ETF의 실적 기대감으로 이어졌을 가능성이 있습니다.",
         "이유": "",
         "관련ETF": "",
         "질문": "",
@@ -123,61 +126,44 @@
     ],
     "유튜브": [
       {
-        "영상ID": "fmRN6vasTO4",
-        "핵심주제": "총자산 4억 원을 고배당 ETF로 포트폴리오 전환한 결과",
+        "영상ID": "d-qfurg0jRA",
+        "핵심주제": "ISA 및 연금계좌 필수 ETF 구성안",
+        "훅": "공포 자극형",
+        "겹침": "보통",
+        "겹침근거": "계좌 절세 전략 중심"
+      },
+      {
+        "영상ID": "cQVV9rupEHw",
+        "핵심주제": "미국 대표지수 및 배당 ETF 포트폴리오",
         "훅": "숫자 제시형",
         "겹침": "보통",
-        "겹침근거": "고배당 ETF 포트폴리오 다룸"
+        "겹침근거": "지수형 ETF 장기보유"
       },
       {
-        "영상ID": "ebgYldYtclw",
-        "핵심주제": "5060 세대를 위한 배당 ETF 투자 전략",
-        "훅": "공포 및 기회 자극형",
-        "겹침": "보통",
-        "겹침근거": "배당형 ETF 상품군 언급"
-      },
-      {
-        "영상ID": "J-80WUsERZw",
-        "핵심주제": "최근 조정받는 나스닥 ETF 적립식 투자 고민 상담",
+        "영상ID": "XWsdoBYKCDw",
+        "핵심주제": "은퇴 준비를 위한 S&P500 적립식 투자법",
         "훅": "질문형",
-        "겹침": "높음",
-        "겹침근거": "나스닥 ETF 투자 심리 다룸"
-      },
-      {
-        "영상ID": "rNuPsmg7vkE",
-        "핵심주제": "TIGER KRX금현물 ETF 활용법",
-        "훅": "상품 소개 및 질문 제시형",
         "겹침": "보통",
-        "겹침근거": "금 자산군 다루나 기초 안내 위주"
+        "겹침근거": "S&P500 투자전략"
       }
     ],
-    "댓글키워드": "지속되는 시장 조정으로 인한 투자 불안감과 연금계좌 내 미국 배당 ETF 투자 시의 과세 및 절세 혜택 문의가 많습니다.",
+    "댓글키워드": "S&P500 및 나스닥 ETF 장기 적립 시점과 연령별 계좌 활용법에 대한 질문이 많았습니다.",
     "콘텐츠후보": [
       {
-        "코너": "ETF 처방전",
-        "제목": "일비일비 지친 당신을 위한 연금계좌 미국 배당 ETF 끝장 가이드",
-        "이유": "최근 나스닥 조정으로 불안해하는 시청자들에게 연금계좌와 ISA를 활용한 배당 ETF 세제 혜택과 멘탈 관리법을 제시합니다.",
-        "관련ETF": "미국배당다우존스 · S&P500",
-        "질문": "연금계좌에서 미국 배당 ETF 투자 시 이중 과세 오해와 실제 절세 효과는 어떻게 되나요?",
-        "차별점": "단순 상품 추천을 넘어 세액공제 한도와 수령 시점의 세율을 숫자로 직접 비교 분석합니다.",
-        "사실": "",
-        "관찰": ""
-      },
-      {
-        "코너": "신상탐구형",
-        "제목": "삼전+하이닉스에 미국채를 섞었다? 퇴직연금 100% 룰 깨는 신상 ETF 파헤치기",
-        "이유": "삼성전자·SK하이닉스와 채권을 50% 섞은 신규 혼합 ETF 상장 데이터를 활용해 연금 계좌 활용법 제시 가능",
-        "관련ETF": "단일종목 채권혼합형",
-        "질문": "퇴직연금 안전자산 30% 규정을 우회할 때 이 ETF가 기존 채권형보다 유용한가요?",
-        "차별점": "단순 상품 소개를 넘어 연금 계좌 내 주식 비중 실질 확대 전략으로 접근",
+        "코너": "요즘하태형",
+        "제목": "엔비디아 어닝 서프라이즈, 반도체 ETF 지금 따라붙어도 될까?",
+        "이유": "엔비디아 실적 발표 후 국내외 반도체 ETF 공급망 영향 분석 필요.",
+        "관련ETF": "반도체 · AI",
+        "질문": "엔비디아 실적 발표 이후 국내외 반도체 ETF의 추세적 상승이 이어질 수 있을까요?",
+        "차별점": "단순 실적 수치 소개를 넘어 반도체 ETF 내 소부장 및 메모리 비중 차이를 비교 해설",
         "사실": "",
         "관찰": ""
       }
     ],
     "오늘의개념": {
-      "용어": "베이시스포인트 (bp)",
-      "연결": "미국 국채금리가 전일 대비 각각 6.5bp, 5.7bp 하락한 맥락에서 등장했습니다.",
-      "설명": "이자율이나 금리의 변동 폭을 나타내는 최소 단위로, 1%p의 100분의 1(0.01%p)을 의미합니다. 예를 들어 금리가 4.50%에서 4.55%로 올랐다면 '5bp 상승했다'고 표현합니다."
+      "용어": "듀레이션",
+      "연결": "한은 금통위 기준금리 결정과 미 국채금리 변동에 따른 채권 ETF 가격 영향 설명에 활용",
+      "설명": "듀레이션은 금리 변화에 따른 채권 가격의 민감도를 나타내는 지표입니다. 예를 들어 듀레이션이 5년인 채권 ETF는 시장 금리가 1%p 하락할 때 ETF 가격이 약 5% 상승하는 구조를 가집니다."
     },
     "체크포인트": [
       {
@@ -222,8 +208,19 @@
       }
     ],
     "카톡": {
-      "1": "☀️ 8/26 브리핑\n1. 미 국채금리 하락세\n2. 필라델피아 반도체 반등\n3. 국제유가 3%대 급락\n4. 엔비디아 실적 경계감\n5. 한은 금통위 금리결정"
+      "1": "☀️ 8/27 브리핑\n1. 엔비디아 깜짝 실적\n2. 한은 금통위 개최\n3. 미 10년물 금리 상승\n4. 코스피·코스닥 엇갈림\n5. 잭슨홀 심포지엄 개막"
     }
   },
-  "history": []
+  "history": [
+    {
+      "날짜": "2026-08-26",
+      "주제": [
+        "미 국채금리 하락세",
+        "필라델피아 반도체 반등",
+        "국제유가 3%대 급락",
+        "엔비디아 실적 경계감",
+        "한은 금통위 금리결정"
+      ]
+    }
+  ]
 }
