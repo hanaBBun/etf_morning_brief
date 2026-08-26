@@ -200,6 +200,21 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(main._brief_identity(monday, "daily")[1], "이번 주 준비")
         self.assertEqual(main._brief_identity(monday, "weekly")[1], "지난 한 주 복기")
 
+    def test_daily_backup_schedule_includes_thursday_and_skips_duplicates(self):
+        workflow = (render.ROOT / ".github" / "workflows" / "daily.yml").read_text(encoding="utf-8")
+        self.assertIn('cron: "0 22 * * 0-4"', workflow)
+        self.assertIn('cron: "0 23 * * 0-4"', workflow)
+        self.assertIn("--skip-if-existing", workflow)
+
+    def test_scheduled_retry_detects_existing_official_daily_file(self):
+        fixed = datetime(2026, 8, 27, 7, 0, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(render, "DOCS", Path(td)), \
+             patch.object(main, "now_kst", return_value=fixed):
+            self.assertFalse(main._daily_published())
+            (Path(td) / "2026-08-27.html").write_text("official", encoding="utf-8")
+            self.assertTrue(main._daily_published())
+
     def test_period_comparison_is_weekly_only(self):
         data = {"주간_대표흐름": [{"이름": "코스피", "1일": 1.0, "1주": -2.0,
                                       "1개월": 3.0, "기준일": "2026-08-21"}]}

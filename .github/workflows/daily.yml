@@ -11,8 +11,11 @@ on:
       - "config.yaml"
       - "requirements.txt"
   schedule:
-    # UTC 일~목 22:00 = KST 월~금 07:00. 토·일에는 일간 브리핑을 보내지 않는다.
+    # UTC 일~목 22:00 = KST 월~금 07:00. 목요일도 포함한다.
+    # GitHub 예약 트리거가 간헐적으로 한 회차를 누락할 수 있어 08:00에 한 번 더 확인한다.
+    # 두 실행 모두 이미 오늘 공식본이 있으면 즉시 끝나므로 카톡은 한 번만 발송된다.
     - cron: "0 22 * * 0-4"
+    - cron: "0 23 * * 0-4"
   workflow_dispatch:
     inputs:
       no_send:
@@ -64,6 +67,7 @@ jobs:
           TZ: Asia/Seoul
         run: |
           python -m src.main --mode daily \
+            ${{ github.event_name == 'schedule' && '--skip-if-existing' || '' }} \
             ${{ inputs.no_send && '--no-send' || '' }} \
             ${{ inputs.replace_published && '--replace-existing' || '' }}
 

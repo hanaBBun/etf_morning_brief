@@ -194,6 +194,12 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
     return data
 
 
+def _daily_published() -> bool:
+    """예약 재시도 시 오늘 공식 HTML이 이미 저장돼 있는지 확인한다."""
+    stamp = now_kst().strftime("%Y-%m-%d")
+    return (render.DOCS / f"{stamp}.html").exists()
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["daily", "weekly", "thursday"], default="daily")
@@ -201,10 +207,16 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true", help="AI 호출·발송 모두 생략")
     ap.add_argument("--replace-existing", action="store_true",
                     help="같은 날짜의 공식 일간본을 의도적으로 교체")
+    ap.add_argument("--skip-if-existing", action="store_true",
+                    help="오늘 공식 일간본이 이미 있으면 중복 생성·발송 생략")
     args = ap.parse_args()
 
     cfg = load_config()
     log.info("=== %s 브리핑 시작 (%s) ===", args.mode, now_kst().strftime("%Y-%m-%d %H:%M"))
+
+    if args.mode == "daily" and args.skip_if_existing and _daily_published():
+        log.info("오늘 공식 아침 브리핑이 이미 있어 중복 생성·카톡 발송을 생략합니다")
+        return 0
 
     data = collect_handoff(cfg) if args.mode == "thursday" else collect(cfg, args.mode)
 
