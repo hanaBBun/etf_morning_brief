@@ -205,6 +205,9 @@ ETF 레이더와 시장브리핑은 입력 데이터에 표시된 실제 기준�
 ■ 규칙 12 — 시장 카드의 ETF 연결은 빠뜨리지 않습니다
 미국·국내 시장브리핑은 결과·원인·ETF연결을 모두 씁니다. ETF연결은 매수 추천이 아니라
 오늘의 움직임을 어떤 지수형·업종형·채권형 ETF와 연결해 점검할지 구체적으로 씁니다.
+국내 카드는 절대 빠뜨리지 마세요. 이 브리핑은 한국에서 한국 ETF를 다루는 사람이 읽습니다.
+뚜렷한 단일 재료가 없는 날에도 입력에 있는 지수 괴리·외국인과 기관 수급·업종 기여도를
+엮어 무엇이 지수를 움직였는지 설명하되, 입력에 없는 인과관계는 만들지 마세요.
 
 ■ 규칙 13 — 흐름판 숫자는 반복하지 않되 원인은 반드시 설명합니다
 ETF 흐름판의 수익률 상·하위, 레버리지·인버스, 거래량 급증 수치는 자동 표시됩니다.
@@ -389,7 +392,9 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   · ETF가 2개 이상 함께 움직였다는 사실과, 기사에서 확인된 사건을 연결합니다.
   · 주도종목은 `종목_후보_국내`·`종목_후보_미국`에 있는 종목만 최대 3개 씁니다.
   · 맞는 최근 기사가 없으면 빈 값(null)으로 두며 원인을 추측하지 않습니다.
-  · `관심종목`은 주도테마 밖에서도 이례적 움직임과 촉매가 함께 확인된 경우만 최대 2개 씁니다.
+  · `관심종목`은 주도테마 밖에서도 이례적 움직임과 촉매가 함께 확인되고, 그 종목이
+    당일 지수·업종·ETF 움직임을 설명하는 데 필요한 경우만 최대 2개 씁니다.
+    `이유`에는 촉매만 쓰지 말고 어떤 지수·업종·ETF와 연결되는지도 반드시 씁니다.
 
 ★ 콘텐츠 후보는 좋은 것이 1개뿐이면 1개만 답하세요. 정원을 채우기 위한 범용 질문이나
   `VIX 상승`처럼 ETF 유형이 아닌 현상을 관련ETF에 쓰지 마세요.
@@ -999,7 +1004,7 @@ def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
     fallback_markets = {x.get("시장"): x for x in fallback["시장브리핑"]}
     market_briefs = []
     for market_name in ("국내", "미국"):
-        if market_name in fresh_markets:
+        if market_name in fresh_markets and not fresh_markets[market_name].get("자동생성"):
             market_briefs.append(fresh_markets[market_name])
         elif market_name in cached_markets:
             item = dict(cached_markets[market_name])
@@ -1111,6 +1116,11 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
             if parsed:
                 result = _postprocess(parsed, cfg, data, mode)
                 if mode == "daily":
+                    gaps = _market_card_gaps(result.get("시장브리핑") or [])
+                    if gaps:
+                        log.warning("모델 %s 시장브리핑 미완성 — 다음 모델로 재생성: %s",
+                                    model, "; ".join(gaps))
+                        continue
                     result = _stabilize_daily(result, _load_daily_ai(data), data, cfg)
                     _save_daily_ai(data, result)
                 return result
@@ -1632,7 +1642,7 @@ def _fallback_market_brief(market_name: str, data: dict) -> dict:
     """모델이 한국·미국 중 하나를 빼도 양쪽 시장을 반드시 표시한다."""
     if market_name == "국내":
         result = _quote_summary(data.get("국내지수") or [], ("코스피", "코스닥"))
-        return {"시장": "국내", "제목": "국내 증시 마감 흐름",
+        return {"시장": "국내", "제목": "국내 증시 마감 흐름", "자동생성": True,
                 "결과": result or "국내 지수 데이터를 확인해야 합니다.",
                 "원인": "",
                 "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
@@ -1641,7 +1651,8 @@ def _fallback_market_brief(market_name: str, data: dict) -> dict:
     for group in (data.get("지표") or {}).values():
         rows.extend(group or [])
     result = _quote_summary(rows, ("S&P 500", "나스닥 종합", "다우 30"))
-    return {"시장": "미국", "제목": "미국 증시 마감 흐름", "결과": result or "미국 지수 데이터를 확인해야 합니다.",
+    return {"시장": "미국", "제목": "미국 증시 마감 흐름", "자동생성": True,
+            "결과": result or "미국 지수 데이터를 확인해야 합니다.",
             "원인": "",
             "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
             "출처": [{"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"}]}
@@ -1720,6 +1731,54 @@ def _candidate_stock_names(data: dict) -> set[str]:
     names |= {str(x.get("이름") or "").strip()
               for x in (data.get("종목_후보_미국") or [])}
     return {x for x in names if x}
+
+
+def _market_card_gaps(items: list[dict]) -> list[str]:
+    """국내·미국 카드가 실제 해설인지 확인한다. 자동 폴백은 완성본으로 보지 않는다."""
+    cards = {str(x.get("시장") or ""): x for x in items if isinstance(x, dict)}
+    gaps = []
+    for market_name in ("국내", "미국"):
+        card = cards.get(market_name) or {}
+        missing = [key for key in ("결과", "원인", "ETF연결")
+                   if not str(card.get(key) or "").strip()]
+        if card.get("자동생성"):
+            missing.append("모델 해설")
+        if missing:
+            gaps.append(f"{market_name}: {', '.join(dict.fromkeys(missing))}")
+    return gaps
+
+
+def _briefing_date(data: dict):
+    """브리핑 기준일을 date로 돌려준다. 해석할 수 없으면 None."""
+    from datetime import date
+
+    value = str(data.get("날짜표시") or data.get("날짜") or "")
+    match = re.search(r"(\d{4})\D+(\d{1,2})\D+(\d{1,2})", value)
+    if not match:
+        return None
+    try:
+        return date(*(int(x) for x in match.groups()))
+    except ValueError:
+        return None
+
+
+def _checkpoint_date(item: dict, base_date):
+    """일정의 ISO 날짜 또는 M/D 표기를 해석한다."""
+    from datetime import date
+
+    if str(item.get("유형") or "") != "일정" or base_date is None:
+        return None
+    raw = str(item.get("날짜") or item.get("때") or "")
+    full = re.search(r"(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})", raw)
+    short = re.search(r"(?<!\d)(\d{1,2})[-/.](\d{1,2})(?!\d)", raw)
+    try:
+        if full:
+            return date(*(int(x) for x in full.groups()))
+        if short:
+            return date(base_date.year, int(short.group(1)), int(short.group(2)))
+    except ValueError:
+        return None
+    return None
 
 
 def _theme_names(data: dict) -> set[str]:
@@ -1896,8 +1955,11 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
                 or (ages and not _has_news_source(item)) or _has_hype(item)):
             continue
         item["이유"] = _strip_stock_flow_claim(item.get("이유"), data)[:140]
-        if item["이유"]:
+        link_terms = ("ETF", "지수", "코스피", "코스닥", "업종", "섹터")
+        if item["이유"] and any(term.lower() in item["이유"].lower() for term in link_terms):
             kept_stocks.append(item)
+        elif item["이유"]:
+            log.warning("지수·업종·ETF 연결 없는 관심종목 제외: %s", item.get("이름", ""))
     d["관심종목"] = kept_stocks[:2]
 
     radar_max = int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3))
@@ -1947,6 +2009,11 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     # 모델이 놓쳐도 공식기관 캘린더에서 수집한 일정은 반드시 보충한다.
     # 공식 일정은 모델 생성 항목보다 먼저 두어 8개 제한에 밀려나지 않게 한다.
     cps = list(data.get("공식일정") or []) + cps
+    base_date = _briefing_date(data)
+    before = len(cps)
+    cps = [c for c in cps if not (_checkpoint_date(c, base_date)
+                                   and _checkpoint_date(c, base_date) < base_date)]
+    log.info("체크포인트 후보 %d건 (지난 일정 %d건 제거)", len(cps), before - len(cps))
     seen_cp: list[tuple[str, set[str]]] = []
     d["체크포인트"] = []
     for c in cps:

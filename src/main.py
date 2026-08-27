@@ -101,6 +101,16 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
             # 지수·ETF 움직임을 설명할 때 근거로 쓸 수 있는 재료로만 전달한다.
             data["종목_후보_국내"] = krx.notable_stocks(day, cfg)
             data["ETF_후보"] = krx.etf_radar(day, cfg, mode)
+            flow = (data["ETF_후보"].get("흐름판") or {})
+            if not (flow.get("상승") or flow.get("하락")):
+                log.warning("ETF 흐름판이 비어 수집을 한 번 더 시도합니다")
+                retried = krx.etf_radar(day, cfg, mode)
+                retry_flow = (retried.get("흐름판") or {})
+                if retry_flow.get("상승") or retry_flow.get("하락"):
+                    data["ETF_후보"] = retried
+                    flow = retry_flow
+            log.info("ETF 흐름판 상승 %d개·하락 %d개",
+                     len(flow.get("상승") or []), len(flow.get("하락") or []))
             data["수집상태"]["KRX"] = "정상"
         except Exception as e:  # noqa: BLE001
             log.error("국내 데이터 수집 실패: %s", e)

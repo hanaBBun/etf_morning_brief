@@ -87,7 +87,7 @@ class SafetyTests(unittest.TestCase):
         out = render._youtube(data, {"유튜브": []})
         self.assertEqual(out[0]["겹침"], "낮음")
 
-    def test_empty_ai_is_stabilized_into_complete_daily_brief(self):
+    def test_empty_ai_fallback_cannot_overwrite_a_complete_daily_brief(self):
         data = {
             "날짜표시": "2026년 8월 21일 (금)",
             "국내지수": [
@@ -113,7 +113,9 @@ class SafetyTests(unittest.TestCase):
         self.assertTrue(out["콘텐츠후보"])
         self.assertTrue(out["오늘의개념"])
         self.assertTrue(out["체크포인트"])
-        self.assertEqual(render.validate_daily({"카카오": {}}, data, out), [])
+        errors = render.validate_daily({"카카오": {}}, data, out)
+        self.assertIn("국내 시장브리핑 미완성", errors)
+        self.assertIn("미국 시장브리핑 미완성", errors)
 
     def test_complete_daily_contract_renders_every_required_section(self):
         data = {
@@ -153,7 +155,7 @@ class SafetyTests(unittest.TestCase):
                            "주도종목": [{"이름": "현대건설", "등락률": 14.87}],
                            "ETF연결": "후속 수주 여부를 확인합니다.", "출처": []}
         ai["관심종목"] = [{"시장": "국내", "이름": "현대건설", "등락률": 14.87,
-                           "이유": "원전 수주 기대가 반영됐습니다.", "출처": []}]
+                           "이유": "원전 수주 기대가 건설업종 ETF에 반영됐습니다.", "출처": []}]
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
             html = path.read_text(encoding="utf-8")
@@ -166,6 +168,8 @@ class SafetyTests(unittest.TestCase):
         self.assertIn("ETF 뉴스 8", html)
         self.assertIn("ETF 흐름판", html)
         self.assertIn("오늘의 주도 테마", html)
+        self.assertIn("오늘의 특징주", html)
+        self.assertLess(html.index("오늘의 특징주"), html.index("<h2>📡 ETF 레이더"))
         self.assertIn("현대건설", html)
         self.assertIn("금채굴 ETF", html)
         self.assertIn("레버리지·인버스 별도", html)
@@ -701,6 +705,19 @@ class SafetyTests(unittest.TestCase):
                                {"뉴스": {}, "공식일정": [official]})
         pce = [x for x in out["체크포인트"] if "PCE" in x["내용"]]
         self.assertEqual(len(pce), 1)
+
+    def test_past_schedule_is_removed_but_same_day_and_watch_items_remain(self):
+        raw = {"체크포인트": [
+            {"유형": "일정", "때": "8/26 (수) 21:30", "내용": "미국 PCE"},
+            {"유형": "일정", "때": "8/27 (목) 10:00", "내용": "한국은행 금통위"},
+            {"유형": "확인", "때": "이번 주", "내용": "외국인 수급"},
+        ]}
+        data = {"날짜표시": "2026년 8월 27일 (목)", "뉴스": {}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        contents = [x["내용"] for x in out["체크포인트"]]
+        self.assertNotIn("미국 PCE", contents)
+        self.assertIn("한국은행 금통위", contents)
+        self.assertIn("외국인 수급", contents)
 
     def test_unsourced_market_cause_is_hidden_not_replaced_with_notice(self):
         raw = {"시장브리핑": [{"시장": "국내", "제목": "국내 증시", "결과": "코스피 상승",

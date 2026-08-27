@@ -356,6 +356,13 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
     markets = {x.get("시장") for x in (ai.get("시장브리핑") or [])}
     if not {"국내", "미국"}.issubset(markets):
         errors.append("국내·미국 시장브리핑 누락")
+    for card in (ai.get("시장브리핑") or []):
+        if card.get("시장") not in ("국내", "미국"):
+            continue
+        missing = [key for key in ("결과", "원인", "ETF연결")
+                   if not str(card.get(key) or "").strip()]
+        if card.get("자동생성") or missing:
+            errors.append(f"{card.get('시장')} 시장브리핑 미완성")
     flowboard = ((data.get("ETF_후보") or {}).get("흐름판") or {})
     if not (ai.get("etf_레이더") or []) and not (flowboard.get("상승") or flowboard.get("하락")):
         errors.append("ETF 레이더 누락")

@@ -340,6 +340,11 @@
     {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
   </div>
   {% endif %}
+  {% if c.시장 == '국내' and ai.관심종목 %}
+  <div class="stockwatch"><b>오늘의 특징주</b>
+    {% for s in ai.관심종목 %}<div class="sitem"><div class="st"><b>👀 {{ s.이름 }}</b>{% if s.등락률 is defined and s.등락률 is not none %}<span class="{{ 'up' if s.등락률 > 0 else 'down' }}">{{ "%+.2f"|format(s.등락률) }}%</span>{% endif %}</div><p>{{ s.이유 }}</p>{% if s.출처 %}<div class="src">출처 · {% for x in s.출처 %}{% if x.url %}<a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.이름 }}{% if x.날짜 %} ({{ x.날짜 }} 보도){% endif %}</a>{% else %}{{ x.이름 }}{% if x.날짜 %} ({{ x.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>{% endfor %}
+  </div>
+  {% endif %}
 </div>
 {% endfor %}
 {% if ai.오늘관전 %}<div class="watch"><b>오늘 관전 포인트</b><ol>{% for x in ai.오늘관전 %}<li>{{ x }}</li>{% endfor %}</ol></div>{% endif %}
@@ -376,11 +381,6 @@
   {% if ai.주도테마.주도종목 %}<div class="leaders">{% for s in ai.주도테마.주도종목 %}<span class="leader">{{ s.이름 }}{% if s.등락률 is defined and s.등락률 is not none %}<b class="{{ 'up' if s.등락률 > 0 else 'down' }}">{{ "%+.2f"|format(s.등락률) }}%</b>{% endif %}</span>{% endfor %}</div>{% endif %}
   {% if ai.주도테마.ETF연결 %}<div class="themerow"><span class="k">볼 것</span><span class="v">{{ ai.주도테마.ETF연결 }}</span></div>{% endif %}
   {% if ai.주도테마.출처 %}<div class="src">출처 · {% for s in ai.주도테마.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
-</div>
-{% endif %}
-{% if ai.관심종목 %}
-<div class="stockwatch">
-  {% for s in ai.관심종목 %}<div class="sitem"><div class="st"><b>👀 {{ s.이름 }}</b>{% if s.등락률 is defined and s.등락률 is not none %}<span class="{{ 'up' if s.등락률 > 0 else 'down' }}">{{ "%+.2f"|format(s.등락률) }}%</span>{% endif %}</div><p>{{ s.이유 }}</p>{% if s.출처 %}<div class="src">출처 · {% for x in s.출처 %}{% if x.url %}<a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.이름 }}</a>{% else %}{{ x.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>{% endfor %}
 </div>
 {% endif %}
 {% if ai.etf_레이더 %}
