@@ -411,6 +411,8 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
     result: dict[str, Any] = {
         "전일_순매수": [], "전일_순매도": [], "거래량_급증": [],
         "신규상장": [], "순자산_급증": [], "기준일": day, "흐름판": {},
+        "진단": {"소스": "네이버 금융" if _force_naver else "KRX",
+                 "원본": 0, "유동성필터통과": 0, "등락률유효": 0},
     }
 
     try:
@@ -428,6 +430,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
         if df is None or df.empty:
             log.warning("ETF 전체 시세가 비어 흐름판을 생성하지 못했습니다")
             return result
+        result["진단"]["원본"] = len(df)
 
         names = dict(fallback_names)
         for tk in df.index:
@@ -445,6 +448,18 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
         ranked = df.copy()
         if "거래대금" in ranked.columns:
             ranked = ranked[ranked["거래대금"] >= min_turnover]
+        filter_text = f"거래대금 {int(min_turnover / 1e8)}억원 이상 일반형"
+        # 장 시작 전 네이버 ETF API는 전일 종가·등락률은 주지만 당일 거래량을
+        # 0으로 초기화한다. 이때 거래대금 필터를 적용하면 1천여 종목이 전부
+        # 사라지므로 순자산 상위 종목을 유동성 대용치로 사용한다.
+        if (_force_naver and ranked.empty and len(df)
+                and "순자산총액" in df.columns
+                and float(df["거래대금"].max() if "거래대금" in df.columns else 0) == 0):
+            ranked = df.sort_values("순자산총액", ascending=False).head(200)
+            filter_text = "장 시작 전 네이버 금융 순자산 상위 200개 일반형"
+            result["진단"]["대체필터"] = "순자산 상위 200개"
+            log.warning("네이버 장전 거래량이 0이라 순자산 상위 200개로 흐름판을 계산합니다")
+        result["진단"]["유동성필터통과"] = len(ranked)
         period = "전일"
         rate_col = "등락률"
         if mode == "weekly":
@@ -490,6 +505,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
             })
         general = [x for x in perf_rows if x["유형"] == "일반형"]
         leveraged = [x for x in perf_rows if x["유형"] == "레버리지·인버스"]
+        result["진단"]["등락률유효"] = len(perf_rows)
         result["흐름판"] = {
             "기간": period, "기준일": f"{day[4:6]}/{day[6:8]}",
             "상승": _dedupe_ranked(sorted(general, key=lambda x: x["등락률"], reverse=True), rank_n),
@@ -497,6 +513,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
             "고변동상품": _dedupe_ranked(
                 sorted(leveraged, key=lambda x: abs(x["등락률"]), reverse=True), 2),
             "최소거래대금_억원": int(min_turnover / 1e8),
+            "필터설명": filter_text,
             "출처": "KRX·네이버 금융 보조 시세",
         }
 
@@ -562,4 +579,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
         fallback = etf_radar(day, cfg, mode, _force_naver=True)
         if (fallback.get("흐름판") or {}).get("상승") or (fallback.get("흐름판") or {}).get("하락"):
             result["흐름판"] = fallback["흐름판"]
+            result["진단"] = fallback.get("진단") or result["진단"]
+        else:
+            result["진단"] = fallback.get("진단") or result["진단"]
     return result

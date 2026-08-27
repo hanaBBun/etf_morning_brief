@@ -210,6 +210,51 @@ def _daily_published() -> bool:
     return (render.DOCS / f"{stamp}.html").exists()
 
 
+def _operator_issues(data: dict, ai: dict, incomplete: list[str] | None = None) -> list[str]:
+    """독자 화면이 아니라 운영자에게만 알려야 할 실제 수집·생성 누락."""
+    issues: list[str] = []
+    cards = {str(x.get("시장") or ""): x for x in (ai.get("시장브리핑") or [])
+             if isinstance(x, dict)}
+    for market_name in ("국내", "미국"):
+        card = cards.get(market_name) or {}
+        missing = [k for k in ("결과", "원인", "ETF연결") if not str(card.get(k) or "").strip()]
+        if card.get("자동생성") or missing:
+            issues.append(f"{market_name} 시황: AI 해설 미완성")
+
+    etf = data.get("ETF_후보") or {}
+    flow = etf.get("흐름판") or {}
+    if not (flow.get("상승") or flow.get("하락")):
+        diag = etf.get("진단") or {}
+        issues.append("ETF 흐름판: 재조회 후 0건"
+                      f"(원본 {diag.get('원본', 0)}·필터 {diag.get('유동성필터통과', 0)})")
+
+    state = data.get("수집상태") or {}
+    for label in ("뉴스", "YouTube", "Yahoo Finance"):
+        value = str(state.get(label) or "")
+        if value and ("실패" in value or "0건" in value or "초과" in value):
+            issues.append(f"{label}: {value}")
+
+    etf_news = sum(len((data.get("뉴스") or {}).get(group) or [])
+                   for group in ("ETF시장", "ETF", "레버리지"))
+    if etf_news and not (ai.get("etf_레이더") or []):
+        issues.append(f"ETF 레이더: 후보 기사 {etf_news}건이 검증 후 모두 제외")
+
+    for error in incomplete or []:
+        if "시장브리핑" not in error and error not in issues:
+            issues.append(error)
+    return list(dict.fromkeys(issues))[:6]
+
+
+def _send_operator_alert(cfg: dict, data: dict, issues: list[str], no_send: bool) -> None:
+    if no_send or not issues:
+        return
+    try:
+        ok = kakao.send_operator_alert(cfg, issues, str(data.get("날짜표시") or "오늘"))
+        log.info("운영자 수집 알림 %s", "성공" if ok else "실패")
+    except Exception as e:  # noqa: BLE001
+        log.error("운영자 수집 알림 발송 실패: %s", e)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["daily", "weekly", "thursday"], default="daily")
@@ -243,6 +288,7 @@ def main() -> int:
     if args.mode == "daily" and not args.dry_run:
         incomplete = render.validate_daily(cfg, data, ai)
         if incomplete:
+            _send_operator_alert(cfg, data, _operator_issues(data, ai, incomplete), args.no_send)
             raise RuntimeError("불완전한 브리핑 발행 중단: " + ", ".join(incomplete))
 
     path, url = render.render(cfg, data, ai, args.mode,
@@ -274,6 +320,8 @@ def main() -> int:
     try:
         ok = kakao.send_brief(cfg, msgs, url)
         log.info("카톡 발송 %s", "성공" if ok else "일부 실패")
+        if args.mode == "daily":
+            _send_operator_alert(cfg, data, _operator_issues(data, ai), False)
         return 0 if ok else 1
     except Exception as e:  # noqa: BLE001
         log.error("카톡 발송 실패: %s", e)

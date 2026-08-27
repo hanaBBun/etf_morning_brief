@@ -313,6 +313,51 @@ class SafetyTests(unittest.TestCase):
                          ["KODEX 반도체", "ACE 바이오", "RISE 화장품"])
         self.assertEqual(flow["고변동상품"][0]["이름"], "KODEX 코스닥150레버리지")
 
+    def test_premarket_naver_flow_uses_aum_proxy_when_volume_is_zero(self):
+        import pandas as pd
+
+        class EmptyETFStock:
+            @staticmethod
+            def get_etf_ohlcv_by_ticker(day):
+                return pd.DataFrame()
+
+            @staticmethod
+            def get_nearest_business_day_in_a_week(date, prev=True):
+                return date
+
+        names = {str(i): f"일반 ETF {i}" for i in range(1, 7)}
+        frame = pd.DataFrame([
+            {"티커": str(i), "종가": 10000, "등락률": rate, "거래량": 0,
+             "거래대금": 0, "순자산총액": 1000 - i}
+            for i, rate in enumerate((5.0, 3.0, 1.0, -1.0, -3.0, -5.0), 1)
+        ]).set_index("티커")
+        with patch.object(krx, "_stock", return_value=EmptyETFStock()), \
+             patch.object(krx, "_naver_etf_snapshot", return_value=(frame, names)), \
+             patch.object(krx, "_save_snapshot"):
+            out = krx.etf_radar("20260826", {"ETF_레이더": {
+                "흐름판_최소거래대금_억원": 50, "흐름판_상하위개수": 3}})
+        self.assertEqual(len(out["흐름판"]["상승"]), 3)
+        self.assertEqual(len(out["흐름판"]["하락"]), 3)
+        self.assertIn("순자산 상위", out["흐름판"]["필터설명"])
+        self.assertEqual(out["진단"]["대체필터"], "순자산 상위 200개")
+
+    def test_operator_alert_only_reports_actual_required_omissions(self):
+        data = {"ETF_후보": {"흐름판": {}, "진단": {
+                    "원본": 1163, "유동성필터통과": 0}},
+                "수집상태": {"YouTube": "정상"},
+                "뉴스": {"ETF시장": [{"제목": "ETF 기사"}]}}
+        ai = {"시장브리핑": [
+                {"시장": "국내", "자동생성": True, "결과": "코스피 +1%",
+                 "원인": "", "ETF연결": "코스피200 ETF"},
+                {"시장": "미국", "결과": "S&P500 +1%", "원인": "금리 하락",
+                 "ETF연결": "S&P500 ETF"}],
+              "etf_레이더": [], "관심종목": [], "시장국면": None}
+        issues = main._operator_issues(data, ai)
+        self.assertIn("국내 시황: AI 해설 미완성", issues)
+        self.assertTrue(any("원본 1163" in x for x in issues))
+        self.assertTrue(any("ETF 레이더" in x for x in issues))
+        self.assertFalse(any("특징주" in x or "시장국면" in x for x in issues))
+
     def test_naver_etf_fallback_accepts_cp949_response(self):
         payload = {"result": {"etfItemList": [{
             "itemcode": "123456", "itemname": "테스트 한글 ETF", "nowVal": 10000,

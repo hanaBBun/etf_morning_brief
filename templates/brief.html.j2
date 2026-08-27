@@ -360,7 +360,7 @@
   <span class="tag">{% if ETF흐름판.기간 %}{{ ETF흐름판.기간 }}{% else %}전일{% endif %} 기준</span></h2>
 {% if ETF흐름판 and (ETF흐름판.상승 or ETF흐름판.하락) %}
 <div class="flowboard">
-  <div class="flow-head"><b>ETF 흐름판</b><span>{{ ETF흐름판.기준일 }} · 거래대금 {{ ETF흐름판.최소거래대금_억원 }}억원 이상 일반형{% if ETF흐름판.출처 %} · {{ ETF흐름판.출처 }}{% endif %}</span></div>
+  <div class="flow-head"><b>ETF 흐름판</b><span>{{ ETF흐름판.기준일 }} · {% if ETF흐름판.필터설명 %}{{ ETF흐름판.필터설명 }}{% else %}거래대금 {{ ETF흐름판.최소거래대금_억원 }}억원 이상 일반형{% endif %}{% if ETF흐름판.출처 %} · {{ ETF흐름판.출처 }}{% endif %}</span></div>
   <div class="flow-grid">
     <div class="flow-col"><h3>수익률 상위</h3>
       {% for x in ETF흐름판.상승 %}<div class="flow-row"><span class="nm">{{ x.이름 }}</span><span class="pct up">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}

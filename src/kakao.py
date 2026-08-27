@@ -106,6 +106,30 @@ def send_brief(cfg: dict, messages: list[str], url: str = "") -> bool:
     return ok
 
 
+def send_operator_alert(cfg: dict, issues: list[str], date_text: str = "오늘") -> bool:
+    """공유용 브리핑과 분리된 운영자 전용 수집 이상 알림을 보낸다."""
+    if not issues:
+        return True
+    limit = int((cfg.get("카카오") or {}).get("글자수_제한", 195))
+    head = f"⚠️ {date_text} 브리핑 수집 알림"
+    lines = [head] + [f"· {x}" for x in issues]
+    tail = "공개본에는 실패 안내를 넣지 않았습니다."
+    text = "\n".join(lines + [tail])
+    if len(text) > limit:
+        text = "\n".join(lines)
+    if len(text) > limit:
+        kept = [head]
+        for line in lines[1:]:
+            if len("\n".join(kept + [line])) > limit:
+                break
+            kept.append(line)
+        text = "\n".join(kept)
+    token, new_refresh = refresh_access_token()
+    if new_refresh:
+        _persist_refresh_token(new_refresh)
+    return send_text(token, text[:limit].rstrip())
+
+
 # ─────────────────────────────────────────────
 # 리프레시 토큰 회전
 # ─────────────────────────────────────────────
