@@ -136,20 +136,23 @@ OVERLAP_CLASS = {"높음": "high", "보통": "mid", "낮음": "low"}
 
 
 def _channel_relevance(video: dict) -> tuple[str, str]:
-    """오늘 뉴스가 아니라 ETF 아는형의 상시 콘텐츠 범위와의 밀접도를 판정."""
-    score = int(video.get("ETF점수") or 0)
+    """영상 제목이 ETF 아는형의 상시 콘텐츠 범위와 얼마나 밀접한지 판정.
+
+    수집기의 ETF점수는 후보를 넓게 모으기 위한 값이므로 등급 판정에는 쓰지 않는다.
+    점수만으로 '높음'을 주면 일반 시황 영상까지 ETF 직접 주제로 오인된다.
+    """
     title = str(video.get("제목") or "")
     direct = ("ETF", "상장지수", "ISA", "연금저축", "퇴직연금", "IRP",
               "월배당", "커버드콜", "분배금", "S&P500", "S&P 500",
               "나스닥100", "코스피200", "레버리지", "인버스")
     adjacent = ("금리", "채권", "반도체", "배당", "자산배분", "포트폴리오",
-                "주식", "증시", "지수", "연금", "절세")
+                "주식", "증시", "지수", "연금", "절세", "환율", "원자재")
     hits = [word for word in direct if word.lower() in title.lower()]
-    if score >= 3 or hits:
-        return "높음", f"채널 핵심 주제: {', '.join(hits[:2])}" if hits else "ETF 직접 주제"
+    if hits:
+        return "높음", f"채널 핵심 주제: {', '.join(hits[:2])}"
     near = [word for word in adjacent if word.lower() in title.lower()]
-    if score > 0 or near:
-        return "보통", f"채널 인접 주제: {', '.join(near[:2])}" if near else "투자 인접 주제"
+    if near:
+        return "보통", f"채널 인접 주제: {', '.join(near[:2])}"
     return "낮음", "ETF 채널과 직접 연결이 적음"
 
 
@@ -307,27 +310,85 @@ def _sources(data: dict, ai: dict) -> list[dict]:
 
 
 def _daily_etf_news(data: dict, limit: int = 6) -> list[dict]:
-    """국내 기준일에 발행된 ETF 기사 제목을 원문 링크 그대로 고른다."""
+    """전 거래일의 한국어 ETF 기사 중 서로 다른 주제의 대표 기사만 고른다."""
+    import re
+
     target = str(data.get("국내기준일_ISO") or "")
     terms = ("ETF", "상장지수", "자산운용", "펀드", "레버리지", "인버스",
              "분배금", "커버드콜", "TDF", "연금", "ISA")
-    seen, rows = set(), []
+    source_rank = (
+        "연합뉴스", "한국경제", "매일경제", "머니투데이", "서울경제", "아시아경제",
+        "뉴시스", "뉴스핌", "파이낸셜뉴스", "한국경제TV", "아주경제",
+    )
+    topic_rules = (
+        ("시간외거래", r"애프터마켓|퇴근길|시간외|넥스트레이드"),
+        ("레버리지·인버스", r"레버리지|인버스|곱버스|\b[23]배\b"),
+        ("연금·절세계좌", r"TDF|퇴직연금|연금저축|\bISA\b|개인형IRP|\bIRP\b"),
+        ("배당·분배금", r"월배당|배당|분배금|커버드콜"),
+        ("채권·금리", r"채권|국채|금리"),
+        ("신규상장·상품", r"신규\s*상장|출시|상장\s*예정"),
+        ("자금흐름·수급", r"자금\s*(유입|이탈|이동)|순매수|수급"),
+        ("수익률·테마", r"수익률|급등|급락|강세|약세|테마"),
+        ("규제·제도", r"규제|제도|과세|세제|당국"),
+    )
+    stop = {"etf", "상장지수", "펀드", "관련", "국내", "투자", "시장", "전망",
+            "올해", "이번", "지난", "대한", "통해"}
+
+    def korean(title: str) -> bool:
+        hangul = len(re.findall(r"[가-힣]", title))
+        letters = len(re.findall(r"[가-힣A-Za-z]", title))
+        return hangul >= 5 and (letters == 0 or hangul / letters >= 0.35)
+
+    def topic(title: str) -> str:
+        for name, pattern in topic_rules:
+            if re.search(pattern, title, re.I):
+                return name
+        tokens = [x for x in re.findall(r"[가-힣]{2,}|[A-Za-z0-9]+", title.lower())
+                  if x not in stop]
+        return "기타:" + "|".join(tokens[:2])
+
+    def tokens(title: str) -> set[str]:
+        return {x for x in re.findall(r"[가-힣]{2,}|[a-z0-9]+", title.lower())
+                if x not in stop}
+
+    def rank(item: dict) -> int:
+        src = str(item.get("출처") or "")
+        return next((i for i, name in enumerate(source_rank) if name in src), len(source_rank))
+
+    candidates = []
     for group, items in (data.get("뉴스") or {}).items():
         for item in items or []:
             title = str(item.get("제목") or "").strip()
-            if not title or not item.get("링크") or str(item.get("날짜") or "")[:10] != target:
+            if (not title or not item.get("링크")
+                    or str(item.get("날짜") or "")[:10] != target
+                    or not korean(title)
+                    or not any(term.lower() in title.lower() for term in terms)):
                 continue
-            if not any(term.lower() in title.lower() for term in terms):
-                continue
-            key = __import__("re").sub(r"[^가-힣a-z0-9]", "", title.lower())
-            if key in seen:
-                continue
-            seen.add(key)
-            rows.append({
-                "제목": title, "링크": item.get("링크"), "출처": item.get("출처", ""),
-                "날짜": _md(item.get("날짜", "")), "분류": group,
-            })
-    return rows[:limit]
+            candidates.append((rank(item), title, group, item))
+
+    # 같은 사건이면 주요 매체 기사를 먼저 남긴다.
+    candidates.sort(key=lambda row: row[0])
+    used_topics: set[str] = set()
+    used_tokens: list[set[str]] = []
+    rows = []
+    for _, title, group, item in candidates:
+        cluster = topic(title)
+        words = tokens(title)
+        duplicate = cluster in used_topics
+        if not duplicate and words:
+            duplicate = any(len(words & prev) / max(1, min(len(words), len(prev))) >= 0.55
+                            for prev in used_tokens if prev)
+        if duplicate:
+            continue
+        used_topics.add(cluster)
+        used_tokens.append(words)
+        rows.append({
+            "제목": title, "링크": item.get("링크"), "출처": item.get("출처", ""),
+            "날짜": _md(item.get("날짜", "")), "분류": group,
+        })
+        if len(rows) >= limit:
+            break
+    return rows
 
 
 def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str) -> dict:
