@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경제·ETF 시장 업데이트 · 2026년 8월 28일 (금)</title>
+<style>
+  :root{
+    --bg:#0e1116; --surface:#161b22; --surface2:#1c2230; --line:#242c3a;
+    --ink:#e8edf5; --ink2:#a6b2c4; --ink3:#6f7d92;
+    --up:#f05a5a; --down:#3b8fe8; --warn:#e0a33c; --accent:#7c6cf0;
+    --p1:#e0524f; --p2:#e08a3c; --p3:#d9b93c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f6; --line:#e2e6ee;
+           --ink:#161b22; --ink2:#4c5768; --ink3:#8792a4; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+       line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 60px}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:24px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+  h1{font-size:24px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink3);font-size:13px;margin:0}
+  .sharebar{margin-top:14px}
+  .kakao-share{appearance:none;border:0;border-radius:8px;background:#FEE500;color:#191919;
+               padding:10px 15px;font:700 13px/1.2 inherit;cursor:pointer;display:inline-flex;
+               align-items:center;gap:7px;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+  .kakao-share:hover{filter:brightness(.97)}
+  .kakao-share:focus-visible{outline:3px solid rgba(254,229,0,.35);outline-offset:2px}
+  h2{font-size:15px;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+     letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
+  h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+
+  /* ── 툴팁 (호버 + 탭 모두 동작) ───────────────── */
+  .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+       border:1px solid var(--line);border-radius:50%;font-size:10px;color:var(--ink3);
+       cursor:help;position:relative;font-weight:600;vertical-align:2px;margin-left:5px;
+       background:var(--surface2);flex-shrink:0}
+  .tip:hover,.tip:focus{color:var(--accent);border-color:var(--accent);outline:none}
+  .tip .bubble{visibility:hidden;opacity:0;position:absolute;top:22px;left:50%;
+       transform:translateX(-50%);width:min(340px,78vw);background:var(--surface2);
+       border:1px solid var(--line);border-radius:8px;padding:10px 12px;z-index:20;
+       font-size:12px;font-weight:400;color:var(--ink2);line-height:1.6;text-align:left;
+       box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
+  .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
+  .tip .bubble b{color:var(--ink)}
+  @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
+
+  /* ── TOP 5 ──────────────────────────────────── */
+  .top5{display:flex;flex-direction:column;gap:6px;margin:4px 0}
+  .rank{display:grid;grid-template-columns:auto 1fr;gap:11px;background:var(--surface);
+        border:1px solid var(--line);border-radius:9px;padding:11px 14px;align-items:start}
+  .rank .no{display:flex;align-items:center;justify-content:center;width:22px;height:22px;
+            border-radius:50%;font-size:11.5px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px}
+  .rank.r1 .no,.rank.r2 .no{background:var(--p1)}
+  .rank.r3 .no,.rank.r4 .no{background:var(--p2)}
+  .rank.r5 .no{background:var(--p3)}
+  .rank .t{font-size:14px;font-weight:700;letter-spacing:-.01em;margin:0 0 2px}
+  .rank .n{font-size:12.5px;color:var(--ink2);margin:0;font-variant-numeric:tabular-nums}
+  .rank .n .arrow{color:var(--ink3);margin:0 5px}
+  .rank .n .eff{color:var(--accent);font-weight:600}
+  .rank .desc{font-size:12.5px;color:var(--ink2);margin:6px 0 0;line-height:1.55}
+  .rank .src{margin-top:5px}
+
+  /* ── 시장 한눈에 ─────────────────────────────── */
+  .glance{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+          padding:4px 16px;margin:12px 0}
+  .grow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:2px 22px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .grow:last-child{border-bottom:none}
+  .gcell{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:3px 0;min-width:0}
+  .gcell .k{font-size:12px;color:var(--ink3);white-space:nowrap;flex-shrink:0}
+  .gcell .v{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;
+            text-align:right;white-space:nowrap}
+  .gcell .v .p{font-size:11.5px;font-weight:600;margin-left:5px}
+  @media (max-width:430px){ .grow{grid-template-columns:1fr;gap:0} }
+  .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--ink3)}
+  .glabel{font-size:10.5px;font-weight:700;color:var(--ink3);letter-spacing:.08em;
+          padding:11px 0 2px;grid-column:1/-1}
+  .period{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);
+          border-radius:10px;overflow:hidden;font-size:12.5px;margin:10px 0}
+  .period th,.period td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right}
+  .period th:first-child,.period td:first-child{text-align:left}.period tr:last-child td{border-bottom:0}
+  .regime{background:linear-gradient(135deg,rgba(124,108,240,.10),var(--surface));
+          border:1px solid rgba(124,108,240,.35);border-radius:10px;padding:14px 16px;margin:12px 0}
+  .regime h3{margin:0 0 6px;font-size:15px}.regime p{margin:0;color:var(--ink2);font-size:13px}
+  .waitbox{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+           padding:3px 16px;margin:12px 0}
+  .waitbox h3{font-size:15px;margin:12px 0 3px}.waititem{padding:10px 0;border-bottom:1px solid var(--line)}
+  .waititem:last-child{border-bottom:none}.waititem .wt{display:flex;gap:9px;align-items:baseline}
+  .waititem .wn{font-size:10px;font-weight:700;color:var(--accent);min-width:20px}
+  .waititem b{font-size:13.5px}.waititem p{margin:5px 0 0 29px;color:var(--ink2);font-size:12.5px}
+  .waititem .path{border-left:3px solid var(--accent);background:var(--surface2);padding:7px 9px;margin-top:7px}
+  .waititem .src{margin-left:29px}
+
+  /* ── 시장 스토리 ─────────────────────────── */
+  .story{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:15px 17px;margin:9px 0}
+  .storyhead{display:flex;align-items:baseline;gap:9px;margin-bottom:9px}
+  .marketbadge{font-size:10px;font-weight:700;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+               border-radius:4px;padding:1px 7px;flex-shrink:0}
+  .story h3{font-size:15px;margin:0;line-height:1.45}
+  .storyline{display:grid;grid-template-columns:54px 1fr;gap:7px 10px;margin:6px 0;font-size:13px}
+  .storyline .k{color:var(--ink3);font-size:10.5px;font-weight:700;letter-spacing:.04em;padding-top:2px}
+  .storyline .v{color:var(--ink2)}
+  .storyline.meaning{background:var(--surface2);border-left:3px solid var(--accent);
+                     border-radius:0 7px 7px 0;padding:9px 11px;margin-top:10px}
+  .watch{background:linear-gradient(135deg,rgba(124,108,240,.10),var(--surface));
+         border:1px solid rgba(124,108,240,.3);border-radius:9px;padding:11px 15px;margin:10px 0}
+  .watch b{font-size:11px;color:var(--accent);letter-spacing:.05em}
+  .watch ol{margin:5px 0 0;padding-left:20px;color:var(--ink2);font-size:12.5px}
+
+  /* ── 카드 (사실/해석) ────────────────────────── */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+        padding:14px 16px;margin:10px 0}
+  .card h3{margin:0 0 8px;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .fact{font-size:13.5px;color:var(--ink2);margin:0}
+  .fact .k{display:inline-block;font-size:9.5px;font-weight:700;color:var(--ink3);
+           border:1px solid var(--line);border-radius:4px;padding:1px 6px;margin-right:7px;
+           letter-spacing:.08em;vertical-align:2px}
+  .src{margin-top:7px;font-size:11.5px;color:var(--ink3)}
+  .src a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+  .src a:hover{color:var(--accent);border-color:var(--accent)}
+  .sdate{display:inline-block;margin-left:5px;font-size:10.5px;color:var(--ink3);
+         border:1px solid var(--line);border-radius:4px;padding:0 5px;
+         font-variant-numeric:tabular-nums;vertical-align:1px}
+  .interp{margin-top:10px;background:var(--surface2);border:1px solid var(--line);
+          border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 13px;
+          font-size:12.5px;color:var(--ink2)}
+  .interp .k{display:block;font-size:9.5px;font-weight:700;color:var(--accent);
+             letter-spacing:.08em;margin-bottom:4px}
+
+  /* ── 종목 (최대 3, 컴팩트) ──────────────────── */
+  .stocks{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+  .srow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;
+        background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+  .srow .nm{font-size:13px;font-weight:700}
+  .srow .nm span{font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px}
+  .srow .pc{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .srow .rz{grid-column:1/-1;font-size:12px;color:var(--ink3);margin-top:2px}
+
+  /* ── ETF 레이더 ─────────────────────────────── */
+  .radar{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:2px 16px;margin:10px 0}
+  .ritem{padding:12px 0;border-bottom:1px solid var(--line)}
+  .ritem:last-child{border-bottom:none}
+  .ritem .h{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+  .ritem .badge{font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--accent);
+                border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 6px;flex-shrink:0}
+  .ritem .t{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+  .flowboard{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+             padding:12px 14px;margin:10px 0}
+  .flow-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+  .flow-head b{font-size:13.5px}.flow-head span{font-size:10.5px;color:var(--ink3)}
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .flow-col{background:var(--surface2);border-radius:8px;padding:9px 10px}
+  .flow-col h3{font-size:10.5px;color:var(--ink3);margin:0 0 5px;letter-spacing:.04em}
+  .flow-row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:12px}
+  .flow-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .flow-row .pct{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .flow-extra{border-top:1px solid var(--line);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--ink2)}
+  .flow-extra b{color:var(--ink3);font-size:10.5px;margin-right:6px}
+  .flow-extra span+span:before{content:" · ";color:var(--ink3)}
+  @media(max-width:520px){.flow-grid{grid-template-columns:1fr}}
+  .themebox{background:linear-gradient(135deg,rgba(224,163,60,.12),var(--surface));
+            border:1px solid rgba(224,163,60,.38);border-radius:10px;padding:14px 16px;margin:10px 0}
+  .themehead{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}
+  .themehead .badge{font-size:10px;font-weight:700;color:var(--warn);border:1px solid rgba(224,163,60,.45);
+                    border-radius:4px;padding:1px 7px}.themehead h3{font-size:14.5px;margin:0}
+  .themerow{display:grid;grid-template-columns:58px 1fr;gap:8px;font-size:12.5px;margin:6px 0}
+  .themerow .k{color:var(--ink3);font-size:10.5px;font-weight:700}.themerow .v{color:var(--ink2)}
+  .leaders{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 2px}
+  .leader{background:var(--surface2);border:1px solid var(--line);border-radius:16px;
+          padding:4px 9px;font-size:11.5px}.leader b{margin-left:5px;font-variant-numeric:tabular-nums}
+  .stockwatch{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px 15px;margin:10px 0}
+  .stockwatch .sitem{padding:10px 0;border-bottom:1px solid var(--line)}
+  .stockwatch .sitem:last-child{border-bottom:0}.stockwatch .st{display:flex;gap:8px;align-items:baseline}
+  .stockwatch .st b{font-size:13px}.stockwatch .st span{font-size:11.5px;font-weight:700}
+  .stockwatch p{margin:4px 0 0;color:var(--ink2);font-size:12.5px}
+  .more-news{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+             padding:0 14px;margin:8px 0 12px}
+  .more-news summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;color:var(--ink2)}
+  .more-item{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid var(--line);
+             font-size:12.5px;flex-wrap:wrap}
+  .more-item .badge{font-size:9.5px;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+                    border-radius:4px;padding:1px 5px}
+  .more-item a{color:var(--ink);text-decoration:none;font-weight:650}
+  .more-item small{margin-left:auto;color:var(--ink3)}
+  .ritem p{margin:0;font-size:12.5px;color:var(--ink2)}
+  .ritem .sig{margin-top:5px;font-size:12px;color:var(--ink3)}
+
+  /* ── ETF 뉴스 6선 ───────────────────────────── */
+  .newslist{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+            padding:2px 16px;margin:10px 0}
+  .nitem{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:11px 0;
+         border-bottom:1px solid var(--line);align-items:start}
+  .nitem:last-child{border-bottom:none}
+  .nno{display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+       border-radius:5px;background:var(--surface2);border:1px solid var(--line);
+       font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;margin-top:1px}
+  .nitem a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .nitem a:hover{color:var(--accent)}
+  .nmeta{font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .nsum{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .copybox{margin:8px 0 0}
+  .copybox summary{font-size:12.5px;color:var(--ink3);cursor:pointer;padding:6px 2px;
+                   list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .copybox summary::before{content:"📋"}
+  .copybox summary:hover{color:var(--accent)}
+  .copybox textarea{width:100%;margin-top:6px;background:var(--surface2);color:var(--ink2);
+                    border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                    font-size:12px;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                    resize:vertical}
+
+  .notice{background:var(--surface2);border:1px dashed var(--line);border-radius:9px;
+          padding:12px 14px;margin:10px 0;font-size:12.5px;color:var(--ink3)}
+  /* ── 유튜브 ─────────────────────────────────── */
+  .yt{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+  .ytc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .ytc .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:3px}
+  .ytc a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .ytc a:hover{color:var(--accent)}
+  .ytc .meta{font-size:11.5px;color:var(--ink3);margin-top:4px;font-variant-numeric:tabular-nums}
+  .ytc .row{display:grid;grid-template-columns:58px 1fr;gap:4px 10px;margin-top:8px;font-size:12px}
+  .ytc .row .k{color:var(--ink3);font-weight:600}
+  .ytc .row .v{color:var(--ink2)}
+  .ov{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+  .ov.high{background:rgba(240,90,90,.15);color:var(--up);border:1px solid rgba(240,90,90,.35)}
+  .ov.mid{background:rgba(224,163,60,.15);color:var(--warn);border:1px solid rgba(224,163,60,.35)}
+  .ov.low{background:var(--surface2);color:var(--ink3);border:1px solid var(--line)}
+
+  /* ── 콘텐츠 후보 ────────────────────────────── */
+  .idea{background:linear-gradient(135deg,rgba(124,108,240,.10),rgba(124,108,240,.03));
+        border:1px solid rgba(124,108,240,.32);border-radius:10px;padding:14px 16px;margin:10px 0}
+  .idea .k{font-size:10.5px;font-weight:700;color:var(--accent);letter-spacing:.06em}
+  .idea h3{margin:5px 0 8px;font-size:14.5px;font-weight:700;line-height:1.45}
+  .idea .row{display:grid;grid-template-columns:74px 1fr;gap:5px 10px;font-size:12.5px}
+  .idea .row .k2{color:var(--ink3);font-weight:600}
+  .idea .row .v{color:var(--ink2)}
+  .idea .q{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
+           font-size:12.5px;color:var(--ink2);border-left:2px solid var(--accent)}
+
+  /* ── 오늘의 개념 ────────────────────────────── */
+  .concept{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+           padding:14px 16px;margin:10px 0}
+  .concept .w{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .concept .why{font-size:11.5px;color:var(--ink3);margin:2px 0 8px}
+  .concept p{margin:0;font-size:13px;color:var(--ink2)}
+
+  /* ── 일정 ───────────────────────────────────── */
+  .cal{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:13px;margin:10px 0}
+  .cal .d{color:var(--ink3);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .cal .e{color:var(--ink2)}
+  .calgroup{grid-column:1/-1;font-size:11px;font-weight:700;color:var(--ink3);
+            letter-spacing:.06em;border-bottom:1px solid var(--line);padding:7px 0 4px;margin-top:4px}
+  .cal .e small{display:block;margin-top:2px;font-size:10.5px}.cal .e small a{color:var(--ink3)}
+  .cpk{display:inline-block;font-size:10px;font-weight:700;border-radius:4px;
+       padding:1px 6px;margin-right:7px;letter-spacing:.03em;vertical-align:1px}
+  .cpk.일정{color:var(--accent);border:1px solid rgba(124,108,240,.42)}
+  .cpk.확인{color:var(--warn);border:1px solid rgba(224,163,60,.42)}
+
+  footer{margin-top:38px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:11px;color:var(--ink3);line-height:1.7}
+  footer a{color:var(--ink3)}
+  .srclist{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+  .srclist a{font-size:11.5px;background:var(--surface2);border:1px solid var(--line);
+             border-radius:16px;padding:3px 10px;color:var(--ink2);text-decoration:none}
+  .srclist a:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Morning Brief · ETF Edition</div>
+  <h1>2026년 8월 28일 (금) 경제·ETF 시장 업데이트</h1>
+  <p class="sub">전일 시장 정리 · 전일(08/27) 국내 증시 마감 · 08/27 미국 증시 기준 · 뉴스 08/27 00:00 ~ 08/28 11:17 KST</p>
+</header>
+
+<h2>🎯 오늘의 주요 뉴스<span class="tip" tabindex="0">?<span class="bubble">
+  그날 시장에서 가장 중요한 5개를 <b>사건 / 핵심 숫자 / 증시·ETF 영향</b> 순서로 정리합니다.
+  기사로 확인된 항목은 처음 읽는 사람도 이해할 수 있도록 핵심 사실을 한 문장 덧붙입니다.</span></span>
+  <span class="tag">30초 스캔</span></h2>
+<div class="top5">
+  <div class="rank r1">
+    <div class="no">1</div>
+    <div>
+      <p class="t">워시 연준의장 연설</p>
+      <p class="n">8/28 23:00 KST<span class="arrow">→</span><span class="eff">통화정책 방향성에 따라 채권 및 주식 ETF 변동성 확대 가능성</span></p>
+<p class="desc">케빈 워시 연준 의장이 잭슨홀 심포지엄에서 첫 기조연설을 진행할 예정입니다.</p><div class="src">출처 · <a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ySWNTbkVfTjJxR0pRMW0wYzF4YTJxNWtKbUp1TTFfOUZ2VVh5UVd1bGpQUXRWU0Z3R0tuQlpYUXV1OUFSRFlCdkRnYzRYOW4zT3c?oc=5" target="_blank" rel="noopener">서울경제 (8/27 보도)</a></div>    </div>
+  </div>
+  <div class="rank r2">
+    <div class="no">2</div>
+    <div>
+      <p class="t">엔비디아 주가 급등</p>
+      <p class="n">등락률 +8.74%<span class="arrow">→</span><span class="eff">글로벌 반도체 및 AI 테마 ETF 수급에 긍정적 요인</span></p>
+<p class="desc">엔비디아가 실적 발표 이후 주가가 8.74% 올랐습니다.</p><div class="src">출처 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBhaVAzc1pGZFUzZTdDUHA2M2pLejNLQ0hCR0YwZm13VWtwb2oxVU1MZUFwWkZrc0hDT1F3c1lIQXpwLUhVT1BvMXpRbFptc1d0QmVTTTROZ19CWEt0RVY3RNIBeEFVX3lxTE0xU0pjZmNIcFh5bHNrWDROTWttRDBxaXoyWDNvQ2ZTQnpLaGJlWEE3Szh3dXdYWWw3NjhBZElONk5WOGVVN1JJNW9jMV9nMTBfcG43Z0pNd0F1R2d2dkRmQUZqdVE2Ti02SUJ3T095SENtZUlVQ2VPcQ?oc=5" target="_blank" rel="noopener">뉴시스 (8/27 보도)</a></div>    </div>
+  </div>
+  <div class="rank r3">
+    <div class="no">3</div>
+    <div>
+      <p class="t">단일레버리지 자금감소</p>
+      <p class="n">12조원 → 0.7조원<span class="arrow">→</span><span class="eff">단일 레버리지 상품 거래 감소 및 단기 자금 시장 유입</span></p>
+<p class="desc">단일종목 레버리지 ETF 자금이 크게 줄며 MMF 등으로 자금이 이동했습니다.</p><div class="src">출처 · <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE1kN3k1bV9SWEJ2QlBuT1lFY3gzOFFwbWVhQnphVS1DaXBmRnZhVlc3QkhhdGo3X05ESWVwVTBZYkV5T1AwQ2ZZbEVDQmF4TGFuamRpeGNqYnIzN0YwY1JONzlKVGQ5aVV2a0c4bWZR0gFuQVVfeXFMTWQ3eTVtX1JYQnZCUG5PWUVjeDM4UXBtZWFCemFVLUNpcGZGdmFWVzdCSGF0ajdfTkRJZXBVMFliRXlPUDBDZllsRUNCYXhMYW5qZGl4Y2picjM3RjBjUk43OUpUZDlpVXZrRzhtZlE?oc=5" target="_blank" rel="noopener">머니투데이 (8/27 보도)</a></div>    </div>
+  </div>
+  <div class="rank r4">
+    <div class="no">4</div>
+    <div>
+      <p class="t">애프터마켓 ETF 제외</p>
+      <p class="n">상장지수상품 대상<span class="arrow">→</span><span class="eff">정규장 외 시간대 ETF 매매 접근성 변화 가능성</span></p>
+<p class="desc">한국거래소가 개장 예정인 애프터마켓에서 ETF 거래 제외를 추진하고 있습니다.</p><div class="src">출처 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5TtIBYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5Tg?oc=5" target="_blank" rel="noopener">연합뉴스 (8/27 보도)</a></div>    </div>
+  </div>
+  <div class="rank r5">
+    <div class="no">5</div>
+    <div>
+      <p class="t">반도체 자사주 매입</p>
+      <p class="n">6일간 8.5조원 매입<span class="arrow">→</span><span class="eff">국내 대형 반도체 ETF의 하단 지지 요인으로 작용 가능성</span></p>
+<p class="desc">삼성전자와 SK하이닉스가 최근 6일 동안 8조 5,000억원 규모 자사주를 사들였습니다.</p><div class="src">출처 · <a href="https://www.yna.co.kr/view/AKR20260828067200008" target="_blank" rel="noopener">연합뉴스 경제 (8/28 보도)</a></div>    </div>
+  </div>
+</div>
+
+<h2>📈 시장 한눈에 <span class="tag">08/27</span></h2>
+<div class="glance">
+  <div class="grow">
+    <div class="glabel">국내 증시 · 환율</div>
+    <div class="gcell">
+      <span class="k">코스피 (08/27)</span>
+      <span class="v">6,912.37<span class="p up">+1.53%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">코스닥 (08/27)</span>
+      <span class="v">837.65<span class="p up">+1.30%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">원/달러 (08/28)</span>
+      <span class="v">1,377.9원<span class="p down">-0.41%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">외국인 수급 (08/27)</span>
+      <span class="v">1,435억<span class="p up"></span></span>
+    </div>
+  </div>
+  <div class="grow">
+    <div class="glabel">해외 지수 · 08/27 마감</div>
+    <div class="gcell">
+      <span class="k">S&P 500</span>
+      <span class="v">7,730.99<span class="p up">+0.72%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">나스닥 종합</span>
+      <span class="v">26,541.35<span class="p up">+1.57%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">다우 30</span>
+      <span class="v">53,569.44<span class="p up">+0.20%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">러셀 2000</span>
+      <span class="v">3,014.34<span class="p up">+0.28%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">필라델피아 반도체</span>
+      <span class="v">11,882.17<span class="p up">+2.33%</span></span>
+    </div>
+  </div>
+  <div class="grow">
+    <div class="glabel">국채 금리 · 08/27 마감</div>
+    <div class="gcell">
+      <span class="k">미 10년물</span>
+      <span class="v">4.672%<span class="p up">+0.8bp</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">미 30년물</span>
+      <span class="v">5.191%<span class="p up">+0.5bp</span></span>
+    </div>
+  </div>
+  <div class="grow">
+    <div class="glabel">원자재 · 변동성 · 08/27 스냅샷</div>
+    <div class="gcell">
+      <span class="k">WTI</span>
+      <span class="v">83.23<span class="p up">+1.22%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">브렌트</span>
+      <span class="v">88.35<span class="p up">+0.58%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">금</span>
+      <span class="v">4,631.50<span class="p up">+0.72%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">구리</span>
+      <span class="v">6.70<span class="p up">+1.61%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">VIX</span>
+      <span class="v">14.51<span class="p down">-4.60%</span></span>
+    </div>
+  </div>
+</div>
+
+
+
+
+<h2>🧭 한·미 시장과 글로벌 변수<span class="tip" tabindex="0">?<span class="bubble">
+  미국·국내 시장과 경제에 영향을 줄 글로벌 사건을 정리하고, 최근 기사로 확인된 경우에만 원인을 덧붙입니다.
+  확보되지 않은 정보나 수집 상태 안내는 본문에 노출하지 않습니다.</span></span>
+  <span class="tag">시황 핵심</span></h2>
+<div class="story">
+  <div class="storyhead"><span class="marketbadge">국내</span><h3>외국인·기관 동반 순매수로 코스피 1.53% 반등</h3></div>
+  <div class="storyline"><span class="k">결과</span><span class="v">8월 27일 코스피는 1.53% 오른 6912.37, 코스닥은 1.30% 오른 837.65로 마감했습니다.</span></div>
+<div class="storyline"><span class="k">원인</span><span class="v">외국인(1,435억원)과 기관(1,835억원)의 동반 순매수가 지수 상승의 원인으로 거론됐습니다. 삼성전자와 SK하이닉스의 지속적인 자사주 매입 흐름도 시장 지지에 기여했을 가능성이 있습니다.</span></div><div class="storyline meaning"><span class="k">ETF 연결</span><span class="v">코스피200 지수형 ETF와 대형 반도체 비중이 높은 ETF의 거래량을 관찰할 필요가 있습니다.</span></div>  <div class="src">출처 ·
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a> · <a href="https://www.yna.co.kr/view/AKR20260828067200008" target="_blank" rel="noopener">연합뉴스 경제 (8/28 보도)</a>  </div>
+  <div class="stockwatch"><b>오늘의 특징주</b>
+<div class="sitem"><div class="st"><b>👀 엔비디아</b><span class="up">+8.74%</span></div><p>실적 발표 후 8.74% 상승하며 필라델피아 반도체 지수 및 반도체 ETF 상승을 이끈 핵심 종목이었습니다.</p><div class="src">출처 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBhaVAzc1pGZFUzZTdDUHA2M2pLejNLQ0hCR0YwZm13VWtwb2oxVU1MZUFwWkZrc0hDT1F3c1lIQXpwLUhVT1BvMXpRbFptc1d0QmVTTTROZ19CWEt0RVY3RNIBeEFVX3lxTE0xU0pjZmNIcFh5bHNrWDROTWttRDBxaXoyWDNvQ2ZTQnpLaGJlWEE3Szh3dXdYWWw3NjhBZElONk5WOGVVN1JJNW9jMV9nMTBfcG43Z0pNd0F1R2d2dkRmQUZqdVE2Ti02SUJ3T095SENtZUlVQ2VPcQ?oc=5" target="_blank" rel="noopener">뉴시스 (8/27 보도)</a></div></div><div class="sitem"><div class="st"><b>👀 HD현대일렉트릭</b><span class="up">+12.01%</span></div><p>전력기기 업종 강세 속에 12.01% 상승하며 전력설비 관련 테마의 움직임을 설명하는 종목이었습니다.</p><div class="src">출처 · <a href="https://www.yna.co.kr/view/AKR20260828067200008" target="_blank" rel="noopener">연합뉴스 경제 (8/28 보도)</a></div></div>  </div>
+</div>
+<div class="story">
+  <div class="storyhead"><span class="marketbadge">미국</span><h3>엔비디아 실적 호조 영향에 나스닥 1.57% 상승</h3></div>
+  <div class="storyline"><span class="k">결과</span><span class="v">S&P 500은 0.72%, 나스닥은 1.57% 상승했습니다. 필라델피아 반도체 지수는 2.33% 올랐고, 미 10년물 금리는 4.672%(+0.8bp)를 기록했습니다.</span></div>
+<div class="storyline"><span class="k">원인</span><span class="v">엔비디아 실적 발표 이후 기술주 전반으로 투자 심리가 개선된 점이 지수 상승을 이끈 것으로 거론됐습니다. 미 국채 금리는 소폭 상승했으나 증시 상승세를 약화시키지 않았습니다.</span></div><div class="storyline meaning"><span class="k">ETF 연결</span><span class="v">미국 대표 기술주 및 반도체 테마 ETF의 수급 변화와 가격 변동성을 점검할 필요가 있습니다.</span></div>  <div class="src">출처 ·
+<a href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a> · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBhaVAzc1pGZFUzZTdDUHA2M2pLejNLQ0hCR0YwZm13VWtwb2oxVU1MZUFwWkZrc0hDT1F3c1lIQXpwLUhVT1BvMXpRbFptc1d0QmVTTTROZ19CWEt0RVY3RNIBeEFVX3lxTE0xU0pjZmNIcFh5bHNrWDROTWttRDBxaXoyWDNvQ2ZTQnpLaGJlWEE3Szh3dXdYWWw3NjhBZElONk5WOGVVN1JJNW9jMV9nMTBfcG43Z0pNd0F1R2d2dkRmQUZqdVE2Ti02SUJ3T095SENtZUlVQ2VPcQ?oc=5" target="_blank" rel="noopener">뉴시스 (8/27 보도)</a>  </div>
+</div>
+<div class="watch"><b>오늘 관전 포인트</b><ol><li>28일 밤 예정된 케빈 워시 연준 의장의 잭슨홀 기조연설 내용</li><li>국내 증시 외국인·기관 순매수 기조 유지 여부</li><li>장중 환율 변동에 따른 대형주 수급 변화</li></ol></div>
+<h2>📡 ETF 레이더<span class="tip" tabindex="0">?<span class="bubble">
+  수익률·거래 집중으로 실제 시장 반응을 먼저 보고, 관련 뉴스는 <b>핵심 3개와 추가 뉴스 최대 5개</b>로 나눕니다.
+  해당 없는 갈래는 표시하지 않습니다.<br><br>
+  ① 순매수·순매도 특이 수급 ② 최근 자금유입 급증 ③ 순자산 급증
+  ④ 신규 상장 ⑤ 거래량 급증 ⑥ 운용사 주요 신상품·보도자료</span></span>
+  <span class="tag">전일 기준</span></h2>
+<div class="radar">
+  <div class="ritem">
+    <div class="h"><span class="badge">시장 구조</span><span class="t">애프터마켓 ETF 거래 제외 추진</span></div>
+    <p>한국거래소가 추진 중인 애프터마켓에서 ETF 등 상장지수상품을 거래 대상에서 제외하는 방안을 검토 중입니다.</p>
+    <div class="src">출처 ·
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a> · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5TtIBYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5Tg?oc=5" target="_blank" rel="noopener">연합뉴스 (8/27 보도)</a>    </div>
+  </div>
+  <div class="ritem">
+    <div class="h"><span class="badge">시장 구조</span><span class="t">액티브 ETF 상관계수 규제 유지 여부 논란</span></div>
+    <p>액티브 ETF의 비교지수 연동 의무(상관계수 0.7) 유지를 두고 운용 족쇄라는 지적과 최소 안전장치라는 주장이 맞서고 있습니다.</p>
+    <div class="src">출처 ·
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a> · <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE9xaTNlRVpHcVluM29zdF81MktyMHk5SThFdHRpZXpJVEtzNGRwQUpiUEVxSHkwZnJXOG9ZOGIzMElJNHVTRE1WQXB6emx6eWloNjhkbXBuR2FWOHFm?oc=5" target="_blank" rel="noopener">뉴스핌 (8/28 보도)</a>    </div>
+  </div>
+</div>
+
+<h2>🗞️ 전일 ETF 뉴스 헤드라인<span class="tip" tabindex="0">?<span class="bubble">
+  전 거래일에 발행된 ETF·자산운용 관련 기사입니다. 주요 뉴스와 ETF 레이더에 뽑히지 않은 기사도
+  제목을 훑어볼 수 있도록 원문 링크 그대로 최대 6건을 보여줍니다.</span></span>
+  <span class="tag">08/27</span></h2>
+<div class="newslist">
+  <div class="nitem">
+    <div class="nno">1</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxNSGgxblBJbFp5MjRwYVRiN3NiSWhMamJCYk9EWlIyQTh2cEdCVFVlYVltaDhreGgxRTlTQXFOWDR1QTRRVVVscGhHQ3VGS1lqZFZlZndrcU9vNDFNUjhSeG5oUTJaRXRuSFUyNGR6SFJjUVNWQjJGOTduamxCMTRwcFdxWFRjNjB1TjY0anVZRmV0MXZaaEl2X1pMVklfazB6RFAxNw?oc=5" target="_blank" rel="noopener">A Few Factors to Check Before Buying Bond ETFs - TradingView</a>
+      <div class="nmeta">TradingView · 08/27</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">2</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1ERlpUd3hqazVRY014YW5ITEFRMEgyU1dJVFZlZHhJcFc0Y2pWdHhCZmRFS01fakQ4NTAweUxfWnh0eGUweXBpTmZEWmw0Q19HcWtueG1OMk9UUdIBWEFVX3lxTE1xM2hLc0RfQmllc1FuRDd4VTc4Q1RPTHJjQVpuUjM3ajdFdXJoQ1N0bzgxQldQd3YtdFhlbUdLUlhoZk1wU21PSzE4SzZHYUJhXzdRNE45azA?oc=5" target="_blank" rel="noopener">다음달 열리는 거래소 애프터마켓…ETF 거래는 빠질 듯 - 아주경제</a>
+      <div class="nmeta">아주경제 · 08/27</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">3</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE9QRzRzUUVmYlBma2g2Wll4azRISl9vRUtqcjhQN1FMWm9mRU4yV2tjdThjbGozV2JRaXpNM0l5R2xRSG9zeTA2Xy1oQnI1NzZ6SnhNaDlmeEl0Zw?oc=5" target="_blank" rel="noopener">퇴근길 ETF 거래 막히나…애프터마켓 거래 제외 전망 - 한국경제</a>
+      <div class="nmeta">한국경제 · 08/27</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">4</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5TtIBYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5Tg?oc=5" target="_blank" rel="noopener">다음달 개장 거래소 애프터마켓, '퇴근길 ETF 거래' 막힐 듯 - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 08/27</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">5</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE1wdzFGcHZKOGRycjF6SDFkYzJXdEMzc2VzdUdaM0RkZktHZnN4VDg3WGM2YUF0RkRoTG9GNFlNLUZUbW96ekNtTGpQZVJMUXpCSlE?oc=5" target="_blank" rel="noopener">“주식·채권, 지금은 숏”…포트폴리오 지켜줄 3대 ETF는 [이번주 찜할 ETF] - 매일경제 마켓</a>
+      <div class="nmeta">매일경제 마켓 · 08/27</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">6</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxPaWNORk5ITHJ1czVQX2xmbG9seS1seU1XTzB1X2xicmF2VHdTWjZ3Mno2THN5QUJkTVRQZl9jUEJzVV9iQkdtN3lsR1hidkZ2Mzg1bnlMYUdGemMyc2wzR2NPaWdrNTEtTEtKd2lfXzNicUNJaFhDdWR2elpBY09fYmdB?oc=5" target="_blank" rel="noopener">與김영진 "레버리지 ETF 도입한 사람들 책임져야…그냥 넘어가면 안 돼" - 아시아경제</a>
+      <div class="nmeta">아시아경제 · 08/27</div>
+    </div>
+  </div>
+</div>
+
+<h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
+  설정 파일에 등록된 채널의 최근 업로드 중 최대 5개. 당일 처음 잡힌 영상은 재실행해도 유지합니다.
+  <b>ETF를 다룬 영상을 먼저 고릅니다.</b><br>
+  <b>채널 관련성</b>은 영상이 ETF 아는형의 상시 콘텐츠 범위와 얼마나 가까운지를 뜻합니다.
+  <b>높음</b>=ETF·ISA·연금·지수투자 등 채널 핵심 주제,
+  <b>보통</b>=금리·종목·시장 전망 등 인접 주제,
+  <b>낮음</b>=재테크 일반 또는 채널과 직접 연결이 적은 주제입니다.</span></span>
+  <span class="tag">최근 이틀</span></h2>
+<div class="yt">
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=PtLgpeOxPxg" target="_blank" rel="noopener">“연금저축부터? ISA부터?” 절세 계좌 골든 루트 총정리｜최신 개편안 반영 (김나영 작가 2부)</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">머니인사이드 · 조회 14,716회 · 업로드 28시간 전
+      · ETF 경쟁
+ · 채널 핵심 주제: ISA, 연금저축</div>
+    <div class="row">
+<div class="k">핵심 주제</div><div class="v">절세 계좌(ISA·연금저축) 활용 골든 루트 정리</div><div class="k">제목 훅</div><div class="v">질문 제시형</div>    </div>
+  </div>
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=XWsdoBYKCDw" target="_blank" rel="noopener">곧 은퇴인데 S&P500 ETF 월적립 매수해도 될까요?</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">서대리TV · 조회 5,828회 · 업로드 36시간 전
+      · ETF 경쟁
+ · 채널 핵심 주제: ETF, S&P500</div>
+    <div class="row">
+<div class="k">핵심 주제</div><div class="v">은퇴 앞둔 시점의 S&P500 ETF 적립 매수</div><div class="k">제목 훅</div><div class="v">질문형</div>    </div>
+  </div>
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=aI-U-d4dOvg" target="_blank" rel="noopener">“ETF 딱 2개면 됩니다” 월 배당 500만 원 만든 ETF 투자법 (배당의만장 풀버전)</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">머니인사이드 · 조회 12,925회 · 업로드 4시간 전
+      · ETF 경쟁
+ · 채널 핵심 주제: ETF</div>
+    <div class="row">
+    </div>
+  </div>
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=7mZRMtXKAe8" target="_blank" rel="noopener">[8월 28일 개장시황] 빈센트, 정프로, 이주연, 편다송, 이형수 [더블 밸류업]</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">삼프로TV · 조회 219,858회 · 업로드 5시간 전
+      · ETF 경쟁
+ · ETF 직접 주제</div>
+    <div class="row">
+<div class="k">핵심 주제</div><div class="v">8월 28일 개장 시황 및 증시 전망</div><div class="k">제목 훅</div><div class="v">정보 전달형</div>    </div>
+  </div>
+</div>
+<div class="card">
+  <p class="fact"><span class="k">시청자 질문</span>대표지수 ETF 적립식 투자 및 절세 계좌 활용법에 대한 시청자 관심</p>
+</div>
+
+<h2>🎬 ETF 아는형 콘텐츠 후보<span class="tip" tabindex="0">?<span class="bubble">
+  <b>아직 만들지 않은 기획안입니다.</b> 오늘 데이터를 근거로 AI가 제안한
+  영상 제목·질문 초안이며, 실제로 존재하는 영상이 아닙니다.
+  (이미 올라온 다른 채널 영상은 '경쟁 채널 동향'에 따로 나옵니다.)</span></span>
+  <span class="tag">기획안 · 최대 2개</span></h2>
+<div class="idea">
+  <div class="k">요즘하태형 · 제목안</div>
+  <h3>단일 레버리지에서 빠져나간 돈, 어디로 옮겨갔을까?</h3>
+  <div class="row">
+    <div class="k2">이유</div><div class="v">단일종목 레버리지 ETF의 자금 이탈과 MMF 등 대기성 자금 이동 현상이 시장 구조적 이슈이기 때문입니다.</div>
+    <div class="k2">관련 ETF</div><div class="v">레버리지 · MMF</div>
+<div class="k2">차별화 각도</div><div class="v">단순 수익률 비교를 넘어 자금 이동 경로와 수급 변화를 분석.</div>  </div>
+<div class="q"><b>출연자 질문</b> — “레버리지 ETF 자금 이탈이 ETF 시장 전반 수급에 어떤 영향을 주나요?”</div></div>
+<div class="idea">
+  <div class="k">ETF 처방전 · 제목안</div>
+  <h3>레버리지 쏠림 꺼진 자금, MMF·지수형 ETF로 이동할까?</h3>
+  <div class="row">
+    <div class="k2">이유</div><div class="v">단일종목 레버리지 광풍 둔화와 자금 이탈 데이터가 확인되어 개인 투자자들의 자산 재배치 전략을 제시하기에 적합함.</div>
+    <div class="k2">관련 ETF</div><div class="v">코스닥150 · MMF · 단기채권</div>
+<div class="k2">차별화 각도</div><div class="v">단순 수익률이 아닌 상품 유형 간 자금 이동 경로와 계좌별 활용법 중심으로 해설.</div>  </div>
+<div class="q"><b>출연자 질문</b> — “단일종목 레버리지에서 이탈한 자금이 코스닥 및 안전자산으로 분산되는 흐름이 당분간 이어질까요?”</div></div>
+
+<h2>📚 오늘의 개념</h2>
+<div class="concept">
+  <div class="w">베이시스포인트</div>
+<div class="why">오늘 브리핑에서 나온 맥락 — 미 10년물 국채 금리가 전일 대비 0.8bp 상승했다는 수치 표현에서 사용되었습니다.</div>  <p>금리나 수익률의 변화 폭을 나타낼 때 사용하는 단위로 1bp는 0.01%포인트(p)를 뜻합니다. 예를 들어 금리가 4.50%에서 4.55%로 오르면 5bp 상승했다고 표현합니다.</p>
+</div>
+
+<h2>🗓️ 체크포인트 · 주요 일정<span class="tip" tabindex="0">?<span class="bubble">
+  두 가지를 함께 담습니다.<br>
+  <b>일정</b> — 날짜가 확정된 것 (FOMC, 금통위, 실적 발표, ETF 상장일)<br>
+  <b>확인</b> — 날짜는 없지만 계속 지켜봐야 하는 것 (수급 연속 여부, 특정 레벨 유지 여부)</span></span></h2>
+<div class="cal">
+  <div class="calgroup">이번 주 확인</div>
+  <div class="d"><span class="cpk 확인">확인</span>이번 주</div>
+  <div class="e">반도체 대형주 자사주 매입에 따른 증시 하단 지지 여부</div>
+  <div class="calgroup">8/28 (금)</div>
+  <div class="d"><span class="cpk 일정">일정</span>23:00</div>
+  <div class="e">케빈 워시 연준 의장 잭슨홀 기조연설<small><a href="https://www.federalreserve.gov/newsevents/2026-august.htm" target="_blank" rel="noopener">미 연방준비제도</a></small></div>
+  <div class="calgroup">상시 확인</div>
+  <div class="d"><span class="cpk 확인">확인</span>상시</div>
+  <div class="e">미 국채 10년물 금리 4.67% 선 안착 여부</div>
+  <div class="d"><span class="cpk 확인">확인</span>상시</div>
+  <div class="e">단일종목 레버리지 ETF 자금 이탈 후 코스닥 수급 유입 지속 여부</div>
+</div>
+
+<h2>🔗 출처</h2>
+<div class="srclist">
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a><a href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a><a href="https://www.yna.co.kr/view/AKR20260828067200008" target="_blank" rel="noopener">연합뉴스 경제 (8/28)</a><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBhaVAzc1pGZFUzZTdDUHA2M2pLejNLQ0hCR0YwZm13VWtwb2oxVU1MZUFwWkZrc0hDT1F3c1lIQXpwLUhVT1BvMXpRbFptc1d0QmVTTTROZ19CWEt0RVY3RNIBeEFVX3lxTE0xU0pjZmNIcFh5bHNrWDROTWttRDBxaXoyWDNvQ2ZTQnpLaGJlWEE3Szh3dXdYWWw3NjhBZElONk5WOGVVN1JJNW9jMV9nMTBfcG43Z0pNd0F1R2d2dkRmQUZqdVE2Ti02SUJ3T095SENtZUlVQ2VPcQ?oc=5" target="_blank" rel="noopener">뉴시스 (8/27)</a><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5TtIBYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5Tg?oc=5" target="_blank" rel="noopener">연합뉴스 (8/27)</a><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE9xaTNlRVpHcVluM29zdF81MktyMHk5SThFdHRpZXpJVEtzNGRwQUpiUEVxSHkwZnJXOG9ZOGIzMElJNHVTRE1WQXB6emx6eWloNjhkbXBuR2FWOHFm?oc=5" target="_blank" rel="noopener">뉴스핌 (8/28)</a><a href="https://www.federalreserve.gov/newsevents/2026-august.htm" target="_blank" rel="noopener">미 연방준비제도</a><a href="https://www.youtube.com" target="_blank" rel="noopener">YouTube Data API</a></div>
+
+<footer>
+  생성 2026-08-28 11:19 KST · 자동 브리핑 · 주 단위 지표는 토요일 브리핑에 담깁니다<br>
+  ※ 국내 투자자 해외주식 수급은 한국예탁결제원 결제 기준으로 실제 매매일보다 2~3영업일 지연됩니다.<br>
+  ※ 정보 제공 목적이며 투자 권유가 아닙니다. '해석'은 확정된 사실이 아닙니다. 투자 판단과 결과는 본인 책임입니다.
+</footer>
+
+</div>
+</body>
+</html>

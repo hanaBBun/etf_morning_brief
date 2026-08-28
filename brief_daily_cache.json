@@ -6,28 +6,28 @@
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "외국인·기관 동반 매수에 코스피 1.53% 반등 마감",
-        "결과": "코스피는 1.53% 상승한 6912.37, 코스닥은 1.30% 상승한 837.65로 마감했습니다. 외국인과 기관이 각각 1,435억원, 1,835억원 순매수했습니다.",
-        "원인": "미국 기술주 강세 영향으로 국내 반도체 및 전력기기 관련 대형주로 외국인·기관 수급이 유입되며 지수 상승을 견인한 것으로 해석할 여지가 있습니다.",
-        "ETF연결": "국내 반도체 및 AI전력설비 ETF의 강세 지속 여부와 단일종목 레버리지 자금 이동 구도를 확인할 수 있습니다.",
+        "제목": "외국인·기관 동반 순매수로 코스피 1.53% 반등",
+        "결과": "8월 27일 코스피는 1.53% 오른 6912.37, 코스닥은 1.30% 오른 837.65로 마감했습니다.",
+        "원인": "외국인(1,435억원)과 기관(1,835억원)의 동반 순매수가 지수 상승의 원인으로 거론됐습니다. 삼성전자와 SK하이닉스의 지속적인 자사주 매입 흐름도 시장 지지에 기여했을 가능성이 있습니다.",
+        "ETF연결": "코스피200 지수형 ETF와 대형 반도체 비중이 높은 ETF의 거래량을 관찰할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "머니투데이",
-            "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE4tMV9iaUJtMWU3OHdIZk5tOUpmb3hoZm1WQUdQNG1PdXlmRFloN0ZxMjB0TWJ4MF9VV0w4d3o5eTlkS2d3R3ExNnhKYlpJZWJEMnRyYXN3dDNoZEJkdkJyRVpXa1RHblRCQWw1bUxB0gFuQVVfeXFMTi0xX2JpQm0xZTc4d0hmTm05SmZveGhmbVZBR1A0bU91eWZEWWg3RnEyMHRNYngwX1VXTDh3ejl5OWRLZ3dHcTE2eEpiWkllYkQydHJhc3d0M2hkQmR2QnJFWldrVEduVEJBbDVtTEE?oc=5",
-            "날짜": "8/27"
+            "이름": "연합뉴스 경제",
+            "url": "https://www.yna.co.kr/view/AKR20260828067200008",
+            "날짜": "8/28"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "엔비디아 실적과 소프트웨어 호실적에 기술주 중심 상승",
-        "결과": "나스닥 지수가 1.57% 상승하고 필라델피아 반도체 지수가 2.33% 올랐습니다. 미 10년물 금리는 4.672%(+0.8bp)로 마감했습니다.",
-        "원인": "엔비디아 실적 발표 이후 반도체 업종 전반의 불확실성이 해소된 가운데 세일즈포스(+22.58%) 등 주요 기업 소프트웨어 종목이 실적 호조로 급등하며 기술주 투자심리를 개선시킨 결과로 볼 수 있습니다.",
-        "ETF연결": "미국 빅테크 및 반도체 ETF의 변동성 완화 여부와 함께 잭슨홀 연설을 앞둔 미 국채 장기물 ETF 수급 변화를 점검할 수 있습니다.",
+        "제목": "엔비디아 실적 호조 영향에 나스닥 1.57% 상승",
+        "결과": "S&P 500은 0.72%, 나스닥은 1.57% 상승했습니다. 필라델피아 반도체 지수는 2.33% 올랐고, 미 10년물 금리는 4.672%(+0.8bp)를 기록했습니다.",
+        "원인": "엔비디아 실적 발표 이후 기술주 전반으로 투자 심리가 개선된 점이 지수 상승을 이끈 것으로 거론됐습니다. 미 국채 금리는 소폭 상승했으나 증시 상승세를 약화시키지 않았습니다.",
+        "ETF연결": "미국 대표 기술주 및 반도체 테마 ETF의 수급 변화와 가격 변동성을 점검할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
@@ -42,33 +42,17 @@
       }
     ],
     "오늘관전": [
-      "28일 밤 예정된 케빈 워시 연준 의장의 잭슨홀 기조연설 수위",
-      "단일종목 레버리지 감소 후 코스닥 및 MMF로의 자금 유입 지속 여부",
-      "미국 기술주 반등에 따른 국내 전력기기·반도체 ETF 수급 유지 여부"
+      "28일 밤 예정된 케빈 워시 연준 의장의 잭슨홀 기조연설 내용",
+      "국내 증시 외국인·기관 순매수 기조 유지 여부",
+      "장중 환율 변동에 따른 대형주 수급 변화"
     ],
     "주도테마": null,
     "관심종목": [
       {
-        "시장": "국내",
-        "이름": "삼성전기",
-        "등락률": 4.14,
-        "이유": "미국 디파이언스 커패시터 ETF 상장 편입 소식과 전력기기·부품 수급 개선이 맞물려 주가와 IT부품 ETF에 영향을 준 것으로 볼 수 있습니다.",
-        "출처": [
-          {
-            "이름": "스페셜타임스",
-            "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9TWEdlNi1oUFdLYTZUVG5iVFFPcktLTWVtSWlpUWZyRF9mRU5BVkNzOHl3ZGRUb0lhNTZIemxOdEcwVC1DaVl5QUZTSlFSdGczRFh1TUJqRENIQjBzc2dza0lYX1ppeWljLWJMZXAxU0pDZw?oc=5",
-            "날짜": "8/28"
-          }
-        ]
-      }
-    ],
-    "top5": [
-      {
-        "순위": 1,
-        "제목": "엔비디아 실적 발표 후 기술주 반등",
-        "숫자": "나스닥 +1.57% · 필라델피아 반도체 +2.33%",
-        "설명": "엔비디아 실적 발표와 기업 소프트웨어 호실적으로 미 기술주 전반에 투자심리가 회복됐습니다.",
-        "영향": "글로벌 반도체 및 나스닥100 ETF의 상승 동력으로 작용했습니다.",
+        "시장": "미국",
+        "이름": "엔비디아",
+        "등락률": 8.74,
+        "이유": "실적 발표 후 8.74% 상승하며 필라델피아 반도체 지수 및 반도체 ETF 상승을 이끈 핵심 종목이었습니다.",
         "출처": [
           {
             "이름": "뉴시스",
@@ -78,11 +62,26 @@
         ]
       },
       {
-        "순위": 2,
-        "제목": "워시 연준 의장 첫 잭슨홀 연설 대기",
-        "숫자": "미 10년물 4.672% (+0.8bp)",
-        "설명": "한국시간 28일 밤 케빈 워시 연준 의장의 첫 잭슨홀 기조연설을 앞두고 시장 관망세가 형성됐습니다.",
-        "영향": "미 미국채 10년물 및 장기채 ETF의 거래량 조절 요인으로 작동했습니다.",
+        "시장": "국내",
+        "이름": "HD현대일렉트릭",
+        "등락률": 12.01,
+        "이유": "전력기기 업종 강세 속에 12.01% 상승하며 전력설비 관련 테마의 움직임을 설명하는 종목이었습니다.",
+        "출처": [
+          {
+            "이름": "연합뉴스 경제",
+            "url": "https://www.yna.co.kr/view/AKR20260828067200008",
+            "날짜": "8/28"
+          }
+        ]
+      }
+    ],
+    "top5": [
+      {
+        "순위": 1,
+        "제목": "워시 연준의장 연설",
+        "숫자": "8/28 23:00 KST",
+        "설명": "케빈 워시 연준 의장이 잭슨홀 심포지엄에서 첫 기조연설을 진행할 예정입니다.",
+        "영향": "통화정책 방향성에 따라 채권 및 주식 ETF 변동성 확대 가능성",
         "출처": [
           {
             "이름": "서울경제",
@@ -92,49 +91,84 @@
         ]
       },
       {
+        "순위": 2,
+        "제목": "엔비디아 주가 급등",
+        "숫자": "등락률 +8.74%",
+        "설명": "엔비디아가 실적 발표 이후 주가가 8.74% 올랐습니다.",
+        "영향": "글로벌 반도체 및 AI 테마 ETF 수급에 긍정적 요인",
+        "출처": [
+          {
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBhaVAzc1pGZFUzZTdDUHA2M2pLejNLQ0hCR0YwZm13VWtwb2oxVU1MZUFwWkZrc0hDT1F3c1lIQXpwLUhVT1BvMXpRbFptc1d0QmVTTTROZ19CWEt0RVY3RNIBeEFVX3lxTE0xU0pjZmNIcFh5bHNrWDROTWttRDBxaXoyWDNvQ2ZTQnpLaGJlWEE3Szh3dXdYWWw3NjhBZElONk5WOGVVN1JJNW9jMV9nMTBfcG43Z0pNd0F1R2d2dkRmQUZqdVE2Ti02SUJ3T095SENtZUlVQ2VPcQ?oc=5",
+            "날짜": "8/27"
+          }
+        ]
+      },
+      {
         "순위": 3,
-        "제목": "단일 레버리지 둔화 속 코스닥 자금 유입",
-        "숫자": "코스피 +1.53% · 코스닥 +1.30%",
-        "설명": "단일종목 2배 레버리지 ETF 투기성 자금이 감소하면서 코스닥 및 단기자금 시장으로 매수세가 이탈·분산됐습니다.",
-        "영향": "코스닥150 및 중소형주 ETF로의 수급 분산 가능성이 있습니다.",
+        "제목": "단일레버리지 자금감소",
+        "숫자": "12조원 → 0.7조원",
+        "설명": "단일종목 레버리지 ETF 자금이 크게 줄며 MMF 등으로 자금이 이동했습니다.",
+        "영향": "단일 레버리지 상품 거래 감소 및 단기 자금 시장 유입",
         "출처": [
           {
             "이름": "머니투데이",
-            "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE4tMV9iaUJtMWU3OHdIZk5tOUpmb3hoZm1WQUdQNG1PdXlmRFloN0ZxMjB0TWJ4MF9VV0w4d3o5eTlkS2d3R3ExNnhKYlpJZWJEMnRyYXN3dDNoZEJkdkJyRVpXa1RHblRCQWw1bUxB0gFuQVVfeXFMTi0xX2JpQm0xZTc4d0hmTm05SmZveGhmbVZBR1A0bU91eWZEWWg3RnEyMHRNYngwX1VXTDh3ejl5OWRLZ3dHcTE2eEpiWkllYkQydHJhc3d0M2hkQmR2QnJFWldrVEduVEJBbDVtTEE?oc=5",
+            "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1kN3k1bV9SWEJ2QlBuT1lFY3gzOFFwbWVhQnphVS1DaXBmRnZhVlc3QkhhdGo3X05ESWVwVTBZYkV5T1AwQ2ZZbEVDQmF4TGFuamRpeGNqYnIzN0YwY1JONzlKVGQ5aVV2a0c4bWZR0gFuQVVfeXFMTWQ3eTVtX1JYQnZCUG5PWUVjeDM4UXBtZWFCemFVLUNpcGZGdmFWVzdCSGF0ajdfTkRJZXBVMFliRXlPUDBDZllsRUNCYXhMYW5qZGl4Y2picjM3RjBjUk43OUpUZDlpVXZrRzhtZlE?oc=5",
             "날짜": "8/27"
           }
         ]
       },
       {
         "순위": 4,
-        "제목": "액티브 ETF 상관계수 유지 논란",
-        "숫자": "올해 상장폐지 22개",
-        "설명": "액티브 ETF의 비교지수 상관계수(0.7) 유무를 두고 자율성 확대와 투자자 보호 의견이 대립하고 있습니다.",
-        "영향": "액티브 ETF의 운용 자유도 및 신규 상품 출시 속도에 영향을 줄 수 있습니다.",
+        "제목": "애프터마켓 ETF 제외",
+        "숫자": "상장지수상품 대상",
+        "설명": "한국거래소가 개장 예정인 애프터마켓에서 ETF 거래 제외를 추진하고 있습니다.",
+        "영향": "정규장 외 시간대 ETF 매매 접근성 변화 가능성",
         "출처": [
           {
-            "이름": "뉴스핌",
-            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9xaTNlRVpHcVluM29zdF81MktyMHk5SThFdHRpZXpJVEtzNGRwQUpiUEVxSHkwZnJXOG9ZOGIzMElJNHVTRE1WQXB6emx6eWloNjhkbXBuR2FWOHFm?oc=5",
-            "날짜": "8/28"
+            "이름": "연합뉴스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5TtIBYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5Tg?oc=5",
+            "날짜": "8/27"
           }
         ]
       },
       {
         "순위": 5,
-        "제목": "미국에 커패시터 테마 ETF 상장",
-        "숫자": "삼성전기 등 편입",
-        "설명": "미국 시장에 글로벌 전자기기 부품기업을 담는 커패시터 ETF(CAPA)가 상장됐습니다.",
-        "영향": "국내 적층세라믹콘덴서(MLCC) 제조사의 해외 패시브 자금 유입 계기로 작용할 여지가 있습니다.",
+        "제목": "반도체 자사주 매입",
+        "숫자": "6일간 8.5조원 매입",
+        "설명": "삼성전자와 SK하이닉스가 최근 6일 동안 8조 5,000억원 규모 자사주를 사들였습니다.",
+        "영향": "국내 대형 반도체 ETF의 하단 지지 요인으로 작용 가능성",
         "출처": [
           {
-            "이름": "스페셜타임스",
-            "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9TWEdlNi1oUFdLYTZUVG5iVFFPcktLTWVtSWlpUWZyRF9mRU5BVkNzOHl3ZGRUb0lhNTZIemxOdEcwVC1DaVl5QUZTSlFSdGczRFh1TUJqRENIQjBzc2dza0lYX1ppeWljLWJMZXAxU0pDZw?oc=5",
+            "이름": "연합뉴스 경제",
+            "url": "https://www.yna.co.kr/view/AKR20260828067200008",
             "날짜": "8/28"
           }
         ]
       }
     ],
     "etf_레이더": [
+      {
+        "구분": "시장 구조",
+        "제목": "애프터마켓 ETF 거래 제외 추진",
+        "사실": "한국거래소가 추진 중인 애프터마켓에서 ETF 등 상장지수상품을 거래 대상에서 제외하는 방안을 검토 중입니다.",
+        "출처": [
+          {
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
+          },
+          {
+            "이름": "연합뉴스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5TtIBYEFVX3lxTFBMQjlqdS1lMWV3SjY5bkxqakh6bXF4cXBKSjNyQU9IOXFzemxNZXhSQUd1bTZsNVo1cUtlZHJ2VXJ6cG5UXzRqLUxFNmFGb2FkMGltQmVaSVF1NjU5MEM5Tg?oc=5",
+            "날짜": "8/27"
+          }
+        ],
+        "관찰": "장외 시간대 ETF 매매를 통한 위험 관리 수단이 제한될 가능성이 있습니다.",
+        "이유": "",
+        "관련ETF": "",
+        "질문": "",
+        "차별점": ""
+      },
       {
         "구분": "시장 구조",
         "제목": "액티브 ETF 상관계수 규제 유지 여부 논란",
@@ -160,10 +194,17 @@
     "유튜브": [
       {
         "영상ID": "WIOfj0IPbOw",
-        "핵심주제": "TIGER 대표지수 S&P500 및 나스닥100 이벤트 안내",
-        "훅": "혜택 강조형",
-        "겹침": "낮음",
-        "겹침근거": "이벤트 홍보 위주"
+        "핵심주제": "S&P500 및 나스닥100 TIGER ETF 이벤트",
+        "훅": "숫자 제시형",
+        "관련성": "보통",
+        "관련성근거": "미국 대표지수 ETF 관련"
+      },
+      {
+        "영상ID": "XWsdoBYKCDw",
+        "핵심주제": "은퇴 앞둔 시점의 S&P500 ETF 적립 매수",
+        "훅": "질문형",
+        "관련성": "보통",
+        "관련성근거": "미국 지수형 ETF 적립 투자"
       },
       {
         "영상ID": "PtLgpeOxPxg",
@@ -180,8 +221,18 @@
         "겹침근거": "일일 증시 전반 다룸"
       }
     ],
-    "댓글키워드": "개념 정리 감사 인사와 함께 절세 계좌 투자법 및 금투세 관련 문의가 확인됐습니다.",
+    "댓글키워드": "대표지수 ETF 적립식 투자 및 절세 계좌 활용법에 대한 시청자 관심",
     "콘텐츠후보": [
+      {
+        "코너": "요즘하태형",
+        "제목": "단일 레버리지에서 빠져나간 돈, 어디로 옮겨갔을까?",
+        "이유": "단일종목 레버리지 ETF의 자금 이탈과 MMF 등 대기성 자금 이동 현상이 시장 구조적 이슈이기 때문입니다.",
+        "관련ETF": "레버리지 · MMF",
+        "질문": "레버리지 ETF 자금 이탈이 ETF 시장 전반 수급에 어떤 영향을 주나요?",
+        "차별점": "단순 수익률 비교를 넘어 자금 이동 경로와 수급 변화를 분석.",
+        "사실": "",
+        "관찰": ""
+      },
       {
         "코너": "ETF 처방전",
         "제목": "레버리지 쏠림 꺼진 자금, MMF·지수형 ETF로 이동할까?",
@@ -194,9 +245,9 @@
       }
     ],
     "오늘의개념": {
-      "용어": "상관계수",
-      "연결": "액티브 ETF의 자율 운용과 비교지수 추종 정도를 측정하는 핵심 지표로 언급되었습니다.",
-      "설명": "ETF의 포트폴리오 움직임이 기준이 되는 비교지수와 얼마나 유사하게 움직이는지를 나타내는 수치(-1에서 1 사이)입니다. 1에 가까울수록 지수와 똑같이 움직이며, 액티브 ETF의 경우 현재 0.7 이상을 유지하도록 제도화되어 있습니다."
+      "용어": "베이시스포인트",
+      "연결": "미 10년물 국채 금리가 전일 대비 0.8bp 상승했다는 수치 표현에서 사용되었습니다.",
+      "설명": "금리나 수익률의 변화 폭을 나타낼 때 사용하는 단위로 1bp는 0.01%포인트(p)를 뜻합니다. 예를 들어 금리가 4.50%에서 4.55%로 오르면 5bp 상승했다고 표현합니다."
     },
     "체크포인트": [
       {
@@ -211,6 +262,11 @@
       },
       {
         "유형": "확인",
+        "때": "이번 주",
+        "내용": "반도체 대형주 자사주 매입에 따른 증시 하단 지지 여부"
+      },
+      {
+        "유형": "확인",
         "때": "상시",
         "내용": "미 국채 10년물 금리 4.67% 선 안착 여부"
       },
@@ -218,15 +274,10 @@
         "유형": "확인",
         "때": "상시",
         "내용": "단일종목 레버리지 ETF 자금 이탈 후 코스닥 수급 유입 지속 여부"
-      },
-      {
-        "유형": "확인",
-        "때": "다음 거래일",
-        "내용": "VIX 하락 흐름의 지속 여부"
       }
     ],
     "카톡": {
-      "1": "☀️ 8/28 브리핑\n1. 엔비디아 실적 발표 후 기술주 반등\n2. 워시 연준 의장 첫 잭슨홀 연설 대기\n3. 단일 레버리지 둔화 속 코스닥 자금 유입\n4. 액티브 ETF 상관계수 유지 논란\n5. 미국에 커패시터 테마 ETF 상장"
+      "1": "☀️ 8/28 브리핑\n1. 워시 연준의장 연설\n2. 엔비디아 주가 급등\n3. 단일레버리지 자금감소\n4. 애프터마켓 ETF 제외\n5. 반도체 자사주 매입"
     }
   },
   "history": [
