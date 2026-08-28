@@ -519,7 +519,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
         ranked = df.copy()
         if "거래대금" in ranked.columns:
             ranked = ranked[ranked["거래대금"] >= min_turnover]
-        filter_text = f"거래대금 {int(min_turnover / 1e8)}억원 이상 일반형 · 테마 중복 제외
+        filter_text = f"거래대금 {int(min_turnover / 1e8)}억원 이상 일반형 · 테마 중복 제외"
         # 장 시작 전 네이버 ETF API는 전일 종가·등락률은 주지만 당일 거래량을
         # 0으로 초기화한다. 이때 거래대금 필터를 적용하면 1천여 종목이 전부
         # 사라지므로 순자산 상위 종목을 유동성 대용치로 사용한다.
