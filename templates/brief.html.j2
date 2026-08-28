@@ -62,6 +62,8 @@
   .rank .n{font-size:12.5px;color:var(--ink2);margin:0;font-variant-numeric:tabular-nums}
   .rank .n .arrow{color:var(--ink3);margin:0 5px}
   .rank .n .eff{color:var(--accent);font-weight:600}
+  .rank .desc{font-size:12.5px;color:var(--ink2);margin:6px 0 0;line-height:1.55}
+  .rank .src{margin-top:5px}
 
   /* ── 시장 한눈에 ─────────────────────────────── */
   .glance{background:var(--surface);border:1px solid var(--line);border-radius:10px;
@@ -85,6 +87,14 @@
   .regime{background:linear-gradient(135deg,rgba(124,108,240,.10),var(--surface));
           border:1px solid rgba(124,108,240,.35);border-radius:10px;padding:14px 16px;margin:12px 0}
   .regime h3{margin:0 0 6px;font-size:15px}.regime p{margin:0;color:var(--ink2);font-size:13px}
+  .waitbox{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+           padding:3px 16px;margin:12px 0}
+  .waitbox h3{font-size:15px;margin:12px 0 3px}.waititem{padding:10px 0;border-bottom:1px solid var(--line)}
+  .waititem:last-child{border-bottom:none}.waititem .wt{display:flex;gap:9px;align-items:baseline}
+  .waititem .wn{font-size:10px;font-weight:700;color:var(--accent);min-width:20px}
+  .waititem b{font-size:13.5px}.waititem p{margin:5px 0 0 29px;color:var(--ink2);font-size:12.5px}
+  .waititem .path{border-left:3px solid var(--accent);background:var(--surface2);padding:7px 9px;margin-top:7px}
+  .waititem .src{margin-left:29px}
 
   /* ── 시장 스토리 ─────────────────────────── */
   .story{background:var(--surface);border:1px solid var(--line);border-radius:10px;
@@ -276,9 +286,9 @@
 
 {# ─────────── 1. TOP 5 ─────────── #}
 {% if ai.top5 %}
-<h2>🎯 오늘 알아야 할 것<span class="tip" tabindex="0">?<span class="bubble">
-  그날 시장에서 가장 중요한 순서대로 최대 5개. <b>이슈명 / 핵심 숫자 / ETF 영향</b> 한 줄씩만 담습니다.
-  자세한 설명은 아래 '한·미 시장과 글로벌 변수'에서 한 번만 합니다.</span></span>
+<h2>🎯 오늘의 주요 뉴스<span class="tip" tabindex="0">?<span class="bubble">
+  그날 시장에서 가장 중요한 5개를 <b>사건 / 핵심 숫자 / 증시·ETF 영향</b> 순서로 정리합니다.
+  기사로 확인된 항목은 처음 읽는 사람도 이해할 수 있도록 핵심 사실을 한 문장 덧붙입니다.</span></span>
   <span class="tag">30초 스캔</span></h2>
 <div class="top5">
   {% for r in ai.top5 %}
@@ -287,6 +297,8 @@
     <div>
       <p class="t">{{ r.제목 }}</p>
       <p class="n">{{ r.숫자 }}{% if r.영향 %}<span class="arrow">→</span><span class="eff">{{ r.영향 }}</span>{% endif %}</p>
+      {% if r.설명 %}<p class="desc">{{ r.설명 }}</p>{% endif %}
+      {% if r.설명 and r.출처 %}<div class="src">출처 · {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
     </div>
   </div>
   {% endfor %}
@@ -321,6 +333,18 @@
 {% if ai.시장국면 %}
 <div class="regime"><div class="marketbadge">변화 감지</div><h3>{{ ai.시장국면.제목 }}</h3><p>{{ ai.시장국면.설명 }}</p>
 {% if ai.시장국면.출처 %}<div class="src">출처 · {% for s in ai.시장국면.출처 %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>
+{% endif %}
+
+{% if ai.관망요인 %}
+<div class="waitbox">
+  <h3>⏸️ {{ ai.관망요인.제목 }} <span class="tag">{{ ai.관망요인.시장 }}</span></h3>
+  {% for x in ai.관망요인.항목 %}
+  <div class="waititem"><div class="wt"><span class="wn">{{ "%02d"|format(loop.index) }}</span><b>{{ x.제목 }}</b></div>
+    <p>{{ x.설명 }}</p><p class="path">{{ x.전달경로 }}</p>
+    {% if x.출처 %}<div class="src">출처 · {% for s in x.출처 %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
+  </div>
+  {% endfor %}
+</div>
 {% endif %}
 
 {# ─────────── 3. 시장 스토리 ─────────── #}

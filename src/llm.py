@@ -202,6 +202,12 @@ ETF 레이더와 시장브리핑은 입력 데이터에 표시된 실제 기준�
 뚜렷한 디커플링, 금리·달러·유가 등 자산 간 이례적 동행처럼 새로 설명할 변화가 있고
 최근 기사 근거가 2건 이상일 때만 `시장국면`을 작성합니다. 아니면 null 로 답하세요.
 
+■ 규칙 11-1 — '움직임을 제한한 요인'은 실제 관망·상쇄가 확인된 날만 씁니다
+국내 또는 미국 대표지수의 등락폭이 1% 안쪽이고, 중요한 뉴스가 있었는데도 지수가 크게
+움직이지 않은 이유가 기사로 2개 이상 확인될 때만 `관망요인`을 씁니다. 예를 들어 예상에
+부합한 지표, 장 마감 뒤 대형 이벤트 대기, 호재와 악재의 상쇄입니다. 단순히 "관망세"라고
+추측하지 말고 각 항목에 기사 id를 붙이세요. 시장이 크게 움직였거나 근거가 부족하면 null입니다.
+
 ■ 규칙 12 — 시장 카드의 ETF 연결은 빠뜨리지 않습니다
 미국·국내 시장브리핑은 결과·원인·ETF연결을 모두 씁니다. ETF연결은 매수 추천이 아니라
 오늘의 움직임을 어떤 지수형·업종형·채권형 ETF와 연결해 점검할지 구체적으로 씁니다.
@@ -235,6 +241,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 
 {
   "시장국면": null,
+  "관망요인": null,
   "시장브리핑": [
     {"시장": "미국",
      "제목": "결과와 핵심 원인이 함께 드러나는 제목",
@@ -273,7 +280,9 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
     {"순위": 1,
      "제목": "8~16자 이슈명",
      "숫자": "핵심 수치만. 예: 30년물 5.31% · 10년물 4.72%",
-     "영향": "ETF 영향 한 줄. 예: 나스닥·AI·반도체 ETF 밸류에이션 부담"}
+     "설명": "무슨 일이 있었는지 처음 읽는 사람도 이해할 수 있는 사실 1문장",
+     "영향": "증시·ETF 전달 경로 한 줄",
+     "출처": [{"이름": "매체명", "id": "입력 기사 id"}]}
   ],
 
   "etf_레이더": [
@@ -327,8 +336,14 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 {"제목":"국면 변화 12~24자", "설명":"이전과 달라진 점과 함께 볼 자산을 2~3문장",
  "출처":[{"이름":"매체명","id":"n1"},{"이름":"매체명","id":"n2"}]}
 
-■ 분량 예산 — 이 브리핑 전체가 공백 포함 2,800자를 넘으면 실패입니다.
-3분 안에 읽히는 것이 다른 무엇보다 우선입니다. 아래 글자 수를 지키세요.
+`관망요인`을 쓸 때만 다음 형식으로 바꾸세요.
+{"시장":"국내|미국", "제목":"움직임을 제한한 이유 2~3가지",
+ "항목":[{"제목":"요인 12~28자", "설명":"확인된 사실 1~2문장",
+          "전달경로":"이 요인이 지수 상승·하락을 제한한 경로 한 문장",
+          "출처":[{"이름":"매체명","id":"n1"}]}]}
+
+■ 분량 예산 — 이 브리핑 전체가 공백 포함 3,800자를 넘으면 실패입니다.
+4분 안에 읽히는 것이 다른 무엇보다 우선입니다. 아래 글자 수를 지키세요.
 
 | 항목 | 개수 | 글자 수 |
 |---|---|---|
@@ -341,7 +356,9 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 | 관심종목 | 0~2개 | 이유 100자 이내. 주도테마와 같은 설명은 반복 금지 |
 | top5.제목 | 5개 고정 | 8~16자 |
 | top5.숫자 | | 30자 이내 |
-| top5.영향 | | 30자 이내 |
+| top5.설명 | | 90자 이내 |
+| top5.영향 | | 50자 이내 |
+| 관망요인 | 조건 충족 때 1개 | 2~3개, 설명 100자·전달경로 70자 이내 |
 | etf_레이더 | 0~8개 | 핵심도 순. 1~3번은 본문, 4~8번은 추가 뉴스 제목으로 표시 |
 | etf_레이더.사실 | | 80자 이내 |
 | etf_레이더.관찰 | | 100자 이내 |
@@ -379,6 +396,8 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   · 금리·반도체 등 같은 갈래의 결과를 두 칸 이상 쓰려면 서로 다른 새 사건이 있어야 합니다.
   · `최근브리핑주제`와 같은 말만 반복하지 마세요. 새 기사·발표·가격 방향 전환이 있으면
     제목이나 영향에 무엇이 새로 달라졌는지가 드러나게 씁니다.
+  · `설명`은 기사에서 확인된 핵심 사실만 한 문장으로 씁니다. 시장브리핑의 원인 문장을
+    그대로 반복하지 말고, `영향`에서 그 사실이 증시·ETF에 전달되는 경로만 짧게 씁니다.
 
 ★ ETF 레이더는 KRX 수치뿐 아니라 입력에 포함된 일반 언론사의 의미 있는 ETF 기사도 후보입니다.
   레버리지 투자행태, 원자재·가상자산·섹터 ETF 자금 이동처럼 ETF 시장이나 콘텐츠 기획에
@@ -1043,6 +1062,9 @@ def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
     # 국면 카드는 '오늘 새로 감지된 변화'만 허용한다. 전날 캐시를 재사용하면
     # 매일 같은 문구가 반복되므로 fresh 결과만 쓴다.
     result["시장국면"] = fresh.get("시장국면")
+    # 관망·상쇄 요인도 오늘 기사와 오늘 지수로만 판단한다. 같은 날 재실행의
+    # 이전 결과는 남기지 않아, 조건이 풀렸는데도 낡은 설명이 보이는 일을 막는다.
+    result["관망요인"] = fresh.get("관망요인")
     result["댓글키워드"] = fresh.get("댓글키워드") or cached.get("댓글키워드") or ""
     result["카톡"] = _build_daily_kakao(result, data,
                                       int((cfg.get("카카오") or {}).get("글자수_제한", 195)))
@@ -1748,6 +1770,27 @@ def _market_card_gaps(items: list[dict]) -> list[str]:
     return gaps
 
 
+def _market_is_quiet(market_name: str, data: dict, threshold: float = 1.0) -> bool:
+    """대표지수가 ±threshold% 안쪽인지 확인한다. 수치가 없으면 조용하다고 추정하지 않는다."""
+    if market_name == "국내":
+        rows = data.get("국내지수") or []
+        wanted = {"코스피", "코스닥"}
+    elif market_name == "미국":
+        rows = (data.get("지표") or {}).get("해외지수") or []
+        wanted = {"S&P 500", "나스닥 종합", "다우 30"}
+    else:
+        return False
+    rates = []
+    for row in rows:
+        if str(row.get("이름") or "") not in wanted or row.get("등락률") is None:
+            continue
+        try:
+            rates.append(abs(float(row["등락률"])))
+        except (TypeError, ValueError):
+            continue
+    return bool(rates) and max(rates) < threshold
+
+
 def _briefing_date(data: dict):
     """브리핑 기준일을 date로 돌려준다. 해석할 수 없으면 None."""
     from datetime import date
@@ -1883,7 +1926,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
 
     # 출처를 번호에서 실제 링크로 되돌린다 (모델이 URL 을 옮겨 적지 않게 한 대가)
     idx = _link_index(data)
-    for key in ("시장브리핑", "etf_레이더", "관심종목"):
+    for key in ("top5", "시장브리핑", "etf_레이더", "관심종목"):
         for c in d.get(key) or []:
             if isinstance(c, dict):
                 c["출처"] = _resolve_srcs(c.get("출처"), idx)
@@ -1901,6 +1944,14 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
             regime["설명"] = _clip(regime["설명"], 240)
     else:
         d["시장국면"] = None
+    waiting = d.get("관망요인")
+    if isinstance(waiting, dict):
+        items = [x for x in (waiting.get("항목") or []) if isinstance(x, dict)]
+        for item in items:
+            item["출처"] = _resolve_srcs(item.get("출처"), idx)
+        waiting["항목"] = items
+    else:
+        d["관망요인"] = None
 
     # ETF 레이더 — 빈 항목·필러 제거, 오래된 근거 제거, 관찰 면책 문장 정리
     ages = _article_age(data)
@@ -1909,6 +1960,26 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
                                 if s.get("url") in ages and ages[s["url"]] <= STALE_HOURS]
         if len(fresh_regime_sources) < 2:
             d["시장국면"] = None
+    # 중요 뉴스가 있었지만 지수가 조용했던 날의 상쇄·대기 요인. 매일 반복하지 않는다.
+    waiting = d.get("관망요인")
+    if isinstance(waiting, dict):
+        market_name = str(waiting.get("시장") or "")
+        kept_waiting = []
+        for item in _strip_stale_sources(waiting.get("항목") or [], ages):
+            if not _has_news_source(item) or _has_hype(item):
+                continue
+            item["제목"] = _clip(item.get("제목"), 45)
+            item["설명"] = _strip_stock_flow_claim(item.get("설명"), data)[:120]
+            item["전달경로"] = _strip_stock_flow_claim(item.get("전달경로"), data)[:90]
+            if item["제목"] and item["설명"] and item["전달경로"]:
+                kept_waiting.append(item)
+        if (_market_is_quiet(market_name, data) and len(kept_waiting) >= 2):
+            waiting["제목"] = _clip(waiting.get("제목") or "움직임을 제한한 이유", 50)
+            waiting["항목"] = kept_waiting[:3]
+        else:
+            d["관망요인"] = None
+    else:
+        d["관망요인"] = None
     d["시장브리핑"] = _normalize_market_sources(
         _strip_stale_sources(d["시장브리핑"], ages), ages)
     present = {b.get("시장") for b in d["시장브리핑"]}
@@ -1922,6 +1993,13 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
             log.warning("%s 시장 ETF연결을 구조화 데이터로 보충합니다", brief["시장"])
     order = {"국내": 0, "미국": 1, "글로벌": 2}
     d["시장브리핑"].sort(key=lambda b: order.get(b.get("시장"), 9))
+
+    # TOP5의 자세한 설명은 최근 기사 근거가 있을 때만 노출한다.
+    for item in d.get("top5") or []:
+        item["설명"] = _clip(item.get("설명"), 110)
+        item["영향"] = _clip(item.get("영향"), 70)
+        if ages and (not item.get("출처") or not _has_news_source(item)):
+            item["설명"] = ""
 
     # ETF 흐름판의 동반 움직임을 기사 촉매와 연결한 조건부 해설.
     theme = d.get("주도테마")

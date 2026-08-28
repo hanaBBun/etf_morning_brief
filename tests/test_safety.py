@@ -159,7 +159,7 @@ class SafetyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
             html = path.read_text(encoding="utf-8")
-        for heading in ("오늘 알아야 할 것", "시장 한눈에", "한·미 시장과 글로벌 변수",
+        for heading in ("오늘의 주요 뉴스", "시장 한눈에", "한·미 시장과 글로벌 변수",
                         "ETF 레이더", "경쟁 채널 동향", "ETF 아는형 콘텐츠 후보",
                         "오늘의 개념", "체크포인트 · 주요 일정", "출처"):
             self.assertIn(heading, html)
@@ -206,9 +206,50 @@ class SafetyTests(unittest.TestCase):
 
     def test_daily_backup_schedule_includes_thursday_and_skips_duplicates(self):
         workflow = (render.ROOT / ".github" / "workflows" / "daily.yml").read_text(encoding="utf-8")
-        self.assertIn('cron: "0 22 * * 0-4"', workflow)
-        self.assertIn('cron: "0 23 * * 0-4"', workflow)
+        self.assertIn('cron: "55 21 * * 0-4"', workflow)
+        self.assertIn('cron: "15 22 * * 0-4"', workflow)
+        self.assertIn('cron: "5 23 * * 0-4"', workflow)
         self.assertIn("--skip-if-existing", workflow)
+
+    def test_waiting_factors_require_quiet_market_and_two_fresh_sources(self):
+        articles = [
+            {"링크": "https://example.com/pce", "출처": "매체1", "날짜": "2026-08-27",
+             "경과시간": 1},
+            {"링크": "https://example.com/nvidia", "출처": "매체2", "날짜": "2026-08-27",
+             "경과시간": 2},
+        ]
+        data = {"뉴스": {"국제": articles}, "지표": {"해외지수": [
+            {"이름": "S&P 500", "등락률": 0.2},
+            {"이름": "나스닥 종합", "등락률": -0.3},
+            {"이름": "다우 30", "등락률": 0.1},
+        ]}}
+        raw = {"관망요인": {"시장": "미국", "제목": "움직임을 제한한 이유",
+            "항목": [
+                {"제목": "예상에 부합한 물가", "설명": "PCE가 예상과 같았습니다.",
+                 "전달경로": "금리 기대의 추가 변화가 제한됐습니다.", "출처": [{"id": "n1"}]},
+                {"제목": "장 마감 뒤 실적 대기", "설명": "대형 기술주 실적을 앞뒀습니다.",
+                 "전달경로": "반도체주 방향성이 엇갈렸습니다.", "출처": [{"id": "n2"}]},
+            ]}}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertEqual(len(out["관망요인"]["항목"]), 2)
+        self.assertEqual(out["관망요인"]["항목"][0]["출처"][0]["이름"], "매체1")
+
+        data["지표"]["해외지수"][0]["등락률"] = 1.2
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertIsNone(out["관망요인"])
+
+    def test_top_news_explanation_requires_resolved_article_source(self):
+        data = {"뉴스": {"국내": [{"링크": "https://example.com/a", "출처": "매체",
+                                      "날짜": "2026-08-27", "경과시간": 1}]}}
+        raw = {"top5": [
+            {"제목": "근거 있는 뉴스", "숫자": "1%", "설명": "확인된 사실입니다.",
+             "영향": "업종 ETF에 연결", "출처": [{"id": "n1"}]},
+            {"제목": "근거 없는 뉴스", "숫자": "2%", "설명": "근거 없는 설명입니다.",
+             "영향": "ETF 영향", "출처": []},
+        ]}
+        out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
+        self.assertEqual(out["top5"][0]["설명"], "확인된 사실입니다.")
+        self.assertEqual(out["top5"][1]["설명"], "")
 
     def test_scheduled_retry_detects_existing_official_daily_file(self):
         fixed = datetime(2026, 8, 27, 7, 0, tzinfo=timezone.utc)

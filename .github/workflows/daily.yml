@@ -11,11 +11,12 @@ on:
       - "config.yaml"
       - "requirements.txt"
   schedule:
-    # UTC 일~목 22:00 = KST 월~금 07:00. 목요일도 포함한다.
-    # GitHub 예약 트리거가 간헐적으로 한 회차를 누락할 수 있어 08:00에 한 번 더 확인한다.
-    # 두 실행 모두 이미 오늘 공식본이 있으면 즉시 끝나므로 카톡은 한 번만 발송된다.
-    - cron: "0 22 * * 0-4"
-    - cron: "0 23 * * 0-4"
+    # GitHub Actions는 정각 예약이 몰리면 수 시간 늦어질 수 있어 정각을 피한다.
+    # UTC 일~목 21:55/22:15/23:05 = KST 월~금 06:55/07:15/08:05.
+    # 첫 성공본이 생기면 뒤 회차는 --skip-if-existing으로 즉시 끝난다.
+    - cron: "55 21 * * 0-4"
+    - cron: "15 22 * * 0-4"
+    - cron: "5 23 * * 0-4"
   workflow_dispatch:
     inputs:
       no_send:
