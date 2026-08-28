@@ -337,7 +337,7 @@ def _daily_etf_news(data: dict, limit: int = 6) -> list[dict]:
     def korean(title: str) -> bool:
         hangul = len(re.findall(r"[가-힣]", title))
         letters = len(re.findall(r"[가-힣A-Za-z]", title))
-        return hangul >= 5 and (letters == 0 or hangul / letters >= 0.35)
+        return hangul >= 2 and (letters == 0 or hangul / letters >= 0.25)
 
     def topic(title: str) -> str:
         for name, pattern in topic_rules:
