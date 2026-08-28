@@ -19,6 +19,7 @@ log = logging.getLogger(__name__)
 
 _WARNED = {"krx": False}
 ETF_SNAPSHOT_CACHE = ROOT / "etf_snapshot_cache.json"
+ETF_CLOSE_CACHE = ROOT / "etf_close_snapshots.json"
 
 
 def krx_ready() -> bool:
@@ -192,6 +193,64 @@ def _naver_etf_snapshot():
     except Exception as e:  # noqa: BLE001
         log.warning("네이버 금융 ETF 보조 시세 수집 실패: %s", e)
         return None, {}
+
+
+
+def _load_close_cache() -> dict:
+    try:
+        return json.loads(ETF_CLOSE_CACHE.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _closing_etf_snapshot(day: str):
+    """장 마감 뒤 저장한 정확한 거래일 ETF 전체 시세를 읽는다."""
+    payload = _load_close_cache().get(str(day)) or {}
+    rows = payload.get("항목") or []
+    if not rows:
+        return None, {}
+    try:
+        import pandas as pd
+        df = pd.DataFrame(rows).set_index("티커")
+        names = {str(x.get("티커")): str(x.get("이름") or x.get("티커")) for x in rows}
+        log.info("ETF 마감 스냅샷 %s %d건 사용", day, len(df))
+        return df, names
+    except Exception as e:  # noqa: BLE001
+        log.warning("ETF 마감 스냅샷 읽기 실패(%s): %s", day, e)
+        return None, {}
+
+
+def save_closing_etf_snapshot() -> str:
+    """평일 장 마감 뒤 네이버 무료 시세를 날짜와 함께 고정 저장한다."""
+    now = now_kst()
+    if now.weekday() >= 5:
+        log.info("주말에는 ETF 마감 스냅샷을 저장하지 않습니다")
+        return ""
+    if (now.hour, now.minute) < (15, 40):
+        raise RuntimeError("ETF 마감 스냅샷은 15:40 KST 이후에만 저장할 수 있습니다")
+    df, names = _naver_etf_snapshot()
+    if df is None or df.empty:
+        raise RuntimeError("네이버 금융 ETF 마감 시세가 비었습니다")
+    if "거래대금" not in df.columns or float(df["거래대금"].max()) <= 0:
+        raise RuntimeError("ETF 거래대금이 비어 마감 스냅샷으로 저장하지 않습니다")
+    day = now.strftime("%Y%m%d")
+    rows = []
+    for tk, row in df.iterrows():
+        rows.append({
+            "티커": str(tk), "이름": names.get(str(tk), str(tk)),
+            "종가": float(row.get("종가", 0)), "등락률": float(row.get("등락률", 0)),
+            "거래량": float(row.get("거래량", 0)), "거래대금": float(row.get("거래대금", 0)),
+            "순자산총액": float(row.get("순자산총액", 0)),
+        })
+    cache = _load_close_cache()
+    cache[day] = {"저장시각": now.isoformat(), "항목": rows}
+    keep = sorted(cache)[-15:]
+    ETF_CLOSE_CACHE.write_text(
+        json.dumps({k: cache[k] for k in keep}, ensure_ascii=False, indent=1),
+        encoding="utf-8",
+    )
+    log.info("ETF 마감 스냅샷 %s %d건 저장", day, len(rows))
+    return day
 
 
 def _snapshot_cache() -> dict:
@@ -418,7 +477,13 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
     try:
         fallback_names = {}
         if _force_naver:
-            df, fallback_names = _naver_etf_snapshot()
+            # 과거 거래일은 반드시 그 날짜에 고정 저장한 마감본을 쓴다.
+            # 장중 네이버 실시간 등락률을 전일 값으로 잘못 붙이지 않는다.
+            df, fallback_names = _closing_etf_snapshot(day)
+            result["진단"]["소스"] = "네이버 금융 마감 스냅샷"
+            if (df is None or df.empty) and (now_kst().hour, now_kst().minute) < (9, 0):
+                df, fallback_names = _naver_etf_snapshot()
+                result["진단"]["소스"] = "네이버 금융 장전 시세"
         else:
             try:
                 df = s.get_etf_ohlcv_by_ticker(day)
@@ -426,9 +491,15 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
                 log.warning("KRX ETF 전체 시세 호출 실패: %s", e)
                 df = None
             if df is None or df.empty:
+                df, fallback_names = _closing_etf_snapshot(day)
+                if df is not None and not df.empty:
+                    result["진단"]["소스"] = "네이버 금융 마감 스냅샷"
+            if (df is None or df.empty) and (now_kst().hour, now_kst().minute) < (9, 0):
                 df, fallback_names = _naver_etf_snapshot()
+                result["진단"]["소스"] = "네이버 금융 장전 시세"
         if df is None or df.empty:
-            log.warning("ETF 전체 시세가 비어 흐름판을 생성하지 못했습니다")
+            log.warning("ETF %s 확정 마감 시세가 없어 흐름판을 생성하지 못했습니다", day)
+            result["진단"]["오류"] = "확정 마감 시세 없음"
             return result
         result["진단"]["원본"] = len(df)
 
@@ -448,7 +519,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
         ranked = df.copy()
         if "거래대금" in ranked.columns:
             ranked = ranked[ranked["거래대금"] >= min_turnover]
-        filter_text = f"거래대금 {int(min_turnover / 1e8)}억원 이상 일반형"
+        filter_text = f"거래대금 {int(min_turnover / 1e8)}억원 이상 일반형 · 테마 중복 제외
         # 장 시작 전 네이버 ETF API는 전일 종가·등락률은 주지만 당일 거래량을
         # 0으로 초기화한다. 이때 거래대금 필터를 적용하면 1천여 종목이 전부
         # 사라지므로 순자산 상위 종목을 유동성 대용치로 사용한다.
@@ -514,7 +585,7 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
                 sorted(leveraged, key=lambda x: abs(x["등락률"]), reverse=True), 2),
             "최소거래대금_억원": int(min_turnover / 1e8),
             "필터설명": filter_text,
-            "출처": "KRX·네이버 금융 보조 시세",
+            "출처": result["진단"].get("소스") or "KRX",
         }
 
         # 거래대금 기준 상위/하위 (순매수 데이터가 없으므로 거래대금·등락으로 대체)

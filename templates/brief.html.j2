@@ -384,7 +384,7 @@
   <span class="tag">{% if ETF흐름판.기간 %}{{ ETF흐름판.기간 }}{% else %}전일{% endif %} 기준</span></h2>
 {% if ETF흐름판 and (ETF흐름판.상승 or ETF흐름판.하락) %}
 <div class="flowboard">
-  <div class="flow-head"><b>ETF 흐름판</b><span>{{ ETF흐름판.기준일 }} · {% if ETF흐름판.필터설명 %}{{ ETF흐름판.필터설명 }}{% else %}거래대금 {{ ETF흐름판.최소거래대금_억원 }}억원 이상 일반형{% endif %}{% if ETF흐름판.출처 %} · {{ ETF흐름판.출처 }}{% endif %}</span></div>
+  <div class="flow-head"><b>ETF 흐름판 · 테마별 대표 TOP3</b><span>{{ ETF흐름판.기준일 }} 확정 마감 · {% if ETF흐름판.필터설명 %}{{ ETF흐름판.필터설명 }}{% else %}거래대금 {{ ETF흐름판.최소거래대금_억원 }}억원 이상 일반형 · 테마 중복 제외{% endif %}{% if ETF흐름판.출처 %} · {{ ETF흐름판.출처 }}{% endif %}</span></div>
   <div class="flow-grid">
     <div class="flow-col"><h3>수익률 상위</h3>
       {% for x in ETF흐름판.상승 %}<div class="flow-row"><span class="nm">{{ x.이름 }}</span><span class="pct up">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}
@@ -437,26 +437,45 @@
 {% endif %}
 {% endif %}
 
+{# ─────────── 전일 ETF 뉴스 헤드라인 ─────────── #}
+{% if 전일ETF뉴스 %}
+<h2>🗞️ 전일 ETF 뉴스 헤드라인<span class="tip" tabindex="0">?<span class="bubble">
+  전 거래일에 발행된 ETF·자산운용 관련 기사입니다. 주요 뉴스와 ETF 레이더에 뽑히지 않은 기사도
+  제목을 훑어볼 수 있도록 원문 링크 그대로 최대 6건을 보여줍니다.</span></span>
+  <span class="tag">{{ 기준일태그 }}</span></h2>
+<div class="newslist">
+  {% for n in 전일ETF뉴스 %}
+  <div class="nitem">
+    <div class="nno">{{ loop.index }}</div>
+    <div>
+      <a href="{{ n.링크 }}" target="_blank" rel="noopener">{{ n.제목 }}</a>
+      <div class="nmeta">{{ n.출처 }}{% if n.날짜 %} · {{ n.날짜 }}{% endif %}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 {# ─────────── 5. 경쟁 유튜브 ─────────── #}
 {% if 유튜브영상 or 유튜브운용사 %}
 <h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
   설정 파일에 등록된 채널의 최근 업로드 중 최대 5개. 당일 처음 잡힌 영상은 재실행해도 유지합니다.
   <b>ETF를 다룬 영상을 먼저 고릅니다.</b><br>
-  <b>겹침</b>은 오늘 우리가 다루려는 주제를 이미 선점했는지를 뜻합니다.
-  <b>높음</b>=TOP5·레이더의 바로 그 이슈를 ETF 관점까지 겹치게 다룸,
-  <b>보통</b>=같은 테마·다른 각도, <b>낮음</b>=개별 종목·재테크 일반 등
-  직접 닿지 않음. 대부분은 '낮음'이 정상입니다.</span></span>
+  <b>채널 관련성</b>은 영상이 ETF 아는형의 상시 콘텐츠 범위와 얼마나 가까운지를 뜻합니다.
+  <b>높음</b>=ETF·ISA·연금·지수투자 등 채널 핵심 주제,
+  <b>보통</b>=금리·종목·시장 전망 등 인접 주제,
+  <b>낮음</b>=재테크 일반 또는 채널과 직접 연결이 적은 주제입니다.</span></span>
   <span class="tag">최근 이틀</span></h2>
 <div class="yt">
   {% for v in 유튜브영상 %}
   <div class="ytc">
     <div class="top">
       <a href="{{ v.링크 }}" target="_blank" rel="noopener">{{ v.제목 }}</a>
-      {% if v.겹침 %}<span class="ov {{ v.겹침등급 }}">겹침 {{ v.겹침 }}</span>{% endif %}
+      {% if v.관련성 %}<span class="ov {{ v.관련성등급 }}">채널 관련성 {{ v.관련성 }}</span>{% endif %}
     </div>
     <div class="meta">{{ v.채널 }} · 조회 {{ v.조회수표시 }} · 업로드 {{ v.경과 }}
       · {{ v.채널유형 }}
-      {% if v.겹침근거 %} · {{ v.겹침근거 }}{% endif %}</div>
+      {% if v.관련성근거 %} · {{ v.관련성근거 }}{% endif %}</div>
     <div class="row">
       {% if v.핵심주제 %}<div class="k">핵심 주제</div><div class="v">{{ v.핵심주제 }}</div>{% endif %}
       {% if v.훅 %}<div class="k">제목 훅</div><div class="v">{{ v.훅 }}</div>{% endif %}

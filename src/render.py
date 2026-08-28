@@ -135,24 +135,22 @@ def _elapsed(iso: str) -> str:
 OVERLAP_CLASS = {"높음": "high", "보통": "mid", "낮음": "low"}
 
 
-def _keyword_overlap(video: dict, ai: dict) -> tuple[str, str]:
-    """AI 메모가 없을 때 제목과 오늘 TOP5·레이더의 공통 핵심어로만 보수 판정."""
-    stop = {"오늘", "시장", "증시", "투자", "전망", "주식", "경제", "이유", "시황",
-            "ETF", "etf", "국내", "해외", "지수", "코스피", "코스닥", "미국", "한국",
-            "상승", "하락", "수익", "자금", "종목", "계좌"}
-    title_words = {w.lower() for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", str(video.get("제목", "")))
-                   if len(w) >= 2 and w not in stop and w.lower() not in stop}
-    reference = " ".join(
-        str(x.get("제목", "")) + " " + str(x.get("사실", ""))
-        for x in (ai.get("top5") or []) + (ai.get("etf_레이더") or []))
-    ref_words = {w.lower() for w in __import__("re").findall(r"[가-힣A-Za-z0-9]+", reference)
-                 if len(w) >= 2 and w not in stop and w.lower() not in stop}
-    common = sorted(title_words & ref_words, key=len, reverse=True)
-    if len(common) >= 3:
-        return "높음", f"{', '.join(common[:2])} 이슈와 같은 소재"
-    if len(common) >= 2:
-        return "보통", f"{', '.join(common[:2])} 이슈와 같은 소재"
-    return "낮음", ""
+def _channel_relevance(video: dict) -> tuple[str, str]:
+    """오늘 뉴스가 아니라 ETF 아는형의 상시 콘텐츠 범위와의 밀접도를 판정."""
+    score = int(video.get("ETF점수") or 0)
+    title = str(video.get("제목") or "")
+    direct = ("ETF", "상장지수", "ISA", "연금저축", "퇴직연금", "IRP",
+              "월배당", "커버드콜", "분배금", "S&P500", "S&P 500",
+              "나스닥100", "코스피200", "레버리지", "인버스")
+    adjacent = ("금리", "채권", "반도체", "배당", "자산배분", "포트폴리오",
+                "주식", "증시", "지수", "연금", "절세")
+    hits = [word for word in direct if word.lower() in title.lower()]
+    if score >= 3 or hits:
+        return "높음", f"채널 핵심 주제: {', '.join(hits[:2])}" if hits else "ETF 직접 주제"
+    near = [word for word in adjacent if word.lower() in title.lower()]
+    if score > 0 or near:
+        return "보통", f"채널 인접 주제: {', '.join(near[:2])}" if near else "투자 인접 주제"
+    return "낮음", "ETF 채널과 직접 연결이 적음"
 
 
 def _youtube(data: dict, ai: dict) -> list[dict]:
@@ -169,9 +167,7 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
     out = []
     for v in picked[:5]:
         n = notes.get(v.get("영상ID"), {})
-        auto_ov, auto_reason = _keyword_overlap(v, ai)
-        # 범용어 하나만 겹친 모델 판정보다 재현 가능한 후처리 판정을 우선한다.
-        ov = auto_ov
+        ov, auto_reason = _channel_relevance(v)
         out.append({
             "제목": v.get("제목", ""),
             "채널": v.get("채널", ""),
@@ -180,9 +176,9 @@ def _youtube(data: dict, ai: dict) -> list[dict]:
             "경과": _elapsed(v.get("업로드", "")),
             "핵심주제": n.get("핵심주제", ""),
             "훅": n.get("훅", ""),
-            "겹침": ov,
-            "겹침근거": auto_reason,
-            "겹침등급": OVERLAP_CLASS.get(ov, "low"),
+            "관련성": ov,
+            "관련성근거": auto_reason,
+            "관련성등급": OVERLAP_CLASS.get(ov, "low"),
             "ETF관련": bool(v.get("ETF관련")),
             "길이초": v.get("길이초"),
             "채널유형": _channel_type(v.get("채널", ""), bool(v.get("ETF관련"))),
@@ -309,6 +305,31 @@ def _sources(data: dict, ai: dict) -> list[dict]:
     return list(seen.values())
 
 
+
+def _daily_etf_news(data: dict, limit: int = 6) -> list[dict]:
+    """국내 기준일에 발행된 ETF 기사 제목을 원문 링크 그대로 고른다."""
+    target = str(data.get("국내기준일_ISO") or "")
+    terms = ("ETF", "상장지수", "자산운용", "펀드", "레버리지", "인버스",
+             "분배금", "커버드콜", "TDF", "연금", "ISA")
+    seen, rows = set(), []
+    for group, items in (data.get("뉴스") or {}).items():
+        for item in items or []:
+            title = str(item.get("제목") or "").strip()
+            if not title or not item.get("링크") or str(item.get("날짜") or "")[:10] != target:
+                continue
+            if not any(term.lower() in title.lower() for term in terms):
+                continue
+            key = __import__("re").sub(r"[^가-힣a-z0-9]", "", title.lower())
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append({
+                "제목": title, "링크": item.get("링크"), "출처": item.get("출처", ""),
+                "날짜": _md(item.get("날짜", "")), "분류": group,
+            })
+    return rows[:limit]
+
+
 def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str) -> dict:
     br = cfg.get("브리핑") or {}
     videos = _youtube(data, ai)
@@ -332,6 +353,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "주간대표흐름": _weekly_table(data, mode),
         "체크포인트그룹": _checkpoint_groups((ai or {}).get("체크포인트") or []),
         "ETF흐름판": (data.get("ETF_후보") or {}).get("흐름판") or {},
+        "전일ETF뉴스": _daily_etf_news(data),
         "유튜브영상": competitors,
         "유튜브운용사": official,
         "유튜브안내": _youtube_notice(data),
@@ -376,8 +398,8 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
     if (data.get("유튜브") or {}).get("급상승"):
         if not videos:
             errors.append("경쟁 채널 영상 누락")
-        elif any(not v.get("겹침") for v in videos):
-            errors.append("경쟁 채널 겹침 분석 누락")
+        elif any(not v.get("관련성") for v in videos):
+            errors.append("경쟁 채널 관련성 분석 누락")
     kakao = str((ai.get("카톡") or {}).get("1") or "")
     if not all(f"{i}." in kakao for i in range(1, 6)):
         errors.append("카카오 TOP1~5 누락")
