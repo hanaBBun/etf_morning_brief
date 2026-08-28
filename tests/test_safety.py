@@ -76,8 +76,8 @@ class SafetyTests(unittest.TestCase):
         out = render._youtube({"유튜브": {"급상승": raw}},
                               {"유튜브": notes, "top5": [{"제목": "금리 상승"}]})
         self.assertEqual(len(out), 4)
-        self.assertEqual(out[0]["겹침"], "낮음")
-        self.assertEqual(out[1]["겹침"], "낮음")
+        self.assertEqual(out[0]["관련성"], "낮음")
+        self.assertEqual(out[1]["관련성"], "낮음")
 
     def test_cached_youtube_analysis_survives_partial_ai_response(self):
         raw = [{"영상ID": "kept", "제목": "연금 ETF", "채널": "채널",
@@ -85,7 +85,7 @@ class SafetyTests(unittest.TestCase):
         data = {"유튜브": {"급상승": raw, "분석": [
             {"영상ID": "kept", "겹침": "높음", "겹침근거": "같은 ETF 주제"}]}}
         out = render._youtube(data, {"유튜브": []})
-        self.assertEqual(out[0]["겹침"], "낮음")
+        self.assertEqual(out[0]["관련성"], "높음")
 
     def test_empty_ai_fallback_cannot_overwrite_a_complete_daily_brief(self):
         data = {
@@ -163,7 +163,7 @@ class SafetyTests(unittest.TestCase):
                         "ETF 레이더", "경쟁 채널 동향", "ETF 아는형 콘텐츠 후보",
                         "오늘의 개념", "체크포인트 · 주요 일정", "출처"):
             self.assertIn(heading, html)
-        self.assertIn("겹침", html)
+        self.assertIn("채널 관련성", html)
         self.assertIn("추가로 읽을 ETF 뉴스 5개", html)
         self.assertIn("ETF 뉴스 8", html)
         self.assertIn("ETF 흐름판", html)
@@ -345,7 +345,7 @@ class SafetyTests(unittest.TestCase):
             for i, rate in enumerate((5.0, 4.8, 3.0, -2.0, -4.0, -8.0), 1)
         ]).set_index("티커")
         with patch.object(krx, "_stock", return_value=EmptyETFStock()), \
-             patch.object(krx, "_naver_etf_snapshot", return_value=(frame, names)), \
+             patch.object(krx, "_closing_etf_snapshot", return_value=(frame, names)), \
              patch.object(krx, "_save_snapshot"):
             out = krx.etf_radar("20260821", {"ETF_레이더": {
                 "흐름판_최소거래대금_억원": 50, "흐름판_상하위개수": 3}})
@@ -354,7 +354,7 @@ class SafetyTests(unittest.TestCase):
                          ["KODEX 반도체", "ACE 바이오", "RISE 화장품"])
         self.assertEqual(flow["고변동상품"][0]["이름"], "KODEX 코스닥150레버리지")
 
-    def test_premarket_naver_flow_uses_aum_proxy_when_volume_is_zero(self):
+    def test_zero_turnover_is_not_rewritten_as_liquid_etf_flow(self):
         import pandas as pd
 
         class EmptyETFStock:
@@ -373,14 +373,13 @@ class SafetyTests(unittest.TestCase):
             for i, rate in enumerate((5.0, 3.0, 1.0, -1.0, -3.0, -5.0), 1)
         ]).set_index("티커")
         with patch.object(krx, "_stock", return_value=EmptyETFStock()), \
-             patch.object(krx, "_naver_etf_snapshot", return_value=(frame, names)), \
+             patch.object(krx, "_closing_etf_snapshot", return_value=(frame, names)), \
              patch.object(krx, "_save_snapshot"):
             out = krx.etf_radar("20260826", {"ETF_레이더": {
                 "흐름판_최소거래대금_억원": 50, "흐름판_상하위개수": 3}})
-        self.assertEqual(len(out["흐름판"]["상승"]), 3)
-        self.assertEqual(len(out["흐름판"]["하락"]), 3)
-        self.assertIn("순자산 상위", out["흐름판"]["필터설명"])
-        self.assertEqual(out["진단"]["대체필터"], "순자산 상위 200개")
+        self.assertFalse((out.get("흐름판") or {}).get("상승"))
+        self.assertFalse((out.get("흐름판") or {}).get("하락"))
+        self.assertEqual(out["진단"]["유동성필터통과"], 0)
 
     def test_operator_alert_only_reports_actual_required_omissions(self):
         data = {"ETF_후보": {"흐름판": {}, "진단": {

@@ -520,16 +520,8 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
         if "거래대금" in ranked.columns:
             ranked = ranked[ranked["거래대금"] >= min_turnover]
         filter_text = f"거래대금 {int(min_turnover / 1e8)}억원 이상 일반형 · 테마 중복 제외"
-        # 장 시작 전 네이버 ETF API는 전일 종가·등락률은 주지만 당일 거래량을
-        # 0으로 초기화한다. 이때 거래대금 필터를 적용하면 1천여 종목이 전부
-        # 사라지므로 순자산 상위 종목을 유동성 대용치로 사용한다.
-        if (_force_naver and ranked.empty and len(df)
-                and "순자산총액" in df.columns
-                and float(df["거래대금"].max() if "거래대금" in df.columns else 0) == 0):
-            ranked = df.sort_values("순자산총액", ascending=False).head(200)
-            filter_text = "장 시작 전 네이버 금융 순자산 상위 200개 일반형"
-            result["진단"]["대체필터"] = "순자산 상위 200개"
-            log.warning("네이버 장전 거래량이 0이라 순자산 상위 200개로 흐름판을 계산합니다")
+        # 거래대금이 없는 장전 실시간 값은 50억원 기준을 검증할 수 없으므로
+        # 순자산으로 대신 채우지 않는다. 마감 스냅샷 수집 실패로 운영자에게 알린다.
         result["진단"]["유동성필터통과"] = len(ranked)
         period = "전일"
         rate_col = "등락률"
