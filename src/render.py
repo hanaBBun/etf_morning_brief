@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -200,15 +201,58 @@ def _weekly_table(data: dict, mode: str) -> list[dict]:
     """기간 비교는 토요일 주간판에서만 노출한다."""
     if mode != "weekly":
         return []
+    daily_rates = {}
+    for r in (data.get("국내지수") or []):
+        if r.get("등락률") is not None:
+            daily_rates[str(r.get("이름"))] = float(r["등락률"])
+    for group in (data.get("지표") or {}).values():
+        if not isinstance(group, list):
+            continue
+        for r in group:
+            if isinstance(r, dict) and r.get("등락률") is not None:
+                daily_rates[str(r.get("이름"))] = float(r["등락률"])
     rows = []
     for r in data.get("주간_대표흐름") or []:
         row = {"이름": r.get("이름", ""), "기준일": _md(r.get("기준일", ""))}
         for key in ("1일", "1주", "1개월"):
-            value = r.get(key)
+            # 1일 값은 시장 한눈에와 같은 확정 봉을 사용한다. 서로 다른
+            # 데이터 공급자의 최신 봉 시각이 어긋나 표와 본문이 충돌하는 것을 막는다.
+            value = daily_rates.get(str(r.get("이름"))) if key == "1일" else r.get(key)
+            if value is not None and (not isinstance(value, (int, float)) or abs(float(value)) > 100):
+                log.warning("기간별 흐름 비정상 값 제외: %s %s=%s", r.get("이름"), key, value)
+                value = None
             row[key] = "—" if value is None else f"{float(value):+.2f}%"
             row[f"{key}방향"] = _dir(value)
         rows.append(row)
     return rows
+
+
+def _monday_summary(data: dict, ai: dict) -> dict | None:
+    """월요일에만 지난주 복기·주말 변수·국내 개장 연결을 짧게 묶는다."""
+    if data.get("브리핑역할") != "이번 주 준비":
+        return None
+    raw = ai.get("월요일요약") if isinstance(ai.get("월요일요약"), dict) else {}
+    recap = [str(x).strip()[:100] for x in (raw.get("지난주복기") or []) if str(x).strip()][:3]
+    if not recap:
+        ranked = sorted(
+            [x for x in (data.get("주간_대표흐름") or []) if x.get("1주") is not None],
+            key=lambda x: abs(float(x.get("1주") or 0)), reverse=True)
+        recap = [f"{x.get('이름')}: 지난주 {float(x['1주']):+.2f}%"
+                 for x in ranked[:3]]
+    weekend = []
+    for x in raw.get("주말변수") or []:
+        if not isinstance(x, dict) or not str(x.get("제목") or "").strip():
+            continue
+        weekend.append({"제목": str(x.get("제목"))[:55],
+                        "설명": str(x.get("설명") or "")[:160],
+                        "출처": x.get("출처") or []})
+    open_impact = str(raw.get("국내개장영향") or "").strip()[:180]
+    if not open_impact:
+        domestic = next((x for x in (ai.get("시장브리핑") or [])
+                         if x.get("시장") == "국내"), {})
+        open_impact = str(domestic.get("ETF연결") or "")[:180]
+    return {"지난주복기": recap, "주말변수": weekend[:3],
+            "국내개장영향": open_impact}
 
 
 def _checkpoint_groups(items: list[dict]) -> list[dict]:
@@ -412,6 +456,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "수집상태": data.get("수집상태", {}),
         "한눈에": _glance(data),
         "주간대표흐름": _weekly_table(data, mode),
+        "월요일요약": _monday_summary(data, ai or {}),
         "체크포인트그룹": _checkpoint_groups((ai or {}).get("체크포인트") or []),
         "ETF흐름판": (data.get("ETF_후보") or {}).get("흐름판") or {},
         "전일ETF뉴스": _daily_etf_news(data),
@@ -464,6 +509,26 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
     kakao = str((ai.get("카톡") or {}).get("1") or "")
     if not all(f"{i}." in kakao for i in range(1, 6)):
         errors.append("카카오 TOP1~5 누락")
+    return errors
+
+
+def flowboard_errors(data: dict) -> list[str]:
+    """깨진 종목명·비현실적 수익률이 공개 HTML로 나가기 전에 잡는다."""
+    flow = ((data.get("ETF_후보") or {}).get("흐름판") or {})
+    errors = []
+    weekly = flow.get("기간") == "주간"
+    for group in ("상승", "하락", "고변동상품"):
+        limit = 100.0 if weekly or group == "고변동상품" else 40.0
+        for row in flow.get(group) or []:
+            name = str(row.get("이름") or "")
+            try:
+                rate = float(row.get("등락률"))
+            except (TypeError, ValueError):
+                rate = float("inf")
+            if not name or len(name) > 100 or "dtype:" in name or "\n" in name:
+                errors.append(f"{group} 종목명 오류: {name[:30] or '(빈 이름)'}")
+            if not math.isfinite(rate) or abs(rate) > limit:
+                errors.append(f"{group} 수익률 오류: {name[:30]} {row.get('등락률')}")
     return errors
 
 

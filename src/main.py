@@ -123,7 +123,7 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
     log.info("2/6 글로벌 지표 수집")
     try:
         data["지표"] = market.collect_indicators(cfg)
-        if mode == "weekly":
+        if mode == "weekly" or data.get("브리핑역할") == "이번 주 준비":
             data["주간_대표흐름"] = market.collect_weekly_performance(cfg)
         data["수집상태"]["Yahoo Finance"] = "정상"
     except Exception as e:  # noqa: BLE001
@@ -206,8 +206,14 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
 
 def _daily_published() -> bool:
     """예약 재시도 시 오늘 공식 HTML이 이미 저장돼 있는지 확인한다."""
+    return _published("daily")
+
+
+def _published(mode: str) -> bool:
+    """예약 재시도 시 해당 모드의 오늘 공식 HTML 존재 여부를 확인한다."""
     stamp = now_kst().strftime("%Y-%m-%d")
-    return (render.DOCS / f"{stamp}.html").exists()
+    suffix = render.SUFFIX.get(mode, "")
+    return (render.DOCS / f"{stamp}{suffix}.html").exists()
 
 
 def _operator_issues(data: dict, ai: dict, incomplete: list[str] | None = None) -> list[str]:
@@ -269,8 +275,8 @@ def main() -> int:
     cfg = load_config()
     log.info("=== %s 브리핑 시작 (%s) ===", args.mode, now_kst().strftime("%Y-%m-%d %H:%M"))
 
-    if args.mode == "daily" and args.skip_if_existing and _daily_published():
-        log.info("오늘 공식 아침 브리핑이 이미 있어 중복 생성·카톡 발송을 생략합니다")
+    if args.mode in ("daily", "weekly") and args.skip_if_existing and _published(args.mode):
+        log.info("오늘 공식 %s 브리핑이 이미 있어 중복 생성·카톡 발송을 생략합니다", args.mode)
         return 0
 
     data = collect_handoff(cfg) if args.mode == "thursday" else collect(cfg, args.mode)
@@ -284,6 +290,12 @@ def main() -> int:
         data.setdefault("수집상태", {})["AI 요약"] = "정상" if ai else "실패"
         if not ai:
             log.warning("AI 결과가 비었습니다. 데이터 표만으로 렌더링합니다.")
+
+    flow_errors = render.flowboard_errors(data)
+    if flow_errors:
+        log.error("ETF 흐름판 무결성 실패: %s", "; ".join(flow_errors))
+        data.setdefault("ETF_후보", {})["흐름판"] = {}
+        _send_operator_alert(cfg, data, ["ETF 흐름판: 비정상 수익률·종목명 차단"], args.no_send)
 
     if args.mode == "daily" and not args.dry_run:
         incomplete = render.validate_daily(cfg, data, ai)

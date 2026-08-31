@@ -221,23 +221,27 @@ def _closing_etf_snapshot(day: str):
 
 
 def save_closing_etf_snapshot() -> str:
-    """평일 장 마감 뒤 네이버 무료 시세를 날짜와 함께 고정 저장한다."""
+    """최근 확정 영업일의 네이버 무료 시세를 날짜와 함께 고정 저장한다.
+
+    GitHub 예약이 금요일 오후에서 토요일 새벽으로 밀려도 금요일 마감본을
+    저장해야 한다. 실행한 달력 날짜가 주말이라는 이유로 건너뛰지 않는다.
+    """
     now = now_kst()
-    if now.weekday() >= 5:
-        log.info("주말에는 ETF 마감 스냅샷을 저장하지 않습니다")
-        return ""
-    if (now.hour, now.minute) < (15, 40):
+    if now.weekday() < 5 and (now.hour, now.minute) < (15, 40):
         raise RuntimeError("ETF 마감 스냅샷은 15:40 KST 이후에만 저장할 수 있습니다")
+    day = last_business_day()
+    if (_load_close_cache().get(day) or {}).get("항목"):
+        log.info("ETF 마감 스냅샷 %s가 이미 있어 중복 저장을 생략합니다", day)
+        return day
     df, names = _naver_etf_snapshot()
     if df is None or df.empty:
         raise RuntimeError("네이버 금융 ETF 마감 시세가 비었습니다")
     if "거래대금" not in df.columns or float(df["거래대금"].max()) <= 0:
         raise RuntimeError("ETF 거래대금이 비어 마감 스냅샷으로 저장하지 않습니다")
-    day = now.strftime("%Y%m%d")
     rows = []
     for tk, row in df.iterrows():
         rows.append({
-            "티커": str(tk), "이름": names.get(str(tk), str(tk)),
+            "티커": str(tk), "이름": _clean_etf_name(names.get(str(tk)), str(tk)),
             "종가": float(row.get("종가", 0)), "등락률": float(row.get("등락률", 0)),
             "거래량": float(row.get("거래량", 0)), "거래대금": float(row.get("거래대금", 0)),
             "순자산총액": float(row.get("순자산총액", 0)),
@@ -263,7 +267,8 @@ def _snapshot_cache() -> dict:
 def _save_snapshot(day: str, df, names: dict) -> None:
     try:
         cache = _snapshot_cache()
-        cache[day] = {str(tk): {"종가": float(r.get("종가", 0)), "이름": names.get(tk, str(tk))}
+        cache[day] = {str(tk): {"종가": float(r.get("종가", 0)),
+                                "이름": _clean_etf_name(names.get(str(tk)), str(tk))}
                       for tk, r in df.iterrows() if float(r.get("종가", 0)) > 0}
         keys = sorted(cache)[-12:]
         ETF_SNAPSHOT_CACHE.write_text(
@@ -288,6 +293,32 @@ def _cached_prior_close(day: str) -> dict[str, float]:
     if not candidates:
         return {}
     return {tk: float(v.get("종가", 0)) for tk, v in cache[max(candidates)].items()}
+
+
+def _cached_names(day: str) -> dict[str, str]:
+    """이미 검증해 저장한 종목명을 우선 사용한다."""
+    rows = _snapshot_cache().get(str(day)) or {}
+    return {str(tk): _clean_etf_name(v.get("이름"), str(tk))
+            for tk, v in rows.items() if isinstance(v, dict)}
+
+
+def _clean_etf_name(value: Any, ticker: str = "") -> str:
+    """pykrx가 문자열 대신 Series를 돌려준 경우 화면 노출을 차단한다."""
+    text = str(value or "").strip()
+    bad = ("dtype:", "Name:", "\n", "ticker", "종목명,")
+    if not text or len(text) > 100 or any(mark in text for mark in bad):
+        return str(ticker)
+    return text
+
+
+def _valid_etf_return(value: Any, weekly: bool = False) -> bool:
+    """데이터 결합 오류로 생긴 비현실적 ETF 수익률을 차단한다."""
+    try:
+        rate = float(value)
+    except (TypeError, ValueError):
+        return False
+    limit = 100.0 if weekly else 40.0
+    return math.isfinite(rate) and abs(rate) <= limit
 
 
 # ─────────────────────────────────────────────
@@ -503,12 +534,15 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
             return result
         result["진단"]["원본"] = len(df)
 
-        names = dict(fallback_names)
+        names = _cached_names(day)
+        names.update({str(k): _clean_etf_name(v, str(k))
+                      for k, v in fallback_names.items()})
         for tk in df.index:
-            if tk in names:
+            tk = str(tk)
+            if tk in names and names[tk] != tk:
                 continue
             try:
-                names[tk] = s.get_etf_ticker_name(tk)
+                names[tk] = _clean_etf_name(s.get_etf_ticker_name(tk), tk)
             except Exception:  # noqa: BLE001
                 names[tk] = tk
         _save_snapshot(day, df, names)
@@ -527,44 +561,33 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
         rate_col = "등락률"
         if mode == "weekly":
             period = "주간"
-            try:
-                prior_guess = _shift(day, -7)
-                prior_day = s.get_nearest_business_day_in_a_week(date=prior_guess, prev=True)
-                prior_df = s.get_etf_ohlcv_by_ticker(prior_day)
-                if prior_df is not None and not prior_df.empty:
-                    prior_close = prior_df["종가"].rename("직전주종가")
-                    ranked = ranked.join(prior_close, how="inner")
-                    ranked["주간등락률"] = (
-                        (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
-                    )
-                    rate_col = "주간등락률"
-                else:
-                    prior_map = _cached_prior_close(day)
-                    if prior_map:
-                        ranked["직전주종가"] = [prior_map.get(str(tk)) for tk in ranked.index]
-                        ranked["주간등락률"] = (
-                            (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
-                        )
-                        rate_col = "주간등락률"
-            except Exception as e:  # noqa: BLE001
-                log.debug("ETF 주간 수익률 계산 실패, 전일 등락률 사용: %s", e)
-                prior_map = _cached_prior_close(day)
-                if prior_map:
-                    ranked["직전주종가"] = [prior_map.get(str(tk)) for tk in ranked.index]
-                    ranked["주간등락률"] = (
-                        (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
-                    )
-                    rate_col = "주간등락률"
+            # 과거 KRX 전체표를 현재 표에 직접 조인하면 pykrx 버전에 따라
+            # 컬럼 단위·인덱스가 달라질 수 있다. 날짜별로 검증해 저장한
+            # 종가 캐시끼리만 비교한다.
+            prior_map = _cached_prior_close(day)
+            if prior_map:
+                ranked["직전주종가"] = [prior_map.get(str(tk)) for tk in ranked.index]
+                ranked = ranked[ranked["직전주종가"].notna() & (ranked["직전주종가"] > 0)]
+                ranked["주간등락률"] = (
+                    (ranked["종가"] - ranked["직전주종가"]) / ranked["직전주종가"] * 100
+                )
+                rate_col = "주간등락률"
+            else:
+                log.warning("주간 비교용 ETF 종가 캐시가 없어 흐름판을 비웁니다")
+                ranked = ranked.iloc[0:0]
 
         perf_rows = []
         for tk, row in ranked.iterrows():
             rate = row.get(rate_col)
-            if rate is None or not math.isfinite(float(rate)):
+            if not _valid_etf_return(rate, weekly=(mode == "weekly")):
+                continue
+            name = _clean_etf_name(names.get(str(tk)), str(tk))
+            if name == str(tk):
                 continue
             perf_rows.append({
-                "티커": tk, "이름": names.get(tk, tk), "등락률": round(float(rate), 2),
+                "티커": str(tk), "이름": name, "등락률": round(float(rate), 2),
                 "거래대금": float(row.get("거래대금", 0)),
-                "유형": "레버리지·인버스" if _is_leveraged_etf(names.get(tk, tk)) else "일반형",
+                "유형": "레버리지·인버스" if _is_leveraged_etf(name) else "일반형",
             })
         general = [x for x in perf_rows if x["유형"] == "일반형"]
         leveraged = [x for x in perf_rows if x["유형"] == "레버리지·인버스"]

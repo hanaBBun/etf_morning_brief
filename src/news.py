@@ -129,9 +129,13 @@ def _source_tier(name: str, cfg: dict) -> int:
 
 
 def daily_window() -> tuple[int, str]:
-    """전일 00:00(KST)부터 실제 실행 시각까지의 고정 일간 범위."""
+    """일반일은 전일 00시, 월요일은 금요일 장 마감부터 수집한다."""
     now = now_kst()
-    start = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    if now.weekday() == 0:
+        start = (now - timedelta(days=3)).replace(
+            hour=15, minute=30, second=0, microsecond=0)
+    else:
+        start = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
     hours = max(math.ceil((now - start).total_seconds() / 3600), 24)
     label = f"{start:%m/%d %H:%M} ~ {now:%m/%d %H:%M} KST"
     return hours, label

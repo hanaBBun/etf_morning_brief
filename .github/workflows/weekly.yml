@@ -2,8 +2,11 @@ name: 주간 브리핑 (토요일 07:00 KST)
 
 on:
   schedule:
-    # 금요일 22:00 UTC = 토요일 07:00 KST
-    - cron: "0 22 * * 5"
+    # UTC 금요일 21:55/22:15/23:05 = KST 토요일 06:55/07:15/08:05.
+    # 첫 성공본이 생기면 뒤 회차는 --skip-if-existing으로 즉시 끝난다.
+    - cron: "55 21 * * 5"
+    - cron: "15 22 * * 5"
+    - cron: "5 23 * * 5"
   workflow_dispatch:
 
 permissions:
@@ -38,7 +41,7 @@ jobs:
           KRX_PW:              ${{ secrets.KRX_PW }}
           GITHUB_REPOSITORY:   ${{ github.repository }}
           TZ: Asia/Seoul
-        run: python -m src.main --mode weekly
+        run: python -m src.main --mode weekly ${{ github.event_name == 'schedule' && '--skip-if-existing' || '' }}
       - name: 안전성 단위 테스트
         run: python -m unittest discover -s tests -v
       - name: 결과 저장
@@ -50,6 +53,7 @@ jobs:
           git add channel_uploads.json 2>/dev/null || true
           git add youtube_daily_cache.json 2>/dev/null || true
           git add etf_snapshot_cache.json 2>/dev/null || true
+          git add etf_close_snapshots.json 2>/dev/null || true
           git status --short
           if git diff --staged --quiet; then
             echo "변경 없음"

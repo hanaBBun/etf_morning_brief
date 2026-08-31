@@ -1,7 +1,10 @@
 name: ETF 전일 마감 시세 저장
 on:
   schedule:
+    # KST 16:10/17:10/18:10. GitHub 지연 시 주말에도 마지막 영업일을 저장한다.
     - cron: "10 7 * * 1-5"
+    - cron: "10 8 * * 1-5"
+    - cron: "10 9 * * 1-5"
   workflow_dispatch:
 permissions:
   contents: write
@@ -30,7 +33,7 @@ jobs:
         run: |
           git config user.name "brief-bot"
           git config user.email "brief-bot@users.noreply.github.com"
-          git add etf_close_snapshots.json
+          git add etf_close_snapshots.json 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -m "ETF 마감 시세 $(TZ=Asia/Seoul date +%F)"
           git pull --rebase origin main

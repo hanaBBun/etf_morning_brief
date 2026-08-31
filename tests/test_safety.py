@@ -4,6 +4,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
+from zoneinfo import ZoneInfo
 
 from src import events, krx, llm, main, news, render, youtube
 
@@ -833,6 +834,69 @@ class SafetyTests(unittest.TestCase):
         urls = [s["url"] for s in us["출처"]]
         self.assertIn("https://finance.yahoo.com", urls)
         self.assertNotIn("https://data.krx.co.kr", urls)
+
+    def test_corrupt_etf_name_and_impossible_return_are_rejected(self):
+        broken = "0195S0    상품명\nName: 종목명, dtype: object"
+        self.assertEqual(krx._clean_etf_name(broken, "0195S0"), "0195S0")
+        self.assertTrue(krx._valid_etf_return(9.17, weekly=True))
+        self.assertFalse(krx._valid_etf_return(104627704.29, weekly=True))
+
+    def test_flowboard_validation_blocks_corrupt_publication_values(self):
+        data = {"브리핑종류": "주간", "ETF_후보": {"흐름판": {
+            "상승": [{"이름": "정상 ETF", "등락률": 3.1}],
+            "하락": [{"이름": "0195S0\nName: 종목명, dtype: object", "등락률": -2.0}],
+            "고변동상품": [{"이름": "레버리지 ETF", "등락률": 60111507.08}],
+        }}}
+        errors = render.flowboard_errors(data)
+        self.assertTrue(any("종목명" in x for x in errors))
+        self.assertTrue(any("수익률" in x for x in errors))
+
+    def test_weekly_table_uses_same_daily_close_as_market_glance(self):
+        data = {
+            "국내지수": [{"이름": "코스피", "등락률": -1.79}],
+            "주간_대표흐름": [{"이름": "코스피", "1일": 1.53, "1주": -2.0,
+                                  "1개월": 3.0, "기준일": "2026-08-28"}],
+        }
+        row = render._weekly_table(data, "weekly")[0]
+        self.assertEqual(row["1일"], "-1.79%")
+
+    def test_monday_summary_is_only_rendered_for_monday_role(self):
+        ai = {"월요일요약": {"지난주복기": ["지난주 코스피 하락"],
+                              "주말변수": [{"제목": "주말 정책 발표", "설명": "영향 확인"}],
+                              "국내개장영향": "국내 ETF 변동성 점검"}}
+        monday = render._monday_summary({"브리핑역할": "이번 주 준비"}, ai)
+        self.assertEqual(monday["지난주복기"], ["지난주 코스피 하락"])
+        self.assertIsNone(render._monday_summary({"브리핑역할": "일일"}, ai))
+
+    def test_monday_news_window_starts_after_friday_close(self):
+        fixed = datetime(2026, 8, 31, 7, 0, tzinfo=ZoneInfo("Asia/Seoul"))
+        with patch.object(news, "now_kst", return_value=fixed):
+            hours, label = news.daily_window()
+        self.assertEqual(hours, 64)
+        self.assertIn("08/28 15:30", label)
+
+    def test_delayed_weekend_snapshot_saves_last_business_day(self):
+        import pandas as pd
+        frame = pd.DataFrame([{"종가": 100.0, "등락률": 1.0, "거래량": 10,
+                               "거래대금": 100000000.0, "순자산총액": 500.0}],
+                             index=["123456"])
+        fixed = datetime(2026, 8, 29, 12, 30, tzinfo=ZoneInfo("Asia/Seoul"))
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(krx, "ETF_CLOSE_CACHE", Path(td) / "close.json"), \
+             patch.object(krx, "now_kst", return_value=fixed), \
+             patch.object(krx, "last_business_day", return_value="20260828"), \
+             patch.object(krx, "_naver_etf_snapshot",
+                          return_value=(frame, {"123456": "정상 ETF"})):
+            saved = krx.save_closing_etf_snapshot()
+            payload = json.loads(krx.ETF_CLOSE_CACHE.read_text(encoding="utf-8"))
+        self.assertEqual(saved, "20260828")
+        self.assertEqual(payload["20260828"]["항목"][0]["이름"], "정상 ETF")
+
+    def test_weekly_workflow_has_retries_and_deduplication(self):
+        workflow = (Path(__file__).parents[1] / ".github/workflows/weekly.yml").read_text(
+            encoding="utf-8")
+        self.assertGreaterEqual(workflow.count("cron:"), 3)
+        self.assertIn("--skip-if-existing", workflow)
 
 
 if __name__ == "__main__":
