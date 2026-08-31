@@ -271,10 +271,14 @@
   .srclist a:hover{color:var(--accent);border-color:var(--accent)}
   .mondaybox{background:var(--surface);border:1px solid var(--line);border-radius:12px;
              padding:18px;margin:10px 0 26px}
-  .mondaybox h3{font-size:15px;margin:0 0 9px}.mondaybox ol{margin:0 0 16px;padding-left:21px}
-  .mondaybox li{margin:5px 0;line-height:1.55}.weekend-item{padding:10px 0;border-top:1px solid var(--line)}
+  .mondaybox h3{font-size:15px;margin:0 0 9px}.recap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:17px}
+  .recap-card{background:var(--surface2);border:1px solid var(--line);border-radius:9px;padding:11px 12px;line-height:1.5}
+  .recap-no{display:block;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.06em;margin-bottom:5px}
+  .weekend-label{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px}
+  .weekend-item{padding:10px 0;border-top:1px solid var(--line)}
   .weekend-item p{margin:4px 0;line-height:1.55}.open-impact{margin-top:12px;padding:11px 13px;
              border-left:3px solid var(--accent);background:var(--surface2);line-height:1.6}
+  @media(max-width:700px){.recap-grid{grid-template-columns:1fr}.recap-card{padding:10px 11px}}
 </style>
 </head>
 <body>
@@ -293,9 +297,9 @@
 {% if 월요일요약 %}
 <h2>🧭 월요일 출발점 <span class="tag">지난주 복기 + 주말 변수</span></h2>
 <div class="mondaybox">
-  {% if 월요일요약.지난주복기 %}<h3>지난주 시장 3줄 복기</h3><ol>{% for x in 월요일요약.지난주복기 %}<li>{{ x }}</li>{% endfor %}</ol>{% endif %}
+  {% if 월요일요약.지난주복기 %}<h3>지난주 시장 3줄 복기</h3><div class="recap-grid">{% for x in 월요일요약.지난주복기 %}<div class="recap-card"><span class="recap-no">0{{ loop.index }}</span>{{ x }}</div>{% endfor %}</div>{% endif %}
   {% if 월요일요약.주말변수 %}<h3>금요일 장 마감 뒤 달라진 것</h3>
-    {% for x in 월요일요약.주말변수 %}<div class="weekend-item"><b>{{ x.제목 }}</b><p>{{ x.설명 }}</p>
+    {% for x in 월요일요약.주말변수 %}<div class="weekend-item"><span class="weekend-label">주말 변수</span><br><b>{{ x.제목 }}</b><p>{{ x.설명 }}</p>
     {% if x.출처 %}<div class="src">출처 · {% for s in x.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>{% endfor %}
   {% endif %}
   {% if 월요일요약.국내개장영향 %}<div class="open-impact"><b>월요일 국내장·ETF 연결</b><br>{{ 월요일요약.국내개장영향 }}</div>{% endif %}

@@ -302,6 +302,75 @@ def _cached_names(day: str) -> dict[str, str]:
             for tk, v in rows.items() if isinstance(v, dict)}
 
 
+def _cached_performance_candidates(day: str, weekly: bool = False) -> list[dict]:
+    """전체표의 거래대금이 깨진 날을 위한 저장 종가 기반 수익률 후보."""
+    cache = _snapshot_cache()
+    current = cache.get(str(day)) or {}
+    if not current:
+        return []
+    if weekly:
+        prior = _cached_prior_close(day)
+    else:
+        keys = sorted(k for k in cache if k < str(day) and cache.get(k))
+        if not keys:
+            return []
+        prior = {str(tk): float(v.get("종가", 0))
+                 for tk, v in (cache[keys[-1]] or {}).items()
+                 if isinstance(v, dict)}
+    rows = []
+    for tk, value in current.items():
+        if not isinstance(value, dict):
+            continue
+        close = float(value.get("종가", 0) or 0)
+        old = float(prior.get(str(tk), 0) or 0)
+        if close <= 0 or old <= 0:
+            continue
+        rate = (close - old) / old * 100
+        if not _valid_etf_return(rate, weekly=weekly):
+            continue
+        name = _clean_etf_name(value.get("이름"), str(tk))
+        if name == str(tk):
+            continue
+        rows.append({"티커": str(tk), "이름": name, "등락률": rate})
+    return rows
+
+
+def _recover_flow_rows(stock_api, day: str, min_turnover: float,
+                       weekly: bool = False) -> list[dict]:
+    """저장 종가로 후보를 좁히고 KRX 개별 일봉으로 거래대금을 재검증한다."""
+    candidates = _cached_performance_candidates(day, weekly=weekly)
+    if not candidates:
+        return []
+    general = [x for x in candidates if not _is_leveraged_etf(x["이름"])]
+    leveraged = [x for x in candidates if _is_leveraged_etf(x["이름"])]
+    checks = (sorted(general, key=lambda x: x["등락률"], reverse=True)[:35]
+              + sorted(general, key=lambda x: x["등락률"])[:35]
+              + sorted(leveraged, key=lambda x: abs(x["등락률"]), reverse=True)[:20])
+    out, seen = [], set()
+    for item in checks:
+        tk = item["티커"]
+        if tk in seen:
+            continue
+        seen.add(tk)
+        try:
+            hist = stock_api.get_etf_ohlcv_by_date(day, day, tk)
+            if hist is None or hist.empty or "거래대금" not in hist.columns:
+                continue
+            turnover = float(hist["거래대금"].iloc[-1] or 0)
+        except Exception as e:  # noqa: BLE001
+            log.debug("ETF 개별 거래대금 복구 실패(%s): %s", tk, e)
+            continue
+        if turnover < min_turnover:
+            continue
+        out.append({**item, "등락률": round(float(item["등락률"]), 2),
+                    "거래대금": turnover,
+                    "유형": "레버리지·인버스" if _is_leveraged_etf(item["이름"])
+                    else "일반형"})
+    log.info("ETF 흐름판 개별 종목 복구: 후보 %d개 중 거래대금 통과 %d개",
+             len(seen), len(out))
+    return out
+
+
 def _clean_etf_name(value: Any, ticker: str = "") -> str:
     """pykrx가 문자열 대신 Series를 돌려준 경우 화면 노출을 차단한다."""
     text = str(value or "").strip()
@@ -589,6 +658,12 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
                 "거래대금": float(row.get("거래대금", 0)),
                 "유형": "레버리지·인버스" if _is_leveraged_etf(name) else "일반형",
             })
+        if not perf_rows:
+            perf_rows = _recover_flow_rows(
+                s, day, min_turnover, weekly=(mode == "weekly"))
+            if perf_rows:
+                result["진단"]["소스"] = "저장 종가 + KRX 개별 거래대금"
+                result["진단"]["유동성필터통과"] = len(perf_rows)
         general = [x for x in perf_rows if x["유형"] == "일반형"]
         leveraged = [x for x in perf_rows if x["유형"] == "레버리지·인버스"]
         result["진단"]["등락률유효"] = len(perf_rows)

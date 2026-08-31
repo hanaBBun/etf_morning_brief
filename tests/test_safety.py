@@ -898,6 +898,39 @@ class SafetyTests(unittest.TestCase):
         self.assertGreaterEqual(workflow.count("cron:"), 3)
         self.assertIn("--skip-if-existing", workflow)
 
+    def test_flowboard_recovers_from_cached_closes_and_individual_turnover(self):
+        import pandas as pd
+
+        class FakeStock:
+            @staticmethod
+            def get_etf_ohlcv_by_date(start, end, ticker):
+                turnover = 6_000_000_000 if ticker == "111111" else 1_000_000_000
+                return pd.DataFrame([{"거래대금": turnover}])
+
+        cache = {
+            "20260827": {
+                "111111": {"종가": 100, "이름": "테스트 원자력 ETF"},
+                "222222": {"종가": 100, "이름": "테스트 바이오 ETF"},
+            },
+            "20260828": {
+                "111111": {"종가": 110, "이름": "테스트 원자력 ETF"},
+                "222222": {"종가": 105, "이름": "테스트 바이오 ETF"},
+            },
+        }
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "snapshot.json"
+            path.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
+            with patch.object(krx, "ETF_SNAPSHOT_CACHE", path):
+                rows = krx._recover_flow_rows(FakeStock(), "20260828", 5_000_000_000)
+        self.assertEqual([x["티커"] for x in rows], ["111111"])
+        self.assertEqual(rows[0]["등락률"], 10.0)
+
+    def test_monday_recap_uses_scan_friendly_cards(self):
+        template = (Path(__file__).parents[1] / "templates/brief.html.j2").read_text(
+            encoding="utf-8")
+        self.assertIn('class="recap-grid"', template)
+        self.assertIn('class="recap-card"', template)
+
 
 if __name__ == "__main__":
     unittest.main()
