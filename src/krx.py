@@ -742,5 +742,9 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
             result["흐름판"] = fallback["흐름판"]
             result["진단"] = fallback.get("진단") or result["진단"]
         else:
-            result["진단"] = fallback.get("진단") or result["진단"]
+            # 실패한 보조 조회의 0건 진단으로 최초 KRX 1,163건 진단을
+            # 덮지 않는다. 운영 알림에서 실제 실패 지점을 볼 수 있어야 한다.
+            fallback_diag = fallback.get("진단") or {}
+            if fallback_diag.get("오류"):
+                result["진단"]["보조오류"] = fallback_diag["오류"]
     return result

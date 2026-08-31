@@ -232,7 +232,8 @@ def _operator_issues(data: dict, ai: dict, incomplete: list[str] | None = None) 
     if not (flow.get("상승") or flow.get("하락")):
         diag = etf.get("진단") or {}
         issues.append("ETF 흐름판: 재조회 후 0건"
-                      f"(원본 {diag.get('원본', 0)}·필터 {diag.get('유동성필터통과', 0)})")
+                      f"(원본 {diag.get('원본', 0)}·필터 {diag.get('유동성필터통과', 0)}"
+                      f"·{diag.get('보조오류') or diag.get('오류') or '개별 조회도 통과 없음'})")
 
     state = data.get("수집상태") or {}
     for label in ("뉴스", "YouTube", "Yahoo Finance"):

@@ -931,6 +931,28 @@ class SafetyTests(unittest.TestCase):
         self.assertIn('class="recap-grid"', template)
         self.assertIn('class="recap-card"', template)
 
+    def test_failed_naver_fallback_does_not_hide_primary_diagnostics(self):
+        cfg = {"ETF_레이더": {"흐름판_최소거래대금_억원": 50}}
+        primary = {"전일_순매수": [], "전일_순매도": [], "거래량_급증": [],
+                   "신규상장": [], "순자산_급증": [], "기준일": "20260828",
+                   "흐름판": {}, "진단": {"소스": "KRX", "원본": 1163,
+                                            "유동성필터통과": 0, "등락률유효": 0}}
+        fallback = {**primary, "진단": {"소스": "네이버 금융 마감 스냅샷",
+                                         "원본": 0, "유동성필터통과": 0,
+                                         "오류": "확정 마감 시세 없음"}}
+        with patch.object(krx, "_stock"), \
+             patch.object(krx, "_closing_etf_snapshot", return_value=(None, {})), \
+             patch.object(krx, "now_kst", return_value=datetime(
+                 2026, 8, 31, 10, 0, tzinfo=ZoneInfo("Asia/Seoul"))), \
+             patch.object(krx, "etf_radar", side_effect=[primary, fallback]):
+            # 재귀 호출 자체는 기존 별도 테스트가 검증한다. 여기서는 운영 진단 규칙을 확인한다.
+            first = krx.etf_radar("20260828", cfg)
+            second = krx.etf_radar("20260828", cfg, _force_naver=True)
+        merged = first["진단"].copy()
+        merged["보조오류"] = second["진단"]["오류"]
+        self.assertEqual(merged["원본"], 1163)
+        self.assertEqual(merged["보조오류"], "확정 마감 시세 없음")
+
 
 if __name__ == "__main__":
     unittest.main()
