@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
-from src import events, krx, llm, main, news, render, youtube
+from src import delivery, events, krx, llm, main, news, render, youtube
 
 
 class _FakeStock:
@@ -233,6 +233,36 @@ class SafetyTests(unittest.TestCase):
         self.assertIn("--skip-if-existing", workflow)
         self.assertIn("skip_if_existing:", workflow)
         self.assertIn("inputs.skip_if_existing", workflow)
+
+    def test_weekly_and_thursday_external_dispatch_skip_duplicates(self):
+        root = render.ROOT / ".github" / "workflows"
+        for filename in ("weekly.yml", "thursday.yml"):
+            workflow = (root / filename).read_text(encoding="utf-8")
+            self.assertIn("skip_if_existing:", workflow)
+            self.assertIn("inputs.skip_if_existing", workflow)
+            self.assertIn("--skip-if-existing", workflow)
+
+    def test_published_check_supports_thursday_handoff(self):
+        fixed = datetime(2026, 9, 3, 9, 40, tzinfo=ZoneInfo("Asia/Seoul"))
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(render, "DOCS", Path(td)), \
+             patch.object(main, "now_kst", return_value=fixed):
+            (Path(td) / "2026-09-03-handoff.html").write_text("완료", encoding="utf-8")
+            self.assertTrue(main._published("thursday"))
+
+    def test_delivery_boundary_keeps_kakao_out_of_main_pipeline(self):
+        cfg = {"발행": {"채널": "kakao"}}
+        with patch.object(delivery.kakao, "send_brief", return_value=True) as send:
+            self.assertTrue(delivery.send_brief(cfg, ["브리핑"], "https://example.com"))
+        send.assert_called_once_with(cfg, ["브리핑"], "https://example.com")
+
+    def test_delivery_rejects_unconfigured_provider(self):
+        with self.assertRaisesRegex(RuntimeError, "지원하지 않는 발행 채널"):
+            delivery.send_brief({"발행": {"채널": "unknown"}}, ["브리핑"])
+
+    def test_delivery_builds_single_thursday_message(self):
+        ai = {"카톡": {"1": "첫 메시지", "2": "두 번째 메시지"}}
+        self.assertEqual(delivery.build_messages("thursday", {}, ai), ["첫 메시지"])
 
     def test_waiting_factors_require_quiet_market_and_two_fresh_sources(self):
         articles = [

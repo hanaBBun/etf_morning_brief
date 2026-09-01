@@ -10,6 +10,10 @@ on:
         description: "카톡 발송 없이 HTML만 생성 (수동 실행 기본값)"
         type: boolean
         default: true
+      skip_if_existing:
+        description: "외부 예약 호출 시 이미 발행된 전달문 건너뛰기"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -42,7 +46,9 @@ jobs:
           GITHUB_REPOSITORY:   ${{ github.repository }}
           TZ: Asia/Seoul
         run: |
-          python -m src.main --mode thursday ${{ inputs.no_send && '--no-send' || '' }}
+          python -m src.main --mode thursday \
+            ${{ (github.event_name == 'schedule' || inputs.skip_if_existing) && '--skip-if-existing' || '' }} \
+            ${{ inputs.no_send && '--no-send' || '' }}
       - name: 결과 저장
         run: |
           git config user.name  "brief-bot"

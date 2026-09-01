@@ -10,7 +10,7 @@ import sys
 from datetime import timedelta
 from typing import Any
 
-from . import events, kakao, krx, llm, market, news, render, youtube
+from . import delivery, events, krx, llm, market, news, render, youtube
 from .config import kdate, load_config, now_kst
 
 logging.basicConfig(
@@ -256,7 +256,8 @@ def _send_operator_alert(cfg: dict, data: dict, issues: list[str], no_send: bool
     if no_send or not issues:
         return
     try:
-        ok = kakao.send_operator_alert(cfg, issues, str(data.get("날짜표시") or "오늘"))
+        ok = delivery.send_operator_alert(cfg, issues,
+                                          str(data.get("날짜표시") or "오늘"))
         log.info("운영자 수집 알림 %s", "성공" if ok else "실패")
     except Exception as e:  # noqa: BLE001
         log.error("운영자 수집 알림 발송 실패: %s", e)
@@ -276,7 +277,7 @@ def main() -> int:
     cfg = load_config()
     log.info("=== %s 브리핑 시작 (%s) ===", args.mode, now_kst().strftime("%Y-%m-%d %H:%M"))
 
-    if args.mode in ("daily", "weekly") and args.skip_if_existing and _published(args.mode):
+    if args.skip_if_existing and _published(args.mode):
         log.info("오늘 공식 %s 브리핑이 이미 있어 중복 생성·카톡 발송을 생략합니다", args.mode)
         return 0
 
@@ -314,30 +315,16 @@ def main() -> int:
         log.info("발송 생략")
         return 0
 
-    msgs = []
-    kk = ai.get("카톡") or {}
-    for key in ("1", "2"):
-        if kk.get(key):
-            msgs.append(kk[key])
-    if not msgs:
-        if args.mode == "thursday":
-            n = len(ai.get("etf_뉴스6선") or [])
-            msgs = [f"📰 ETF 뉴스·출연자 추천이 준비됐습니다.\n\n"
-                    f"최근 ETF 뉴스 {n}건과 출연자 추천을 담았습니다."
-                    f""]
-        else:
-            msgs = kakao.fallback_messages(data)
-    if args.mode == "thursday":
-        msgs = msgs[:1]  # 전달문은 1건만
+    msgs = delivery.build_messages(args.mode, data, ai)
 
     try:
-        ok = kakao.send_brief(cfg, msgs, url)
-        log.info("카톡 발송 %s", "성공" if ok else "일부 실패")
+        ok = delivery.send_brief(cfg, msgs, url)
+        log.info("%s 발송 %s", delivery.channel(cfg), "성공" if ok else "일부 실패")
         if args.mode == "daily":
             _send_operator_alert(cfg, data, _operator_issues(data, ai), False)
         return 0 if ok else 1
     except Exception as e:  # noqa: BLE001
-        log.error("카톡 발송 실패: %s", e)
+        log.error("발송 실패: %s", e)
         return 1
 
 

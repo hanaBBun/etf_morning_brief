@@ -8,6 +8,15 @@ on:
     - cron: "15 22 * * 5"
     - cron: "5 23 * * 5"
   workflow_dispatch:
+    inputs:
+      no_send:
+        description: "카톡 발송 없이 HTML만 생성"
+        type: boolean
+        default: false
+      skip_if_existing:
+        description: "외부 예약 호출 시 이미 발행된 주간 브리핑 건너뛰기"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -41,7 +50,10 @@ jobs:
           KRX_PW:              ${{ secrets.KRX_PW }}
           GITHUB_REPOSITORY:   ${{ github.repository }}
           TZ: Asia/Seoul
-        run: python -m src.main --mode weekly ${{ github.event_name == 'schedule' && '--skip-if-existing' || '' }}
+        run: |
+          python -m src.main --mode weekly \
+            ${{ (github.event_name == 'schedule' || inputs.skip_if_existing) && '--skip-if-existing' || '' }} \
+            ${{ inputs.no_send && '--no-send' || '' }}
       - name: 안전성 단위 테스트
         run: python -m unittest discover -s tests -v
       - name: 결과 저장
