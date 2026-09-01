@@ -1173,6 +1173,32 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
             msg = str(e)
             short = msg[:200].replace("\n", " ")
             log.warning("모델 %s 실패(시도 %d): %s", model, attempt + 1, short)
+            # 일시적인 Gemini 혼잡은 모델을 즉시 바꾸기보다 같은 모델을 한 번
+            # 재호출하는 편이 성공률이 높다. 무한 재시도는 하지 않는다.
+            if provider == "gemini" and ("UNAVAILABLE" in msg or "503" in msg):
+                import time
+                delay = 30
+                log.info("Gemini 일시 혼잡 — %d초 뒤 %s를 한 번 재시도합니다", delay, model)
+                time.sleep(delay)
+                try:
+                    raw = _call_gemini(model, user, ai, system)
+                    parsed = _parse_json(raw)
+                    if parsed:
+                        result = _postprocess(parsed, cfg, data, mode)
+                        if mode == "daily":
+                            gaps = _market_card_gaps(result.get("시장브리핑") or [])
+                            if gaps:
+                                log.warning("재시도 응답도 시장브리핑 미완성: %s", "; ".join(gaps))
+                            else:
+                                result = _stabilize_daily(
+                                    result, _load_daily_ai(data), data, cfg
+                                )
+                                _save_daily_ai(data, result)
+                                return result
+                        else:
+                            return result
+                except Exception as e2:  # noqa: BLE001
+                    log.warning("Gemini 혼잡 재시도도 실패: %s", str(e2)[:200])
             # 분당 할당량 초과면 잠깐 쉬었다가 같은 모델로 한 번 더
             if "RESOURCE_EXHAUSTED" in msg or "429" in msg:
                 import time
@@ -1200,7 +1226,7 @@ def generate(cfg: dict, data: dict[str, Any], mode: str = "daily") -> dict[str, 
 # ─────────────────────────────────────────────
 # 제공자별 호출
 # ─────────────────────────────────────────────
-def _discover_gemini_models(limit: int = 3) -> list[str]:
+def _discover_gemini_models(limit: int = 8) -> list[str]:
     """지금 이 API 키로 실제 쓸 수 있는 Gemini 모델 목록을 조회한다.
 
     구글이 모델 이름을 바꿔도(예: 2.5-flash → 3.6-flash) 자동으로 따라가기 위함이다.
@@ -1228,6 +1254,9 @@ def _discover_gemini_models(limit: int = 3) -> list[str]:
             bad = ("tts", "audio", "image", "vision", "embedding",
                    "live", "native", "preview", "exp", "thinking", "learnlm")
             if any(b in name for b in bad):
+                continue
+            # 목록 API에는 보여도 신규 호출에서 404를 돌려주는 종료 모델.
+            if name == "gemini-2.5-flash":
                 continue
             names.append(name)
         # 빠르고 저렴한 flash 계열을 우선한다.
@@ -1684,19 +1713,43 @@ def _quote_summary(rows: list[dict], names: tuple[str, ...]) -> str:
 def _fallback_market_brief(market_name: str, data: dict) -> dict:
     """모델이 한국·미국 중 하나를 빼도 양쪽 시장을 반드시 표시한다."""
     if market_name == "국내":
-        result = _quote_summary(data.get("국내지수") or [], ("코스피", "코스닥"))
+        domestic = data.get("국내지수") or []
+        result = _quote_summary(domestic, ("코스피", "코스닥"))
+        rates = [float(x.get("등락률")) for x in domestic
+                 if x.get("등락률") is not None]
+        flows = {str(x.get("주체")): float(x.get("순매수") or 0)
+                 for x in (data.get("수급") or [])}
+        if flows:
+            parts = []
+            for actor in ("외국인", "기관"):
+                if actor not in flows:
+                    continue
+                value = flows[actor] / 1e8
+                parts.append(f"{actor} {'순매수' if value >= 0 else '순매도'} {abs(value):,.0f}억원")
+            reason = " · ".join(parts) + "의 수급이 지수 등락과 함께 나타났습니다."
+        elif rates and max(abs(x) for x in rates) < 1:
+            reason = "코스피·코스닥 등락폭이 모두 1% 안쪽으로, 지수 전체보다 업종별 차별화가 두드러진 날입니다."
+        elif len(rates) >= 2 and rates[0] * rates[1] < 0:
+            reason = "코스피와 코스닥의 방향이 엇갈려 대형주와 성장주의 온도 차가 나타났습니다."
+        else:
+            reason = "확정 지수의 등락폭을 기준으로 수급과 대형주 기여도를 함께 점검해야 하는 장입니다."
         return {"시장": "국내", "제목": "국내 증시 마감 흐름", "자동생성": True,
                 "결과": result or "국내 지수 데이터를 확인해야 합니다.",
-                "원인": "",
+                "원인": reason,
                 "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
                 "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"}]}
     rows = []
     for group in (data.get("지표") or {}).values():
         rows.extend(group or [])
     result = _quote_summary(rows, ("S&P 500", "나스닥 종합", "다우 30"))
+    rate_text = _quote_summary(rows, ("미 10년물", "VIX"))
+    if rate_text:
+        reason = f"주요 지수와 함께 {rate_text}의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다."
+    else:
+        reason = "확정 지수의 등락폭을 기준으로 금리와 대형 기술주의 기여도를 함께 점검해야 하는 장입니다."
     return {"시장": "미국", "제목": "미국 증시 마감 흐름", "자동생성": True,
             "결과": result or "미국 지수 데이터를 확인해야 합니다.",
-            "원인": "",
+            "원인": reason,
             "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
             "출처": [{"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"}]}
 

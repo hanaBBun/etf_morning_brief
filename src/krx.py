@@ -59,15 +59,39 @@ def last_business_day(offset: int = 0) -> str:
     d = now.date()
     if (now.hour, now.minute) < (15, 45):
         d -= timedelta(days=1)
-    day = s.get_nearest_business_day_in_a_week(date=d.strftime("%Y%m%d"), prev=True)
+    def weekday_on_or_before(value):
+        while value.weekday() >= 5:
+            value -= timedelta(days=1)
+        return value
+
+    try:
+        day = s.get_nearest_business_day_in_a_week(
+            date=d.strftime("%Y%m%d"), prev=True
+        )
+        if not day:
+            raise ValueError("KRX 영업일 응답이 비었습니다")
+    except Exception as e:  # noqa: BLE001
+        # KRX가 HTML/빈 응답을 돌려 pykrx의 영업일 조회부터 실패하는 날이 있다.
+        # 시세 수집 전체를 중단하지 않고, 우선 달력상 직전 평일로 진행한다.
+        # 실제 휴장일이면 이후 마감 스냅샷/보조 시세가 최신 확정 거래일을 검증한다.
+        fallback = weekday_on_or_before(d)
+        day = fallback.strftime("%Y%m%d")
+        log.warning("KRX 영업일 조회 실패 — 달력상 직전 평일 %s 사용: %s", day, e)
     for _ in range(offset):
         prev = (
             __import__("datetime").datetime.strptime(day, "%Y%m%d").date()
             - timedelta(days=1)
         )
-        day = s.get_nearest_business_day_in_a_week(
-            date=prev.strftime("%Y%m%d"), prev=True
-        )
+        try:
+            candidate = s.get_nearest_business_day_in_a_week(
+                date=prev.strftime("%Y%m%d"), prev=True
+            )
+            if not candidate:
+                raise ValueError("KRX 영업일 응답이 비었습니다")
+            day = candidate
+        except Exception as e:  # noqa: BLE001
+            day = weekday_on_or_before(prev).strftime("%Y%m%d")
+            log.warning("KRX 이전 영업일 조회 실패 — 달력상 평일 %s 사용: %s", day, e)
     return day
 
 

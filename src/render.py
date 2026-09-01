@@ -502,7 +502,9 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
             continue
         missing = [key for key in ("결과", "원인", "ETF연결")
                    if not str(card.get(key) or "").strip()]
-        if card.get("자동생성") or missing:
+        # AI가 일시적으로 막혀도 수집한 확정 수치로 세 칸이 모두 완성되면
+        # 작은 자동작성 배지를 붙여 발행한다. 빈 칸만 발행 차단 대상으로 본다.
+        if missing:
             errors.append(f"{card.get('시장')} 시장브리핑 미완성")
     flowboard = ((data.get("ETF_후보") or {}).get("흐름판") or {})
     if not (ai.get("etf_레이더") or []) and not (flowboard.get("상승") or flowboard.get("하락")):

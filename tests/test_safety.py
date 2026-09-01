@@ -135,8 +135,9 @@ class SafetyTests(unittest.TestCase):
         self.assertTrue(out["오늘의개념"])
         self.assertTrue(out["체크포인트"])
         errors = render.validate_daily({"카카오": {}}, data, out)
-        self.assertIn("국내 시장브리핑 미완성", errors)
-        self.assertIn("미국 시장브리핑 미완성", errors)
+        self.assertNotIn("국내 시장브리핑 미완성", errors)
+        self.assertNotIn("미국 시장브리핑 미완성", errors)
+        self.assertTrue(all(x.get("원인") for x in out["시장브리핑"]))
 
     def test_complete_daily_contract_renders_every_required_section(self):
         data = {
@@ -528,6 +529,42 @@ class SafetyTests(unittest.TestCase):
         with patch.object(krx, "_stock", return_value=_FakeStock()), \
              patch.object(krx, "now_kst", return_value=morning):
             self.assertEqual(krx.last_business_day(), "20260819")
+
+    def test_krx_business_day_failure_falls_back_to_previous_weekday(self):
+        class BrokenStock:
+            @staticmethod
+            def get_nearest_business_day_in_a_week(**_kwargs):
+                raise ValueError("empty KRX response")
+
+        monday_morning = datetime(2026, 8, 24, 7, 0,
+                                  tzinfo=ZoneInfo("Asia/Seoul"))
+        with patch.object(krx, "_stock", return_value=BrokenStock()), \
+             patch.object(krx, "now_kst", return_value=monday_morning):
+            self.assertEqual(krx.last_business_day(), "20260821")
+
+    def test_complete_data_fallback_market_cards_can_publish(self):
+        data = {
+            "국내지수": [
+                {"이름": "코스피", "종가": 3000, "등락률": 0.4},
+                {"이름": "코스닥", "종가": 800, "등락률": -0.2},
+            ],
+            "수급": [{"주체": "외국인", "순매수": -103900000000}],
+            "지표": {"해외지수": [
+                {"이름": "S&P 500", "종가": 6500, "등락률": 0.3},
+                {"이름": "나스닥 종합", "종가": 22000, "등락률": 0.5},
+            ]},
+        }
+        cards = [llm._fallback_market_brief("국내", data),
+                 llm._fallback_market_brief("미국", data)]
+        ai = {"top5": [{"제목": str(i)} for i in range(5)],
+              "시장브리핑": cards,
+              "etf_레이더": [{"제목": "ETF"}],
+              "콘텐츠후보": [{"제목": "기획"}],
+              "오늘의개념": {"용어": "개념"},
+              "체크포인트": [{"내용": "확인"}],
+              "카톡": {"1": "1. a\n2. b\n3. c\n4. d\n5. e"}}
+        self.assertFalse(any("시장브리핑 미완성" in x
+                             for x in render.validate_daily({}, data, ai)))
 
     def test_payload_is_valid_json_under_budget(self):
         news = [{"제목": "x" * 400, "링크": f"https://example.com/{i}",
