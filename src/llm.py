@@ -1024,11 +1024,13 @@ def _merge_unique(groups: list[list], key, limit: int) -> list:
 def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
     """부분 응답이 이전의 완성된 당일 결과를 지우지 않게 필수 섹션을 합친다."""
     raw_fallback = _fallback_seed(data)
+    # _postprocess는 입력 사전을 제자리에서 정리하므로, 그 전에 원본 카드를 복사한다.
+    raw_markets = {x.get("시장"): dict(x)
+                   for x in raw_fallback.get("시장브리핑", [])}
     fallback = _postprocess(raw_fallback, cfg, data)
     # 일반 AI 문장의 원인은 기사 근거가 없으면 후처리에서 지우는 것이 맞다.
     # 다만 이 폴백 원인은 확정 지수·수급을 그대로 읽은 관찰 문장이라 기사 인과를
     # 주장하지 않는다. AI 장애 때 카드가 빈칸이 되지 않도록 자동작성 카드에만 복원한다.
-    raw_markets = {x.get("시장"): x for x in raw_fallback.get("시장브리핑", [])}
     for card in fallback.get("시장브리핑", []):
         raw_card = raw_markets.get(card.get("시장")) or {}
         if card.get("자동생성") and not str(card.get("원인") or "").strip():
