@@ -339,6 +339,23 @@ class SafetyTests(unittest.TestCase):
     def test_youtube_duration_parser(self):
         self.assertEqual(youtube._duration_seconds("PT1H2M3S"), 3723)
 
+    def test_routine_live_is_excluded_but_new_channel_live_is_kept(self):
+        rules = {"삼프로TV": ["개장시황", "더블 밸류업"]}
+        routine = {"채널": "삼프로TV", "제목": "[9월 1일 개장시황] 더블 밸류업",
+                   "방송상태": "none"}
+        new_live = {"채널": "서대리TV", "제목": "처음 해보는 ETF 라이브",
+                    "방송상태": "live"}
+        self.assertTrue(youtube._is_routine_live(routine, rules))
+        self.assertFalse(youtube._is_routine_live(new_live, rules))
+
+    def test_routine_live_filter_also_removes_cached_replay(self):
+        rows = [
+            {"영상ID": "live", "채널": "삼프로TV", "제목": "오늘의 개장시황"},
+            {"영상ID": "video", "채널": "삼프로TV", "제목": "반도체 ETF 분석"},
+        ]
+        kept = youtube._exclude_routine_lives(rows, {"삼프로TV": ["개장시황"]})
+        self.assertEqual([x["영상ID"] for x in kept], ["video"])
+
     def test_etf_flow_deduplicates_themes_and_separates_leverage(self):
         rows = [{"이름": "KODEX 반도체", "등락률": 5.0},
                 {"이름": "TIGER 반도체", "등락률": 4.8},

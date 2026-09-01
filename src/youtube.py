@@ -42,6 +42,31 @@ def _duration_seconds(value: str) -> int | None:
     return hours * 3600 + minutes * 60 + seconds
 
 
+def _is_routine_live(video: dict, rules: dict | None) -> bool:
+    """새 콘텐츠 동향을 가리는 특정 채널의 반복 라이브만 제외한다.
+
+    모든 라이브를 빼지는 않는다. 다른 경쟁 채널이 새로 라이브를 시작한
+    사실도 콘텐츠 전략 변화일 수 있기 때문이다.
+    """
+    channel = str(video.get("채널") or "").casefold()
+    title = str(video.get("제목") or "").casefold()
+    status = str(video.get("방송상태") or "").casefold()
+    for configured, keywords in (rules or {}).items():
+        if str(configured).casefold() not in channel:
+            continue
+        words = [str(x).casefold() for x in (keywords or []) if str(x).strip()]
+        return status in {"live", "upcoming"} or any(word in title for word in words)
+    return False
+
+
+def _exclude_routine_lives(videos: list[dict], rules: dict | None) -> list[dict]:
+    kept = [video for video in videos if not _is_routine_live(video, rules)]
+    removed = len(videos) - len(kept)
+    if removed:
+        log.info("경쟁 채널 정기 라이브 %d건 제외", removed)
+    return kept
+
+
 def _get(path: str, key: str, **params) -> dict:
     params["key"] = key
     r = requests.get(f"{API}/{path}", params=params, timeout=20)
@@ -239,11 +264,14 @@ def collect(cfg: dict) -> dict[str, Any]:
             log.warning("영상 통계 실패: %s", e)
 
     for v in videos:
-        st = stats.get(v["영상ID"], {}).get("statistics", {})
-        details = stats.get(v["영상ID"], {}).get("contentDetails", {})
+        item = stats.get(v["영상ID"], {})
+        st = item.get("statistics", {})
+        details = item.get("contentDetails", {})
+        snippet = item.get("snippet", {})
         v["조회수"] = int(st.get("viewCount", 0))
         v["댓글수"] = int(st.get("commentCount", 0))
         v["길이초"] = _duration_seconds(details.get("duration"))
+        v["방송상태"] = snippet.get("liveBroadcastContent", "none")
         v["링크"] = f"https://www.youtube.com/watch?v={v['영상ID']}"
 
     # 같은 날짜에 앞선 실행에서 잡힌 영상은 새 결과와 합친다. 조회수 순위가
@@ -251,6 +279,7 @@ def collect(cfg: dict) -> dict[str, Any]:
     merged = {str(v.get("영상ID")): v for v in (cached.get("급상승") or [])}
     merged.update({str(v.get("영상ID")): v for v in videos})
     videos = list(merged.values())
+    videos = _exclude_routine_lives(videos, yt.get("정기_라이브_제외"))
 
     # ① ETF 관련 영상 먼저, ② 관련도 높은 순, ③ 조회수 순
     videos.sort(key=lambda r: (r.get("ETF관련", False), r.get("ETF점수", 0),
