@@ -16,6 +16,26 @@ class _FakeStock:
 
 
 class SafetyTests(unittest.TestCase):
+    def test_flowboard_never_places_positive_return_in_losers(self):
+        data = {"ETF_후보": {"흐름판": {
+            "상승": [{"이름": "상승 ETF", "등락률": 2.0},
+                       {"이름": "잘못된 상승", "등락률": -1.0}],
+            "하락": [{"이름": "하락 ETF", "등락률": -2.0},
+                       {"이름": "잘못된 하락", "등락률": 1.0}],
+        }}}
+        flow = render._safe_flowboard(data)
+        self.assertEqual([x["이름"] for x in flow["상승"]], ["상승 ETF"])
+        self.assertEqual([x["이름"] for x in flow["하락"]], ["하락 ETF"])
+
+    def test_top5_dedupes_same_indicator_and_return(self):
+        rows = [
+            {"제목": "필라델피아 반도체 하락", "숫자": "11,469.66 (-3.47%)"},
+            {"제목": "미 반도체 지수 급락", "숫자": "필라델피아 반도체 -3.47%"},
+            {"제목": "WTI 상승", "숫자": "85.17 (+2.12%)"},
+        ]
+        self.assertEqual([x["제목"] for x in llm._dedupe_top5(rows)],
+                         ["필라델피아 반도체 하락", "WTI 상승"])
+
     def test_youtube_same_day_cache_survives_rerun_without_api(self):
         with tempfile.TemporaryDirectory() as td:
             cache = Path(td) / "youtube_daily_cache.json"
@@ -211,6 +231,8 @@ class SafetyTests(unittest.TestCase):
         self.assertIn('cron: "15 22 * * 0-4"', workflow)
         self.assertIn('cron: "5 23 * * 0-4"', workflow)
         self.assertIn("--skip-if-existing", workflow)
+        self.assertIn("skip_if_existing:", workflow)
+        self.assertIn("inputs.skip_if_existing", workflow)
 
     def test_waiting_factors_require_quiet_market_and_two_fresh_sources(self):
         articles = [
@@ -352,7 +374,9 @@ class SafetyTests(unittest.TestCase):
                 "흐름판_최소거래대금_억원": 50, "흐름판_상하위개수": 3}})
         flow = out["흐름판"]
         self.assertEqual([x["이름"] for x in flow["상승"]],
-                         ["KODEX 반도체", "ACE 바이오", "RISE 화장품"])
+                         ["KODEX 반도체", "ACE 바이오"])
+        self.assertEqual([x["이름"] for x in flow["하락"]],
+                         ["PLUS 방산", "RISE 화장품"])
         self.assertEqual(flow["고변동상품"][0]["이름"], "KODEX 코스닥150레버리지")
 
     def test_zero_turnover_is_not_rewritten_as_liquid_etf_flow(self):
@@ -891,6 +915,24 @@ class SafetyTests(unittest.TestCase):
             payload = json.loads(krx.ETF_CLOSE_CACHE.read_text(encoding="utf-8"))
         self.assertEqual(saved, "20260828")
         self.assertEqual(payload["20260828"]["항목"][0]["이름"], "정상 ETF")
+
+    def test_delayed_weekday_snapshot_saves_previous_completed_close(self):
+        import pandas as pd
+        frame = pd.DataFrame([{"종가": 100.0, "등락률": 1.0, "거래량": 10,
+                               "거래대금": 100000000.0, "순자산총액": 500.0}],
+                             index=["123456"])
+        # 월요일 마감 예약이 화요일 새벽까지 밀린 실제 장애를 재현한다.
+        fixed = datetime(2026, 9, 1, 1, 6, tzinfo=ZoneInfo("Asia/Seoul"))
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(krx, "ETF_CLOSE_CACHE", Path(td) / "close.json"), \
+             patch.object(krx, "now_kst", return_value=fixed), \
+             patch.object(krx, "last_business_day", return_value="20260831"), \
+             patch.object(krx, "_naver_etf_snapshot",
+                          return_value=(frame, {"123456": "정상 ETF"})):
+            saved = krx.save_closing_etf_snapshot()
+            payload = json.loads(krx.ETF_CLOSE_CACHE.read_text(encoding="utf-8"))
+        self.assertEqual(saved, "20260831")
+        self.assertIn("20260831", payload)
 
     def test_weekly_workflow_has_retries_and_deduplication(self):
         workflow = (Path(__file__).parents[1] / ".github/workflows/weekly.yml").read_text(

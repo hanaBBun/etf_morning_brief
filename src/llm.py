@@ -1753,6 +1753,26 @@ def _topup_top5(d: dict) -> None:
     d["top5"] = top[:5]
 
 
+def _dedupe_top5(items: list[dict]) -> list[dict]:
+    """같은 지표와 수치가 표현만 달라 TOP5를 중복 점유하지 않게 한다."""
+    out: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+    entities = ("필라델피아 반도체", "코스피", "코스닥", "나스닥", "S&P 500",
+                "다우", "미 10년물", "10년물", "WTI", "금 선물", "원/달러")
+    for item in items:
+        text = f"{item.get('제목', '')} {item.get('숫자', '')}"
+        entity = next((x for x in entities if x.lower() in text.lower()), "")
+        rates = re.findall(r"[+-]?\d+(?:,\d{3})*(?:\.\d+)?%", text)
+        signature = (entity.lower(), rates[0] if rates else "")
+        if entity and signature[1] and signature in seen:
+            log.warning("TOP5 동일 지표·수치 중복 제외: %s", item.get("제목", ""))
+            continue
+        if entity and signature[1]:
+            seen.add(signature)
+        out.append(item)
+    return out
+
+
 def _topic_words(value: Any) -> set[str]:
     """제목의 브랜드·조사 차이를 무시하고 같은 뉴스 주제를 찾는다."""
     stop = {"etf", "상승", "하락", "급등", "급락", "관련", "주목", "전망",
@@ -1922,7 +1942,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
             impact = impact.replace("자금 유입", "가격 강세").replace("돈이 몰림", "거래 관심 확대")
             r["영향"] = impact
         r["순위"] = i
-    d["top5"] = top5[:5]
+    d["top5"] = _dedupe_top5(top5)[:5]
 
     # 결과 → 원인 → ETF 연결로 읽히는 미국·국내 시장 해설
     briefs = _drop_filler(d.get("시장브리핑"), ("제목", "결과"))

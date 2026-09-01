@@ -255,6 +255,19 @@ def _monday_summary(data: dict, ai: dict) -> dict | None:
             "국내개장영향": open_impact}
 
 
+def _safe_flowboard(data: dict) -> dict:
+    """구버전 캐시도 잘못된 수익률 방향으로 출력되지 않게 한다."""
+    raw = (data.get("ETF_후보") or {}).get("흐름판") or {}
+    if not isinstance(raw, dict):
+        return {}
+    out = dict(raw)
+    out["상승"] = [x for x in (raw.get("상승") or [])
+                   if isinstance(x, dict) and float(x.get("등락률", 0)) > 0]
+    out["하락"] = [x for x in (raw.get("하락") or [])
+                   if isinstance(x, dict) and float(x.get("등락률", 0)) < 0]
+    return out
+
+
 def _checkpoint_groups(items: list[dict]) -> list[dict]:
     """이번 주 확인 → 날짜별 일정 → 상시 확인 순으로 묶는다."""
     import re
@@ -458,7 +471,7 @@ def build_context(cfg: dict, data: dict[str, Any], ai: dict[str, Any], mode: str
         "주간대표흐름": _weekly_table(data, mode),
         "월요일요약": _monday_summary(data, ai or {}),
         "체크포인트그룹": _checkpoint_groups((ai or {}).get("체크포인트") or []),
-        "ETF흐름판": (data.get("ETF_후보") or {}).get("흐름판") or {},
+        "ETF흐름판": _safe_flowboard(data),
         "전일ETF뉴스": _daily_etf_news(data),
         "유튜브영상": competitors,
         "유튜브운용사": official,

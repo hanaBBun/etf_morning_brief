@@ -27,6 +27,10 @@ on:
         description: "기존의 오늘 공식 브리핑 교체 (평소에는 선택하지 마세요)"
         type: boolean
         default: false
+      skip_if_existing:
+        description: "외부 예약 호출 시 이미 발행된 오늘 브리핑 건너뛰기"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -68,7 +72,7 @@ jobs:
           TZ: Asia/Seoul
         run: |
           python -m src.main --mode daily \
-            ${{ github.event_name == 'schedule' && '--skip-if-existing' || '' }} \
+            ${{ (github.event_name == 'schedule' || inputs.skip_if_existing) && '--skip-if-existing' || '' }} \
             ${{ inputs.no_send && '--no-send' || '' }} \
             ${{ inputs.replace_published && '--replace-existing' || '' }}
 

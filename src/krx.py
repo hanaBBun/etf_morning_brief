@@ -223,12 +223,11 @@ def _closing_etf_snapshot(day: str):
 def save_closing_etf_snapshot() -> str:
     """최근 확정 영업일의 네이버 무료 시세를 날짜와 함께 고정 저장한다.
 
-    GitHub 예약이 금요일 오후에서 토요일 새벽으로 밀려도 금요일 마감본을
-    저장해야 한다. 실행한 달력 날짜가 주말이라는 이유로 건너뛰지 않는다.
+    GitHub 예약이 다음 날 새벽이나 주말로 밀려도 직전 확정 마감본을
+    저장한다. ``last_business_day()``가 장중에는 전 영업일을 고르므로
+    실행 시각만으로 저장을 막지 않는다.
     """
     now = now_kst()
-    if now.weekday() < 5 and (now.hour, now.minute) < (15, 40):
-        raise RuntimeError("ETF 마감 스냅샷은 15:40 KST 이후에만 저장할 수 있습니다")
     day = last_business_day()
     if (_load_close_cache().get(day) or {}).get("항목"):
         log.info("ETF 마감 스냅샷 %s가 이미 있어 중복 저장을 생략합니다", day)
@@ -666,11 +665,15 @@ def etf_radar(day: str, cfg: dict, mode: str = "daily", _force_naver: bool = Fal
                 result["진단"]["유동성필터통과"] = len(perf_rows)
         general = [x for x in perf_rows if x["유형"] == "일반형"]
         leveraged = [x for x in perf_rows if x["유형"] == "레버리지·인버스"]
+        # 상·하위는 정렬 순서가 아니라 실제 수익률 방향으로 나눈다.
+        # 하락 상품이 부족한 날 플러스 수익률로 빈자리를 채우지 않는다.
+        gainers = [x for x in general if float(x.get("등락률", 0)) > 0]
+        losers = [x for x in general if float(x.get("등락률", 0)) < 0]
         result["진단"]["등락률유효"] = len(perf_rows)
         result["흐름판"] = {
             "기간": period, "기준일": f"{day[4:6]}/{day[6:8]}",
-            "상승": _dedupe_ranked(sorted(general, key=lambda x: x["등락률"], reverse=True), rank_n),
-            "하락": _dedupe_ranked(sorted(general, key=lambda x: x["등락률"]), rank_n),
+            "상승": _dedupe_ranked(sorted(gainers, key=lambda x: x["등락률"], reverse=True), rank_n),
+            "하락": _dedupe_ranked(sorted(losers, key=lambda x: x["등락률"]), rank_n),
             "고변동상품": _dedupe_ranked(
                 sorted(leveraged, key=lambda x: abs(x["등락률"]), reverse=True), 2),
             "최소거래대금_억원": int(min_turnover / 1e8),
