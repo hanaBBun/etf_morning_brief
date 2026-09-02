@@ -36,6 +36,21 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual([x["제목"] for x in llm._dedupe_top5(rows)],
                          ["필라델피아 반도체 하락", "WTI 상승"])
 
+    def test_market_source_id_accepts_model_variants(self):
+        index = {"n12": {"제목": "유가 상승 기사", "링크": "https://example.com/oil",
+                          "출처": "테스트뉴스", "날짜": "2026-09-02"}}
+        for source in ("기사 n12", {"기사_id": "기사 n12"}, {"번호": "n12"}):
+            resolved = llm._resolve_srcs([source], index)
+            self.assertEqual(resolved[0]["url"], "https://example.com/oil")
+
+    def test_daily_concept_prefers_decoupling_when_kospi_and_kosdaq_diverge(self):
+        data = {"국내지수": [
+            {"이름": "코스피", "등락률": 0.23},
+            {"이름": "코스닥", "등락률": -1.56}], "뉴스": {}}
+        selected = llm._select_daily_concept(
+            {"용어": "베이시스포인트(bp)", "연결": "금리", "설명": "설명"}, data, {})
+        self.assertTrue(selected["용어"].startswith("디커플링"))
+
     def test_youtube_same_day_cache_survives_rerun_without_api(self):
         with tempfile.TemporaryDirectory() as td:
             cache = Path(td) / "youtube_daily_cache.json"
@@ -250,6 +265,17 @@ class SafetyTests(unittest.TestCase):
              patch.object(main, "now_kst", return_value=fixed):
             (Path(td) / "2026-09-03-handoff.html").write_text("완료", encoding="utf-8")
             self.assertTrue(main._published("thursday"))
+
+    def test_published_check_uses_remote_main_when_checkout_is_stale(self):
+        fixed = datetime(2026, 9, 2, 7, 0, tzinfo=ZoneInfo("Asia/Seoul"))
+        response = type("Response", (), {"status_code": 200})()
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(render, "DOCS", Path(td)), \
+             patch.object(main, "now_kst", return_value=fixed), \
+             patch.dict("os.environ", {"GITHUB_REPOSITORY": "hanaBBun/etf_morning_brief"}), \
+             patch.object(main.requests, "get", return_value=response) as get:
+            self.assertTrue(main._published("daily"))
+        self.assertIn("docs/2026-09-02.html", get.call_args.args[0])
 
     def test_delivery_boundary_keeps_kakao_out_of_main_pipeline(self):
         cfg = {"발행": {"채널": "kakao"}}
@@ -466,7 +492,7 @@ class SafetyTests(unittest.TestCase):
                  "ETF연결": "S&P500 ETF"}],
               "etf_레이더": [], "관심종목": [], "시장국면": None}
         issues = main._operator_issues(data, ai)
-        self.assertIn("국내 시황: AI 해설 미완성", issues)
+        self.assertIn("국내 시황: 해설 미완성(원인 없음)", issues)
         self.assertTrue(any("원본 1163" in x for x in issues))
         self.assertTrue(any("ETF 레이더" in x for x in issues))
         self.assertFalse(any("특징주" in x or "시장국면" in x for x in issues))

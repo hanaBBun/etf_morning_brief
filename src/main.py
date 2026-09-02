@@ -6,9 +6,12 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
 from datetime import timedelta
 from typing import Any
+
+import requests
 
 from . import delivery, events, krx, llm, market, news, render, youtube
 from .config import kdate, load_config, now_kst
@@ -210,10 +213,31 @@ def _daily_published() -> bool:
 
 
 def _published(mode: str) -> bool:
-    """예약 재시도 시 해당 모드의 오늘 공식 HTML 존재 여부를 확인한다."""
+    """예약 재시도 시 로컬이 낡아도 원격 main의 오늘 공식본까지 확인한다."""
     stamp = now_kst().strftime("%Y-%m-%d")
     suffix = render.SUFFIX.get(mode, "")
-    return (render.DOCS / f"{stamp}{suffix}.html").exists()
+    filename = f"{stamp}{suffix}.html"
+    if (render.DOCS / filename).exists():
+        return True
+    repository = os.getenv("GITHUB_REPOSITORY", "").strip()
+    if not repository:
+        return False
+    headers = {"Accept": "application/vnd.github+json"}
+    token = os.getenv("GH_PAT", "").strip()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    try:
+        response = requests.get(
+            f"https://api.github.com/repos/{repository}/contents/docs/{filename}",
+            params={"ref": "main"}, headers=headers, timeout=10)
+        if response.status_code == 200:
+            log.info("원격 main에서 오늘 공식본 확인: %s", filename)
+            return True
+        if response.status_code != 404:
+            log.warning("원격 공식본 확인 실패 HTTP %s", response.status_code)
+    except requests.RequestException as exc:
+        log.warning("원격 공식본 확인 실패: %s", exc)
+    return False
 
 
 def _operator_issues(data: dict, ai: dict, incomplete: list[str] | None = None) -> list[str]:
@@ -224,8 +248,10 @@ def _operator_issues(data: dict, ai: dict, incomplete: list[str] | None = None) 
     for market_name in ("국내", "미국"):
         card = cards.get(market_name) or {}
         missing = [k for k in ("결과", "원인", "ETF연결") if not str(card.get(k) or "").strip()]
-        if card.get("자동생성") or missing:
-            issues.append(f"{market_name} 시황: AI 해설 미완성")
+        if missing:
+            issues.append(f"{market_name} 시황: 해설 미완성({', '.join(missing)} 없음)")
+        elif card.get("자동생성"):
+            issues.append(f"{market_name} 시황: AI 대신 기사·시세 기반 대체 해설")
 
     etf = data.get("ETF_후보") or {}
     flow = etf.get("흐름판") or {}

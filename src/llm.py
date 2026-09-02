@@ -252,10 +252,11 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
      "제목": "결과와 핵심 원인이 함께 드러나는 제목",
      "결과": "주요 지수·금리·원자재·특징주의 핵심 숫자로 무슨 일이 있었는지 1~2문장",
      "원인": "가장 중요한 원인 2~3개와 각 원인이 시장에 전달된 경로를 2~3문장",
+     "전달경로": "사건 → 가격·금리 → 업종·지수 순서의 한 줄 인과 지도",
      "ETF연결": "국내 ETF 투자자와 ETF 아는형 작가가 오늘 어떤 자산군·테마를 연결해 봐야 하는지 1~2문장",
      "출처": [{"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"},
               {"이름": "원인을 다룬 매체명", "id": "입력 기사 id"}]},
-    {"시장": "국내", "제목": "", "결과": "", "원인": "", "ETF연결": "",
+    {"시장": "국내", "제목": "", "결과": "", "원인": "", "전달경로": "", "ETF연결": "",
      "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"},
               {"이름": "원인을 다룬 매체명", "id": "입력 기사 id"}]},
     {"시장": "글로벌", "제목": "시장에 영향을 줄 핵심 사건. 없으면 이 항목 자체를 생략",
@@ -433,8 +434,12 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 ★ 콘텐츠 후보는 좋은 것이 1개뿐이면 1개만 답하세요. 정원을 채우기 위한 범용 질문이나
   `VIX 상승`처럼 ETF 유형이 아닌 현상을 관련ETF에 쓰지 마세요.
 
-오늘의개념은 VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지, 베이시스포인트,
-멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중 그날 뉴스와 실제로 연결되는 것을 고릅니다.
+오늘의개념은 디커플링, VKOSPI, 듀레이션, 할인율, 실질금리, 환헤지,
+베이시스포인트, 멀티플, 변동성 잠식, 괴리율, 커버드콜 같은 것 중
+그날 본문에 실제 등장했고 독자가 가장 궁금해할 하나를 고릅니다.
+`최근브리핑주제`에 최근 개념이 있으면 같은 용어를 다시 고르지 마세요.
+금리 수치가 있다는 이유만으로 베이시스포인트를 반복하지 말고, 디커플링처럼
+그날 시장의 특징을 이해하는 데 더 직접적인 용어를 우선합니다.
 
 ★ 카톡은 후처리에서 TOP 1~5를 한 메시지로 자동 생성합니다.
   모델은 카톡 문안을 따로 작문하지 마세요.
@@ -674,9 +679,15 @@ def _resolve_srcs(srcs: Any, idx: dict[str, dict]) -> list[dict]:
     """모델이 준 출처 목록을 번호로 해석해 실제 링크를 붙인다."""
     out: list[dict] = []
     for s in srcs or []:
+        if isinstance(s, str):
+            s = {"id": s}
         if not isinstance(s, dict):
             continue
-        art = idx.get(str(s.get("id") or "").strip())
+        raw_id = str(s.get("id") or s.get("기사id") or s.get("기사_id")
+                     or s.get("번호") or "").strip().lower()
+        match = re.search(r"n\d+", raw_id)
+        article_id = match.group(0) if match else raw_id
+        art = idx.get(article_id)
         if art:
             # 발행일을 함께 넘긴다. 읽는 사람이 클릭하지 않고도
             # 이 근거가 언제 기사인지 알 수 있어야 한다.
@@ -821,7 +832,7 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
     kp, kq = domestic.get("코스피", {}), domestic.get("코스닥", {})
     if kp.get("등락률") is not None and kq.get("등락률") is not None:
         a, b = float(kp["등락률"]), float(kq["등락률"])
-        if a * b < 0 or abs(a - b) >= 2.0:
+        if a * b < 0 or abs(a - b) >= 1.0:
             d["지수괴리"] = f"코스피 {a:+.2f}% / 코스닥 {b:+.2f}% — 방향·강도 차이 확인"
     d["지표"] = {
         g: [_slim_quote(r) for r in rows if r.get("종가") is not None]
@@ -926,15 +937,18 @@ def _load_daily_ai(data: dict) -> dict:
 
 
 def _load_recent_topics(data: dict) -> list[dict]:
-    """직전 3회 브리핑 제목을 모델에 알려 상투적인 주제 반복을 줄인다."""
+    """직전 3회 제목·개념을 모델에 알려 상투적인 반복을 줄인다."""
     try:
         saved = json.loads(DAILY_AI_CACHE.read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError, OSError):
         return []
     history = [x for x in (saved.get("history") or []) if isinstance(x, dict)]
     if saved.get("날짜") and saved.get("날짜") != _daily_key(data):
-        titles = [str(x.get("제목") or "") for x in ((saved.get("ai") or {}).get("top5") or [])]
-        history.append({"날짜": saved["날짜"], "주제": [x for x in titles if x]})
+        previous = saved.get("ai") or {}
+        titles = [str(x.get("제목") or "") for x in (previous.get("top5") or [])]
+        concept = str((previous.get("오늘의개념") or {}).get("용어") or "").strip()
+        history.append({"날짜": saved["날짜"], "주제": [x for x in titles if x],
+                        "개념": concept})
     return history[-3:]
 
 
@@ -947,6 +961,81 @@ def _save_daily_ai(data: dict, result: dict) -> None:
             encoding="utf-8")
     except OSError as e:
         log.warning("일간 브리핑 캐시 저장 실패: %s", e)
+
+
+def _recent_concept_names(data: dict) -> set[str]:
+    names = set()
+    for row in _load_recent_topics(data):
+        value = str(row.get("개념") or "").strip().lower()
+        if value:
+            names.add(re.sub(r"\s|\([^)]*\)", "", value))
+    return names
+
+
+def _brief_concept_text(data: dict, result: dict | None = None) -> str:
+    parts: list[str] = []
+    result = result or {}
+    for item in result.get("top5") or []:
+        parts.extend(str(item.get(k) or "") for k in ("제목", "숫자", "설명", "영향"))
+    for item in result.get("시장브리핑") or []:
+        parts.extend(str(item.get(k) or "") for k in ("제목", "결과", "원인", "전달경로"))
+    for group in (data.get("뉴스") or {}).values():
+        for article in group or []:
+            parts.extend((str(article.get("제목") or ""), str(article.get("요약") or "")))
+    return " ".join(parts).lower()
+
+
+def _fallback_concept(data: dict, result: dict | None = None) -> dict:
+    """당일 시장에 실제 등장한, 최근 반복되지 않은 용어를 고른다."""
+    domestic = {str(x.get("이름") or ""): x for x in (data.get("국내지수") or [])}
+    kp, kq = domestic.get("코스피", {}), domestic.get("코스닥", {})
+    a, b = kp.get("등락률"), kq.get("등락률")
+    if a is not None and b is not None:
+        a, b = float(a), float(b)
+        if a * b < 0 or abs(a - b) >= 1.0:
+            return {
+                "용어": "디커플링(Decoupling)",
+                "연결": f"코스피 {a:+.2f}%와 코스닥 {b:+.2f}%의 방향·강도가 크게 엇갈린 장",
+                "설명": "원래 함께 움직이던 시장·지수·자산의 흐름이 서로 갈라지는 현상입니다. "
+                       "오늘처럼 코스피는 버티고 코스닥은 크게 내리면 대형주와 중소형 성장주의 "
+                       "투자심리가 분리됐다는 뜻으로 읽을 수 있습니다.",
+            }
+
+    text = _brief_concept_text(data, result)
+    catalog = [
+        (("듀레이션",), "듀레이션(Duration)",
+         "금리 변화에 채권 가격이 얼마나 민감한지를 보여주는 지표입니다. 듀레이션이 길수록 같은 금리 상승에도 채권 ETF 가격이 더 크게 하락할 수 있습니다."),
+        (("할인율",), "할인율", "미래 이익을 현재 가치로 바꿀 때 적용하는 비율입니다. 금리가 오르면 할인율도 높아져 먼 미래 이익의 현재 가치가 낮아지므로 성장주·기술주에 부담이 됩니다."),
+        (("실질금리",), "실질금리", "명목금리에서 기대 인플레이션을 뺀 금리입니다. 실질금리가 오르면 현금·채권의 상대 매력이 높아져 금·성장주 ETF에는 부담이 될 수 있습니다."),
+        (("환헤지", "환 헤지"), "환헤지", "해외자산 수익률에서 환율 변동 영향을 줄이는 장치입니다. 같은 해외 ETF라도 (H) 여부에 따라 원화 강세·약세 때 체감 수익률이 달라집니다."),
+        (("괴리율",), "괴리율", "ETF 시장가격과 실제 순자산가치의 차이를 비율로 나타낸 값입니다. 거래가 몰리거나 해외시장이 닫힌 시간에는 괴리율이 커질 수 있습니다."),
+        (("커버드콜",), "커버드콜", "주식을 보유하면서 콜옵션을 팔아 프리미엄을 받는 전략입니다. 분배 재원은 늘릴 수 있지만 급등장에서 상승 수익 일부를 포기하게 됩니다."),
+        (("변동성", "vix", "vkospi"), "변동성", "가격이 일정 기간 얼마나 크게 오르내리는지를 뜻합니다. 같은 수익률이라도 변동성이 크면 손실 회복에 더 높은 상승률이 필요하므로 ETF 비교 때 함께 봐야 합니다."),
+        (("bp", "베이시스포인트"), "베이시스포인트(bp)", "금리 변화폭을 나타내는 단위로 1bp는 0.01%포인트입니다. 금리가 4.75%에서 4.80%로 오르면 5bp 상승한 것입니다."),
+    ]
+    recent = _recent_concept_names(data)
+    for aliases, name, explanation in catalog:
+        normalized = re.sub(r"\s|\([^)]*\)", "", name.lower())
+        if normalized in recent or not any(alias in text for alias in aliases):
+            continue
+        return {"용어": name, "연결": "오늘 브리핑 본문에 등장한 시장 용어", "설명": explanation}
+    return {"용어": "변동성", "연결": "오늘 지수·ETF의 등락 폭을 함께 읽는 기준",
+            "설명": "가격이 일정 기간 얼마나 크게 오르내리는지를 뜻합니다. 같은 수익률이라도 변동성이 크면 손실 회복에 더 높은 상승률이 필요하므로 ETF 비교 때 함께 봐야 합니다."}
+
+
+def _select_daily_concept(candidate: Any, data: dict, result: dict | None = None) -> dict:
+    fallback = _fallback_concept(data, result)
+    if not isinstance(candidate, dict) or not str(candidate.get("용어") or "").strip():
+        return fallback
+    name = re.sub(r"\s|\([^)]*\)", "", str(candidate.get("용어") or "").lower())
+    # 지수 괴리가 실제로 발생한 날은 숫자 단위보다 그 현상을 설명하는 개념이 우선이다.
+    if str(fallback.get("용어") or "").startswith("디커플링"):
+        return fallback
+    if name in _recent_concept_names(data):
+        return fallback
+    text = _brief_concept_text(data, result)
+    base = re.sub(r"\([^)]*\)", "", str(candidate.get("용어") or "")).strip().lower()
+    return candidate if base and base in text else fallback
 
 
 def _fallback_seed(data: dict) -> dict:
@@ -984,12 +1073,7 @@ def _fallback_seed(data: dict) -> dict:
             break
 
     first = top[0] if top else {"제목": "오늘 시장", "숫자": ""}
-    concept = ({"용어": "베이시스포인트(bp)",
-                "연결": "국채금리 변화를 읽을 때 사용하는 단위",
-                "설명": "1bp는 0.01%포인트입니다. 금리가 4.65%에서 4.70%로 오르면 5bp 상승한 것입니다. 채권·성장주 ETF의 금리 민감도를 비교할 때 쓰입니다."}
-               if ind.get("금리") else
-               {"용어": "변동성", "연결": f"{first['제목']} 흐름을 해석하는 기준",
-                "설명": "가격이 일정 기간 얼마나 크게 오르내리는지를 나타냅니다. 같은 수익률이라도 변동성이 크면 손실 회복에 더 큰 상승률이 필요하므로 ETF 비교 때 함께 봐야 합니다."})
+    concept = _fallback_concept(data, {"top5": top})
     return {
         "top5": top,
         "시장브리핑": [_fallback_market_brief("국내", data), _fallback_market_brief("미국", data)],
@@ -1085,8 +1169,9 @@ def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
     result["체크포인트"] = _merge_unique(
         [fresh.get("체크포인트", []), cached.get("체크포인트", []), fallback["체크포인트"]],
         lambda x: f"{x.get('때')}|{x.get('내용')}", 4)
-    result["오늘의개념"] = (fresh.get("오늘의개념") or cached.get("오늘의개념")
-                            or fallback["오늘의개념"])
+    result["오늘의개념"] = _select_daily_concept(
+        fresh.get("오늘의개념") or cached.get("오늘의개념") or fallback["오늘의개념"],
+        data, result)
     # 국면 카드는 '오늘 새로 감지된 변화'만 허용한다. 전날 캐시를 재사용하면
     # 매일 같은 문구가 반복되므로 fresh 결과만 쓴다.
     result["시장국면"] = fresh.get("시장국면")
@@ -1705,9 +1790,67 @@ def _normalize_market_sources(items: list[dict], ages: dict[str, int]) -> list[d
         if not any(s.get("url") in ages for s in srcs):
             log.warning("원인 기사 근거가 없어 인과 설명 생략: %s", it.get("제목", ""))
             it["원인"] = ""
+            it["전달경로"] = ""
         it["출처"] = srcs
         out.append(it)
     return out
+
+
+_MARKET_SOURCE_STOPWORDS = {
+    "상승", "하락", "급등", "급락", "증시", "시장", "지수", "마감", "전일", "오늘",
+    "미국", "국내", "관련", "영향", "가능성", "기록", "중심", "대한", "따른", "통해",
+}
+
+
+def _source_words(value: Any) -> set[str]:
+    words = {x.lower() for x in re.findall(r"[A-Za-z]{3,}|[가-힣]{2,}", str(value or ""))}
+    return {x for x in words if x not in _MARKET_SOURCE_STOPWORDS}
+
+
+def _best_market_article(card: dict, data: dict) -> dict | None:
+    """모델이 기사 번호를 잘못 적어도 카드 문맥과 맞는 최근 기사만 한 번 복구한다."""
+    groups = {
+        "국내": ("국내", "주요언론", "증권", "지수"),
+        "미국": ("국제", "세계정세", "주요언론", "증권"),
+        "글로벌": ("세계정세", "국제", "주요언론"),
+    }.get(str(card.get("시장") or ""), ())
+    card_text = " ".join(str(card.get(k) or "") for k in ("제목", "결과", "원인", "전달경로"))
+    card_words = _source_words(card_text)
+    best: tuple[int, dict] | None = None
+    seen_links: set[str] = set()
+    for group in groups:
+        for article in ((data.get("뉴스") or {}).get(group) or []):
+            link = str(article.get("링크") or "")
+            if not link or link in seen_links or int(article.get("경과시간") or 0) > STALE_HOURS:
+                continue
+            seen_links.add(link)
+            article_text = " ".join(str(article.get(k) or "") for k in ("제목", "요약", "본문"))
+            overlap = card_words & _source_words(article_text)
+            # 한두 개의 흔한 시장 단어만 겹친 기사를 억지로 근거로 붙이지 않는다.
+            score = len(overlap)
+            if score < 2:
+                continue
+            if best is None or score > best[0]:
+                best = (score, article)
+    if best is None:
+        return None
+    article = best[1]
+    return {"이름": article.get("출처", "기사"), "url": article.get("링크", ""),
+            "날짜": _mmdd(article.get("날짜", ""))}
+
+
+def _repair_market_sources(items: list[dict], data: dict, ages: dict[str, int]) -> None:
+    for card in items or []:
+        if not str(card.get("원인") or "").strip():
+            continue
+        srcs = [x for x in (card.get("출처") or []) if isinstance(x, dict)]
+        if any(x.get("url") in ages and ages[x["url"]] <= STALE_HOURS for x in srcs):
+            continue
+        source = _best_market_article(card, data)
+        if source:
+            srcs.append(source)
+            card["출처"] = srcs
+            log.info("시장 해설 기사 번호 복구: %s → %s", card.get("시장"), source.get("이름"))
 
 
 def _quote_summary(rows: list[dict], names: tuple[str, ...]) -> str:
@@ -1726,10 +1869,14 @@ def _fallback_market_brief(market_name: str, data: dict) -> dict:
     if market_name == "국내":
         domestic = data.get("국내지수") or []
         result = _quote_summary(domestic, ("코스피", "코스닥"))
-        rates = [float(x.get("등락률")) for x in domestic
-                 if x.get("등락률") is not None]
+        index_map = {str(x.get("이름") or ""): x for x in domestic}
+        kp, kq = index_map.get("코스피", {}), index_map.get("코스닥", {})
+        rates = [float(x.get("등락률")) for x in domestic if x.get("등락률") is not None]
         flows = {str(x.get("주체")): float(x.get("순매수") or 0)
                  for x in (data.get("수급") or [])}
+        diverged = (kp.get("등락률") is not None and kq.get("등락률") is not None
+                    and (float(kp["등락률"]) * float(kq["등락률"]) < 0
+                         or abs(float(kp["등락률"]) - float(kq["등락률"])) >= 1.0))
         if flows:
             parts = []
             for actor in ("외국인", "기관"):
@@ -1737,32 +1884,61 @@ def _fallback_market_brief(market_name: str, data: dict) -> dict:
                     continue
                 value = flows[actor] / 1e8
                 parts.append(f"{actor} {'순매수' if value >= 0 else '순매도'} {abs(value):,.0f}억원")
-            reason = " · ".join(parts) + "의 수급이 지수 등락과 함께 나타났습니다."
+            flow_text = " · ".join(parts)
+            if diverged:
+                reason = (f"{flow_text}가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. "
+                          "같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.")
+            else:
+                reason = f"{flow_text}의 수급이 지수 등락과 함께 나타났습니다."
         elif rates and max(abs(x) for x in rates) < 1:
             reason = "코스피·코스닥 등락폭이 모두 1% 안쪽으로, 지수 전체보다 업종별 차별화가 두드러진 날입니다."
         elif len(rates) >= 2 and rates[0] * rates[1] < 0:
             reason = "코스피와 코스닥의 방향이 엇갈려 대형주와 성장주의 온도 차가 나타났습니다."
         else:
             reason = "확정 지수의 등락폭을 기준으로 수급과 대형주 기여도를 함께 점검해야 하는 장입니다."
-        return {"시장": "국내", "제목": "국내 증시 마감 흐름", "자동생성": True,
+        path = ("대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차"
+                if diverged else "투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률")
+        card = {"시장": "국내", "제목": ("코스피·코스닥 디커플링" if diverged else "국내 증시 마감 흐름"),
+                "자동생성": True,
                 "결과": result or "국내 지수 데이터를 확인해야 합니다.",
-                "원인": reason,
+                "원인": reason, "전달경로": path,
                 "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
                 "출처": [{"이름": "KRX 정보데이터시스템", "url": "https://data.krx.co.kr"}]}
+        source = _best_market_article(card, data)
+        if source:
+            card["출처"].append(source)
+        return card
     rows = []
     for group in (data.get("지표") or {}).values():
         rows.extend(group or [])
     result = _quote_summary(rows, ("S&P 500", "나스닥 종합", "다우 30"))
-    rate_text = _quote_summary(rows, ("미 10년물", "VIX"))
-    if rate_text:
-        reason = f"주요 지수와 함께 {rate_text}의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다."
+    quote_map = {str(x.get("이름") or ""): x for x in rows}
+    wti, ten = quote_map.get("WTI", {}), quote_map.get("미 10년물", {})
+    nasdaq = quote_map.get("나스닥 종합", {})
+    oil_jump = wti.get("등락률") is not None and float(wti["등락률"]) >= 3
+    yield_up = ten.get("변화bp") is not None and float(ten["변화bp"]) > 0
+    tech_down = nasdaq.get("등락률") is not None and float(nasdaq["등락률"]) < 0
+    if oil_jump and yield_up and tech_down:
+        reason = (f"WTI가 {float(wti['등락률']):+.2f}% 급등하고 미 10년물 금리가 "
+                  f"{float(ten['변화bp']):+.1f}bp 오른 날 나스닥이 {float(nasdaq['등락률']):+.2f}% 하락했습니다. "
+                  "유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다.")
+        path = "지정학·공급 불안 → 유가 상승 → 물가·국채금리 부담 → 기술주·반도체 약세"
     else:
-        reason = "확정 지수의 등락폭을 기준으로 금리와 대형 기술주의 기여도를 함께 점검해야 하는 장입니다."
-    return {"시장": "미국", "제목": "미국 증시 마감 흐름", "자동생성": True,
+        rate_text = _quote_summary(rows, ("미 10년물", "VIX"))
+        reason = (f"주요 지수와 함께 {rate_text}의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다."
+                  if rate_text else
+                  "확정 지수의 등락폭을 기준으로 금리와 대형 기술주의 기여도를 함께 점검해야 하는 장입니다.")
+        path = "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF"
+    card = {"시장": "미국", "제목": ("유가·금리 상승에 기술주 약세" if oil_jump and tech_down else "미국 증시 마감 흐름"),
+            "자동생성": True,
             "결과": result or "미국 지수 데이터를 확인해야 합니다.",
-            "원인": reason,
+            "원인": reason, "전달경로": path,
             "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
             "출처": [{"이름": "Yahoo Finance", "url": "https://finance.yahoo.com"}]}
+    source = _best_market_article(card, data)
+    if source:
+        card["출처"].append(source)
+    return card
 
 
 def _clip(text: Any, n: int) -> str:
@@ -2016,7 +2192,8 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         market_name = str(b.get("시장") or "").strip()
         if market_name not in ("미국", "국내", "글로벌") or market_name in seen_markets or _has_hype(b):
             continue
-        for key, limit_n in (("제목", 70), ("결과", 140), ("원인", 220), ("ETF연결", 140)):
+        for key, limit_n in (("제목", 70), ("결과", 140), ("원인", 220),
+                             ("전달경로", 140), ("ETF연결", 140)):
             b[key] = _strip_stock_flow_claim(b.get(key), data)[:limit_n]
         if not b["결과"] or not b["원인"]:
             continue
@@ -2044,10 +2221,14 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
 
     # 출처를 번호에서 실제 링크로 되돌린다 (모델이 URL 을 옮겨 적지 않게 한 대가)
     idx = _link_index(data)
+    ages = _article_age(data)
     for key in ("top5", "시장브리핑", "etf_레이더", "관심종목"):
         for c in d.get(key) or []:
             if isinstance(c, dict):
                 c["출처"] = _resolve_srcs(c.get("출처"), idx)
+    # 모델이 n12 대신 '기사 n12'·문자열·다른 키를 쓴 경우를 먼저 복구하고,
+    # 그래도 번호가 사라졌다면 카드 문맥과 두 단어 이상 맞는 최근 기사만 붙인다.
+    _repair_market_sources(d.get("시장브리핑") or [], data, ages)
     if d.get("월요일요약"):
         for item in d["월요일요약"].get("주말변수") or []:
             item["출처"] = _resolve_srcs(item.get("출처"), idx)
@@ -2075,7 +2256,6 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         d["관망요인"] = None
 
     # ETF 레이더 — 빈 항목·필러 제거, 오래된 근거 제거, 관찰 면책 문장 정리
-    ages = _article_age(data)
     if d.get("시장국면"):
         fresh_regime_sources = [s for s in d["시장국면"].get("출처", [])
                                 if s.get("url") in ages and ages[s["url"]] <= STALE_HOURS]
@@ -2231,7 +2411,9 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     d.pop("일정", None)
 
     concept = d.get("오늘의개념")
-    if not isinstance(concept, dict) or not concept.get("용어"):
+    if mode == "daily":
+        d["오늘의개념"] = _select_daily_concept(concept, data, d)
+    elif not isinstance(concept, dict) or not concept.get("용어"):
         d["오늘의개념"] = None
 
     if not str(d.get("댓글키워드") or "").strip():
