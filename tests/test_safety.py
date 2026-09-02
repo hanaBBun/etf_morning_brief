@@ -335,7 +335,8 @@ class SafetyTests(unittest.TestCase):
         fixed = datetime(2026, 8, 27, 7, 0, tzinfo=timezone.utc)
         with tempfile.TemporaryDirectory() as td, \
              patch.object(render, "DOCS", Path(td)), \
-             patch.object(main, "now_kst", return_value=fixed):
+             patch.object(main, "now_kst", return_value=fixed), \
+             patch.dict("os.environ", {"GITHUB_REPOSITORY": ""}):
             self.assertFalse(main._daily_published())
             (Path(td) / "2026-08-27.html").write_text("official", encoding="utf-8")
             self.assertTrue(main._daily_published())
