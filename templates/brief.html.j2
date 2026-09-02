@@ -64,6 +64,11 @@
   .rank .n .eff{color:var(--accent);font-weight:600}
   .rank .desc{font-size:12.5px;color:var(--ink2);margin:6px 0 0;line-height:1.55}
   .rank .src{margin-top:5px}
+  .rank-more,.evidence{margin-top:7px;border-top:1px solid var(--line)}
+  .rank-more summary,.evidence summary{cursor:pointer;color:var(--ink3);font-size:11.5px;
+        padding:7px 0 1px;list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .rank-more summary::before,.evidence summary::before{content:"＋";font-weight:700;color:var(--accent)}
+  .rank-more[open] summary::before,.evidence[open] summary::before{content:"－"}
 
   /* ── 시장 한눈에 ─────────────────────────────── */
   .glance{background:var(--surface);border:1px solid var(--line);border-radius:10px;
@@ -95,6 +100,7 @@
   .waititem b{font-size:13.5px}.waititem p{margin:5px 0 0 29px;color:var(--ink2);font-size:12.5px}
   .waititem .path{border-left:3px solid var(--accent);background:var(--surface2);padding:7px 9px;margin-top:7px}
   .waititem .src{margin-left:29px}
+  .waititem .evidence{margin-left:29px}
 
   /* ── 시장 스토리 ─────────────────────────── */
   .story{background:var(--surface);border:1px solid var(--line);border-radius:10px;
@@ -106,6 +112,9 @@
   .storyline{display:grid;grid-template-columns:54px 1fr;gap:7px 10px;margin:6px 0;font-size:13px}
   .storyline .k{color:var(--ink3);font-size:10.5px;font-weight:700;letter-spacing:.04em;padding-top:2px}
   .storyline .v{color:var(--ink2)}
+  .storyline.interpretation{background:var(--surface2);border-left:3px solid var(--accent);
+                            border-radius:0 7px 7px 0;padding:9px 11px;margin:8px 0}
+  .storyline.interpretation .k{color:var(--accent)}
   .storyline.path{background:rgba(124,108,240,.07);border-radius:7px;padding:7px 9px}
   .storyline.path .v{color:var(--ink);font-weight:600}
   .storyline.meaning{background:var(--surface2);border-left:3px solid var(--accent);
@@ -321,8 +330,10 @@
     <div>
       <p class="t">{{ r.제목 }}</p>
       <p class="n">{{ r.숫자 }}{% if r.영향 %}<span class="arrow">→</span><span class="eff">{{ r.영향 }}</span>{% endif %}</p>
-      {% if r.설명 %}<p class="desc">{{ r.설명 }}</p>{% endif %}
-      {% if r.설명 and r.출처 %}<div class="src">출처 · {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
+      {% if r.설명 or r.출처 %}<details class="rank-more"><summary>근거·상세 보기</summary>
+        {% if r.설명 %}<p class="desc">{{ r.설명 }}</p>{% endif %}
+        {% if r.출처 %}<div class="src">출처 · {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
+      </details>{% endif %}
     </div>
   </div>
   {% endfor %}
@@ -364,8 +375,10 @@
   <h3>⏸️ {{ ai.관망요인.제목 }} <span class="tag">{{ ai.관망요인.시장 }}</span></h3>
   {% for x in ai.관망요인.항목 %}
   <div class="waititem"><div class="wt"><span class="wn">{{ "%02d"|format(loop.index) }}</span><b>{{ x.제목 }}</b></div>
-    <p>{{ x.설명 }}</p><p class="path">{{ x.전달경로 }}</p>
-    {% if x.출처 %}<div class="src">출처 · {% for s in x.출처 %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
+    <p class="path">{{ x.전달경로 }}</p>
+    <details class="evidence"><summary>사실 근거 보기</summary><p>{{ x.설명 }}</p>
+      {% if x.출처 %}<div class="src">출처 · {% for s in x.출처 %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
+    </details>
   </div>
   {% endfor %}
 </div>
@@ -373,22 +386,20 @@
 
 {# ─────────── 3. 시장 스토리 ─────────── #}
 {% if ai.시장브리핑 %}
-<h2>🧭 한·미 시장과 글로벌 변수<span class="tip" tabindex="0">?<span class="bubble">
-  미국·국내 시장과 경제에 영향을 줄 글로벌 사건을 정리하고, 최근 기사로 확인된 경우에만 원인을 덧붙입니다.
-  확보되지 않은 정보나 수집 상태 안내는 본문에 노출하지 않습니다.</span></span>
-  <span class="tag">시황 핵심</span></h2>
+<h2>🧭 오늘 시장을 이해하는 3단계<span class="tip" tabindex="0">?<span class="bubble">
+  <b>확인된 사실 → 근거 있는 해석 → ETF 의미</b> 순서로 읽습니다. 해석의 근거와 출처는
+  상세 보기에서 확인할 수 있습니다.</span></span>
+  <span class="tag">사실 · 해석 · ETF</span></h2>
 {% for c in ai.시장브리핑 %}
 <div class="story">
   <div class="storyhead"><span class="marketbadge">{{ c.시장 }}</span><h3>{{ c.제목 }}</h3></div>
-  <div class="storyline"><span class="k">결과</span><span class="v">{{ c.결과 }}</span></div>
-  {% if c.원인 %}<div class="storyline"><span class="k">원인</span><span class="v">{{ c.원인 }}</span></div>{% endif %}
-  {% if c.전달경로 %}<div class="storyline path"><span class="k">흐름</span><span class="v">{{ c.전달경로 }}</span></div>{% endif %}
-  {% if c.ETF연결 %}<div class="storyline meaning"><span class="k">ETF 연결</span><span class="v">{{ c.ETF연결 }}</span></div>{% endif %}
-  {% if c.출처 %}
-  <div class="src">출처 ·
-    {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}
-  </div>
-  {% endif %}
+  <div class="storyline"><span class="k">확인된 사실</span><span class="v">{{ c.결과 }}</span></div>
+  {% if c.원인 %}<div class="storyline interpretation"><span class="k">근거 있는 해석</span><span class="v">{{ c.원인 }}</span></div>{% endif %}
+  {% if c.전달경로 %}<div class="storyline path"><span class="k">전달 경로</span><span class="v">{{ c.전달경로 }}</span></div>{% endif %}
+  {% if c.ETF연결 %}<div class="storyline meaning"><span class="k">ETF 의미</span><span class="v">{{ c.ETF연결 }}</span></div>{% endif %}
+  {% if c.출처 %}<details class="evidence"><summary>근거·출처 보기</summary>
+    <div class="src">출처 · {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>
+  </details>{% endif %}
   {% if c.시장 == '국내' and ai.관심종목 %}
   <div class="stockwatch"><b>{% if 모드 == 'weekly' %}이번 주 특징주{% else %}오늘의 특징주{% endif %}</b>
     {% for s in ai.관심종목 %}<div class="sitem"><div class="st"><b>👀 {{ s.이름 }}</b>{% if s.등락률 is defined and s.등락률 is not none %}<span class="{{ 'up' if s.등락률 > 0 else 'down' }}">{{ "%+.2f"|format(s.등락률) }}%</span>{% endif %}</div><p>{{ s.이유 }}</p>{% if s.출처 %}<div class="src">출처 · {% for x in s.출처 %}{% if x.url %}<a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.이름 }}{% if x.날짜 %} ({{ x.날짜 }} 보도){% endif %}</a>{% else %}{{ x.이름 }}{% if x.날짜 %} ({{ x.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>{% endfor %}

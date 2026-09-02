@@ -70,6 +70,11 @@ TOP 5에는 이슈명·숫자·ETF 영향만, 상세 해설은 '오늘 시장은
   기술적 분석(매물대, 지지선, 되돌림 비율, 캔들 해석)은 이 브리핑의 목적이 아닙니다.
   근거가 약한 차트 해석은 과감히 생략하세요.
 
+시장브리핑의 `결과`에는 확인된 수치와 사건만 쓰고, `원인`에는 그 사실을 연결해
+독자가 시장을 이해하도록 돕는 해석만 씁니다. 화면에서는 각각 '확인된 사실'과
+'근거 있는 해석'으로 구분해 표시됩니다. 기사에 원인이 명시되지 않았거나 가격·수급
+데이터만으로 인과를 확정할 수 없으면 단정형 대신 위의 해석 어미를 사용하세요.
+
 ■ 규칙 4 — 투자 권유·근거 없는 과장 표현은 금지입니다
 특정 종목·ETF의 매수·매도를 권하거나 목표가를 제시하지 않습니다.
 금지: "~를 사세요", "~가 유리합니다", "지금이 기회입니다", "추천합니다", "~해야 합니다"
@@ -232,6 +237,11 @@ ETF 흐름판의 수익률 상·하위, 레버리지·인버스, 거래량 급�
 지정학·정책·기업 실적처럼 여러 자산을 함께 움직인 사건이 있으면 `글로벌` 시장브리핑과
 TOP 5에서 결과 숫자를 쪼개 나열하지 말고 "사건 → 유가·금리·환율 → 증시·ETF"로 묶으세요.
 최근 브리핑과 같은 주제는 새 발표·새 기사·방향 전환이 있을 때만 다시 올립니다.
+
+■ 규칙 15 — 미국 카드와 글로벌 카드를 반복하지 않습니다
+글로벌 사건이 미국 시장 하락의 핵심 원인이라면 미국 카드에서 한 번만 자세히 설명하세요.
+글로벌 카드는 미국 카드에 없는 별도의 국가·정책·공급망 영향이 있을 때만 작성합니다.
+같은 사건·전달 경로·출처를 되풀이하는 글로벌 카드는 만들지 마세요.
 """
 
 SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍스트는 넣지 마세요.
@@ -2022,6 +2032,30 @@ def _topic_words(value: Any) -> set[str]:
             if len(w) >= 2 and w.lower() not in stop}
 
 
+def _drop_redundant_global_brief(briefs: list[dict]) -> list[dict]:
+    """미국 카드의 원인·전달 경로를 되풀이하는 글로벌 카드를 제거한다."""
+    us = next((x for x in briefs if x.get("시장") == "미국"), None)
+    glob = next((x for x in briefs if x.get("시장") == "글로벌"), None)
+    if not us or not glob:
+        return briefs
+
+    def words(item: dict) -> set[str]:
+        return _topic_words(" ".join(str(item.get(k) or "")
+                                     for k in ("제목", "원인", "전달경로", "ETF연결")))
+
+    us_words, global_words = words(us), words(glob)
+    overlap = len(us_words & global_words) / max(1, min(len(us_words), len(global_words)))
+    us_urls = {str(s.get("url")) for s in (us.get("출처") or [])
+               if isinstance(s, dict) and s.get("url")}
+    global_urls = {str(s.get("url")) for s in (glob.get("출처") or [])
+                   if isinstance(s, dict) and s.get("url")}
+    same_news = bool(us_urls & global_urls)
+    if overlap >= .55 or (same_news and len(us_words & global_words) >= 2):
+        log.info("미국 카드와 중복되는 글로벌 변수 생략: %s", glob.get("제목", ""))
+        return [x for x in briefs if x is not glob]
+    return briefs
+
+
 def _has_news_source(item: dict) -> bool:
     data_hosts = ("krx.co.kr", "finance.yahoo.com", "finance.naver.com")
     return any(s.get("url") and not any(h in str(s.get("url")) for h in data_hosts)
@@ -2294,6 +2328,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
             log.warning("%s 시장 ETF연결을 구조화 데이터로 보충합니다", brief["시장"])
     order = {"국내": 0, "미국": 1, "글로벌": 2}
     d["시장브리핑"].sort(key=lambda b: order.get(b.get("시장"), 9))
+    d["시장브리핑"] = _drop_redundant_global_brief(d["시장브리핑"])
 
     # TOP5의 자세한 설명은 최근 기사 근거가 있을 때만 노출한다.
     for item in d.get("top5") or []:

@@ -196,10 +196,13 @@ class SafetyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
             html = path.read_text(encoding="utf-8")
-        for heading in ("오늘의 주요 뉴스", "시장 한눈에", "한·미 시장과 글로벌 변수",
+        for heading in ("오늘의 주요 뉴스", "시장 한눈에", "오늘 시장을 이해하는 3단계",
                         "ETF 레이더", "경쟁 채널 동향", "ETF 아는형 콘텐츠 후보",
                         "오늘의 개념", "체크포인트 · 주요 일정", "출처"):
             self.assertIn(heading, html)
+        self.assertIn("확인된 사실", html)
+        self.assertIn("근거 있는 해석", html)
+        self.assertIn("ETF 의미", html)
         self.assertIn("채널 관련성", html)
         self.assertIn("추가로 읽을 ETF 뉴스 5개", html)
         self.assertIn("ETF 뉴스 8", html)
@@ -360,6 +363,33 @@ class SafetyTests(unittest.TestCase):
         data["뉴스"]["국내"][1]["경과시간"] = 80
         out = llm._postprocess(raw, {"카카오": {}, "ETF_레이더": {}}, data)
         self.assertIsNone(out["시장국면"])
+
+    def test_global_brief_repeating_us_story_is_removed(self):
+        source = {"이름": "테스트경제", "url": "https://example.com/oil"}
+        briefs = [
+            {"시장": "국내", "제목": "국내 증시 혼조", "원인": "수급 차별화",
+             "전달경로": "외국인 매도 → 코스닥 약세", "ETF연결": "코스닥150", "출처": []},
+            {"시장": "미국", "제목": "중동 충돌에 미국 증시 하락",
+             "원인": "미·이란 충돌로 유가와 국채금리가 상승했습니다.",
+             "전달경로": "중동 충돌 → 유가 상승 → 금리 상승 → 나스닥 약세",
+             "ETF연결": "에너지·나스닥100 ETF", "출처": [source]},
+            {"시장": "글로벌", "제목": "미·이란 충돌 격화",
+             "원인": "중동 충돌로 유가와 금리가 상승했습니다.",
+             "전달경로": "중동 충돌 → 유가 상승 → 위험자산 약세",
+             "ETF연결": "에너지 ETF", "출처": [source]},
+        ]
+        out = llm._drop_redundant_global_brief(briefs)
+        self.assertEqual([x["시장"] for x in out], ["국내", "미국"])
+
+    def test_independent_global_brief_is_kept(self):
+        briefs = [
+            {"시장": "미국", "제목": "기술주 조정", "원인": "국채금리 상승",
+             "전달경로": "금리 상승 → 나스닥 약세", "ETF연결": "나스닥100", "출처": []},
+            {"시장": "글로벌", "제목": "중국 희토류 수출 규제",
+             "원인": "공급망 재편 우려", "전달경로": "수출 규제 → 원자재 공급 우려",
+             "ETF연결": "희토류·광산 ETF", "출처": []},
+        ]
+        self.assertEqual(len(llm._drop_redundant_global_brief(briefs)), 2)
 
     def test_radar_semantic_duplicates_are_removed(self):
         raw = {"etf_레이더": [
