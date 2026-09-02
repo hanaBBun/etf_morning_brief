@@ -213,7 +213,7 @@ def _daily_published() -> bool:
 
 
 def _published(mode: str) -> bool:
-    """예약 재시도 시 로컬이 낡아도 원격 main의 오늘 공식본까지 확인한다."""
+    """예약 재시도 시 낡은 체크아웃보다 원격 main의 공식본을 우선 확인한다."""
     stamp = now_kst().strftime("%Y-%m-%d")
     suffix = render.SUFFIX.get(mode, "")
     filename = f"{stamp}{suffix}.html"
