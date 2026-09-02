@@ -1,16 +1,16 @@
 {
-  "날짜": "2026-09-02",
+  "날짜": "2026-09-03",
   "ai": {
     "시장국면": null,
     "관망요인": null,
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "유가·금리 불안 속 코스피·코스닥 방향성 혼조",
-        "결과": "전 거래일 코스피는 0.23% 상승한 6,835.80포인트를 기록했으나 코스닥은 1.56% 하락한 821.25포인트로 마감했습니다. 외국인(-4,917억원)과 기관(-6,286억원)은 동반 순매도를 나타냈습니다.",
-        "원인": "밤사이 발생한 중동 지정학적 리스크로 유가와 금리 상승 압력이 가중됐습니다. 국내 증시에서는 대형주 위주의 코스피가 방어력을 보인 반면 위험선호 심리 위축으로 코스닥 중소형주에서 매물이 출회됐습니다.",
-        "전달경로": "글로벌 금리·유가 부담 → 외국인·기관 순매도 → 코스닥 중소형주 약세 및 지수 디커플링",
-        "ETF연결": "코스피200 대형주 대표지수 ETF와 코스닥150 레버리지 ETF 간의 수급 이탈 현상을 관찰해야 합니다.",
+        "제목": "외국인·기관 대량 매도에 코스피 3.99% 급락",
+        "결과": "코스피는 3.99% 하락한 6562.72pt, 코스닥은 2.10% 하락한 803.98pt로 마감했습니다.",
+        "원인": "외국인(-1.9조원)과 기관(-2.0조원)의 동반 순매도가 반도체 및 대형주로 집중된 것이 지수 하락 압력 중 하나였을 수 있습니다. 코스피와 코스닥 간 -1.89%p의 디커플링도 나타났습니다.",
+        "전달경로": "수급 악화 → 반도체·대형주 급락 → 코스피 지수 하락",
+        "ETF연결": "코스피200 등 국내 대표 지수형 ETF의 외국인 수급 이탈 및 하방 리스크를 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
@@ -18,77 +18,62 @@
           },
           {
             "이름": "연합뉴스 경제",
-            "url": "https://www.yna.co.kr/view/AKR20260902082500008",
-            "날짜": "9/2"
+            "url": "https://www.yna.co.kr/view/AKR20260903020100008",
+            "날짜": "9/3"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "중동 리스크에 유가·금리 동반 급등하며 지수 하락",
-        "결과": "나스닥이 1.03% 하락하고 S&P500(-0.71%)과 필라델피아 반도체(-2.14%)도 내렸습니다. 미 10년물 국채금리는 4.796%(+3.8bp)로 올랐고 WTI 유가는 6.10% 급등한 90.99달러를 기록했습니다.",
-        "원인": "미국과 이란 간 무력 충돌 격화로 국제유가가 폭등하며 인플레이션 우려를 자극했습니다. 이에 따라 미 국채금리가 상승 압력을 받았고 성장주와 반도체 업종 전반의 할인율 부담으로 이어졌습니다.",
-        "전달경로": "미·이란 무력 충돌 → 유가 6%대 급등 및 국채금리 상승 → 성장주 할인율 부담 → 나스닥·반도체 지수 약세",
-        "ETF연결": "유가 급등과 금리 상승이 동시에 발생함에 따라 에너지 ETF와 미 국채 숏/초단기 채권 ETF의 수급 변화를 점검할 필요가 있습니다.",
+        "제목": "국채금리 숨고르기 속에 기술주 중심 상승 전환",
+        "결과": "S&P 500(+0.46%)과 나스닥(+0.45%)이 상승했고 미 10년물 금리는 4.796%(0.0bp)로 보합 마감했습니다.",
+        "원인": "장기 국채금리 급등세가 일단락되면서 기술주를 중심으로 저가 매수세가 유입된 영향으로 볼 수 있습니다. 연준 베이지북에서 완만한 경기 확장세가 확인된 점도 투자심리 안정에 기여했을 가능성이 있습니다.",
+        "전달경로": "국채금리 상승 진정 → 기술주 투심 회복 → 주요 지수 반등",
+        "ETF연결": "미국 대표 지수형 및 빅테크 테마 ETF의 단기 반등 지속 여부를 점검할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "연합뉴스 경제",
-            "url": "https://www.yna.co.kr/view/AKR20260902082500008",
-            "날짜": "9/2"
+            "이름": "매일경제 마켓",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBXNWJFRnRIdmdaLXJOZ0ZUTlpLMHpMTUp5OVZ4Q2xKMHhMcWdoSEEzMFBGNmIzWEQtNkUycHlybE5DVmxoS00yWWhRakZ6bUpJTVE?oc=5",
+            "날짜": "9/3"
           }
         ]
-      },
-      {
-        "시장": "글로벌",
-        "제목": "미·이란 무력 충돌 재발로 중동 지정학적 위기 고조",
-        "결과": "미군과 이란 간 상호 타격이 이어지며 걸프만 일대 지정학적 긴장이 최고조에 달했습니다.",
-        "원인": "중동 원유 공급망 차단 우려가 커지면서 원유 선물 시장으로 자금이 쏠리고 글로벌 원자재 가격 전반을 자극했습니다.",
-        "ETF연결": "원유 선물 ETF 및 원자재 관련 자산군으로의 자금 유입 여부를 확인해야 합니다.",
-        "출처": [
-          {
-            "이름": "FXEmpire",
-            "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxObFJHX0Z0S2w0cGtVQWdSR0ZXNWVFWXFrRnZlZmppcWpTUm5FU0VJdjN0M0pVdHdJdjBXeF9mWkxsa29MbnpQN2NFeE1YODJLQTlOQ2kyaXZpeEtLaVpvNWtiOXQ4ZTAxcjVVVGRKZEs2c2liU1Y4aFN6UkJXQlQ4dDBwUFFnODNBWThadGI5NENFQ3BEMHpFNk9wc05KaTBNR1NhN2J6WjBTM1lGMHhWd0VRNFN2enBxZ2Z1a0ZjdXRXNEMyUVhHVmdtNVB2TVVSd0JQLTAzSU5LaFZw?oc=5",
-            "날짜": "9/2"
-          }
-        ],
-        "전달경로": ""
       }
     ],
     "오늘관전": [
-      "미·이란 무력 충돌 여파에 따른 WTI 유가 90달러선 정착 여부",
-      "미 10년물 국채금리 4.8% 돌파에 따른 국내외 성장주 수급 영향",
-      "코스피·코스닥 간 디커플링 진정 및 외국인 순매수 전환 여부"
+      "미 국채 10년물 금리의 4.8% 안착 여부 및 장기채 안정세 확인",
+      "코스피 급락 이후 외국인·기관 수급의 순매수 전환 여부 점검",
+      "미국 베이지북 발표 후 연준 금리 경로 관련 시장 반응 관찰"
     ],
     "월요일요약": null,
     "주도테마": null,
     "관심종목": [
       {
         "시장": "국내",
-        "이름": "SK이노베이션",
-        "등락률": 7.81,
-        "이유": "중동 충돌에 따른 국제유가 폭등 촉매로 강세를 보이며 정유·에너지 업종 ETF 상승을 주도했습니다.",
+        "이름": "삼성전자",
+        "등락률": -4.02,
+        "이유": "외국인과 기관의 매도세 속에 급락하며 코스피 하락을 주도했고 반도체 ETF 향방을 결정짓는 핵심 종목입니다.",
         "출처": [
           {
             "이름": "연합뉴스 경제",
-            "url": "https://www.yna.co.kr/view/AKR20260902082500008",
-            "날짜": "9/2"
+            "url": "https://www.yna.co.kr/view/AKR20260903020100008",
+            "날짜": "9/3"
           }
         ]
       },
       {
         "시장": "국내",
-        "이름": "엘앤에프",
-        "등락률": -10.57,
-        "이유": "LFP 양극재 신사업 재료 속 급등락을 보이며 2차전지 테마 ETF와 코스닥 지수 변동성으로 연결됐을 가능성",
+        "이름": "SK하이닉스",
+        "등락률": -4.73,
+        "이유": "외국인 순매도 상위에 오르며 반도체 섹터 전반의 투자심리 약세를 이끌었습니다.",
         "출처": [
           {
-            "이름": "매일경제 증권",
-            "url": "https://www.mk.co.kr/news/stock/12141988",
-            "날짜": "9/2"
+            "이름": "연합뉴스 경제",
+            "url": "https://www.yna.co.kr/view/AKR20260903020100008",
+            "날짜": "9/3"
           }
         ]
       }
@@ -96,69 +81,70 @@
     "top5": [
       {
         "순위": 1,
-        "제목": "유가 6%대 급등",
-        "숫자": "WTI 90.99달러 (+6.10%)",
-        "설명": "미국과 이란의 무력 충돌이 격화되면서 원유 공급 차단 우려로 국제유가가 폭등했습니다.",
-        "영향": "에너지 ETF 강세 및 증시 전반의 비용 부담 가중",
+        "제목": "미 국채금리 숨고르기",
+        "숫자": "10년물 4.796% · 30년물 5.267%",
+        "설명": "급등하던 미국 국채금리가 보합권을 보이며 상승세가 일시 진정되었습니다.",
+        "영향": "기술주 할인율 부담 완화로 나스닥 반등 계기 마련",
         "출처": [
           {
-            "이름": "연합뉴스 경제",
-            "url": "https://www.yna.co.kr/view/AKR20260902082500008",
-            "날짜": "9/2"
+            "이름": "한국경제TV",
+            "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5oYlgwYmhpMF9Sekdvb3RLX054ZGZpUk5LMDVXS3FSczM2dE9EZHhzY2lKbHdPWXVveDhKd2xRa011NzVTLXIwNi1RQjJsSWFQcjBxMTM0UHNLN09EQ1VpZVVVY0VGXzhGQXlqcnZnaEFtal81NnV3?oc=5",
+            "날짜": "9/3"
           }
         ]
       },
       {
         "순위": 2,
-        "제목": "미 국채금리 상승",
-        "숫자": "10년물 4.796% (+3.8bp)",
+        "제목": "코스피 3.99% 급락",
+        "숫자": "코스피 6,562.72 (-3.99%)",
         "설명": "",
-        "영향": "채권형 ETF 가격 하락 및 기술주 할인율 부담",
+        "영향": "국내 대표 지수형 ETF 전반의 가격 하락 압력",
         "출처": [
           {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
           }
         ]
       },
       {
         "순위": 3,
-        "제목": "비트코인 ETF 유입",
-        "숫자": "자금 유입 1년 만에 최대",
-        "설명": "가상자산 현물 ETF로의 유입액이 1년 만에 최대치를 기록하며 8만 달러선을 진입했습니다.",
-        "영향": "가상자산 테마 및 관련 기업 ETF 수급 개선",
+        "제목": "연준 베이지북 발표",
+        "숫자": "경제 완만한 성장 평가",
+        "설명": "미 연준이 베이지북을 통해 완만한 경제 성장과 적당한 물가 상승을 확인했습니다.",
+        "영향": "9월 통화정책 결정을 앞두고 시장 관망세 형성",
         "출처": [
           {
-            "이름": "매일경제 마켓",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBLb3NmWWxSc2tPXzlMR2g3NU8wNC1VUHJEbEY1V280M1pWUTZxVEpYanlmcjI4LWJiZW5TWXN5SXhfV2I3RzdSVTZWTERJbWRZeVE?oc=5",
-            "날짜": "9/2"
+            "이름": "연합뉴스",
+            "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBLZDZVYUNUMlNrNEk5VVNseDZhaDd6aklfRkpuQ2EwN1hYdzYteHJ0RTg4Q2M4WFJ1MEx4V3diaW0zX1NxTzJWQ3dOTlY0dnNEWVVDWlhDbjFQQzTSAWBBVV95cUxPZmtOUHd4U2VZX3JnOWxObjNJM0lCb0xycURvQ3J6OFZQNkxoUWphQ2dJcjJTMHJKNnl3ZDhBUGNEb2w1OW82aDNqVmNoM3h6YnpNWHhGSzA5Q3lWQV9wU1M?oc=5",
+            "날짜": "9/3"
           }
         ]
       },
       {
         "순위": 4,
-        "제목": "채권혼합 20조 돌파",
-        "숫자": "순자산 20조원 돌파",
-        "설명": "퇴직연금 등 연금계좌를 통한 자금 유입이 지속되며 채권혼합형 ETF 시장이 대폭 확장됐습니다.",
-        "영향": "자산배분형 안전자산 ETF로의 장기 자금 유입 지속",
+        "제목": "국제유가 상승세 유지",
+        "숫자": "WTI $90.70 (+0.53%)",
+        "설명": "중동 지정학적 긴장감이 지속되며 유가가 높게 유지되었습니다.",
+        "영향": "원자재 및 에너지 테마 ETF 가격 강세 요인",
         "출처": [
           {
-            "이름": "서울경제",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9mcnJNSzFzWjNTTW15b1o3a1VnM2UtbGVVYVg3QjZ2SkUtaTY3ajhHOWp3MDgwZVRoZTQxZUVfY0RiQTFjemZFcnkwdGpXTkRObHfSAVNBVV95cUxPX044a2ZMeldPRlBIZW5EZUpLQXZoeThxa3BaRFFxNVhGUE5RYWRlT0otUE1BT1NoWmlRXzBBanZPbDIyZkJXTkZVNXRZOG1zZWV4NA?oc=5",
-            "날짜": "9/1"
+            "이름": "Fortune",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5VNUN4T0UxVWlpVDNwcllvN3ZWX0phMUpiblYtNUd1bzJ4TGZtVDJsYVJUR2dqU2JuVlNxQmh1azJLamlEaVYwakg3OExWNy1qVEk1X2tYazctSGJXMEtoQg?oc=5",
+            "날짜": "9/2"
           }
         ]
       },
       {
         "순위": 5,
-        "제목": "국내 지수 디커플링",
-        "숫자": "코스피 +0.23% · 코스닥 -1.56%",
-        "설명": "",
-        "영향": "대표지수 간 성과 격차 확대 및 섹터별 차별화",
+        "제목": "미 국채 ETF 신저가",
+        "숫자": "장기채 금리 고점 형성",
+        "설명": "최근 장기 국채금리 급등 여파로 미 국채 관련 ETF들이 무더기 신저가를 기록했습니다.",
+        "영향": "채권형 ETF의 듀레이션 관리 필요성 부각",
         "출처": [
           {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9kTWkzRVk2djRQZm1uY0I0MEt4cGVmN1pZZFAtOGdDLWdBNmZDOWs1R0xvbTBzNVp3U1F0dUlKTjYyNHRWOUo3OC1qd3ZDWWtTTFhIMUJxZkx1cTRJUEhYMtIBeEFVX3lxTE1SYTctY2QzRk9JZExmelNsMVgwNVhrSzVvekFtSUNNVzhuUGRxT0dZUWdlMkNnYnFzdFBfY1M3d3d5bm83RXhfQzdVX0ZOWU9YTEhnSzNxZGV2b1M0T3N6NGRnZWF5OEk1bXc1U1NrSEVTeGczNVQ0Xw?oc=5",
+            "날짜": "9/3"
           }
         ]
       }
@@ -166,41 +152,20 @@
     "etf_레이더": [
       {
         "구분": "자금 흐름",
-        "제목": "연금 자금 유입에 채권혼합 ETF 순자산 20조원 돌파",
-        "사실": "퇴직연금과 연금저축을 통한 자금 유입에 힘입어 채권혼합형 ETF 전체 순자산이 20조원을 넘어섰습니다.",
+        "제목": "미 장기채 금리 급등에 국채 ETF 무더기 신저가",
+        "사실": "미국 장기 국채 금리 상방 압력에 미 국채 관련 ETF들이 무더기로 신저가를 기록했습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "서울경제",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9mcnJNSzFzWjNTTW15b1o3a1VnM2UtbGVVYVg3QjZ2SkUtaTY3ajhHOWp3MDgwZVRoZTQxZUVfY0RiQTFjemZFcnkwdGpXTkRObHfSAVNBVV95cUxPX044a2ZMeldPRlBIZW5EZUpLQXZoeThxa3BaRFFxNVhGUE5RYWRlT0otUE1BT1NoWmlRXzBBanZPbDIyZkJXTkZVNXRZOG1zZWV4NA?oc=5",
-            "날짜": "9/1"
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9kTWkzRVk2djRQZm1uY0I0MEt4cGVmN1pZZFAtOGdDLWdBNmZDOWs1R0xvbTBzNVp3U1F0dUlKTjYyNHRWOUo3OC1qd3ZDWWtTTFhIMUJxZkx1cTRJUEhYMtIBeEFVX3lxTE1SYTctY2QzRk9JZExmelNsMVgwNVhrSzVvekFtSUNNVzhuUGRxT0dZUWdlMkNnYnFzdFBfY1M3d3d5bm83RXhfQzdVX0ZOWU9YTEhnSzNxZGV2b1M0T3N6NGRnZWF5OEk1bXc1U1NrSEVTeGczNVQ0Xw?oc=5",
+            "날짜": "9/3"
           }
         ],
-        "관찰": "안정적인 현금흐름과 변동성 관리를 노린 연금 자금이 채권혼합 유형으로 꾸준히 유입되고 있는 것으로 볼 수 있습니다.",
-        "이유": "",
-        "관련ETF": "",
-        "질문": "",
-        "차별점": ""
-      },
-      {
-        "구분": "자금 흐름",
-        "제목": "개인 8월 해외 ETF 2.7조원 순매수",
-        "사실": "개인 투자자는 8월 중 국내 투자 ETF를 3,000억원 순매도한 반면 해외형 ETF는 2조 7,000억원 순매수했습니다.",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "연합뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBNanUtbjZNaURLMldpYjNqbTE4bWNXbmNJQVR5a0FPQnJSTnpQN0QxcndpLXBUbkxFekJBTVdsbDlQc2NfOGswTGNIV0ZRek5yWUpTRjFfMFRQaHoxUTJfM9IBYEFVX3lxTFBNanUtbjZNaURLMldpYjNqbTE4bWNXbmNJQVR5a0FPQnJSTnpQN0QxcndpLXBUbkxFekJBTVdsbDlQc2NfOGswTGNIV0ZRek5yWUpTRjFfMFRQaHoxUTJfMw?oc=5",
-            "날짜": "9/1"
-          }
-        ],
-        "관찰": "국내 증시 정체 속에서 미국 대표 지수 및 글로벌 성장 테마로 개인 자금이 지속 유입되는 흐름으로 볼 수 있습니다.",
+        "관찰": "장기채의 변동성 위험이 부각되면서 파킹형이나 단기 금리형 ETF로 자금이 이동할 가능성이 있습니다.",
         "이유": "",
         "관련ETF": "",
         "질문": "",
@@ -210,59 +175,42 @@
     "유튜브": [
       {
         "영상ID": "c_fmT7QIEcU",
-        "핵심주제": "퇴직연금 안정형 자산 충전을 위한 채권혼합 ETF 활용법",
-        "훅": "공포 자극형",
+        "핵심주제": "퇴직연금 안정형 자산 채우기 및 TIGER 채권혼합형 ETF 매수",
+        "훅": "이벤트 유도형",
         "관련성": "높음",
-        "관련성근거": "채권혼합 ETF 자금 유입 및 연금 자산배분 주제와 직접 일치"
+        "관련성근거": "퇴직연금 내 채권혼합 ETF 직접 분석"
       },
       {
         "영상ID": "8TuhvfoM_qY",
-        "핵심주제": "TIGER ETF를 활용한 월 2회 분배금 현금흐름 구축 전략",
+        "핵심주제": "TIGER ETF를 활용한 월 2회 현금흐름 배당 전략",
         "훅": "질문형",
-        "관련성": "보통",
-        "관련성근거": "월배당 커버드콜 상품 흐름을 다루나 자체 라이브 방송"
+        "관련성": "높음",
+        "관련성근거": "월배당 ETF 체계 및 현금흐름 제시"
       },
       {
         "영상ID": "thjOfh9_1aw",
-        "핵심주제": "글로벌 AI 낸드 메모리 반도체 신규 ETF 소개",
-        "훅": "숫자 제시형",
-        "관련성": "보통",
-        "관련성근거": "신규 상장 ETF 테마 소개로 타깃 자산군과 연결됨"
-      },
-      {
-        "영상ID": "_OuetYKUfoM",
-        "핵심주제": "S&P500과 미국 단기채 50:50 자산배분 ETF 구조",
-        "훅": "상품 구조 설명형",
-        "관련성": "보통",
-        "관련성근거": "채권혼합 자산배분 상품 분석"
+        "핵심주제": "RISE 글로벌 AI 낸드 메모리 반도체 ETF 소개",
+        "훅": "공감 자극형",
+        "관련성": "높음",
+        "관련성근거": "신규 상장 반도체 테마 ETF 다룸"
       }
     ],
-    "댓글키워드": "퇴직연금 계좌 내 채권혼합형 ETF 선택 기준 및 신규 낸드 반도체 ETF 투자 문의",
+    "댓글키워드": "퇴직연금 계좌에서의 ETF 세제 혜택과 월배당 ETF의 지급 주기 관련 질문이 지속되었습니다.",
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "유가·금리 동반 폭등장, 내 연금 계좌 지키는 ETF 리밸런싱",
-        "이유": "중동 충돌로 유가와 금리가 동시 상승하는 악재 속에서 채권혼합 및 방어형 ETF 활용법에 대한 시청자 니즈 고조.",
-        "관련ETF": "채권혼합 · 원자재 · 에너지",
-        "질문": "국제유가가 90달러를 돌파한 시점에서 연금 계좌 내 채권혼합 ETF 비중을 더 늘려야 할까요?",
-        "차별점": "단순 시장 브리핑을 넘어 연금 계좌 내 실제 매매 기준과 손실 방어 전략 제시.",
-        "사실": "",
-        "관찰": ""
-      },
-      {
-        "코너": "요즘하태형",
-        "제목": "유가 폭등·금리 발작… 8월 2.7조 쏠린 해외 ETF 포트폴리오 점검",
-        "이유": "해외 ETF 2.7조원 순매수 속 지정학 충돌에 따른 금리·유가 변동성 대응 필요성 증대.",
-        "관련ETF": "미국S&P500 · 미국채혼합 · 원유선물",
-        "질문": "유가와 금리가 동시에 오르는 상황에서 해외 주식형 ETF 비중을 어떻게 조정해야 할까요?",
-        "차별점": "단순 해외 ETF 추천이 아닌 고유가·고금리 환경에서의 자산배분 상쇄 전략 제시.",
+        "제목": "신저가 기록한 미 국채 ETF, 손절할까 갈아탈까?",
+        "이유": "미 장기채 금리 폭등으로 국채 ETF 손실을 겪는 독자들의 대응책 마련 필요.",
+        "관련ETF": "채권형 · 금리액티브",
+        "질문": "장기채 ETF에 물린 투자자는 듀레이션을 축소해야 하나요, 보유해야 하나요?",
+        "차별점": "금리 방향 추정 대신 개인연금계좌 내 채권 ETF 교체 매매 가이드 제시",
         "사실": "",
         "관찰": ""
       }
     ],
     "오늘의개념": {
       "용어": "디커플링(Decoupling)",
-      "연결": "코스피 +0.23%와 코스닥 -1.56%의 방향·강도가 크게 엇갈린 장",
+      "연결": "코스피 -3.99%와 코스닥 -2.10%의 방향·강도가 크게 엇갈린 장",
       "설명": "원래 함께 움직이던 시장·지수·자산의 흐름이 서로 갈라지는 현상입니다. 오늘처럼 코스피는 버티고 코스닥은 크게 내리면 대형주와 중소형 성장주의 투자심리가 분리됐다는 뜻으로 읽을 수 있습니다."
     },
     "체크포인트": [
@@ -279,34 +227,24 @@
       {
         "유형": "확인",
         "때": "이번 주",
-        "내용": "미·이란 무력 충돌 여파 및 WTI 유가 90달러 유지 여부"
-      },
-      {
-        "유형": "일정",
-        "때": "9/14 (월)",
-        "내용": "애프터마켓 ETF·ETN 거래 제외 적용"
+        "내용": "외국인·기관의 코스피 대형주 순매도 지속 여부"
       },
       {
         "유형": "확인",
         "때": "상시",
-        "내용": "미 10년물 국채금리 4.8% 상회 지속 여부"
+        "내용": "미 10년물 국채금리 4.8% 상방 돌파 여부"
+      },
+      {
+        "유형": "확인",
+        "때": "다음 거래일",
+        "내용": "VIX 하락 흐름의 지속 여부"
       }
     ],
     "카톡": {
-      "1": "☀️ 9/2 브리핑\n1. 유가 6%대 급등\n2. 미 국채금리 상승\n3. 비트코인 ETF 유입\n4. 채권혼합 20조 돌파\n5. 국내 지수 디커플링"
+      "1": "☀️ 9/3 브리핑\n1. 미 국채금리 숨고르기\n2. 코스피 3.99% 급락\n3. 연준 베이지북 발표\n4. 국제유가 상승세 유지\n5. 미 국채 ETF 신저가"
     }
   },
   "history": [
-    {
-      "날짜": "2026-08-28",
-      "주제": [
-        "워시 연준의장 연설",
-        "엔비디아 주가 급등",
-        "단일레버리지 자금감소",
-        "애프터마켓 ETF 제외",
-        "반도체 자사주 매입"
-      ]
-    },
     {
       "날짜": "2026-08-31",
       "주제": [
@@ -326,6 +264,17 @@
         "야간 ETF 거래 제한 예고",
         "국내 첫 낸드 ETF 상장"
       ]
+    },
+    {
+      "날짜": "2026-09-02",
+      "주제": [
+        "유가 6%대 급등",
+        "미 국채금리 상승",
+        "비트코인 ETF 유입",
+        "채권혼합 20조 돌파",
+        "국내 지수 디커플링"
+      ],
+      "개념": "디커플링(Decoupling)"
     }
   ]
 }
