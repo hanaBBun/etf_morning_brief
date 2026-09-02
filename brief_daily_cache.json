@@ -1,187 +1,134 @@
 {
-  "날짜": "2026-09-01",
+  "날짜": "2026-09-02",
   "ai": {
     "시장국면": null,
     "관망요인": null,
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "2차전지 대형주 반등에 코스피 상승, 코스닥은 하락",
-        "결과": "코스피는 6820.02(+0.46%)로 상승 마감했으나 코스닥은 834.29(-0.49%)로 하락했습니다. 외국인(-6,439억원)과 기관(-7,891억원)은 순매도를 기록했습니다.",
-        "원인": "반면 외국인과 기관의 순매도세는 상방을 제한했을 수 있습니다.",
-        "ETF연결": "2차전지 소재 및 전고체 테마 ETF의 반등 지속 여부와 외국인 수급 변화를 관찰할 필요가 있습니다.",
+        "제목": "코스피 대형주 방어 속 코스닥 -1.56% 급락 디커플링",
+        "결과": "전일 코스피는 +0.23% 상승한 6,835.80에 마감했으나, 코스닥은 -1.56% 하락한 821.25로 마감했습니다. 외국인은 4,917억원, 기관은 6,286억원을 순매도했습니다.",
+        "원인": "외국인과 기관의 동반 순매도 속에서도 대형주 일부가 지수를 방어하며 코스피는 소폭 상승했습니다. 반면 코스닥은 2차전지와 중소형 성장주 중심으로 매도 압력이 커지며 양 지수 간 뚜렷한 괴리가 발생한 것으로 볼 수 있습니다.",
+        "ETF연결": "코스피200 등 대형주 대표지수 ETF와 코스닥150 레버리지 상품 간의 수익률 격차 원인을 확인해야 합니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "서울경제",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53VTZZRHJfdzlmYUtMVEFjbDN6aGJtOUllX0FsUzFxMkNRYmR5MWtxd2taYW9MR0xhTnJZNmk0YmJnN3hqZDIwSFYtYTdQMm1jSlHSAVNBVV95cUxNV1JtdjBUU2szVjl6Ny1acEVad0VxSXRENmNRSy1hZVhadXY4UzNfY1E3WDRsSFZzeTVCei1qXzhjQWxFYVFWaXdmS1hqN00tZW9SVQ?oc=5",
-            "날짜": "8/31"
-          },
-          {
-            "이름": "파이낸셜뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5TeFdsUUZPVTIwY3Y0eVptMTVWM0x3dkNXTVA2b2hoRExUd0ZjenVEZ3hvdVZGRkFsd0VEcmN5dDdmdFpVZEREUnBQb3RLU215ZTRXUUtNNUVudw?oc=5",
-            "날짜": "8/31"
+            "이름": "매일경제 마켓",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ETEszT3FqTlJGU1NIbVowQkk3d2t4VGlEcW9lREZvb2o2V0F4LXp6NC1YaFllSURHNUdTdE5WbHBNZUpjcHJIcHpDSFBRRE9KZFE?oc=5",
+            "날짜": "9/2"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "중동 리스크에 유가·금리 급등하며 주요 지수 하락",
-        "결과": "S&P 500(-0.33%)과 나스닥(-0.12%)이 하락한 가운데, 미 10년물 금리는 4.758%(+3.8bp), WTI 유가는 86.38달러(+3.57%)를 기록했습니다.",
-        "원인": "미국과 이란 간 군사적 충돌 재개 우려로 유가가 급등하며 인플레이션 경계감이 다시 자극됐습니다. 이에 따라 국채금리가 상승하며 기술주와 지수 전반에 할인율 부담으로 작용했습니다.",
-        "ETF연결": "원자재 및 에너지 ETF의 변동성 확대와 함께 금리 상승기 미 단기채 ETF의 방어력을 점검할 시점입니다.",
+        "제목": "중동 충돌 재점화에 유가 급등·금리 상승, 기술주 중심 하락",
+        "결과": "S&P 500 -0.71%, 나스닥 -1.03%, 필라델피아 반도체 -2.14% 하락 마감했습니다. WTI는 +6.03% 급등해 90.93달러를 기록했고 미 10년물 국채금리는 4.796%(+3.8bp)로 상승했습니다.",
+        "원인": "미국의 이란 공습 소식에 중동 긴장이 고조되며 국제유가가 급등했습니다. 유가 상승이 인플레이션 우려를 자극해 미 국채 금리가 오르자, 밸류에이션 부담이 커진 반도체와 대형 기술주를 중심으로 매도세가 집중됐을 가능성이 있습니다.",
+        "ETF연결": "원유·에너지 ETF와 미국 장기채 ETF의 가격 변동성을 점검하고, 금리 상승 압력에 취약한 빅테크·반도체 ETF 비중 관리 전략을 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "Action Forex",
-            "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQcjF1ZThNRTk1emlteG55MWs2bUFjMFp0SFlnaHlOMjJnMUNOZGdpVEs3VFlvVFFrQm9rTGFFX1Zza1o1SU15b0NidzdnV3lfWDNLaC16d25iMURtOTAyLW9LbjUzV2JhV3V6U3BMTTVqc0NITVEzOUc1WWtLd2lYWFI3dWFsd0dBck03OV9JUFFEY1F0MmFlbTZVVVcyREMxWHNiRzF1LVZPdTJMTnhBMENXRFRtOGZ4azJOcmNLY0NTZkF0VUFnVmVBRzd0MS1YSGI0OHdPWUFLYzNqNlZYSnh2NVB2bTNRYTA1ZE1tSQ?oc=5",
-            "날짜": "8/31"
-          },
-          {
-            "이름": "sundayworld.co.za",
-            "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNMEx6cGRDeFdOa0p2ZnpGTVdQcUtsWWVEZ1J5U2VSTmY2T21vUnVtTzIzdDhlZVkxdzlsUE9qMHJ3U0o3VlFBWFlINTRaZGJDRU91MkFtWjJjenhCWEdEV1hVa09aQ1J3WVJKSU5OVFNLRmlPdDBhTnk2STRtSW1FRzk0cw?oc=5",
-            "날짜": "8/31"
+            "이름": "아시아경제",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1fWk03RFI3R19ZRnFEbXgyMmtKT0FFWTFXdzlLSVZfRWpaNndTdWtzTGw1eE0xWDFlRW9yR3lNVkp2a0czY3I3dzh1RGp3eDdRajQ2bXNTcW1fbmROXzRhUQ?oc=5",
+            "날짜": "9/2"
           }
         ]
       },
       {
         "시장": "글로벌",
-        "제목": "미-이란 군사 충돌 재개 및 호르무즈 해협 불안",
-        "결과": "미국과 이란의 상호 군사 공격 재개로 WTI 유가가 86.38달러로 3.57% 급등했습니다.",
-        "원인": "중동 정세 악화로 호르무즈 해협 통항 차단 가능성이 불거지며 글로벌 에너지 공급망 차질 우려가 높아졌습니다.",
-        "ETF연결": "원유 선물 ETF 및 글로벌 에너지 섹터 ETF로의 자금 이동을 주목할 필요가 있습니다.",
+        "제목": "미·이란 군사 충돌 재발에 호르무즈 해협 긴장 고조",
+        "결과": "이란의 유조선 공격과 미국의 대이란 공습이 이어지며 중동발 군사 긴장이 재점화되었습니다.",
+        "원인": "호르무즈 통항 차질 우려가 유가 급등을 촉발하고, 이는 글로벌 채권 금리 상승 및 증시 할인율 부담으로 전이되고 있습니다.",
+        "ETF연결": "원자재(원유) ETF 및 인버스 채권 ETF의 수급 반응을 점검할 필요가 있습니다.",
         "출처": [
           {
-            "이름": "Times of Oman",
-            "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQU2FjUVdpUmMtNTlQRm9WWm0wQV9JTFI0QXNuWHQ0MG9paVJVN2o0SWdIQXp1am9wTGYzclBZWmtHVzY0eEt1OHhsZG9OUUF3NWo1V05jYU1kdklVbmJOdXg3ajZ3SGtyc21jYjdZUXVWWFl1TDBOTHhkTktQMXozbjlFNG40c2paXzFocDZuWXNXXzcySVV3ejZkd0UyTmpkcmk4dUlmUXA4T3BLRFE?oc=5",
-            "날짜": "8/31"
-          },
-          {
-            "이름": "sundayworld.co.za",
-            "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNMEx6cGRDeFdOa0p2ZnpGTVdQcUtsWWVEZ1J5U2VSTmY2T21vUnVtTzIzdDhlZVkxdzlsUE9qMHJ3U0o3VlFBWFlINTRaZGJDRU91MkFtWjJjenhCWEdEV1hVa09aQ1J3WVJKSU5OVFNLRmlPdDBhTnk2STRtSW1FRzk0cw?oc=5",
-            "날짜": "8/31"
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12141889",
+            "날짜": "9/2"
           }
         ]
       }
     ],
     "오늘관전": [
-      "미-이란 군사 충돌 심화에 따른 유가 및 미 국채금리 추가 상승 여부",
-      "미국 ESS 수주 모멘텀을 받은 국내 2차전지 ETF의 상승세 지속 가능성",
-      "코스피 외국인·기관 동반 순매도세 일단락 여부"
+      "유가 90달러 재돌파에 따른 국내 정유·에너지 ETF 반응",
+      "미 국채 10년물 4.8% 근접에 따른 장기채 ETF 낙폭",
+      "외국인·기관의 양대 시장 순매도 지속 여부"
     ],
     "월요일요약": null,
-    "주도테마": {
-      "테마": "2차전지",
-      "제목": "美 ESS 수주 기대감에 2차전지 ETF 반등",
-      "움직임": "SOL 전고체배터리&실리콘음극재(+3.76%)와 TIGER 2차전지소재Fn(+3.55%) 등 2차전지 ETF가 동반 강세를 보였습니다.",
-      "원인": "SK온의 미국 ESS 배터리 셀 공급계약 체결 소식이 전해지며 ESS 시장 성장에 대한 기대감이 형성됐습니다. 이에 따라 2차전지 공급망 전반에 호재로 작용했을 가능성이 있습니다.",
-      "주도종목": [
-        {
-          "이름": "SK이노베이션",
-          "등락률": 7.36
-        }
-      ],
-      "ETF연결": "단기 수주 이벤트에 그치지 않고 실제 실적 개선으로 연결되는지 점검할 필요가 있습니다.",
-      "출처": [
-        {
-          "이름": "서울경제",
-          "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53VTZZRHJfdzlmYUtMVEFjbDN6aGJtOUllX0FsUzFxMkNRYmR5MWtxd2taYW9MR0xhTnJZNmk0YmJnN3hqZDIwSFYtYTdQMm1jSlHSAVNBVV95cUxNV1JtdjBUU2szVjl6Ny1acEVad0VxSXRENmNRSy1hZVhadXY4UzNfY1E3WDRsSFZzeTVCei1qXzhjQWxFYVFWaXdmS1hqN00tZW9SVQ?oc=5",
-          "날짜": "8/31"
-        },
-        {
-          "이름": "파이낸셜뉴스",
-          "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5TeFdsUUZPVTIwY3Y0eVptMTVWM0x3dkNXTVA2b2hoRExUd0ZjenVEZ3hvdVZGRkFsd0VEcmN5dDdmdFpVZEREUnBQb3RLU215ZTRXUUtNNUVudw?oc=5",
-          "날짜": "8/31"
-        }
-      ]
-    },
-    "관심종목": [
-      {
-        "시장": "국내",
-        "이름": "SK이노베이션",
-        "등락률": 7.36,
-        "이유": "미국 ESS 배터리 공급계약 호재로 급등하며 2차전지 ETF 전반의 상승을 이끌었습니다.",
-        "출처": [
-          {
-            "이름": "서울경제",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53VTZZRHJfdzlmYUtMVEFjbDN6aGJtOUllX0FsUzFxMkNRYmR5MWtxd2taYW9MR0xhTnJZNmk0YmJnN3hqZDIwSFYtYTdQMm1jSlHSAVNBVV95cUxNV1JtdjBUU2szVjl6Ny1acEVad0VxSXRENmNRSy1hZVhadXY4UzNfY1E3WDRsSFZzeTVCei1qXzhjQWxFYVFWaXdmS1hqN00tZW9SVQ?oc=5",
-            "날짜": "8/31"
-          }
-        ]
-      }
-    ],
+    "주도테마": null,
+    "관심종목": [],
     "top5": [
       {
         "순위": 1,
-        "제목": "미·이란 충돌에 유가 급등",
-        "숫자": "WTI 86.38달러 (+3.57%)",
-        "설명": "미국과 이란 간 군사 공격이 재개되며 중동발 에너지 공급 우려가 고조됐습니다.",
-        "영향": "인플레이션 자극으로 미 국채금리 상승 압력을 가했습니다.",
+        "제목": "美 이란 공습에 유가 급등",
+        "숫자": "WTI 90.93달러 (+6.03%)",
+        "설명": "미국과 이란 간의 군사 충돌로 중동 공급 불안이 커지며 유가가 급등했습니다.",
+        "영향": "인플레이션 압력 가중 및 에너지 ETF 강세 요인",
         "출처": [
           {
-            "이름": "Action Forex",
-            "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQcjF1ZThNRTk1emlteG55MWs2bUFjMFp0SFlnaHlOMjJnMUNOZGdpVEs3VFlvVFFrQm9rTGFFX1Zza1o1SU15b0NidzdnV3lfWDNLaC16d25iMURtOTAyLW9LbjUzV2JhV3V6U3BMTTVqc0NITVEzOUc1WWtLd2lYWFI3dWFsd0dBck03OV9JUFFEY1F0MmFlbTZVVVcyREMxWHNiRzF1LVZPdTJMTnhBMENXRFRtOGZ4azJOcmNLY0NTZkF0VUFnVmVBRzd0MS1YSGI0OHdPWUFLYzNqNlZYSnh2NVB2bTNRYTA1ZE1tSQ?oc=5",
-            "날짜": "8/31"
+            "이름": "아시아경제",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1fWk03RFI3R19ZRnFEbXgyMmtKT0FFWTFXdzlLSVZfRWpaNndTdWtzTGw1eE0xWDFlRW9yR3lNVkp2a0czY3I3dzh1RGp3eDdRajQ2bXNTcW1fbmROXzRhUQ?oc=5",
+            "날짜": "9/2"
           }
         ]
       },
       {
         "순위": 2,
-        "제목": "미 국채금리 상승세 지속",
-        "숫자": "10년물 4.758% (+3.8bp)",
-        "설명": "",
-        "영향": "기술주 등 고밸류에이션 주식에 할인율 부담을 줬습니다.",
+        "제목": "美 국채금리 쇼크에 기술주 약세",
+        "숫자": "10년물 4.796% (+3.8bp)",
+        "설명": "유가 상승과 채권 매도세로 10년물 금리가 급등하며 장기채 ETF가 신저가를 기록했습니다.",
+        "영향": "나스닥·반도체 ETF 할인율 부담 확대",
         "출처": [
           {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
+            "이름": "아시아경제",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBlX3EtRkpuWmRYTHBfZlVnNTFYQkFZc0l3ejVCY0pVWldDZlhGM25aOTJqLUpxWkt0VUo4RFJ2SHowZmxVRFplWWQycXZPcElkZmRVOWpRdVc4TU1aZUNiSQ?oc=5",
+            "날짜": "9/2"
           }
         ]
       },
       {
         "순위": 3,
-        "제목": "ESS 수주에 2차전지 반등",
-        "숫자": "SOL 전고체배터리 +3.76%",
-        "설명": "SK온의 미국 ESS 배터리 공급계약 소식이 전해지며 관련주가 강세를 나타냈습니다.",
-        "영향": "코스피 상승을 견인하고 2차전지 ETF 가격 강세를 이끌었습니다.",
+        "제목": "코스피·코스닥 뚜렷한 디커플링",
+        "숫자": "코스피 +0.23% · 코스닥 -1.56%",
+        "설명": "",
+        "영향": "중소형 성장주 ETF 투자심리 위축",
         "출처": [
           {
-            "이름": "서울경제",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53VTZZRHJfdzlmYUtMVEFjbDN6aGJtOUllX0FsUzFxMkNRYmR5MWtxd2taYW9MR0xhTnJZNmk0YmJnN3hqZDIwSFYtYTdQMm1jSlHSAVNBVV95cUxNV1JtdjBUU2szVjl6Ny1acEVad0VxSXRENmNRSy1hZVhadXY4UzNfY1E3WDRsSFZzeTVCei1qXzhjQWxFYVFWaXdmS1hqN00tZW9SVQ?oc=5",
-            "날짜": "8/31"
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
           }
         ]
       },
       {
         "순위": 4,
-        "제목": "야간 ETF 거래 제한 예고",
-        "숫자": "한국거래소 시행세칙 예고",
-        "설명": "한국거래소가 퇴근길 야간 시간대 ETF 거래 제한을 포함한 세칙을 예고했습니다.",
-        "영향": "개인 투자자의 야간 거래 유동성 및 접근성 변화가 예상됩니다.",
+        "제목": "개인 해외형 ETF 2.7조 순매수",
+        "숫자": "국내형 3천억 순매도",
+        "설명": "8월 개인 투자자가 국내 주식형 ETF를 팔고 해외 주식형 ETF로 자금을 이동했습니다.",
+        "영향": "국내·해외 투자심리 양극화 지속",
         "출처": [
           {
-            "이름": "한국경제TV",
-            "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE0zdWdJeDBBSjNWTU9rcEdLOGVHb3R3S1VQSHAzU0JsczZkbEFPYjAzMFcxYTVxQ1pHVnh1SWdjemNYQ1ZJbGhOeDd4Q1o1V2Nrd0d3MHA1T3ptOUpzWlBwa0ZIOFJkSGExTXVFWFJLdEFUVFE?oc=5",
-            "날짜": "8/31"
+            "이름": "연합뉴스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBNanUtbjZNaURLMldpYjNqbTE4bWNXbmNJQVR5a0FPQnJSTnpQN0QxcndpLXBUbkxFekJBTVdsbDlQc2NfOGswTGNIV0ZRek5yWUpTRjFfMFRQaHoxUTJfM9IBYEFVX3lxTFBNanUtbjZNaURLMldpYjNqbTE4bWNXbmNJQVR5a0FPQnJSTnpQN0QxcndpLXBUbkxFekJBTVdsbDlQc2NfOGswTGNIV0ZRek5yWUpTRjFfMFRQaHoxUTJfMw?oc=5",
+            "날짜": "9/1"
           }
         ]
       },
       {
         "순위": 5,
-        "제목": "국내 첫 낸드 ETF 상장",
-        "숫자": "KB자산운용 신규 출시",
-        "설명": "KB자산운용이 국내 최초로 낸드 메모리 공급망에 투자하는 ETF를 출시했습니다.",
-        "영향": "반도체 세부 테마 ETF 라인업이 다변화될 수 있습니다.",
+        "제목": "애프터마켓 ETF 거래 제외 예고",
+        "숫자": "9월 14일부터 적용",
+        "설명": "한국거래소가 야간 애프터마켓 거래 대상에서 ETF와 ETN을 제외하기로 결정했습니다.",
+        "영향": "정규장 외 ETF 유동성 및 매매 환경 변화",
         "출처": [
           {
-            "이름": "뉴스핌",
-            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5VandoZGNhNXptVlFoNmFGdDVGejBQSUtVVFdrS0NIV1ZzVjdsSXNOWlVZWkllSC1KVWVYQXNkYmlERUFIQlRSNlloLTZUTzNmRTM2Q2x5MXRMTHps?oc=5",
+            "이름": "한국경제",
+            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5JbkZ3S2twd0dzZ052bGtwSHlsWFQ5WFNnRzFGdm0yRkpQZkJISGZmS3pmYnBtOHJ5NFZFcENUVnlGY25XQllDR1E0d1p6NjZIRUJURERCNW5jZw?oc=5",
             "날짜": "9/1"
           }
         ]
@@ -189,55 +136,51 @@
     ],
     "etf_레이더": [
       {
-        "구분": "제도·채널",
-        "제목": "야간 시간대 ETF 매매 거래 제한 예고",
-        "사실": "한국거래소가 퇴근길 야간 거래를 제한하는 내용을 담은 시행세칙을 예고했습니다.",
+        "구분": "자금 흐름",
+        "제목": "개인 자금의 해외형 ETF 쏠림 심화",
+        "사실": "개인 투자자는 8월 한 달간 국내 투자 ETF를 3,000억원 순매도한 반면 해외형 ETF는 2조 7,000억원 순매수했습니다.",
         "출처": [
           {
-            "이름": "한국경제TV",
-            "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE0zdWdJeDBBSjNWTU9rcEdLOGVHb3R3S1VQSHAzU0JsczZkbEFPYjAzMFcxYTVxQ1pHVnh1SWdjemNYQ1ZJbGhOeDd4Q1o1V2Nrd0d3MHA1T3ptOUpzWlBwa0ZIOFJkSGExTXVFWFJLdEFUVFE?oc=5",
-            "날짜": "8/31"
-          }
-        ],
-        "관찰": "장외 거래 제한으로 개인 투자자의 거래 편의성과 유동성 환경에 변화가 생길 수 있습니다.",
-        "이유": "",
-        "관련ETF": "",
-        "질문": "",
-        "차별점": ""
-      },
-      {
-        "구분": "신규 상장",
-        "제목": "국내 첫 낸드 메모리 테마 ETF 출시",
-        "사실": "KB자산운용이 낸드 메모리 공급망 관련 기업에 투자하는 국내 첫 ETF를 상장했습니다.",
-        "출처": [
-          {
-            "이름": "뉴스핌",
-            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5VandoZGNhNXptVlFoNmFGdDVGejBQSUtVVFdrS0NIV1ZzVjdsSXNOWlVZWkllSC1KVWVYQXNkYmlERUFIQlRSNlloLTZUTzNmRTM2Q2x5MXRMTHps?oc=5",
+            "이름": "연합뉴스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBNanUtbjZNaURLMldpYjNqbTE4bWNXbmNJQVR5a0FPQnJSTnpQN0QxcndpLXBUbkxFekJBTVdsbDlQc2NfOGswTGNIV0ZRek5yWUpTRjFfMFRQaHoxUTJfM9IBYEFVX3lxTFBNanUtbjZNaURLMldpYjNqbTE4bWNXbmNJQVR5a0FPQnJSTnpQN0QxcndpLXBUbkxFekJBTVdsbDlQc2NfOGswTGNIV0ZRek5yWUpTRjFfMFRQaHoxUTJfMw?oc=5",
             "날짜": "9/1"
           }
         ],
-        "관찰": "반도체 업종 내 세부 테마 선택지가 한층 확대될 것으로 볼 수 있습니다.",
+        "관찰": "국내 증시 변동성에 대한 피로감과 미국 테크주 선호가 결합되며 자금 유출입 격차가 벌어졌을 가능성이 있습니다.",
         "이유": "",
         "관련ETF": "",
         "질문": "",
         "차별점": ""
       },
       {
-        "구분": "유형 쏠림",
-        "제목": "ESS 기대감에 2차전지 ETF 강세",
-        "사실": "SOL 전고체배터리&실리콘음극재 ETF가 3.76%, TIGER 2차전지소재Fn ETF가 3.55% 상승했습니다.",
+        "구분": "제도·채널",
+        "제목": "채권혼합형 ETF 연금 수요 힘입어 20조 돌파",
+        "사실": "퇴직연금 계좌 내 안전자산 편입 수요가 몰리며 채권혼합 ETF 시장 규모가 20조원을 넘어섰습니다.",
         "출처": [
           {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "뉴스핌",
-            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1tVGVra3VnZVVuU05wLWFDM2hHeThSUVZERnotQ0E1N3diT2t3c3ZrX3hEaG5OdDF2MjVtc21KWC1jLUVvVkhldWc2SEJPbGotXy1MakVwY0JBZ0VF?oc=5",
-            "날짜": "8/31"
+            "이름": "서울경제",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9mcnJNSzFzWjNTTW15b1o3a1VnM2UtbGVVYVg3QjZ2SkUtaTY3ajhHOWp3MDgwZVRoZTQxZUVfY0RiQTFjemZFcnkwdGpXTkRObHfSAVNBVV95cUxPX044a2ZMeldPRlBIZW5EZUpLQXZoeThxa3BaRFFxNVhGUE5RYWRlT0otUE1BT1NoWmlRXzBBanZPbDIyZkJXTkZVNXRZOG1zZWV4NA?oc=5",
+            "날짜": "9/1"
           }
         ],
-        "관찰": "ESS 시장 성장과 실적 개선 기대감이 해당 유형 ETF로의 관심 재개 계기가 됐을 수 있습니다.",
+        "관찰": "주식 비중을 최대화하려는 퇴직연금 투자자들의 포트폴리오 채널 전략이 반영된 흐름으로 볼 수 있습니다.",
+        "이유": "",
+        "관련ETF": "",
+        "질문": "",
+        "차별점": ""
+      },
+      {
+        "구분": "시장 구조",
+        "제목": "애프터마켓 ETF 제외로 시장 왜곡 방지 추진",
+        "사실": "거래소는 유동성 부족 및 가격 왜곡 방지를 위해 9월 14일부터 애프터마켓에서 ETF·ETN 매매를 제외합니다.",
+        "출처": [
+          {
+            "이름": "한국경제",
+            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5JbkZ3S2twd0dzZ052bGtwSHlsWFQ5WFNnRzFGdm0yRkpQZkJISGZmS3pmYnBtOHJ5NFZFcENUVnlGY25XQllDR1E0d1p6NjZIRUJURERCNW5jZw?oc=5",
+            "날짜": "9/1"
+          }
+        ],
+        "관찰": "유동성 공급자(LP) 부재에 따른 괴리율 확대 위험을 사전 차단하려는 구조적 조치로 해석할 여지가 있습니다.",
         "이유": "",
         "관련ETF": "",
         "질문": "",
@@ -246,44 +189,44 @@
     ],
     "유튜브": [
       {
+        "영상ID": "c_fmT7QIEcU",
+        "핵심주제": "퇴직연금용 채권혼합 ETF 활용법",
+        "훅": "이벤트 연계형",
+        "관련성": "보통",
+        "관련성근거": "연금 계좌 ETF 배분 전략 다룸"
+      },
+      {
         "영상ID": "_OuetYKUfoM",
-        "핵심주제": "S&P500과 미국 단기채 50:50 혼합 ETF 구조 분석",
-        "훅": "숫자 제시형",
-        "관련성": "높음",
-        "관련성근거": "자산배분 ETF 구조 직접 해설"
+        "핵심주제": "S&P500과 미국 단기채 50:50 분산투자",
+        "훅": "비율 제시형",
+        "관련성": "보통",
+        "관련성근거": "자산배분형 혼합 ETF 소개"
       },
       {
-        "영상ID": "qb2MAgAQgcQ",
-        "핵심주제": "QQQ와 SCHD를 결합한 배터형 ETF 투자법",
-        "훅": "공포 자극형",
-        "관련성": "높음",
-        "관련성근거": "대표 해외주식형 ETF 조합 분석"
-      },
-      {
-        "영상ID": "-13BDeCHr40",
-        "핵심주제": "나스닥 ETF 대신 SCHD 월적립 매수 전략",
-        "훅": "질문형",
-        "관련성": "높음",
-        "관련성근거": "해외지수형 ETF 매매 전략 다룸"
+        "영상ID": "thjOfh9_1aw",
+        "핵심주제": "글로벌 AI 낸드메모리 반도체 ETF 분석",
+        "훅": "국장 투자자 타깃형",
+        "관련성": "보통",
+        "관련성근거": "신규 반도체 ETF 상품 소개"
       }
     ],
-    "댓글키워드": "월말 주기적 ETF 매수 타이밍 및 주식·채권 혼합형 ETF의 변동성 방어 효과 질문",
+    "댓글키워드": "",
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "유가 급등과 금리 상승기, 미 단기채 혼합 ETF가 대안일까?",
-        "이유": "중동 리스크와 금리 상승 속 주식·채권 혼합형 ETF에 대한 시청자 관심 증가 반영.",
-        "관련ETF": "미 단기채 · S&P500",
-        "질문": "주식과 채권을 50:50으로 섞은 혼합 ETF가 고금리·유가 급등 장세에서 실제로 계좌를 지켜줄 수 있나요?",
-        "차별점": "단순 과거 수익률 비교를 넘어 유가·금리 동반 상승 시의 변동성 감소 효과를 집중 검증",
+        "제목": "유가 90달러·금리 발작, 내 연금계좌 ETF 생존법",
+        "이유": "중동발 유가 급등과 미 국채금리 4.8% 근접으로 혼란스러운 연금 투자자에게 자산배분 처방 제시.",
+        "관련ETF": "채권혼합 · 미국단기채 · 원자재",
+        "질문": "고유가·고금리가 장기화될 때 퇴직연금 계좌에서 주식형 ETF와 채권혼합 ETF 비중을 어떻게 조정해야 합니까?",
+        "차별점": "단순 공포 전달이 아닌 퇴직연금 30% 안전자산 룰을 활용한 방어 포트폴리오 제시.",
         "사실": "",
         "관찰": ""
       }
     ],
     "오늘의개념": {
-      "용어": "베이시스포인트 (bp)",
-      "연결": "미 10년물 국채금리가 전일 대비 3.8bp 상승한 4.758%를 기록한 맥락에서 사용됐습니다.",
-      "설명": "금리나 수익률의 변화폭을 나타내는 최소 단위로, 1bp는 0.01%포인트(p)를 의미합니다. 예를 들어 금리가 4.720%에서 4.758%로 올랐을 때 '0.038%포인트 상승했다' 대신 '3.8bp 상승했다'고 표기합니다."
+      "용어": "베이시스포인트(bp)",
+      "연결": "미국 10년물 국채금리가 4.796%로 3.8bp 급등한 배경에서 등장",
+      "설명": "금리나 수익률의 변동 폭을 나타내는 기본 단위로, 1bp는 0.01%포인트를 뜻합니다. 예를 들어 금리가 4.75%에서 4.80%로 0.05%포인트 올랐다면 '5bp 상승했다'고 표현합니다. 미세한 금리 변화가 채권 가격과 증시 밸류에이션에 미치는 영향을 정확히 비교할 때 널리 쓰입니다."
     },
     "체크포인트": [
       {
@@ -298,35 +241,25 @@
       },
       {
         "유형": "확인",
-        "때": "상시",
-        "내용": "외국인·기관 코스피 순매도 지속 여부"
+        "때": "이번 주",
+        "내용": "WTI 90달러선 안착 및 호르무즈 해협 통항 상황"
       },
       {
         "유형": "확인",
-        "때": "상시",
-        "내용": "호르무즈 해협 통항 차단 우려 및 국제유가 추이"
+        "때": "이번 주",
+        "내용": "미 국채 10년물 금리 4.8% 돌파 여부"
       },
       {
         "유형": "일정",
-        "때": "9/1 (화)",
-        "내용": "미국 제조업 및 구인 지표 발표"
+        "때": "9/14 (월)",
+        "내용": "애프터마켓 ETF·ETN 거래 제외 시행"
       }
     ],
     "카톡": {
-      "1": "☀️ 9/1 브리핑\n1. 미·이란 충돌에 유가 급등\n2. 미 국채금리 상승세 지속\n3. ESS 수주에 2차전지 반등\n4. 야간 ETF 거래 제한 예고\n5. 국내 첫 낸드 ETF 상장"
+      "1": "☀️ 9/2 브리핑\n1. 美 이란 공습에 유가 급등\n2. 美 국채금리 쇼크에 기술주 약세\n3. 코스피·코스닥 뚜렷한 디커플링\n4. 개인 해외형 ETF 2.7조 순매수\n5. 애프터마켓 ETF 거래 제외 예고"
     }
   },
   "history": [
-    {
-      "날짜": "2026-08-27",
-      "주제": [
-        "엔비디아 깜짝 실적",
-        "한은 금통위 개최",
-        "미 10년물 금리 상승",
-        "코스피·코스닥 엇갈림",
-        "잭슨홀 심포지엄 개막"
-      ]
-    },
     {
       "날짜": "2026-08-28",
       "주제": [
@@ -345,6 +278,16 @@
         "코스피 하락",
         "미 반도체 지수 급락",
         "미 국채 금리 상승세"
+      ]
+    },
+    {
+      "날짜": "2026-09-01",
+      "주제": [
+        "미·이란 충돌에 유가 급등",
+        "미 국채금리 상승세 지속",
+        "ESS 수주에 2차전지 반등",
+        "야간 ETF 거래 제한 예고",
+        "국내 첫 낸드 ETF 상장"
       ]
     }
   ]
