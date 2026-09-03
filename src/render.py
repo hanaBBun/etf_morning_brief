@@ -257,15 +257,25 @@ def _monday_summary(data: dict, ai: dict) -> dict | None:
 
 def _safe_flowboard(data: dict) -> dict:
     """구버전 캐시도 잘못된 수익률 방향으로 출력되지 않게 한다."""
-    raw = (data.get("ETF_후보") or {}).get("흐름판") or {}
-    if not isinstance(raw, dict):
-        return {}
-    out = dict(raw)
-    out["상승"] = [x for x in (raw.get("상승") or [])
-                   if isinstance(x, dict) and float(x.get("등락률", 0)) > 0]
-    out["하락"] = [x for x in (raw.get("하락") or [])
-                   if isinstance(x, dict) and float(x.get("등락률", 0)) < 0]
-    return out
+    source = data.get("ETF_후보") or {}
+
+    def clean(raw: Any, country: str) -> dict:
+        if not isinstance(raw, dict):
+            raw = {}
+        out = dict(raw)
+        out["국가"] = country
+        out["상승"] = [x for x in (raw.get("상승") or [])
+                       if isinstance(x, dict) and float(x.get("등락률", 0)) > 0]
+        out["하락"] = [x for x in (raw.get("하락") or [])
+                       if isinstance(x, dict) and float(x.get("등락률", 0)) < 0]
+        out["상승안내"] = "" if out["상승"] else "조건을 통과한 상승 ETF가 없어요."
+        out["하락안내"] = "" if out["하락"] else "조건을 통과한 하락 ETF가 없어요."
+        return out
+
+    korea = clean(source.get("흐름판") or {}, "한국")
+    usa = clean(source.get("미국흐름판") or {}, "미국")
+    # 상위 키는 기존 테스트·구형 템플릿 호환용이며 새 화면은 국가별 키를 쓴다.
+    return {**korea, "한국": korea, "미국": usa}
 
 
 def _checkpoint_groups(items: list[dict]) -> list[dict]:
@@ -509,6 +519,15 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
     flowboard = ((data.get("ETF_후보") or {}).get("흐름판") or {})
     if not (ai.get("etf_레이더") or []) and not (flowboard.get("상승") or flowboard.get("하락")):
         errors.append("ETF 레이더 누락")
+    us_flow = ((data.get("ETF_후보") or {}).get("미국흐름판") or {})
+    require_us_flow = "미국_흐름판_최소거래대금_달러" in (cfg.get("ETF_레이더") or {})
+    if require_us_flow and (not us_flow.get("출처")
+                            or int((us_flow.get("진단") or {}).get("유동성필터통과") or 0) <= 0):
+        errors.append("미국 ETF 흐름판 누락")
+    issue_rule = cfg.get("놓치면안될이슈") or {}
+    min_issues = int(issue_rule.get("최소_항목수", 3))
+    if issue_rule and len(ai.get("놓치면안될이슈") or []) < min_issues:
+        errors.append(f"놓치면 안 될 경제·세상 이슈 {min_issues}개 미만")
     if not (ai.get("콘텐츠후보") or []):
         errors.append("ETF 아는형 콘텐츠 후보 누락")
     if not (ai.get("오늘의개념") or {}).get("용어"):
@@ -529,21 +548,23 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
 
 def flowboard_errors(data: dict) -> list[str]:
     """깨진 종목명·비현실적 수익률이 공개 HTML로 나가기 전에 잡는다."""
-    flow = ((data.get("ETF_후보") or {}).get("흐름판") or {})
     errors = []
-    weekly = flow.get("기간") == "주간"
-    for group in ("상승", "하락", "고변동상품"):
-        limit = 100.0 if weekly or group == "고변동상품" else 40.0
-        for row in flow.get(group) or []:
-            name = str(row.get("이름") or "")
-            try:
-                rate = float(row.get("등락률"))
-            except (TypeError, ValueError):
-                rate = float("inf")
-            if not name or len(name) > 100 or "dtype:" in name or "\n" in name:
-                errors.append(f"{group} 종목명 오류: {name[:30] or '(빈 이름)'}")
-            if not math.isfinite(rate) or abs(rate) > limit:
-                errors.append(f"{group} 수익률 오류: {name[:30]} {row.get('등락률')}")
+    candidate = data.get("ETF_후보") or {}
+    for country, flow in (("한국", candidate.get("흐름판") or {}),
+                          ("미국", candidate.get("미국흐름판") or {})):
+        weekly = flow.get("기간") == "주간"
+        for group in ("상승", "하락", "고변동상품"):
+            limit = 100.0 if weekly or group == "고변동상품" else 60.0
+            for row in flow.get(group) or []:
+                name = str(row.get("이름") or "")
+                try:
+                    rate = float(row.get("등락률"))
+                except (TypeError, ValueError):
+                    rate = float("inf")
+                if not name or len(name) > 140 or "dtype:" in name or "\n" in name:
+                    errors.append(f"{country} {group} 종목명 오류: {name[:30] or '(빈 이름)'}")
+                if not math.isfinite(rate) or abs(rate) > limit:
+                    errors.append(f"{country} {group} 수익률 오류: {name[:30]} {row.get('등락률')}")
     return errors
 
 
