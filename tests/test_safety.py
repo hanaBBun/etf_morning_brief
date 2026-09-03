@@ -44,6 +44,16 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(issues[0]["분야"], "정책")
         self.assertIn("연금", issues[0]["제목"])
 
+    def test_world_issue_fallback_does_not_repeat_existing_topic(self):
+        data = {"뉴스": {"산업기술": [{
+            "제목": "반도체·청정에너지 미 기업 한국에 20억 달러 투자",
+            "요약": "미국 기업들이 한국 투자를 결정했다.",
+            "링크": "https://example.com/followup", "출처": "테스트뉴스",
+            "날짜": "2026-09-04", "경과시간": 1,
+        }]}}
+        previous = [llm._topic_words("미국 기업 한국에 20억 달러 투자 유치")]
+        self.assertEqual(llm._fallback_world_issues(data, set(), 1, previous), [])
+
     def test_template_has_country_tabs_and_world_issue_section(self):
         template = (Path(__file__).parents[1] / "templates/brief.html.j2").read_text(
             encoding="utf-8")
@@ -230,11 +240,11 @@ class SafetyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
             html = path.read_text(encoding="utf-8")
-        for heading in ("오늘 아침 5줄 요약", "시장 한눈에", "밤사이 핵심 이야기",
+        for heading in ("오늘 아침 5줄 요약", "시장 한눈에", "어제와 밤사이 핵심 이야기",
                         "ETF 레이더", "경쟁 채널 동향", "ETF 아는형 콘텐츠 후보",
                         "체크포인트 · 주요 일정", "출처"):
             self.assertIn(heading, html)
-        self.assertIn("무슨 일이 있었나", html)
+        self.assertIn("왜 이렇게 움직였나", html)
         self.assertIn("그래서 오늘 볼 것", html)
         self.assertNotIn("오늘의 개념", html)
         self.assertNotIn("근거·상세 보기", html)
@@ -283,6 +293,14 @@ class SafetyTests(unittest.TestCase):
         self.assertIn('class="glossary"', first)
         self.assertIn("금리가 변할 때", first)
         self.assertNotIn('class="glossary"', second)
+
+    def test_mobile_tooltips_use_dismissible_fixed_popover(self):
+        template = (Path(__file__).parents[1] / "templates/brief.html.j2").read_text(
+            encoding="utf-8")
+        self.assertIn("data-popover-backdrop", template)
+        self.assertIn("position:fixed;left:16px;right:16px", template)
+        self.assertIn("backdrop.addEventListener('click', closeAll)", template)
+        self.assertNotIn("{{ c.결과|glossary }}", template)
 
     def test_kakao_prefers_causal_summary_over_short_title(self):
         top5 = [{"제목": f"짧은 제목 {i}", "카톡요약": f"사건 {i}의 원인과 의미"}
@@ -624,6 +642,18 @@ class SafetyTests(unittest.TestCase):
         self.assertIn("코스피 -2.00%", kr["결과"])
         self.assertEqual(kr["원인"], "확인된 원인")
 
+    def test_daily_fallback_preserves_world_issues_for_final_validation(self):
+        data = {"날짜표시": "2026년 9월 4일 (금)", "뉴스": {},
+                "국내지수": [], "지표": {}}
+        issues = [{"제목": f"새 이슈 {i}", "무슨일": "새 발표",
+                   "왜중요": "경제 영향", "출처": []} for i in range(3)]
+        cached = {"놓치면안될이슈": issues}
+        out = llm._stabilize_daily({}, cached, data, {
+            "카카오": {}, "ETF_레이더": {},
+            "놓치면안될이슈": {"최대_항목수": 5},
+        })
+        self.assertEqual(len(out["놓치면안될이슈"]), 3)
+
     def test_youtube_without_ai_note_gets_deterministic_overlap_tag(self):
         data = {"유튜브": {"급상승": [{"영상ID": "v1", "제목": "영상"}]}}
         ai = {"top5": [{"제목": str(i)} for i in range(5)],
@@ -953,7 +983,34 @@ class SafetyTests(unittest.TestCase):
             with patch.object(llm, "DAILY_AI_CACHE", cache):
                 compact = llm._compact(data, "daily")
             self.assertEqual(compact["최근브리핑주제"][0]["날짜"], "2026-08-25")
-            self.assertIn("반도체 약세", compact["최근브리핑주제"][0]["주제"])
+            topics = compact["최근브리핑주제"][0]["주제"]
+            self.assertIn("반도체 약세", [x["제목"] for x in topics])
+            self.assertTrue(all("영역" in x for x in topics))
+
+    def test_recent_brief_same_fact_is_not_republished_as_world_issue(self):
+        with tempfile.TemporaryDirectory() as td:
+            cache = Path(td) / "brief_daily_cache.json"
+            cache.write_text(json.dumps({"날짜": "2026-09-03", "ai": {
+                "top5": [{"제목": "브로드컴 실적 발표"}]
+            }}, ensure_ascii=False), encoding="utf-8")
+            item = {"제목": "브로드컴 실적 발표", "무슨일": ""}
+            with patch.object(llm, "DAILY_AI_CACHE", cache):
+                repeated = llm._is_recent_repeat(
+                    item, {"날짜표시": "2026년 9월 4일 (금)"})
+            self.assertTrue(repeated)
+
+    def test_recent_topic_followup_impact_is_kept(self):
+        with tempfile.TemporaryDirectory() as td:
+            cache = Path(td) / "brief_daily_cache.json"
+            cache.write_text(json.dumps({"날짜": "2026-09-01", "ai": {
+                "top5": [{"제목": "미국 회의에서 자동차 관세 방침 발표"}]
+            }}, ensure_ascii=False), encoding="utf-8")
+            followup = {"제목": "관세 발표 뒤 자동차 업계 생산 축소",
+                        "무슨일": "완성차 업체가 공장 생산 계획을 줄였습니다."}
+            with patch.object(llm, "DAILY_AI_CACHE", cache):
+                repeated = llm._is_recent_repeat(
+                    followup, {"날짜표시": "2026년 9월 2일 (수)"})
+            self.assertFalse(repeated)
 
     def test_checkpoints_group_week_dates_and_always(self):
         items = [
