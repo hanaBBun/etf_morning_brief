@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
-from src import delivery, events, krx, llm, main, news, render, youtube
+from src import delivery, events, krx, llm, main, news, render, us_etf, youtube
 
 
 class _FakeStock:
@@ -16,6 +16,41 @@ class _FakeStock:
 
 
 class SafetyTests(unittest.TestCase):
+    def test_flowboard_separates_korea_and_us_and_explains_empty_direction(self):
+        data = {"ETF_후보": {
+            "흐름판": {"상승": [], "하락": [{"이름": "한국 ETF", "등락률": -1.0}]},
+            "미국흐름판": {"상승": [{"이름": "US ETF", "등락률": 2.0}], "하락": []},
+        }}
+        flow = render._safe_flowboard(data)
+        self.assertEqual(flow["한국"]["상승안내"], "조건을 통과한 상승 ETF가 없어요.")
+        self.assertEqual(flow["미국"]["하락안내"], "조건을 통과한 하락 ETF가 없어요.")
+        self.assertEqual(flow["미국"]["상승"][0]["이름"], "US ETF")
+
+    def test_us_etf_dedupe_keeps_one_per_theme(self):
+        rows = [
+            {"티커": "AAA", "이름": "Alpha S&P 500 ETF", "등락률": 3.0},
+            {"티커": "BBB", "이름": "Beta S&P 500 Fund", "등락률": 2.9},
+            {"티커": "CCC", "이름": "Gamma Semiconductor ETF", "등락률": 2.8},
+        ]
+        self.assertEqual([x["티커"] for x in us_etf._dedupe(rows, 3)], ["AAA", "CCC"])
+
+    def test_world_issue_fallback_uses_fresh_economic_news(self):
+        data = {"뉴스": {"경제정책": [{
+            "제목": "정부, 연금 세제 개편안 발표", "요약": "연금 세액공제 범위를 조정했다.",
+            "링크": "https://example.com/policy", "출처": "연합뉴스",
+            "날짜": "2026-09-03", "경과시간": 2,
+        }]}}
+        issues = llm._fallback_world_issues(data, set(), 5)
+        self.assertEqual(issues[0]["분야"], "정책")
+        self.assertIn("연금", issues[0]["제목"])
+
+    def test_template_has_country_tabs_and_world_issue_section(self):
+        template = (Path(__file__).parents[1] / "templates/brief.html.j2").read_text(
+            encoding="utf-8")
+        self.assertIn('id="flow-kr"', template)
+        self.assertIn('id="flow-us"', template)
+        self.assertIn("놓치면 안 될 경제·세상 이슈", template)
+
     def test_flowboard_never_places_positive_return_in_losers(self):
         data = {"ETF_후보": {"흐름판": {
             "상승": [{"이름": "상승 ETF", "등락률": 2.0},
