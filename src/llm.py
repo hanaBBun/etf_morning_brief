@@ -21,7 +21,8 @@ SYSTEM = """당신은 한국의 ETF 전문 유튜브 채널 'ETF 아는형'의 �
 이 브리핑의 목적은 단 하나입니다.
 "오늘 ETF 아는형에서 무엇을 알아야 하고, 무엇을 물어봐야 하는지를 3분 안에 파악한다."
 
-"오늘 경제뉴스를 많이 읽었다"는 느낌을 주는 브리핑은 실패입니다. 짧고 결정적이어야 합니다.
+전일 시장의 움직임뿐 아니라, 가격 반응이 아직 작아도 정책·산업·기술·국제정세·생활경제에
+장기 영향을 줄 변화를 함께 포착해야 합니다. 제목만 훑으면 1분, 전체는 5분 안에 읽혀야 합니다.
 
 독자는 주식 관련 서적 3~4권을 읽은 수준의 기초 지식을 갖췄지만 전문가는 아닙니다.
 전문 용어는 써도 되지만 왜 중요한지를 함께 설명하세요.
@@ -242,6 +243,15 @@ TOP 5에서 결과 숫자를 쪼개 나열하지 말고 "사건 → 유가·금�
 글로벌 사건이 미국 시장 하락의 핵심 원인이라면 미국 카드에서 한 번만 자세히 설명하세요.
 글로벌 카드는 미국 카드에 없는 별도의 국가·정책·공급망 영향이 있을 때만 작성합니다.
 같은 사건·전달 경로·출처를 되풀이하는 글로벌 카드는 만들지 마세요.
+
+■ 규칙 16 — 놓치면 안 될 경제·세상 이슈를 3~5개 고릅니다
+당일 지수 등락이 작거나 아직 가격에 반영되지 않았다는 이유로 중요한 사건을 버리지 마세요.
+정책·규제·세제·연금·무역협상·산업정책·AI/반도체/에너지/바이오 공급망·대형 기업 실적과
+가이던스·고용·물가·소비·주택·가계부채 중 경제와 투자 판단에 연결되는 새 사실을 고릅니다.
+중요도, 시급성, 지속성, 시장 연결성, 새로움, 관심도, 선행성을 종합해 3~5개를 고르되,
+같은 사건을 TOP5나 시장브리핑과 똑같이 설명하지 마세요. 시장 반응이 이미 핵심인 사건은 TOP5에,
+아직 반응이 작지만 앞으로 볼 이유가 큰 사건은 `놓치면안될이슈`에 둡니다.
+장 마감 뒤 발표된 대형 기업 실적·가이던스는 정규장 등락률 기준과 무관하게 반드시 검토합니다.
 """
 
 SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍스트는 넣지 마세요.
@@ -308,6 +318,15 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
      "숫자": "핵심 수치만. 예: 30년물 5.31% · 10년물 4.72%",
      "설명": "무슨 일이 있었는지 처음 읽는 사람도 이해할 수 있는 사실 1문장",
      "영향": "증시·ETF 전달 경로 한 줄",
+     "출처": [{"이름": "매체명", "id": "입력 기사 id"}]}
+  ],
+
+  "놓치면안될이슈": [
+    {"분야": "정책|산업·기술|국제정세|기업|생활경제",
+     "제목": "사건이 드러나는 12~28자 제목",
+     "무슨일": "기사에서 확인된 새 사실 1~2문장",
+     "왜중요": "앞으로 경제·산업·시장에 이어질 경로 1~2문장",
+     "확인할것": "다음 발표·협상·실적·수치 등 후속 확인점 한 문장",
      "출처": [{"이름": "매체명", "id": "입력 기사 id"}]}
   ],
 
@@ -385,6 +404,7 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 | top5.설명 | | 90자 이내 |
 | top5.영향 | | 50자 이내 |
 | 관망요인 | 조건 충족 때 1개 | 2~3개, 설명 100자·전달경로 70자 이내 |
+| 놓치면안될이슈 | 3~5개 | 무슨일 100자, 왜중요 100자, 확인할것 60자 이내 |
 | etf_레이더 | 0~8개 | 핵심도 순. 1~3번은 본문, 4~8번은 추가 뉴스 제목으로 표시 |
 | etf_레이더.사실 | | 80자 이내 |
 | etf_레이더.관찰 | | 100자 이내 |
@@ -862,6 +882,12 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
          "업종": s.get("업종"), "등락률": s.get("등락률")}
         for s in (data.get("종목_후보_미국") or [])[:8]
     ]
+    d["미국기업실적_후보"] = [
+        {k: s.get(k) for k in ("티커", "이름", "발표일", "발표시점", "EPS전망",
+                               "회계분기", "시간외가격", "시간외등락률", "가격기준시각", "출처")
+         if s.get(k) not in (None, "")}
+        for s in (data.get("미국기업실적_후보") or [])[:10]
+    ]
 
     etf = data.get("ETF_후보") or {}
     d["ETF_후보"] = {
@@ -890,6 +916,10 @@ def _compact(data: dict[str, Any], mode: str) -> dict[str, Any]:
         "국내": _slim_news(news.get("국내"), 8),
         "국제": _slim_news(news.get("국제"), 10),
         "세계정세": _slim_news(news.get("세계정세"), 8),
+        "경제정책": _slim_news(news.get("경제정책"), 8),
+        "산업기술": _slim_news(news.get("산업기술"), 8),
+        "생활경제": _slim_news(news.get("생활경제"), 6),
+        "기업실적": _slim_news(news.get("기업실적"), 8),
     }
     d["뉴스"] = {k: v for k, v in d["뉴스"].items() if v}
 
@@ -913,7 +943,8 @@ def _payload(data: dict[str, Any], mode: str = "daily") -> str:
     # JSON 중간을 자르면 깨진 입력이 된다. 예산을 넘으면 우선순위가 낮은
     # 뉴스부터 기사 한 건 단위로 제거해 항상 유효한 JSON을 유지한다.
     trim_order = ("보도자료", "ETF", "지수", "레버리지", "ETF시장", "증권",
-                  "주요언론", "세계정세", "국제", "국내")
+                  "주요언론", "국제", "국내", "생활경제", "세계정세",
+                  "산업기술", "경제정책", "기업실적")
     removed = 0
     while len(text) > MAX_PAYLOAD_CHARS:
         news = compact.get("뉴스") or {}
@@ -2185,6 +2216,59 @@ def _qualify_retirement_claim(text: Any) -> str:
     return value
 
 
+_WORLD_GROUP_META = {
+    "경제정책": ("정책", "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다."),
+    "산업기술": ("산업·기술", "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다."),
+    "세계정세": ("국제정세", "무역·에너지·공급망을 거쳐 물가와 기업 비용에 영향을 줄 수 있습니다."),
+    "기업실적": ("기업", "대형 기업의 실적과 가이던스는 관련 업종과 ETF 기대를 다시 정하는 재료입니다."),
+    "생활경제": ("생활경제", "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다."),
+    "국제": ("국제정세", "글로벌 경기·금리·교역 경로를 통해 국내 시장에도 영향을 줄 수 있습니다."),
+    "국내": ("정책", "국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다."),
+}
+
+
+def _fallback_world_issues(data: dict, used_urls: set[str], limit: int) -> list[dict]:
+    """모델이 놓친 경우 수집 기사 자체에서 경제 연결형 이슈를 보충한다."""
+    pools = data.get("뉴스") or {}
+    candidates = []
+    for group, (field, why) in _WORLD_GROUP_META.items():
+        for art in pools.get(group) or []:
+            age = art.get("경과시간")
+            url = str(art.get("링크") or "")
+            title = str(art.get("제목") or "").strip()
+            if not title or not url or url in used_urls or age is None or int(age) > STALE_HOURS:
+                continue
+            # 최근성 + 새 정책/발표/실적처럼 선행성이 큰 단어를 우선한다.
+            text = f"{title} {art.get('요약', '')}".lower()
+            signals = ("발표", "합의", "법안", "규제", "관세", "투자", "실적", "가이던스",
+                       "고용", "물가", "부채", "공급망", "policy", "tariff", "earnings",
+                       "guidance", "investment", "regulation", "agreement")
+            score = 20 - min(int(age), 20) + sum(4 for token in signals if token in text)
+            candidates.append((score, group, field, why, art))
+    candidates.sort(key=lambda x: x[0], reverse=True)
+    out, wordsets = [], []
+    for _, _, field, why, art in candidates:
+        words = _topic_words(art.get("제목"))
+        if any(len(words & old) >= 2 for old in wordsets):
+            continue
+        summary = re.sub(r"<[^>]+>", " ", str(art.get("요약") or ""))
+        summary = re.sub(r"\s+", " ", summary).strip()
+        out.append({
+            "분야": field,
+            "제목": _clip(art.get("제목"), 55),
+            "무슨일": _clip(summary or art.get("제목"), 130),
+            "왜중요": why,
+            "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+            "출처": [{"이름": art.get("출처", ""), "url": art.get("링크", ""),
+                     "날짜": _mmdd(art.get("날짜", ""))}],
+        })
+        used_urls.add(str(art.get("링크") or ""))
+        wordsets.append(words)
+        if len(out) >= limit:
+            break
+    return out
+
+
 def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily") -> dict:
     d = _as_dict(d) or {}
     data = data or {}
@@ -2256,7 +2340,7 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
     # 출처를 번호에서 실제 링크로 되돌린다 (모델이 URL 을 옮겨 적지 않게 한 대가)
     idx = _link_index(data)
     ages = _article_age(data)
-    for key in ("top5", "시장브리핑", "etf_레이더", "관심종목"):
+    for key in ("top5", "시장브리핑", "놓치면안될이슈", "etf_레이더", "관심종목"):
         for c in d.get(key) or []:
             if isinstance(c, dict):
                 c["출처"] = _resolve_srcs(c.get("출처"), idx)
@@ -2336,6 +2420,44 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         item["영향"] = _clip(item.get("영향"), 70)
         if ages and (not item.get("출처") or not _has_news_source(item)):
             item["설명"] = ""
+
+    # 당일 가격 반응과 별개로 알아야 할 경제 연결형 이슈 3~5개.
+    issue_rule = cfg.get("놓치면안될이슈") or {}
+    min_issues = int(issue_rule.get("최소_항목수", 3))
+    max_issues = int(issue_rule.get("최대_항목수", 5))
+    raw_issues = _drop_filler(d.get("놓치면안될이슈"), ("제목", "무슨일", "왜중요"))
+    kept_issues, used_issue_urls, issue_words = [], set(), []
+    top_urls = {str(s.get("url")) for item in d.get("top5") or []
+                for s in item.get("출처") or [] if isinstance(s, dict) and s.get("url")}
+    for item in _strip_stale_sources(raw_issues, ages):
+        urls = {str(s.get("url")) for s in item.get("출처") or []
+                if isinstance(s, dict) and s.get("url")}
+        words = _topic_words(f"{item.get('제목', '')} {item.get('무슨일', '')}")
+        if (not urls or urls & top_urls or any(len(words & old) >= 2 for old in issue_words)
+                or _has_hype(item)):
+            continue
+        item["분야"] = str(item.get("분야") or "경제")[:12]
+        item["제목"] = _clip(item.get("제목"), 55)
+        item["무슨일"] = _clip(item.get("무슨일"), 140)
+        item["왜중요"] = _clip(item.get("왜중요"), 140)
+        item["확인할것"] = _clip(item.get("확인할것"), 90)
+        if not (item["제목"] and item["무슨일"] and item["왜중요"]):
+            continue
+        kept_issues.append(item)
+        used_issue_urls |= urls
+        issue_words.append(words)
+        if len(kept_issues) >= max_issues:
+            break
+    if len(kept_issues) < min_issues:
+        blocked = set(top_urls) | used_issue_urls
+        # 조용한 날까지 5건을 강제로 채우지는 않는다. 최소 3건만 보충하고,
+        # 4~5건은 모델이 중요하다고 판단한 날에만 남긴다.
+        supplements = _fallback_world_issues(data, blocked, min_issues - len(kept_issues))
+        kept_issues.extend(supplements)
+        if supplements:
+            log.warning("놓치면 안 될 이슈 %d건을 수집 기사에서 보충했습니다", len(supplements))
+    d["놓치면안될이슈"] = kept_issues[:max_issues]
+    log.info("놓치면 안 될 경제·세상 이슈 %d건", len(d["놓치면안될이슈"]))
 
     # ETF 흐름판의 동반 움직임을 기사 촉매와 연결한 조건부 해설.
     theme = d.get("주도테마")

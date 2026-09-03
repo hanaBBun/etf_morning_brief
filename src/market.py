@@ -2,9 +2,91 @@
 from __future__ import annotations
 
 import logging
+import re
+from datetime import datetime, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
 log = logging.getLogger(__name__)
+
+
+def _money(value: Any) -> float:
+    text = re.sub(r"[^0-9.\-]", "", str(value or ""))
+    try:
+        return float(text)
+    except ValueError:
+        return 0.0
+
+
+def collect_major_earnings(cfg: dict) -> list[dict]:
+    """미국 장 마감 전후 주요 실적 일정과 확인 가능한 시간외 반응을 수집한다."""
+    import requests
+    import yfinance as yf
+
+    rule = cfg.get("미국종목_편성기준") or {}
+    min_cap = float(rule.get("최소_시가총액_억달러", 20)) * 1e8
+    now_ny = datetime.now(ZoneInfo("America/New_York"))
+    dates = [now_ny.date(), (now_ny - timedelta(days=1)).date()]
+    rows: list[dict] = []
+    seen = set()
+    headers = {"User-Agent": "Mozilla/5.0 Chrome/122 Safari/537.36", "Accept": "application/json"}
+    for day in dates:
+        try:
+            response = requests.get(
+                "https://api.nasdaq.com/api/calendar/earnings",
+                params={"date": day.isoformat()}, headers=headers, timeout=20)
+            response.raise_for_status()
+            calendar = ((response.json().get("data") or {}).get("rows") or [])
+        except Exception as exc:  # noqa: BLE001
+            log.warning("NASDAQ 실적 일정 %s 조회 실패: %s", day, exc)
+            continue
+        for item in calendar:
+            symbol = str(item.get("symbol") or "").strip().replace("/", "-")
+            cap = _money(item.get("marketCap"))
+            if not symbol or symbol in seen or (cap < min_cap and symbol not in DEFAULT_US_UNIVERSE):
+                continue
+            seen.add(symbol)
+            rows.append({
+                "티커": symbol, "이름": US_NAMES.get(symbol, item.get("name") or symbol),
+                "발표일": day.isoformat(), "발표시점": item.get("time") or "",
+                "시가총액": cap or None, "EPS전망": item.get("epsForecast") or "",
+                "회계분기": item.get("fiscalQuarterEnding") or "",
+                "출처": "NASDAQ Earnings Calendar",
+            })
+
+    # 외부 가격 호출 전에 시가총액 상위 후보를 확정한다. 캘린더의 모든 기업을
+    # 순차 조회하면 429와 실행 지연으로 브로드컴 같은 핵심 일정까지 잃을 수 있다.
+    rows.sort(key=lambda x: x.get("시가총액") or 0, reverse=True)
+    rows = rows[:12]
+
+    def add_extended_price(event: dict) -> dict:
+        """확인 가능한 경우에만 시간외 가격을 덧붙이고 일정 자체는 보존한다."""
+        symbol = str(event.get("티커") or "")
+        # 장 마감 후 최신 체결가가 있으면 정규장 종가와 분리해 표시한다.
+        try:
+            ticker = yf.Ticker(symbol)
+            daily = ticker.history(period="5d", interval="1d", auto_adjust=False).dropna(subset=["Close"])
+            intra = ticker.history(period="2d", interval="5m", prepost=True, auto_adjust=False).dropna(subset=["Close"])
+            if not daily.empty and not intra.empty:
+                close = float(daily.iloc[-1]["Close"])
+                latest = float(intra.iloc[-1]["Close"])
+                stamp = intra.index[-1]
+                local = stamp.tz_convert("America/New_York") if getattr(stamp, "tzinfo", None) else stamp
+                if getattr(local, "hour", 0) >= 16 and close > 0:
+                    event["시간외가격"] = round(latest, 4)
+                    event["시간외등락률"] = round((latest / close - 1) * 100, 2)
+                    event["가격기준시각"] = str(local)
+        except Exception as exc:  # noqa: BLE001
+            log.debug("%s 시간외 반응 조회 실패: %s", symbol, exc)
+        return event
+
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        rows = list(pool.map(add_extended_price, rows))
+    rows.sort(key=lambda x: (x.get("시간외등락률") is not None, x.get("시가총액") or 0), reverse=True)
+    log.info("주요 미국 기업 실적 후보 %d건 (시간외 반응 %d건)",
+             len(rows), sum(x.get("시간외등락률") is not None for x in rows))
+    return rows
 
 
 # ─────────────────────────────────────────────

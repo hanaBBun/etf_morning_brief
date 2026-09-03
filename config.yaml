@@ -31,6 +31,7 @@ ETF_레이더:
   최대_항목수: 8
   흐름판_최소거래대금_억원: 50  # 거래가 적은 ETF의 허수 급등락 제외
   흐름판_상하위개수: 3
+  미국_흐름판_최소거래대금_달러: 10000000  # 전일 거래대금 1,000만달러 이상
   순매수_임계치_억원: 300      # 전일 순매수/순매도가 이 이상이면 후보
   자금유입_5일_임계치_억원: 1000
   순자산_증가율_임계치_퍼센트: 10
@@ -82,6 +83,16 @@ ETF_레이더:
   세계정세:
     - { 이름: "구글뉴스 지정학", url: "https://news.google.com/rss/search?q=war+conflict+sanctions+trade+oil+markets+when:7d&hl=en-US&gl=US&ceid=US:en" }
     - { 이름: "구글뉴스 국제정책", url: "https://news.google.com/rss/search?q=tariffs+geopolitics+energy+shipping+economy+when:7d&hl=en-US&gl=US&ceid=US:en" }
+  경제정책:
+    - { 이름: "구글뉴스 국내정책", url: "https://news.google.com/rss/search?q=(%EC%A0%95%EB%B6%80+OR+%EA%B5%AD%ED%9A%8C)+(%EA%B2%BD%EC%A0%9C%EC%A0%95%EC%B1%85+OR+%EC%84%B8%EC%A0%9C+OR+%EC%97%B0%EA%B8%88+OR+%EA%B7%9C%EC%A0%9C+OR+%EA%B0%80%EA%B3%84%EB%B6%80%EC%B1%84)+when%3A3d&hl=ko&gl=KR&ceid=KR%3Ako" }
+    - { 이름: "구글뉴스 글로벌정책", url: "https://news.google.com/rss/search?q=(policy+OR+regulation+OR+tax+OR+trade+agreement)+(economy+OR+industry)+when:3d&hl=en-US&gl=US&ceid=US:en" }
+  산업기술:
+    - { 이름: "구글뉴스 글로벌산업", url: "https://news.google.com/rss/search?q=(AI+OR+semiconductor+OR+energy+OR+nuclear+OR+biotech+OR+defense)+(investment+OR+supply+chain+OR+regulation)+when:3d&hl=en-US&gl=US&ceid=US:en" }
+    - { 이름: "구글뉴스 국내산업", url: "https://news.google.com/rss/search?q=(AI+OR+%EB%B0%98%EB%8F%84%EC%B2%B4+OR+%EC%97%90%EB%84%88%EC%A7%80+OR+%EC%9B%90%EC%A0%84+OR+%EB%B0%94%EC%9D%B4%EC%98%A4+OR+%EB%B0%A9%EC%82%B0)+(%ED%88%AC%EC%9E%90+OR+%EA%B3%B5%EA%B8%89%EB%A7%9D+OR+%EA%B7%9C%EC%A0%9C)+when%3A3d&hl=ko&gl=KR&ceid=KR%3Ako" }
+  생활경제:
+    - { 이름: "구글뉴스 생활경제", url: "https://news.google.com/rss/search?q=(%EA%B3%A0%EC%9A%A9+OR+%EB%AC%BC%EA%B0%80+OR+%EC%86%8C%EB%B9%84+OR+%EC%A3%BC%ED%83%9D+OR+%EB%B6%80%EB%8F%99%EC%82%B0+OR+%EA%B0%80%EA%B3%84%EB%B6%80%EC%B1%84)+when%3A3d&hl=ko&gl=KR&ceid=KR%3Ako" }
+  기업실적:
+    - { 이름: "구글뉴스 주요기업실적", url: "https://news.google.com/rss/search?q=(earnings+OR+guidance+OR+revenue)+(Nvidia+OR+Broadcom+OR+Apple+OR+Microsoft+OR+Amazon+OR+Meta+OR+Tesla+OR+Alphabet+OR+Oracle)+when:2d&hl=en-US&gl=US&ceid=US:en" }
   ETF:
     - { 이름: "구글뉴스 국내ETF", url: "https://news.google.com/rss/search?q=ETF+when:3d&hl=ko&gl=KR&ceid=KR:ko" }
     - { 이름: "구글뉴스 ETF테마", url: "https://news.google.com/rss/search?q=ETF+(%EB%A0%88%EB%B2%84%EB%A6%AC%EC%A7%80+OR+%EA%B8%88+OR+%EB%B0%94%EC%9D%B4%EC%98%A4+OR+%ED%99%94%EC%9E%A5%ED%92%88+OR+%EB%B9%84%ED%8A%B8%EC%BD%94%EC%9D%B8)+when:3d&hl=ko&gl=KR&ceid=KR:ko" }
@@ -126,6 +137,11 @@ ETF_레이더:
 
   기사_최대개수: 40
 
+놓치면안될이슈:
+  최소_항목수: 3
+  최대_항목수: 5
+  범위: "경제 연결형"
+
 # 기사 주제가 같을 때의 편성 우선순위입니다. 목록 밖 매체도 특종·직접 근거가
 # 있으면 수집하되, 핵심 브리핑을 생소한 매체 기사만으로 채우지 않게 합니다.
 뉴스_편성:
@@ -151,8 +167,6 @@ ETF_레이더:
     - IT조선
     - 바이라인네트워크
     - 한국금융신문
-    - 글로벌이코노믹
-    - EBN
     - 아시아투데이
     - 매일신문
     - 플래텀

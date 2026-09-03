@@ -28,15 +28,19 @@ THEME_TERMS = {
 
 def detect_etf_themes(etf_candidates: dict, minimum: int = 2) -> list[dict]:
     """수익률 상·하위 ETF에 같은 테마가 겹칠 때만 주도 테마 후보로 만든다."""
-    board = (etf_candidates or {}).get("흐름판") or {}
+    boards = [((etf_candidates or {}).get("흐름판") or {}),
+              ((etf_candidates or {}).get("미국흐름판") or {})]
     found: list[dict] = []
-    for direction in ("상승", "하락"):
-        rows = board.get(direction) or []
-        for theme, terms in THEME_TERMS.items():
-            matches = [r for r in rows if any(t.lower() in str(r.get("이름", "")).lower()
-                                              for t in terms)]
-            if len(matches) >= minimum:
-                found.append({"테마": theme, "방향": direction, "ETF": matches[:5]})
+    for board in boards:
+        country = str(board.get("국가") or ("미국" if board is boards[1] else "한국"))
+        for direction in ("상승", "하락"):
+            rows = board.get(direction) or []
+            for theme, terms in THEME_TERMS.items():
+                matches = [r for r in rows if any(t.lower() in str(r.get("이름", "")).lower()
+                                                  for t in terms)]
+                if len(matches) >= minimum:
+                    found.append({"국가": country, "테마": theme,
+                                  "방향": direction, "ETF": matches[:5]})
     return found[:2]
 
 

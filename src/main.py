@@ -13,7 +13,7 @@ from typing import Any
 
 import requests
 
-from . import delivery, events, krx, llm, market, news, render, youtube
+from . import delivery, events, krx, llm, market, news, render, us_etf, youtube
 from .config import kdate, load_config, now_kst
 
 logging.basicConfig(
@@ -156,6 +156,23 @@ def collect(cfg: dict, mode: str) -> dict[str, Any]:
         log.error("미국 종목 실패: %s", e)
         data["종목_후보_미국"] = []
 
+    try:
+        data["미국기업실적_후보"] = market.collect_major_earnings(cfg)
+    except Exception as e:  # noqa: BLE001
+        log.error("미국 주요 기업 실적·시간외 반응 실패: %s", e)
+        data["미국기업실적_후보"] = []
+
+    log.info("3-1/6 미국 상장 ETF 흐름판")
+    try:
+        us_flow = us_etf.collect_us_etf_flow(cfg, mode)
+        data.setdefault("ETF_후보", {})["미국흐름판"] = us_flow
+        count = len(us_flow.get("상승") or []) + len(us_flow.get("하락") or [])
+        data["수집상태"]["미국 ETF"] = f"정상({count}건)" if count else "수집 0건"
+    except Exception as e:  # noqa: BLE001
+        log.error("미국 ETF 흐름판 실패: %s", e)
+        data.setdefault("ETF_후보", {})["미국흐름판"] = {}
+        data["수집상태"]["미국 ETF"] = f"실패: {type(e).__name__}"
+
     log.info("4/6 뉴스 수집")
     try:
         if mode == "daily":
@@ -260,9 +277,12 @@ def _operator_issues(data: dict, ai: dict, incomplete: list[str] | None = None) 
         issues.append("ETF 흐름판: 재조회 후 0건"
                       f"(원본 {diag.get('원본', 0)}·필터 {diag.get('유동성필터통과', 0)}"
                       f"·{diag.get('보조오류') or diag.get('오류') or '개별 조회도 통과 없음'})")
+    us_flow = etf.get("미국흐름판") or {}
+    if not us_flow.get("출처"):
+        issues.append("미국 ETF 흐름판: 수집 결과 없음")
 
     state = data.get("수집상태") or {}
-    for label in ("뉴스", "YouTube", "Yahoo Finance"):
+    for label in ("뉴스", "YouTube", "Yahoo Finance", "미국 ETF"):
         value = str(state.get(label) or "")
         if value and ("실패" in value or "0건" in value or "초과" in value):
             issues.append(f"{label}: {value}")
@@ -322,7 +342,11 @@ def main() -> int:
     flow_errors = render.flowboard_errors(data)
     if flow_errors:
         log.error("ETF 흐름판 무결성 실패: %s", "; ".join(flow_errors))
-        data.setdefault("ETF_후보", {})["흐름판"] = {}
+        candidates = data.setdefault("ETF_후보", {})
+        if any(error.startswith("한국 ") for error in flow_errors):
+            candidates["흐름판"] = {}
+        if any(error.startswith("미국 ") for error in flow_errors):
+            candidates["미국흐름판"] = {}
         _send_operator_alert(cfg, data, ["ETF 흐름판: 비정상 수익률·종목명 차단"], args.no_send)
 
     if args.mode == "daily" and not args.dry_run:
