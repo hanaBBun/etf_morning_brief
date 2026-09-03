@@ -164,6 +164,14 @@
   .ritem .t{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
   .flowboard{background:var(--surface);border:1px solid var(--line);border-radius:10px;
              padding:12px 14px;margin:10px 0}
+  .flowtab-input{position:absolute;opacity:0;pointer-events:none}
+  .flowtabs{display:flex;gap:6px;margin:0 0 11px}
+  .flowtabs label{cursor:pointer;border:1px solid var(--line);border-radius:16px;padding:4px 14px;
+                  color:var(--ink3);font-size:11.5px;font-weight:700;transition:.15s}
+  #flow-kr:checked~.flowtabs label[for="flow-kr"],#flow-us:checked~.flowtabs label[for="flow-us"]{
+                  background:var(--accent);border-color:var(--accent);color:#fff}
+  .flow-panel{display:none}
+  #flow-kr:checked~.flow-panels .flow-panel.kr,#flow-us:checked~.flow-panels .flow-panel.us{display:block}
   .flow-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
   .flow-head b{font-size:13.5px}.flow-head span{font-size:10.5px;color:var(--ink3)}
   .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -175,6 +183,7 @@
   .flow-extra{border-top:1px solid var(--line);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--ink2)}
   .flow-extra b{color:var(--ink3);font-size:10.5px;margin-right:6px}
   .flow-extra span+span:before{content:" · ";color:var(--ink3)}
+  .flow-empty{color:var(--ink3);font-size:11.5px;margin:4px 0 0}
   @media(max-width:520px){.flow-grid{grid-template-columns:1fr}}
   .themebox{background:linear-gradient(135deg,rgba(224,163,60,.12),var(--surface));
             border:1px solid rgba(224,163,60,.38);border-radius:10px;padding:14px 16px;margin:10px 0}
@@ -187,6 +196,14 @@
   .leader{background:var(--surface2);border:1px solid var(--line);border-radius:16px;
           padding:4px 9px;font-size:11.5px}.leader b{margin-left:5px;font-variant-numeric:tabular-nums}
   .stockwatch{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px 15px;margin:10px 0}
+  .worldissues{display:flex;flex-direction:column;gap:8px}
+  .worlditem{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .worldhead{display:flex;align-items:baseline;gap:8px}.worldhead h3{font-size:14px;margin:0}
+  .worldbadge{font-size:10px;font-weight:700;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+              border-radius:4px;padding:1px 6px;white-space:nowrap}
+  .worlditem p{font-size:12.5px;color:var(--ink2);margin:7px 0 0}
+  .worldpath{border-left:3px solid var(--accent);background:var(--surface2);padding:8px 10px;border-radius:0 7px 7px 0}
+  .worldcheck{font-size:11.5px;color:var(--ink3);margin-top:7px}
   .stockwatch .sitem{padding:10px 0;border-bottom:1px solid var(--line)}
   .stockwatch .sitem:last-child{border-bottom:0}.stockwatch .st{display:flex;gap:8px;align-items:baseline}
   .stockwatch .st b{font-size:13px}.stockwatch .st span{font-size:11.5px;font-weight:700}
@@ -410,6 +427,24 @@
 {% if ai.오늘관전 %}<div class="watch"><b>{% if 모드 == 'weekly' %}다음 주 관전 포인트{% else %}오늘 관전 포인트{% endif %}</b><ol>{% for x in ai.오늘관전 %}<li>{{ x }}</li>{% endfor %}</ol></div>{% endif %}
 {% endif %}
 
+{# ─────────── 놓치면 안 될 경제·세상 이슈 ─────────── #}
+{% if ai.놓치면안될이슈 %}
+<h2>🌍 놓치면 안 될 경제·세상 이슈<span class="tip" tabindex="0"><span class="bubble">
+  당일 가격 반응이 작아도 정책·산업·기술·국제정세·생활경제에 오래 영향을 줄 수 있는 새 변화를 고릅니다.
+  중요도에 따라 하루 3~5개를 보여줍니다.</span></span><span class="tag">선행 이슈 3~5개</span></h2>
+<div class="worldissues">
+  {% for x in ai.놓치면안될이슈 %}
+  <article class="worlditem">
+    <div class="worldhead"><span class="worldbadge">{{ x.분야 }}</span><h3>{{ x.제목 }}</h3></div>
+    <p>{{ x.무슨일 }}</p>
+    <p class="worldpath"><b>왜 중요한가</b> · {{ x.왜중요 }}</p>
+    {% if x.확인할것 %}<div class="worldcheck"><b>다음 확인</b> · {{ x.확인할것 }}</div>{% endif %}
+    {% if x.출처 %}<div class="src">출처 · {% for s in x.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
+  </article>
+  {% endfor %}
+</div>
+{% endif %}
+
 {# ─────────── 4. ETF 레이더 ─────────── #}
 {% if ai.etf_레이더 or ETF흐름판 %}
 <h2>📡 ETF 레이더<span class="tip" tabindex="0">?<span class="bubble">
@@ -418,19 +453,32 @@
   ① 순매수·순매도 특이 수급 ② 최근 자금유입 급증 ③ 순자산 급증
   ④ 신규 상장 ⑤ 거래량 급증 ⑥ 운용사 주요 신상품·보도자료</span></span>
   <span class="tag">{% if ETF흐름판.기간 %}{{ ETF흐름판.기간 }}{% else %}전일{% endif %} 기준</span></h2>
-{% if ETF흐름판 and (ETF흐름판.상승 or ETF흐름판.하락) %}
+{% if ETF흐름판 and (ETF흐름판.한국 or ETF흐름판.미국) %}
 <div class="flowboard">
-  <div class="flow-head"><b>ETF 흐름판 · 테마별 대표 TOP3</b><span>{{ ETF흐름판.기준일 }} 확정 마감 · {% if ETF흐름판.필터설명 %}{{ ETF흐름판.필터설명 }}{% else %}거래대금 {{ ETF흐름판.최소거래대금_억원 }}억원 이상 일반형 · 테마 중복 제외{% endif %}{% if ETF흐름판.출처 %} · {{ ETF흐름판.출처 }}{% endif %}</span></div>
-  <div class="flow-grid">
-    <div class="flow-col"><h3>수익률 상위</h3>
-      {% for x in ETF흐름판.상승 %}<div class="flow-row"><span class="nm">{{ x.이름 }}</span><span class="pct up">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}
-    </div>
-    <div class="flow-col"><h3>수익률 하위</h3>
-      {% for x in ETF흐름판.하락 %}<div class="flow-row"><span class="nm">{{ x.이름 }}</span><span class="pct down">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}
-    </div>
+  <input class="flowtab-input" type="radio" name="flow-country" id="flow-kr" checked>
+  <input class="flowtab-input" type="radio" name="flow-country" id="flow-us">
+  <div class="flowtabs" role="tablist" aria-label="ETF 상장 국가 선택">
+    <label for="flow-kr" role="tab">한국</label><label for="flow-us" role="tab">미국</label>
   </div>
-  {% if ETF흐름판.고변동상품 %}<div class="flow-extra"><b>레버리지·인버스 별도</b>{% for x in ETF흐름판.고변동상품 %}<span>{{ x.이름 }} {{ "%+.2f"|format(x.등락률) }}%</span>{% endfor %}</div>{% endif %}
-  {% if ETF흐름판.거래집중 %}<div class="flow-extra"><b>거래량 급증</b>{% for x in ETF흐름판.거래집중 %}<span>{{ x.이름 }} {{ x.배수 }}배</span>{% endfor %}</div>{% endif %}
+  <div class="flow-panels">
+  {% for country, board, cls in [('한국', ETF흐름판.한국, 'kr'), ('미국', ETF흐름판.미국, 'us')] %}
+  <div class="flow-panel {{ cls }}">
+    <div class="flow-head"><b>ETF 흐름판 · {{ country }} 상승·하락 TOP3</b><span>{% if board.기준일 %}{{ board.기준일 }} 확정 마감 · {% endif %}{{ board.필터설명 }}{% if board.출처 %} · {{ board.출처 }}{% endif %}</span></div>
+    <div class="flow-grid">
+      <div class="flow-col"><h3>상승률 TOP3</h3>
+        {% for x in board.상승 %}<div class="flow-row"><span class="nm">{% if country == '미국' and x.티커 %}{{ x.티커 }} · {% endif %}{{ x.이름 }}</span><span class="pct up">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}
+        {% if board.상승안내 %}<p class="flow-empty">{{ board.상승안내 }}</p>{% endif %}
+      </div>
+      <div class="flow-col"><h3>하락률 TOP3</h3>
+        {% for x in board.하락 %}<div class="flow-row"><span class="nm">{% if country == '미국' and x.티커 %}{{ x.티커 }} · {% endif %}{{ x.이름 }}</span><span class="pct down">{{ "%+.2f"|format(x.등락률) }}%</span></div>{% endfor %}
+        {% if board.하락안내 %}<p class="flow-empty">{{ board.하락안내 }}</p>{% endif %}
+      </div>
+    </div>
+    {% if board.고변동상품 %}<div class="flow-extra"><b>레버리지·인버스 별도</b>{% for x in board.고변동상품 %}<span>{{ x.이름 }} {{ "%+.2f"|format(x.등락률) }}%</span>{% endfor %}</div>{% endif %}
+    {% if board.거래집중 %}<div class="flow-extra"><b>거래량 급증</b>{% for x in board.거래집중 %}<span>{{ x.이름 }} {{ x.배수 }}배</span>{% endfor %}</div>{% endif %}
+  </div>
+  {% endfor %}
+  </div>
 </div>
 {% endif %}
 {% if ai.주도테마 %}
