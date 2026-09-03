@@ -9,11 +9,44 @@ from pathlib import Path
 from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from markupsafe import Markup, escape
 
 from .config import ROOT, env as config_env, now_kst
 
 log = logging.getLogger(__name__)
 DOCS = ROOT / "docs"
+
+GLOSSARY = {
+    "디커플링": "원래 함께 움직이던 시장이나 자산의 방향이 서로 갈라지는 현상입니다.",
+    "듀레이션": "금리가 변할 때 채권 가격이 얼마나 민감하게 움직이는지 보여주는 지표입니다.",
+    "할인율": "미래에 벌 돈을 현재 가치로 바꿀 때 적용하는 비율입니다. 금리가 오르면 성장주의 현재 가치가 낮아질 수 있습니다.",
+    "실질금리": "명목금리에서 물가상승률을 뺀 금리입니다.",
+    "환헤지": "환율 변화가 투자 수익률에 미치는 영향을 줄이는 장치입니다.",
+    "베이시스포인트": "금리 변화 단위입니다. 1bp는 0.01%포인트입니다.",
+    "멀티플": "기업 가치가 이익·매출 같은 기준의 몇 배로 평가되는지를 나타냅니다.",
+    "변동성 잠식": "가격이 크게 오르내리는 과정에서 장기 누적수익률이 깎이는 현상입니다.",
+    "괴리율": "ETF 시장가격과 실제 순자산가치의 차이를 비율로 나타낸 값입니다.",
+    "커버드콜": "주식을 보유하면서 콜옵션을 팔아 옵션 프리미엄을 받는 전략입니다.",
+    "CAPEX": "기업이 공장·장비 등 장기 자산에 쓰는 설비투자 비용입니다.",
+}
+
+
+def _glossary_filter():
+    """한 페이지에서 실제 등장한 용어의 첫 번째 위치에만 설명을 붙인다."""
+    seen: set[str] = set()
+
+    def apply(value: Any) -> Markup:
+        out = str(escape(str(value or "")))
+        for term, definition in GLOSSARY.items():
+            escaped_term = str(escape(term))
+            if term not in seen and escaped_term in out:
+                seen.add(term)
+                node = (f'<span class="glossary" tabindex="0">{escaped_term}<span class="glossary-icon">ⓘ</span>'
+                        f'<span class="glossary-bubble">{escape(definition)}</span></span>')
+                out = out.replace(escaped_term, node, 1)
+        return Markup(out)
+
+    return apply
 
 
 def _dir(v: float | None) -> str:
@@ -530,8 +563,6 @@ def validate_daily(cfg: dict, data: dict, ai: dict) -> list[str]:
         errors.append(f"놓치면 안 될 경제·세상 이슈 {min_issues}개 미만")
     if not (ai.get("콘텐츠후보") or []):
         errors.append("ETF 아는형 콘텐츠 후보 누락")
-    if not (ai.get("오늘의개념") or {}).get("용어"):
-        errors.append("오늘의 개념 누락")
     if not (ai.get("체크포인트") or []):
         errors.append("체크포인트·일정 누락")
     videos = _youtube(data, ai)
@@ -608,6 +639,7 @@ def render(cfg: dict, data: dict, ai: dict, mode: str = "daily",
         trim_blocks=True,
         lstrip_blocks=True,
     )
+    env.filters["glossary"] = _glossary_filter()
     ctx = (build_handoff_context(cfg, data, ai) if mode == "thursday"
            else build_context(cfg, data, ai, mode))
     base = (cfg.get("브리핑") or {}).get("사이트_주소", "").rstrip("/")
