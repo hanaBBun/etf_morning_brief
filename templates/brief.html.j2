@@ -54,7 +54,20 @@
        padding:9px 11px;z-index:30;font-size:11.5px;font-weight:400;color:var(--ink2);line-height:1.55;
        box-shadow:0 8px 24px rgba(0,0,0,.35)}
   .glossary:hover .glossary-bubble,.glossary:focus .glossary-bubble{visibility:visible;opacity:1;outline:none}
-  @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
+  .popover-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.34);z-index:80}
+  .popover-backdrop[hidden]{display:none}
+  @media (max-width:700px),(hover:none){
+    .tip .bubble,.tip:hover .bubble,.tip:focus .bubble,
+    .glossary .glossary-bubble,.glossary:hover .glossary-bubble,.glossary:focus .glossary-bubble{
+      display:none;visibility:hidden;opacity:0
+    }
+    .tip.popover-open .bubble,.glossary.popover-open .glossary-bubble{
+      display:block;visibility:visible;opacity:1;position:fixed;left:16px;right:16px;
+      top:auto;bottom:calc(18px + env(safe-area-inset-bottom));transform:none;width:auto;
+      max-height:min(44vh,320px);overflow:auto;padding:15px 16px;border-radius:12px;
+      z-index:100;font-size:13px;line-height:1.6;white-space:normal
+    }
+  }
 
   /* ── TOP 5 ──────────────────────────────────── */
   .top5{display:flex;flex-direction:column;gap:6px;margin:4px 0}
@@ -313,6 +326,7 @@
 </style>
 </head>
 <body>
+<div class="popover-backdrop" data-popover-backdrop hidden></div>
 <div class="wrap">
 
 <header>
@@ -403,14 +417,13 @@
 
 {# ─────────── 3. 시장 스토리 ─────────── #}
 {% if ai.시장브리핑 %}
-<h2>🧭 {% if 모드 == 'weekly' %}이번 주 핵심 이야기{% else %}밤사이 핵심 이야기{% endif %}<span class="tip" tabindex="0">?<span class="bubble">
+<h2>🧭 {% if 모드 == 'weekly' %}이번 주 핵심 이야기{% else %}어제와 밤사이 핵심 이야기{% endif %}<span class="tip" tabindex="0">?<span class="bubble">
   숫자만 나열하지 않고 배경, 시장 반응, 한국 시장과 ETF로 이어지는 흐름을 설명합니다.</span></span>
   <span class="tag">배경부터 차근차근</span></h2>
 {% for c in ai.시장브리핑 %}
 <div class="story">
   <div class="storyhead"><span class="marketbadge">{{ c.시장 }}</span><h3>{{ c.제목 }}</h3></div>
-  <p class="story-copy"><b>무슨 일이 있었나.</b> {{ c.결과|glossary }}</p>
-  {% if c.원인 %}<p class="story-copy">{{ c.원인|glossary }}</p>{% endif %}
+  {% if c.원인 %}<p class="story-copy"><b>왜 이렇게 움직였나.</b> {{ c.원인|glossary }}</p>{% endif %}
   {% if c.전달경로 %}<div class="story-flow">흐름 한눈에 · {{ c.전달경로|glossary }}</div>{% endif %}
   {% if c.ETF연결 %}<div class="story-takeaway"><b>그래서 오늘 볼 것</b><br>{{ c.ETF연결|glossary }}</div>{% endif %}
   {% if c.출처 %}<div class="src">출처 · {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
@@ -654,5 +667,46 @@
 })();
 </script>
 {% endif %}
+<script>
+(() => {
+  const mobile = window.matchMedia('(max-width: 700px), (hover: none)');
+  const triggers = [...document.querySelectorAll('.tip, .glossary')];
+  const backdrop = document.querySelector('[data-popover-backdrop]');
+  if (!backdrop || !triggers.length) return;
+
+  const closeAll = () => {
+    triggers.forEach((trigger) => {
+      trigger.classList.remove('popover-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+    backdrop.hidden = true;
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.setAttribute('role', 'button');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.addEventListener('click', (event) => {
+      if (!mobile.matches) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const shouldOpen = !trigger.classList.contains('popover-open');
+      closeAll();
+      if (shouldOpen) {
+        trigger.classList.add('popover-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        backdrop.hidden = false;
+      }
+    });
+  });
+  backdrop.addEventListener('click', closeAll);
+  document.addEventListener('click', (event) => {
+    if (mobile.matches && !event.target.closest('.tip, .glossary')) closeAll();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAll();
+  });
+  mobile.addEventListener?.('change', closeAll);
+})();
+</script>
 </body>
 </html>
