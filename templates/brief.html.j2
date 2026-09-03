@@ -47,6 +47,13 @@
        box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
   .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
   .tip .bubble b{color:var(--ink)}
+  .glossary{position:relative;border-bottom:1px dotted var(--accent);cursor:help;white-space:nowrap}
+  .glossary-icon{font-size:10px;color:var(--accent);margin-left:2px}
+  .glossary-bubble{visibility:hidden;opacity:0;position:absolute;left:0;top:1.7em;width:min(300px,76vw);
+       white-space:normal;background:var(--surface2);border:1px solid var(--line);border-radius:8px;
+       padding:9px 11px;z-index:30;font-size:11.5px;font-weight:400;color:var(--ink2);line-height:1.55;
+       box-shadow:0 8px 24px rgba(0,0,0,.35)}
+  .glossary:hover .glossary-bubble,.glossary:focus .glossary-bubble{visibility:visible;opacity:1;outline:none}
   @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
 
   /* ── TOP 5 ──────────────────────────────────── */
@@ -109,6 +116,9 @@
   .marketbadge{font-size:10px;font-weight:700;color:var(--accent);border:1px solid rgba(124,108,240,.4);
                border-radius:4px;padding:1px 7px;flex-shrink:0}
   .story h3{font-size:15px;margin:0;line-height:1.45}
+  .story-copy{font-size:13.5px;color:var(--ink2);line-height:1.75;margin:8px 0}
+  .story-flow{font-size:12.5px;color:var(--ink);font-weight:600;background:rgba(124,108,240,.07);border-radius:7px;padding:8px 10px;margin:10px 0}
+  .story-takeaway{background:var(--surface2);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:10px 12px;margin-top:11px;font-size:13px;color:var(--ink2)}
   .storyline{display:grid;grid-template-columns:54px 1fr;gap:7px 10px;margin:6px 0;font-size:13px}
   .storyline .k{color:var(--ink3);font-size:10.5px;font-weight:700;letter-spacing:.04em;padding-top:2px}
   .storyline .v{color:var(--ink2)}
@@ -271,13 +281,6 @@
   .idea .q{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
            font-size:12.5px;color:var(--ink2);border-left:2px solid var(--accent)}
 
-  /* ── 오늘의 개념 ────────────────────────────── */
-  .concept{background:var(--surface);border:1px solid var(--line);border-radius:10px;
-           padding:14px 16px;margin:10px 0}
-  .concept .w{font-size:16px;font-weight:700;letter-spacing:-.01em}
-  .concept .why{font-size:11.5px;color:var(--ink3);margin:2px 0 8px}
-  .concept p{margin:0;font-size:13px;color:var(--ink2)}
-
   /* ── 일정 ───────────────────────────────────── */
   .cal{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:13px;margin:10px 0}
   .cal .d{color:var(--ink3);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -336,9 +339,8 @@
 
 {# ─────────── 1. TOP 5 ─────────── #}
 {% if ai.top5 %}
-<h2>🎯 {% if 모드 == 'weekly' %}이번 주를 움직인 5가지{% else %}오늘의 주요 뉴스{% endif %}<span class="tip" tabindex="0">?<span class="bubble">
-  그날 시장에서 가장 중요한 5개를 <b>사건 / 핵심 숫자 / 증시·ETF 영향</b> 순서로 정리합니다.
-  기사로 확인된 항목은 처음 읽는 사람도 이해할 수 있도록 핵심 사실을 한 문장 덧붙입니다.</span></span>
+<h2>🎯 {% if 모드 == 'weekly' %}이번 주를 움직인 5가지{% else %}오늘 아침 5줄 요약{% endif %}<span class="tip" tabindex="0">?<span class="bubble">
+  가장 중요한 다섯 사건을 <b>무슨 일 / 왜 중요한지</b>까지 펼쳐 보여줍니다.</span></span>
   <span class="tag">30초 스캔</span></h2>
 <div class="top5">
   {% for r in ai.top5 %}
@@ -346,11 +348,9 @@
     <div class="no">{{ r.순위 }}</div>
     <div>
       <p class="t">{{ r.제목 }}</p>
-      <p class="n">{{ r.숫자 }}{% if r.영향 %}<span class="arrow">→</span><span class="eff">{{ r.영향 }}</span>{% endif %}</p>
-      {% if r.설명 or r.출처 %}<details class="rank-more"><summary>근거·상세 보기</summary>
-        {% if r.설명 %}<p class="desc">{{ r.설명 }}</p>{% endif %}
-        {% if r.출처 %}<div class="src">출처 · {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
-      </details>{% endif %}
+      <p class="n">{{ r.숫자 }}{% if r.영향 %}<span class="arrow">→</span><span class="eff">{{ r.영향|glossary }}</span>{% endif %}</p>
+      {% if r.설명 %}<p class="desc">{{ r.설명|glossary }}</p>{% endif %}
+      {% if r.출처 %}<div class="src">출처 · {% for s in r.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
     </div>
   </div>
   {% endfor %}
@@ -403,20 +403,17 @@
 
 {# ─────────── 3. 시장 스토리 ─────────── #}
 {% if ai.시장브리핑 %}
-<h2>🧭 오늘 시장을 이해하는 3단계<span class="tip" tabindex="0">?<span class="bubble">
-  <b>확인된 사실 → 근거 있는 해석 → ETF 의미</b> 순서로 읽습니다. 해석의 근거와 출처는
-  상세 보기에서 확인할 수 있습니다.</span></span>
-  <span class="tag">사실 · 해석 · ETF</span></h2>
+<h2>🧭 {% if 모드 == 'weekly' %}이번 주 핵심 이야기{% else %}밤사이 핵심 이야기{% endif %}<span class="tip" tabindex="0">?<span class="bubble">
+  숫자만 나열하지 않고 배경, 시장 반응, 한국 시장과 ETF로 이어지는 흐름을 설명합니다.</span></span>
+  <span class="tag">배경부터 차근차근</span></h2>
 {% for c in ai.시장브리핑 %}
 <div class="story">
   <div class="storyhead"><span class="marketbadge">{{ c.시장 }}</span><h3>{{ c.제목 }}</h3></div>
-  <div class="storyline"><span class="k">확인된 사실</span><span class="v">{{ c.결과 }}</span></div>
-  {% if c.원인 %}<div class="storyline interpretation"><span class="k">근거 있는 해석</span><span class="v">{{ c.원인 }}</span></div>{% endif %}
-  {% if c.전달경로 %}<div class="storyline path"><span class="k">전달 경로</span><span class="v">{{ c.전달경로 }}</span></div>{% endif %}
-  {% if c.ETF연결 %}<div class="storyline meaning"><span class="k">ETF 의미</span><span class="v">{{ c.ETF연결 }}</span></div>{% endif %}
-  {% if c.출처 %}<details class="evidence"><summary>근거·출처 보기</summary>
-    <div class="src">출처 · {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>
-  </details>{% endif %}
+  <p class="story-copy"><b>무슨 일이 있었나.</b> {{ c.결과|glossary }}</p>
+  {% if c.원인 %}<p class="story-copy">{{ c.원인|glossary }}</p>{% endif %}
+  {% if c.전달경로 %}<div class="story-flow">흐름 한눈에 · {{ c.전달경로|glossary }}</div>{% endif %}
+  {% if c.ETF연결 %}<div class="story-takeaway"><b>그래서 오늘 볼 것</b><br>{{ c.ETF연결|glossary }}</div>{% endif %}
+  {% if c.출처 %}<div class="src">출처 · {% for s in c.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
   {% if c.시장 == '국내' and ai.관심종목 %}
   <div class="stockwatch"><b>{% if 모드 == 'weekly' %}이번 주 특징주{% else %}오늘의 특징주{% endif %}</b>
     {% for s in ai.관심종목 %}<div class="sitem"><div class="st"><b>👀 {{ s.이름 }}</b>{% if s.등락률 is defined and s.등락률 is not none %}<span class="{{ 'up' if s.등락률 > 0 else 'down' }}">{{ "%+.2f"|format(s.등락률) }}%</span>{% endif %}</div><p>{{ s.이유 }}</p>{% if s.출처 %}<div class="src">출처 · {% for x in s.출처 %}{% if x.url %}<a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.이름 }}{% if x.날짜 %} ({{ x.날짜 }} 보도){% endif %}</a>{% else %}{{ x.이름 }}{% if x.날짜 %} ({{ x.날짜 }} 보도){% endif %}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}</div>{% endfor %}
@@ -436,8 +433,8 @@
   {% for x in ai.놓치면안될이슈 %}
   <article class="worlditem">
     <div class="worldhead"><span class="worldbadge">{{ x.분야 }}</span><h3>{{ x.제목 }}</h3></div>
-    <p>{{ x.무슨일 }}</p>
-    <p class="worldpath"><b>왜 중요한가</b> · {{ x.왜중요 }}</p>
+    <p>{{ x.무슨일|glossary }}</p>
+    <p class="worldpath"><b>왜 중요한가</b> · {{ x.왜중요|glossary }}</p>
     {% if x.확인할것 %}<div class="worldcheck"><b>다음 확인</b> · {{ x.확인할것 }}</div>{% endif %}
     {% if x.출처 %}<div class="src">출처 · {% for s in x.출처 %}{% if s.url %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.이름 }}{% if s.날짜 %} ({{ s.날짜 }} 보도){% endif %}</a>{% else %}{{ s.이름 }}{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>{% endif %}
   </article>
@@ -597,16 +594,6 @@
   {% if i.질문 %}<div class="q"><b>출연자 질문</b> — “{{ i.질문 }}”</div>{% endif %}
 </div>
 {% endfor %}
-{% endif %}
-
-{# ─────────── 7. 오늘의 개념 ─────────── #}
-{% if ai.오늘의개념 %}
-<h2>📚 오늘의 개념</h2>
-<div class="concept">
-  <div class="w">{{ ai.오늘의개념.용어 }}</div>
-  {% if ai.오늘의개념.연결 %}<div class="why">오늘 브리핑에서 나온 맥락 — {{ ai.오늘의개념.연결 }}</div>{% endif %}
-  <p>{{ ai.오늘의개념.설명 }}</p>
-</div>
 {% endif %}
 
 {# ─────────── 8. 일정 ─────────── #}

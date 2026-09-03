@@ -182,7 +182,6 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual({x["시장"] for x in out["시장브리핑"]}, {"국내", "미국"})
         self.assertEqual(out["etf_레이더"], [])
         self.assertTrue(out["콘텐츠후보"])
-        self.assertTrue(out["오늘의개념"])
         self.assertTrue(out["체크포인트"])
         errors = render.validate_daily({"카카오": {}}, data, out)
         self.assertNotIn("국내 시장브리핑 미완성", errors)
@@ -231,13 +230,14 @@ class SafetyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td, patch.object(render, "DOCS", Path(td)):
             path, _ = render.render({"브리핑": {}}, data, ai, "daily")
             html = path.read_text(encoding="utf-8")
-        for heading in ("오늘의 주요 뉴스", "시장 한눈에", "오늘 시장을 이해하는 3단계",
+        for heading in ("오늘 아침 5줄 요약", "시장 한눈에", "밤사이 핵심 이야기",
                         "ETF 레이더", "경쟁 채널 동향", "ETF 아는형 콘텐츠 후보",
-                        "오늘의 개념", "체크포인트 · 주요 일정", "출처"):
+                        "체크포인트 · 주요 일정", "출처"):
             self.assertIn(heading, html)
-        self.assertIn("확인된 사실", html)
-        self.assertIn("근거 있는 해석", html)
-        self.assertIn("ETF 의미", html)
+        self.assertIn("무슨 일이 있었나", html)
+        self.assertIn("그래서 오늘 볼 것", html)
+        self.assertNotIn("오늘의 개념", html)
+        self.assertNotIn("근거·상세 보기", html)
         self.assertIn("채널 관련성", html)
         self.assertIn("추가로 읽을 ETF 뉴스 5개", html)
         self.assertIn("ETF 뉴스 8", html)
@@ -259,10 +259,12 @@ class SafetyTests(unittest.TestCase):
         with patch.object(render, "now_kst", return_value=fixed), \
              patch.object(render, "config_env", return_value="javascript-key"):
             context = render.build_context(cfg, data, ai, "daily")
-            template = render.Environment(
+            template_env = render.Environment(
                 loader=render.FileSystemLoader(str(render.ROOT / "templates")),
                 autoescape=render.select_autoescape(["html"]),
-            ).get_template("brief.html.j2")
+            )
+            template_env.filters["glossary"] = render._glossary_filter()
+            template = template_env.get_template("brief.html.j2")
             html = template.render(**context)
         self.assertIn("카카오톡으로 공유", html)
         self.assertIn("Kakao.Share.sendDefault", html)
@@ -273,6 +275,22 @@ class SafetyTests(unittest.TestCase):
         with patch.object(render, "config_env", return_value=""):
             context = render.build_context({}, {}, {"카톡": {"1": "본문"}}, "daily")
         self.assertEqual(context["카카오JS키"], "")
+
+    def test_glossary_marks_only_first_actual_occurrence(self):
+        glossary = render._glossary_filter()
+        first = str(glossary("채권 ETF는 듀레이션을 확인합니다."))
+        second = str(glossary("듀레이션이 길면 금리에 민감합니다."))
+        self.assertIn('class="glossary"', first)
+        self.assertIn("금리가 변할 때", first)
+        self.assertNotIn('class="glossary"', second)
+
+    def test_kakao_prefers_causal_summary_over_short_title(self):
+        top5 = [{"제목": f"짧은 제목 {i}", "카톡요약": f"사건 {i}의 원인과 의미"}
+                for i in range(1, 6)]
+        message = llm._build_daily_kakao(
+            {"top5": top5}, {"날짜표시": "2026년 9월 3일 (목)"}, 195)["1"]
+        self.assertIn("1. 사건 1의 원인과 의미", message)
+        self.assertNotIn("짧은 제목", message)
 
     def test_weekend_and_monday_briefs_have_distinct_roles(self):
         monday = datetime(2026, 8, 24, 7, 0, tzinfo=timezone.utc)
