@@ -30,7 +30,7 @@ SYSTEM = """당신은 한국의 ETF 전문 유튜브 채널 'ETF 아는형'의 �
 ■ 규칙 1 — 핵심 사건 2~3개는 배경부터 이야기로 설명합니다
 같은 이슈(예: 미 장기금리 급등)를 TOP 5와 시장브리핑에서 두 번 자세히 쓰지 마세요.
 TOP 5에는 사건·핵심 숫자·왜 중요한지를 한눈에 보이는 완결된 문장으로 쓰고,
-상세 해설은 '밤사이 핵심 이야기'에서 배경 → 사건 → 시장 반응 → 한국·ETF 연결 순서로 씁니다.
+상세 해설은 '어제와 밤사이 핵심 이야기'에서 배경 → 사건 → 시장 반응 → 한국·ETF 연결 순서로 씁니다.
 새로운 내용이 없다면 다른 섹션에서 그 이슈를 다시 꺼내지 마세요.
 중요한 사건의 이름만 추가하는 것은 실패입니다. 처음 읽는 대학생도 사건 이전의 상황,
 이번에 달라진 점, 가격 반응이 나온 이유를 이해할 수 있어야 합니다.
@@ -75,8 +75,8 @@ TOP 5에는 사건·핵심 숫자·왜 중요한지를 한눈에 보이는 완�
   근거가 약한 차트 해석은 과감히 생략하세요.
 
 시장브리핑의 `결과`에는 확인된 수치와 사건만 쓰고, `원인`에는 그 사실을 연결해
-독자가 시장을 이해하도록 돕는 해석만 씁니다. 화면에서는 각각 '확인된 사실'과
-'근거 있는 해석'으로 구분해 표시됩니다. 기사에 원인이 명시되지 않았거나 가격·수급
+독자가 시장을 이해하도록 돕는 해석만 씁니다. 화면에서는 결과 숫자를 위쪽 표로 먼저 보여주고,
+핵심 이야기에는 원인의 배경과 전달 경로를 중심으로 표시합니다. 기사에 원인이 명시되지 않았거나 가격·수급
 데이터만으로 인과를 확정할 수 없으면 단정형 대신 위의 해석 어미를 사용하세요.
 
 ■ 규칙 4 — 투자 권유·근거 없는 과장 표현은 금지입니다
@@ -210,6 +210,10 @@ ETF 레이더와 시장브리핑은 입력 데이터에 표시된 실제 기준�
 → 지수 결과' 순서로 연결하세요. 국내 증시는 외국인·기관 수급, 지수 기여 대형주,
 상승·하락 업종 중 입력에 실제로 있는 근거를 우선합니다. 미국 기사만으로 한국 시장
 원인을 대신하지 마세요. 기사에 없는 그럴듯한 이유를 채우지 마세요.
+화면 위의 `시장 한눈에`에 지수·금리·환율 수치가 이미 표시됩니다. 따라서 `결과`는
+대표 움직임을 한 문장으로만 요약하고 지수 종가와 등락률을 여러 줄 되풀이하지 마세요.
+`원인`은 숫자보다 먼저, 그 사건 전까지 어떤 배경이 쌓였는지와 이번에 무엇이 달라졌는지,
+그 변화에 투자자들이 왜 반응했는지를 경제에 막 관심을 갖기 시작한 대학생도 이해하도록 설명하세요.
 
 ■ 규칙 11 — '현재 시장 국면'은 변화가 있을 때만 씁니다
 매일 비슷한 위험선호·금리부담 설명을 반복하지 마세요. 전일 대비 국면 전환, 한·미의
@@ -255,6 +259,16 @@ TOP 5에서 결과 숫자를 쪼개 나열하지 말고 "사건 → 유가·금�
 같은 사건을 TOP5나 시장브리핑과 똑같이 설명하지 마세요. 시장 반응이 이미 핵심인 사건은 TOP5에,
 아직 반응이 작지만 앞으로 볼 이유가 큰 사건은 `놓치면안될이슈`에 둡니다.
 장 마감 뒤 발표된 대형 기업 실적·가이던스는 정규장 등락률 기준과 무관하게 반드시 검토합니다.
+
+■ 규칙 17 — 기사 발행일과 사건 발생일을 혼동하지 않습니다
+오늘 보도된 기사라도 기사 속 발표·결정·실적이 이전 브리핑에 이미 실렸다면 새 사건이 아닙니다.
+입력의 `최근브리핑주제`는 최근 3회 발행된 편집 기록이며 금지 목록이 아닙니다. TOP5뿐 아니라
+시장브리핑과 `놓치면안될이슈`를 고를 때 이 기록을 앞선 기사처럼 사용하세요.
+같은 주제라도 새 결정, 새 수치, 실제 집행, 협상 타결·결렬, 기업·시장 반응처럼 이전 발행 뒤
+달라진 사실이 있으면 중요한 후속 기사입니다. 반드시 다시 싣되 제목과 첫 문장을
+'A가 나온 뒤 B가 발생했다'는 식으로 써 독자가 사건의 연속성을 알게 하세요.
+주제가 같은 것과 사실이 같은 것은 다릅니다. 이전 사실 A를 다른 매체가 다시 전한 것만 제외하고,
+A 이후 새로 발생한 파장 B는 제외하지 마세요. 신문을 매일 이어서 발행한다고 생각하세요.
 """
 
 SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍스트는 넣지 마세요.
@@ -391,8 +405,8 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
 | 항목 | 개수 | 글자 수 |
 |---|---|---|
 | 시장브리핑 | 미국·국내 각 1개 + 글로벌 0~1개 | 각 전체 550~850자 |
-| 시장브리핑.결과 | | 140~220자 |
-| 시장브리핑.원인 | | 260~450자 |
+| 시장브리핑.결과 | | 60~110자. 대표 움직임 한 문장, 숫자 나열 금지 |
+| 시장브리핑.원인 | | 300~480자. 이전 배경과 이번 변화부터 설명 |
 | 시장브리핑.ETF연결 | | 100~180자 |
 | 오늘관전 | 3개 | 각 60자 이내 |
 | 주도테마 | 조건 충족 때 1개 | 움직임 90자, 원인 180자, ETF연결 100자 이내 |
@@ -431,6 +445,8 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
   · 원인은 나열하지 말고 '금리 상승 → 성장주 할인율 부담 → 나스닥 약세'처럼 전달 경로를 설명합니다.
   · ETF연결은 매수 추천이 아니라, 작가가 어떤 ETF군·테마·질문을 이어서 봐야 하는지 설명합니다.
   · 하루 등락만으로 추세 전환을 단정하지 마세요.
+  · `결과`는 위의 시장 표를 복사하지 말고 가장 중요한 방향만 한 문장으로 요약합니다.
+  · `원인`의 첫 문장은 지수 숫자가 아니라 사건 이전의 배경 또는 이번에 달라진 사실로 시작합니다.
   · 입력에 `지수괴리`가 있으면 국내 카드에서 언급하고, 대형주 집중 영향인지 기사·수급과
     연결해 설명하세요. 괴리만으로 원인을 확정하지 마세요.
 
@@ -442,6 +458,13 @@ SCHEMA_GUIDE = """반드시 아래 JSON 형식으로만 답하세요. 다른 텍
     제목이나 영향에 무엇이 새로 달라졌는지가 드러나게 씁니다.
   · `설명`은 기사에서 확인된 핵심 사실과 왜 중요한지를 한두 문장으로 씁니다. 시장브리핑의 원인 문장을
     그대로 반복하지 말고, `영향`에서 그 사실이 증시·ETF에 전달되는 경로만 짧게 씁니다.
+
+★ 최근 브리핑과 중복되지 않게 편집합니다.
+  · `최근브리핑주제`에는 최근 3회에 실린 TOP5·핵심 이야기·경제·세상 이슈의 제목과 핵심 사실이 있습니다.
+  · 최근 주제는 제외 목록이 아니라 앞선 보도 기록입니다. 같은 사건의 후속 파장도 중요한 새 소식입니다.
+  · 오늘 날짜로 다시 보도됐다는 이유만으로 같은 사실을 재게재하지 마세요.
+  · 후속 변화가 있으면 '이전 A 이후 새 B'가 제목이나 첫 문장에 드러나게 쓰고,
+    기존 배경은 독자의 이해에 필요한 만큼만 한 문장으로 요약합니다.
 
 ★ ETF 레이더는 KRX 수치뿐 아니라 입력에 포함된 일반 언론사의 의미 있는 ETF 기사도 후보입니다.
   레버리지 투자행태, 원자재·가상자산·섹터 ETF 자금 이동처럼 ETF 시장이나 콘텐츠 기획에
@@ -971,8 +994,31 @@ def _load_daily_ai(data: dict) -> dict:
         return {}
 
 
+def _history_topics(previous: dict) -> list[dict]:
+    """다음 발행이 제목뿐 아니라 이미 설명한 핵심 사실까지 대조하게 한다."""
+    topics: list[dict] = []
+    specs = (
+        ("5줄요약", previous.get("top5") or [], ("설명", "영향", "숫자")),
+        ("핵심이야기", previous.get("시장브리핑") or [], ("원인", "결과")),
+        ("세상이슈", previous.get("놓치면안될이슈") or [], ("무슨일", "왜중요")),
+    )
+    for section, items, keys in specs:
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            title = str(item.get("제목") or "").strip()
+            if not title:
+                continue
+            summary = " ".join(str(item.get(key) or "").strip() for key in keys).strip()
+            urls = [str(src.get("url")) for src in (item.get("출처") or [])
+                    if isinstance(src, dict) and src.get("url")]
+            topics.append({"영역": section, "제목": title,
+                           "핵심": summary[:220], "출처": urls[:2]})
+    return topics[:14]
+
+
 def _load_recent_topics(data: dict) -> list[dict]:
-    """직전 3회 제목·개념을 모델에 알려 상투적인 반복을 줄인다."""
+    """직전 3회 편집 기록을 모델에 알려 같은 사실의 재게재를 줄인다."""
     try:
         saved = json.loads(DAILY_AI_CACHE.read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError, OSError):
@@ -980,9 +1026,8 @@ def _load_recent_topics(data: dict) -> list[dict]:
     history = [x for x in (saved.get("history") or []) if isinstance(x, dict)]
     if saved.get("날짜") and saved.get("날짜") != _daily_key(data):
         previous = saved.get("ai") or {}
-        titles = [str(x.get("제목") or "") for x in (previous.get("top5") or [])]
         concept = str((previous.get("오늘의개념") or {}).get("용어") or "").strip()
-        history.append({"날짜": saved["날짜"], "주제": [x for x in titles if x],
+        history.append({"날짜": saved["날짜"], "주제": _history_topics(previous),
                         "개념": concept})
     return history[-3:]
 
@@ -1181,6 +1226,11 @@ def _stabilize_daily(fresh: dict, cached: dict, data: dict, cfg: dict) -> dict:
     if global_story:
         market_briefs.append(global_story)
     result["시장브리핑"] = market_briefs
+    issue_limit = int((cfg.get("놓치면안될이슈") or {}).get("최대_항목수", 5))
+    result["놓치면안될이슈"] = _merge_unique(
+        [fresh.get("놓치면안될이슈", []), cached.get("놓치면안될이슈", []),
+         fallback.get("놓치면안될이슈", [])],
+        lambda x: str(x.get("제목") or ""), issue_limit)
     result["etf_레이더"] = _merge_unique(
         [fresh.get("etf_레이더", []), cached.get("etf_레이더", []), fallback.get("etf_레이더", [])],
         lambda x: str(x.get("제목") or ""), int((cfg.get("ETF_레이더") or {}).get("최대_항목수", 3)))
@@ -2059,6 +2109,41 @@ def _topic_words(value: Any) -> set[str]:
             if len(w) >= 2 and w.lower() not in stop}
 
 
+def _is_recent_repeat(item: dict, data: dict) -> bool:
+    """최근 주제의 후속 파장은 살리고, 사실까지 거의 같은 재게재만 찾는다."""
+    current_text = f"{item.get('제목', '')} {item.get('무슨일', '')}"
+    current_words = _topic_words(current_text)
+    current_numbers = set(re.findall(r"\d+(?:[.,]\d+)*", current_text))
+    if len(current_words) < 2:
+        return False
+    for row in _load_recent_topics(data):
+        for previous in row.get("주제") or []:
+            previous_urls: set[str] = set()
+            if isinstance(previous, dict):
+                old_text = f"{previous.get('제목', '')} {previous.get('핵심', '')}"
+                previous_urls = {str(url) for url in (previous.get("출처") or []) if url}
+            else:
+                old_text = str(previous or "")
+            old_words = _topic_words(old_text)
+            shared = current_words & old_words
+            overlap = len(shared) / max(1, min(len(current_words), len(old_words)))
+            current_urls = {str(src.get("url")) for src in (item.get("출처") or [])
+                            if isinstance(src, dict) and src.get("url")}
+            same_source = bool(previous_urls & current_urls)
+            if len(shared) < 2 or (not same_source and overlap < .80):
+                continue
+            old_numbers = set(re.findall(r"\d+(?:[.,]\d+)*", old_text))
+            # 이전 기록에 없던 새 수치가 있으면 후속 변화일 수 있으므로 남긴다.
+            if current_numbers - old_numbers:
+                continue
+            # 새 행위·파장을 설명하는 단어가 충분하면 같은 주제의 후속 기사로 남긴다.
+            novel_words = current_words - old_words
+            if not same_source and len(novel_words) >= 2:
+                continue
+            return True
+    return False
+
+
 def _drop_redundant_global_brief(briefs: list[dict]) -> list[dict]:
     """미국 카드의 원인·전달 경로를 되풀이하는 글로벌 카드를 제거한다."""
     us = next((x for x in briefs if x.get("시장") == "미국"), None)
@@ -2229,7 +2314,8 @@ _WORLD_GROUP_META = {
 }
 
 
-def _fallback_world_issues(data: dict, used_urls: set[str], limit: int) -> list[dict]:
+def _fallback_world_issues(data: dict, used_urls: set[str], limit: int,
+                           existing_wordsets: list[set[str]] | None = None) -> list[dict]:
     """모델이 놓친 경우 수집 기사 자체에서 경제 연결형 이슈를 보충한다."""
     pools = data.get("뉴스") or {}
     candidates = []
@@ -2248,14 +2334,14 @@ def _fallback_world_issues(data: dict, used_urls: set[str], limit: int) -> list[
             score = 20 - min(int(age), 20) + sum(4 for token in signals if token in text)
             candidates.append((score, group, field, why, art))
     candidates.sort(key=lambda x: x[0], reverse=True)
-    out, wordsets = [], []
+    out, wordsets = [], list(existing_wordsets or [])
     for _, _, field, why, art in candidates:
         words = _topic_words(art.get("제목"))
         if any(len(words & old) >= 2 for old in wordsets):
             continue
         summary = re.sub(r"<[^>]+>", " ", str(art.get("요약") or ""))
         summary = re.sub(r"\s+", " ", summary).strip()
-        out.append({
+        issue = {
             "분야": field,
             "제목": _clip(art.get("제목"), 55),
             "무슨일": _clip(summary or art.get("제목"), 130),
@@ -2263,7 +2349,11 @@ def _fallback_world_issues(data: dict, used_urls: set[str], limit: int) -> list[
             "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
             "출처": [{"이름": art.get("출처", ""), "url": art.get("링크", ""),
                      "날짜": _mmdd(art.get("날짜", ""))}],
-        })
+        }
+        if _is_recent_repeat(issue, data):
+            log.info("최근 브리핑과 같은 세상 이슈 제외: %s", issue["제목"])
+            continue
+        out.append(issue)
         used_urls.add(str(art.get("링크") or ""))
         wordsets.append(words)
         if len(out) >= limit:
@@ -2439,6 +2529,9 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         if (not urls or urls & top_urls or any(len(words & old) >= 2 for old in issue_words)
                 or _has_hype(item)):
             continue
+        if _is_recent_repeat(item, data):
+            log.info("최근 브리핑과 같은 세상 이슈 제외: %s", item.get("제목", ""))
+            continue
         item["분야"] = str(item.get("분야") or "경제")[:12]
         item["제목"] = _clip(item.get("제목"), 55)
         item["무슨일"] = _clip(item.get("무슨일"), 140)
@@ -2455,7 +2548,8 @@ def _postprocess(d: Any, cfg: dict, data: dict | None = None, mode: str = "daily
         blocked = set(top_urls) | used_issue_urls
         # 조용한 날까지 5건을 강제로 채우지는 않는다. 최소 3건만 보충하고,
         # 4~5건은 모델이 중요하다고 판단한 날에만 남긴다.
-        supplements = _fallback_world_issues(data, blocked, min_issues - len(kept_issues))
+        supplements = _fallback_world_issues(
+            data, blocked, min_issues - len(kept_issues), issue_words)
         kept_issues.extend(supplements)
         if supplements:
             log.warning("놓치면 안 될 이슈 %d건을 수집 기사에서 보충했습니다", len(supplements))
