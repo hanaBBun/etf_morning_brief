@@ -6,19 +6,15 @@
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "기관 매수세에 코스피 소폭 반등했으나 코스닥은 바이오 약세로 하락",
-        "결과": "코스피는 0.26% 상승한 6579.48포인트로 마감한 반면, 코스닥은 1.71% 하락한 790.21포인트로 마감하며 양 지수가 엇갈렸습니다. 수급 측면에서는 기관이 9,143억 원을 순매수했고 개인은 9,552억 원을 순매도했습니다.",
-        "원인": "전 거래일 급락에 따른 반발 매수세가 기관을 중심으로 유입되며 코스피 지수 방어를 이끌었을 가능성이 있습니다. 특히 조선과 보험 업종이 강세를 보이며 지수 상승에 기여했습니다. 반면 코스닥 시장은 시가총액 상위 바이오 종목인 알테오젠(-5.19%) 등이 큰 폭으로 하락하면서 지수에 하락 압력을 가한 것으로 볼 수 있습니다.",
-        "전달경로": "기관 순매수 유입 및 조선·보험 강세 → 코스피 반등 / 바이오 대형주 약세 → 코스닥 하락",
-        "ETF연결": "코스피200 지수형 ETF와 조선·보험 테마 ETF의 추가 상승 여력을 점검하고, 코스닥 레버리지 ETF의 변동성 관리가 필요합니다.",
+        "제목": "기관 순매수에 코스피 소폭 반등…코스닥은 약세로 디커플링",
+        "결과": "코스피는 +0.26%(6,579.48) 소폭 상승한 반면 코스닥은 -1.71%(790.21) 하락하며 지수 간 괴리를 보였습니다. 유가증권시장에서 기관이 9,143억 원을 순매수했고 개인은 9,552억 원을 순매도했습니다.",
+        "원인": "전일 급락 이후 유가증권시장에서는 조선·보험·금융 등 대형 가치주를 중심으로 기관 매수세가 유입되며 지수 하방을 받쳤을 가능성이 있습니다. 반면 코스닥 시장에서는 제약·바이오 및 중소형 반도체 관련주를 중심으로 차익 실현 매물이 출회되며 상방이 제한된 것으로 볼 수 있습니다. 원/달러 환율이 1,356.0원(-1.23%)으로 하락하며 원화가 강세를 보인 점도 코스피 방어에 기여했을 여지가 있습니다.",
+        "전달경로": "원/달러 환율 하락 및 기관 순매수 → 조선·금융 대형주 강세 → 코스피 소폭 반등 / 바이오·반도체 약세로 코스닥 하락",
+        "ETF연결": "조선(KODEX 조선TOP10)과 금융 섹터 ETF의 순매수 기조가 유지되는지, 코스닥150 관련 레버리지·인버스 ETF의 변동성이 완화되는지 관찰해야 합니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "저장 종가 + KRX 개별 거래대금",
-            "url": ""
           },
           {
             "이름": "매일경제 증권",
@@ -29,32 +25,28 @@
       },
       {
         "시장": "미국",
-        "제목": "연준 위원 금리 동결 시사에 국채금리 하락하며 3대 지수 반등",
-        "결과": "S&P 500은 1.06%, 나스닥은 1.40%, 다우 지수는 1.18% 상승 마감했습니다. 미국 10년물 국채금리는 4.762%(-3.4bp), 30년물은 5.243%(-2.4bp)로 하락했으며, 변동성지수(VIX)는 5.79% 하락한 14.32를 기록했습니다.",
-        "원인": "크리스토퍼 월러 연준 이사가 차기 회의에서의 금리 동결 가능성을 시사하는 발언을 하면서 긴축 우려가 완화된 영향으로 해석할 여지가 있습니다. 이에 따라 최근 상승세를 보이던 미 국채금리가 하락세로 돌아서며 기술주를 비롯한 시장 전반에 온기를 불어넣었습니다. 다만 브로드컴은 호실적 발표에도 불구하고 시간외 거래 등에서 약세를 보이며 반도체 업종 전반의 강세를 다소 제한했을 가능성이 있습니다.",
-        "전달경로": "연준 위원 비둘기파 발언 → 국채금리 하락 → 기술주 중심 매수세 유입 → 3대 지수 반등",
-        "ETF연결": "미국 장기채 금리 하락에 따라 미국채 30년형 ETF의 가격 반등 여부를 점검하고, 나스닥100 및 대형 기술주 ETF의 단기 방향성을 확인해야 합니다.",
+        "제목": "연준 인사 동결 발언과 금리 하락에 미 3대 지수 반등",
+        "결과": "S&P 500은 +1.06%(7,747.71), 나스닥은 +1.40%(26,584.06), 다우 지수는 +1.18%(53,686.11) 상승 마감했습니다. 미 10년물 국채금리는 4.762%(-3.4bp), 30년물은 5.243%(-2.4bp)로 하락했습니다.",
+        "원인": "크리스토퍼 월러 연준 이사가 물가 둔화세가 이어지면 9월 기준금리 동결을 지지하겠다고 발언하면서 긴축 우려가 줄어든 것으로 해석할 여지가 있습니다. 국채금리가 하락세를 보임에 따라 기술주를 중심으로 증시 전반에 위험선호 심리가 회복되었을 가능성이 있습니다. 다만 장 마감 후 실적을 발표한 브로드컴은 AI 칩 매출 221% 급증에도 불구하고 시장의 높은 기대치로 인해 주가가 소폭 약세를 보였습니다.",
+        "전달경로": "연준 금리 동결 시사 발언 → 미 국채금리 하락 → 기술주 중심 위험선호 회복 → 미 주요 지수 상승",
+        "ETF연결": "미 국채금리 안정세 지속 여부를 확인하며 미국 대표 지수 ETF(TIGER 미국S&P500 등)와 미국채 10년물 등 채권형 ETF의 자금 유입 흐름을 점검할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "815머니톡",
-            "url": ""
-          },
-          {
-            "이름": "매일경제 마켓",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE15MlU2S21HUmJxcGNRdnUzQmZ1MDNfLXNzQ0g2a0F5Y3QxQ1BtRi1UN19haWJiWUFoekFCOVNHa1Zya0Q3NUstYTM2UEpCblo1WEE?oc=5",
+            "이름": "뉴스1",
+            "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1PUWNrOXNMMVJlS215TWpaYnlxQ0hYRXdrbFBKVVhxbGZjbFduX3FodDdBYUpGNUFMdEZfVnVKV2R0SXhqTTZsUGVsQzlySk1HdEt1dXAzeFHSAV5BVV95cUxPREFKMTNuV01JZzZoUFNiRmM3dGFYOW1pZUllVkNLNVRrLUhPR2pjNFBnUkJRVTJOYXd4ZFdZUDZscUV0X1hmWkxBMW92ODd5b050Y1dCSHBiYThaazBn?oc=5",
             "날짜": "9/4"
           }
         ]
       }
     ],
     "오늘관전": [
-      "미국 금리 동결 기대감에 따른 국내 외국인 수급 유입 전환 여부",
-      "미국 기술주 반등이 국내 반도체 및 IT 대표주 ETF에 미치는 영향",
-      "최근 급락세를 보인 코스닥 바이오 테마 ETF의 저가 매수세 유입 여부"
+      "미국 고용지표 발표를 앞둔 관망세 형성 여부 및 연준 인사 추가 발언",
+      "미 국채금리 하락세 유지 여부와 미국 대형 기술주 ETF 수급 변화",
+      "코스피-코스닥 디커플링 심화 속 외국인과 기관의 업종별 순매수 동향"
     ],
     "월요일요약": null,
     "주도테마": null,
@@ -62,80 +54,122 @@
     "top5": [
       {
         "순위": 1,
-        "제목": "미 국채금리 하락",
-        "숫자": "10년물 4.762% · 30년물 5.243%",
-        "설명": "",
-        "영향": "기술주 할인율 부담 완화로 나스닥 및 성장주 ETF 상승 유도",
-        "카톡요약": "연준 위원 동결 시사에 미 국채금리 하락하며 기술주 반등",
+        "제목": "연준 월러 9월 동결 시사",
+        "숫자": "미 10년물 4.762% (-3.4bp)",
+        "설명": "크리스토퍼 월러 연준 이사가 물가 둔화세가 이어지면 9월 기준금리 동결을 지지할 것이라고 밝혔습니다.",
+        "영향": "미 국채금리가 하락하고 기술주 중심으로 매수세가 유입되며 증시가 반등했습니다.",
+        "카톡요약": "월러 연준 이사의 9월 금리 동결 시사에 미 국채금리 하락",
         "출처": [
           {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
+            "이름": "뉴스1",
+            "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1PUWNrOXNMMVJlS215TWpaYnlxQ0hYRXdrbFBKVVhxbGZjbFduX3FodDdBYUpGNUFMdEZfVnVKV2R0SXhqTTZsUGVsQzlySk1HdEt1dXAzeFHSAV5BVV95cUxPREFKMTNuV01JZzZoUFNiRmM3dGFYOW1pZUllVkNLNVRrLUhPR2pjNFBnUkJRVTJOYXd4ZFdZUDZscUV0X1hmWkxBMW92ODd5b050Y1dCSHBiYThaazBn?oc=5",
+            "날짜": "9/4"
           }
         ]
       },
       {
         "순위": 2,
-        "제목": "코스피 반등 성공",
-        "숫자": "코스피 6579.48 (+0.26%)",
-        "설명": "",
-        "영향": "코스피200 지수형 ETF 및 대형주 ETF의 가격 안정화",
-        "카톡요약": "기관 9천억대 순매수에 코스피 0.26% 소폭 반등 마감",
+        "제목": "브로드컴 AI매출 221% 급증",
+        "숫자": "AI 매출 221% ↑ · 시간외 주가 약세",
+        "설명": "브로드컴이 AI 칩 매출 221% 급증을 발표했으나 시장 기대치 혼조로 주가는 강보합 수준을 보였습니다.",
+        "영향": "반도체 업종 내 실적 눈높이 조율로 AI 반도체 ETF 변동성이 지속될 수 있습니다.",
+        "카톡요약": "브로드컴 AI 매출 221% 증가에도 시장 기대 혼조로 주가…",
         "출처": [
           {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
+            "이름": "Yahoo Finance Australia",
+            "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9GRXFIeGlTMkxuU08wRjRlUWoxRXZwTXRQSmV1ZkxhZGhFT3dXZWFFYkVMNkRUUjl2VGhVSFVLS0Ewc19ZWHBNLTNPWGR0UVVpckNOM2UxcmgzS2ZrVXc1QURKNW1MMElDOTFMZ1hnRnd3WVVzbTBNNzZkVTZkQQ?oc=5",
+            "날짜": "9/4"
           }
         ]
       },
       {
         "순위": 3,
-        "제목": "조선 테마 급등",
-        "숫자": "KODEX 조선TOP10 +5.04%",
+        "제목": "코스피 반등·코스닥 약세",
+        "숫자": "코스피 +0.26% · 코스닥 -1.71%",
         "설명": "",
-        "영향": "산업재 및 조선 업종 테마 ETF로의 투자 심리 개선",
-        "카톡요약": "수주 모멘텀에 삼성중공업 급등하며 조선 ETF 동반 강세",
+        "영향": "국내 증시 업종별 차별화가 심화되며 테마형 ETF 간 성과 격차가 확대되었습니다.",
+        "카톡요약": "대형주 강세에 코스피 소폭 반등 반면 코스닥은 1.71% 하락",
         "출처": [
           {
-            "이름": "저장 종가 + KRX 개별 거래대금",
-            "url": ""
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
           }
         ]
       },
       {
         "순위": 4,
-        "제목": "코스닥 바이오 약세",
-        "숫자": "코스닥 790.21 (-1.71%)",
-        "설명": "",
-        "영향": "코스닥150 및 헬스케어·바이오 테마 ETF의 하락 압력",
-        "카톡요약": "알테오젠 등 바이오주 급락에 코스닥 1.71% 하락 마감",
+        "제목": "美 첨단기업 韓 2.7조 투자",
+        "숫자": "투자 규모 20억 달러 (약 2.7조 원)",
+        "설명": "반도체 및 첨단소재 분야 미국 기업 4곳이 한국에 20억 달러 투자를 확정했습니다.",
+        "영향": "국내 반도체 공급망 강화 기대감이 관련 장비·소재 ETF 수급에 긍정적 요인입니다.",
+        "카톡요약": "美 첨단기업 4곳 한국에 2.7조 원 투자로 반도체 공급망…",
         "출처": [
           {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "저장 종가 + KRX 개별 거래대금",
-            "url": ""
+            "이름": "서울경제",
+            "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5GcHFZWFFjS3k5OGRYaXg5RGdnU1pEVU9tNEJZcnotQWNZQWhBOHJPZEVxUEdwVER4My1LYVc3dVBSbERWakk5cm9iQ3pOd18xSjRr0gFTQVVfeXFMTkZwcVlYUWNLeTk4ZFhpeDlEZ2dTWkRVT200Qllyei1BY1lBaEE4ck9kRXFQR3BURHgzLUthVzd1UFJsRFZqSTlyb2JDek53XzFKNGs?oc=5",
+            "날짜": "9/4"
           }
         ]
       },
       {
         "순위": 5,
-        "제목": "보험·금융주 강세",
-        "숫자": "KODEX 보험 +4.80%",
-        "설명": "",
-        "영향": "고배당 및 금융·보험 섹터 ETF의 견조한 흐름 유지",
-        "카톡요약": "밸류업 기대감 지속에 보험 및 금융 테마 ETF 강세",
+        "제목": "임대사업자 세제혜택 논란",
+        "숫자": "등록임대 세제 보완 논의 중",
+        "설명": "정부의 세제개편안 중 임대사업자 혜택 폐지를 두고 정치권 내에서 보완론이 제기되었습니다.",
+        "영향": "부동산 및 건설업종 투자 심리 향방을 좌우할 변수로 작용할 수 있습니다.",
+        "카톡요약": "임대사업자 세제 혜택 폐지안에 여당 내에서도 보완 필요성 제기",
         "출처": [
           {
-            "이름": "저장 종가 + KRX 개별 거래대금",
-            "url": ""
+            "이름": "서울경제",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE0tdlRScFdtdjVZMWVON2xoWjg0bFZFOGFyal9hNFpNUG5Pc1VFeEh4M0V6T3E2ZXRTcC1rODN1TlQ5a0VrX0kyMmdVSGd2UUZVOEHSAVNBVV95cUxOZnU2WjRSeU9vRjh0eWJXRWg1RU1wQjlUcHZUN3l5RDFaWXNFUk1oeHlheFE4WHhLXzBuWGtmR3huTWN6OTcxS0ZXY0o1clBoU3Nodw?oc=5",
+            "날짜": "9/3"
           }
         ]
       }
     ],
     "놓치면안될이슈": [
+      {
+        "분야": "산업·기술",
+        "제목": "젠슨 황, 미국 AI 인프라에 1조 달러 투자 전망",
+        "무슨일": "엔비디아 젠슨 황 CEO가 미국 내 AI 인프라 구축에 총 1조 달러 규모의 투자가 이뤄질 것이라고 밝혔습니다.",
+        "왜중요": "빅테크 기업들의 AI 데이터센터 설비투자(CAPEX)가 지속될 것임을 보여주는 중요한 신호입니다.",
+        "확인할것": "빅테크 실적 발표에서 확인될 차기 연도 AI 설비투자 예산안",
+        "출처": [
+          {
+            "이름": "서울경제",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5xLXZUc283RWlWWWR6M3dWYm5fbmlzdno4c3YydE9RVU1BaFNMRktaSko4bWlRT2U4UHRoU3M1NXcwUFo5eVh5QVlLUDlYemRqS0HSAVNBVV95cUxON0JIQmFIS2U2bXpReFRIaGhyQzhNUkdYR3NCZ21DY3BvRnBUaHlTTDIxWVBLT0lDY1M1QWF1MHRSaFEyc3dPYko5bHNTOFBGTnNNMA?oc=5",
+            "날짜": "9/4"
+          }
+        ]
+      },
+      {
+        "분야": "정책",
+        "제목": "정부 세제개편안 국회 제출과 입법 수정 논란",
+        "무슨일": "정부의 세제개편안이 국회에 제출된 가운데 여야 간 예산 및 세제 수정 요구가 대립하고 있습니다.",
+        "왜중요": "금융투자 세제 및 임대사업자 관련 세제 변동은 국내 증시 유동성에 영향을 미칩니다.",
+        "확인할것": "국회 예비심사 과정에서의 법안 수정안 발표 여부",
+        "출처": [
+          {
+            "이름": "뉴스핌",
+            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5adHNrcWRONUR5R1BMSTR5emhEeXlfMGhVWnJPdHRzUkJuX25GcU1abVpzQUwzd1h0V3NxclhBcVg3OUo5UGNYSDd3NF8zeW1DNmNWVlV0YUx2VE0x?oc=5",
+            "날짜": "9/3"
+          }
+        ]
+      },
+      {
+        "분야": "국제정세",
+        "제목": "중국 8월 서비스업 PMI 51.4로 반등",
+        "무슨일": "중국의 8월 레이팅독 서비스업 PMI가 51.4를 기록해 전월 대비 1.0포인트 상승했습니다.",
+        "왜중요": "경기 확장 국면을 유지했으나 회복 속도가 완만해 중국 내수 관련 ETF에 미치는 영향은 한정적입니다.",
+        "확인할것": "중국 정부의 추가 경기 부양책 시점과 제조업 지표 개선 여부",
+        "출처": [
+          {
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBCTXduLWowTzkta1NteUtOWi1ZMTVWOEswSnUwNWVueno1SFBuNi1OS3E2S3p1THU4UE0wcnlONlhQb01VSndyNnVObms5bEdlVkpob2pmQ2FVMXJ2Sy15dtIBeEFVX3lxTE9kenF2TzNJdE9aNjJuTUhKR3JlVUVneEliQVo2T2taYUtHTnB3aW1IN2tUeEJyVnNVbnJfVE5vZ05vb2dlN0NkbmlkaHdlc29tLXpMNWNZX1VCbTBmTGsxTlpmVGo1MWVzSTJicFpDdUM1Ym5PMm9PNg?oc=5",
+            "날짜": "9/3"
+          }
+        ]
+      },
       {
         "분야": "산업·기술",
         "제목": "미국 기업 한국에 20억 달러 투자 유치",
@@ -163,41 +197,73 @@
             "날짜": "9/4"
           }
         ]
-      },
-      {
-        "분야": "산업·기술",
-        "제목": "반도체·첨단소재·청정에너지 분야 美 기업 20억 달러 투자유치… 첨단산업 공급망 협력 강화 - 데…",
-        "무슨일": "반도체·첨단소재·청정에너지 분야 美 기업 20억 달러 투자유치… 첨단산업 공급망 협력 강화 데일리안",
-        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "데일리안",
-            "url": "https://news.google.com/rss/articles/CBMirgJBVV95cUxNaGJYMm03Vm5mbzZkR2ozbGtUX0lnZE9DZG5NOXFoYlItOGRtRzVERDdTaXFvV0xqd1Z3NFktMF9BQ1NuTlBFeElMb3RzVHZxb0hseUo3LU8zY0tSNVNXQ056V2w1NExUUkxSZ3N4VHFYb2l1elQ5VWNNQl9vZEVvQWJ1QTJVMkhiTnE0Xy1PMmlvSnd6Rnh4c05QTGwtVkVkbGRaR0o1SFBDTzk3NUFWVmZKR2Q1VHk5R2IwNHBCaEdrZnZQYklWdFpUSy1kZUkxcHU3RWUwS0FaMVB6VVhxWXNSdVV0aW9wVzVLVzN4RW1MaFpZWTJXQzlGU2NabXlBMElQS3FWQ3dyaEU0ek00TnZleVl0ZlNLTGxYWUdUUnRsV21XWVVybWtidmdLQQ?oc=5",
-            "날짜": "9/4"
-          }
-        ]
       }
     ],
-    "etf_레이더": [],
+    "etf_레이더": [
+      {
+        "구분": "시장 구조",
+        "제목": "여야 예결위서 공무원연금 국내주식 비중 공방",
+        "사실": "국회 예결위에서 공무원연금의 국내주식 투자 비중 증대 방침에 대해 정치권 공방이 이어졌습니다.",
+        "출처": [
+          {
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
+          },
+          {
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5TSVotZVQ0NWUyTEJ4V05EakhyeUlTRmh0MXRuWjh0WVRTU2lnOXdwUEF1WXNDRFNtTUV5eFZ0RjUtSlc0SjZpMFZFOGtLelRvM01PTXZEWmhVbU05cmY4ONIBeEFVX3lxTFBSNVFBbFVuRy1KOTJJSlRmWi0xcm9paW92OTZzLWg5bndYTWNIVkVYaERkUHhpZ2dVUDhVNUlKS1A0Mjh0dXQtVUZwM3pUcU55TDZUYzFGT3ctczU0WkxHM2VOQkhOR25CRm9JclRuVlhnLTNBcEhHOQ?oc=5",
+            "날짜": "9/3"
+          }
+        ],
+        "관찰": "연기금의 국내주식 비중 확대 논의는 코스피200 등 대형 지수형 ETF 수급에 긍정적인 영향을 미칠 수 있습니다.",
+        "이유": "",
+        "관련ETF": "",
+        "질문": "",
+        "차별점": ""
+      }
+    ],
     "유튜브": [
+      {
+        "영상ID": "8TuhvfoM_qY",
+        "핵심주제": "TIGER ETF를 활용한 월 2회 배당 현금흐름 구축법",
+        "훅": "질문형",
+        "관련성": "높음",
+        "관련성근거": "월배당 ETF 포트폴리오 다룸"
+      },
+      {
+        "영상ID": "WQ-fN5-Owq8",
+        "핵심주제": "나스닥 ETF 주가 하락 원인 분석",
+        "훅": "질문형",
+        "관련성": "보통",
+        "관련성근거": "나스닥 ETF 가격 변동 원인 해설"
+      },
+      {
+        "영상ID": "PAUWTOvciSY",
+        "핵심주제": "2026년 8월 연금저축펀드 계좌 결산 및 대응",
+        "훅": "공포 자극형",
+        "관련성": "보통",
+        "관련성근거": "연금계좌 ETF 결산"
+      },
       {
         "영상ID": "YaMZWl0-ABU",
         "핵심주제": "월러 이사 발언에 따른 미 국채금리 하락 및 뉴욕증시 상승 분석",
         "훅": "주요 매크로 지표와 금리 변화 제시형",
         "관련성": "보통",
         "관련성근거": "미국 매크로 시황 분석"
-      },
-      {
-        "영상ID": "WQ-fN5-Owq8",
-        "핵심주제": "나스닥 ETF 하락 원인 분석 및 대응 전략",
-        "훅": "시청자 질문 해결형",
-        "관련성": "보통",
-        "관련성근거": "해외 지수 ETF 투자자 고민 해결"
       }
     ],
-    "댓글키워드": "월배당 ETF 분배금 지급 주기 및 연금계좌 마이너스 대처법에 대한 문의가 많았습니다.",
+    "댓글키워드": "월배당 ETF 매수 조합 및 연금계좌 손실에 따른 대응 전략 문의",
     "콘텐츠후보": [
+      {
+        "코너": "ETF 처방전",
+        "제목": "연준 동결 시사, 미국 지수 ETF vs 채권 ETF 배분 공식",
+        "이유": "미 국채금리 하락과 금리 동결 기대가 다시 커지면서 채권형 ETF와 지수형 ETF 간 비중 조절 질문이 급증함.",
+        "관련ETF": "미국S&P500 · 미국채10년",
+        "질문": "국채금리 하락기에 나스닥 ETF와 장기채 ETF의 최적 배분 비율은 어떻게 잡아야 하나요?",
+        "차별점": "연금계좌 내 세제 혜택을 극대화할 수 있는 구체적 분할 매수 비중 제시",
+        "사실": "",
+        "관찰": ""
+      },
       {
         "코너": "요즘하태형",
         "제목": "금리 동결 기대감 솔솔, 미국 장기채 ETF 지금 담아도 될까?",
@@ -213,21 +279,26 @@
       {
         "유형": "확인",
         "때": "이번 주",
-        "내용": "미국 고용동향 보고서 발표 결과 및 시장 반응"
+        "내용": "미국 고용지표 발표 및 연준 위원 추가 발언"
       },
       {
         "유형": "확인",
         "때": "상시",
-        "내용": "국내 증시 외국인 순매수 전환 여부"
+        "내용": "미국 10년물 국채금리 4.7%선 안정 여부"
       },
       {
         "유형": "확인",
-        "때": "다음 거래일",
-        "내용": "VIX 하락 흐름의 지속 여부"
+        "때": "상시",
+        "내용": "코스피-코스닥 외국인·기관 수급 디커플링 지속 여부"
+      },
+      {
+        "유형": "확인",
+        "때": "이번 주",
+        "내용": "미국 고용동향 보고서 발표 결과 및 시장 반응"
       }
     ],
     "카톡": {
-      "1": "☀️ 9/4 브리핑\n1. 연준 위원 동결 시사에 미 국채금리 하락하며 기술주 반등\n2. 기관 9천억대 순매수에 코스피 0.26% 소폭 반등 마감\n3. 수주 모멘텀에 삼성중공업 급등하며 조선 ETF 동반 강세\n4. 알테오젠 등 바이오주 급락에 코스닥 1.71% 하락 마감\n5. 밸류업 기대감 지속에 보험 및 금융 테마 ETF 강세"
+      "1": "☀️ 9/4 브리핑\n1. 월러 연준 이사의 9월 금리 동결 시사에 미 국채금리 하락\n2. 브로드컴 AI 매출 221% 증가에도 시장 기대 혼조로 주가…\n3. 대형주 강세에 코스피 소폭 반등 반면 코스닥은 1.71% 하락\n4. 美 첨단기업 4곳 한국에 2.7조 원 투자로 반도체 공급망…\n5. 임대사업자 세제 혜택 폐지안에 여당 내에서도 보완 필요성"
     },
     "오늘의개념": null
   },
