@@ -1,37 +1,37 @@
 {
-  "날짜": "2026-09-07",
+  "날짜": "2026-09-08",
   "ai": {
     "top5": [
       {
-        "제목": "필라델피아 반도체 상승",
-        "숫자": "11,735.26 (+3.37%)",
-        "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
+        "제목": "VIX 상승",
+        "숫자": "15.30 (+5.30%)",
+        "영향": "VIX 연계 ETF 흐름 확인",
         "순위": 1,
         "출처": [],
         "설명": "",
-        "카톡요약": "필라델피아 반도체 상승"
-      },
-      {
-        "제목": "코스닥 상승",
-        "숫자": "813.50 (+2.95%)",
-        "영향": "코스닥 연계 ETF 흐름 확인",
-        "순위": 2,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "코스닥 상승"
+        "카톡요약": "VIX 상승"
       },
       {
         "제목": "코스피 상승",
-        "숫자": "6,687.21 (+1.64%)",
+        "숫자": "6,995.39 (+4.61%)",
         "영향": "코스피 연계 ETF 흐름 확인",
-        "순위": 3,
+        "순위": 2,
         "출처": [],
         "설명": "",
         "카톡요약": "코스피 상승"
       },
       {
+        "제목": "필라델피아 반도체 상승",
+        "숫자": "11,735.26 (+3.37%)",
+        "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
+        "순위": 3,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "필라델피아 반도체 상승"
+      },
+      {
         "제목": "구리 상승",
-        "숫자": "6.68 (+1.60%)",
+        "숫자": "6.68 (+1.30%)",
         "영향": "구리 연계 ETF 흐름 확인",
         "순위": 4,
         "출처": [],
@@ -39,13 +39,13 @@
         "카톡요약": "구리 상승"
       },
       {
-        "제목": "VIX 상승",
-        "숫자": "14.53 (+1.47%)",
-        "영향": "VIX 연계 ETF 흐름 확인",
+        "제목": "코스닥 상승",
+        "숫자": "822.19 (+1.07%)",
+        "영향": "코스닥 연계 ETF 흐름 확인",
         "순위": 5,
         "출처": [],
         "설명": "",
-        "카톡요약": "VIX 상승"
+        "카톡요약": "코스닥 상승"
       }
     ],
     "시장브리핑": [
@@ -53,14 +53,23 @@
         "시장": "국내",
         "제목": "코스피·코스닥 디커플링",
         "자동생성": true,
-        "결과": "코스피 +1.64% · 코스닥 +2.95%",
-        "원인": "외국인 순매수 5,037억원 · 기관 순매수 16,694억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
-        "전달경로": "",
+        "결과": "코스피 +4.61% · 코스닥 +1.07%",
+        "원인": "외국인 순매수 25,868억원 · 기관 순매수 26,491억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
+        "전달경로": "대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차",
         "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
+          },
+          {
+            "이름": "매일경제 증권",
+            "url": ""
+          },
+          {
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12146533",
+            "날짜": "9/7"
           }
         ]
       },
@@ -69,13 +78,22 @@
         "제목": "미국 증시 마감 흐름",
         "자동생성": true,
         "결과": "S&P 500 -0.38% · 나스닥 종합 -0.29% · 다우 30 -0.51%",
-        "원인": "주요 지수와 함께 미 10년물 +0.46% · VIX +1.47%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
-        "전달경로": "",
+        "원인": "주요 지수와 함께 미 10년물 +0.46% · VIX +5.30%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
+        "전달경로": "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF",
         "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
+          },
+          {
+            "이름": "매일경제 마켓",
+            "url": ""
+          },
+          {
+            "이름": "매일경제 마켓",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE90enU2YUJhbktza3pzaWdWZmgyS2ZDTUczUWJFRnJDeGtOMGlsNV9GbW1UbEVDbDNHcjBkT3J5SzVyTmV1T0RUc1ppZkpGeXpKakE?oc=5",
+            "날짜": "9/8"
           }
         ]
       }
@@ -83,43 +101,43 @@
     "놓치면안될이슈": [
       {
         "분야": "산업·기술",
-        "제목": "원전수소, 탄소제로 대량생산의 현실적 카드인가 — 전력비·규제·사회적 합의 삼중 장벽 - 뉴스N연합",
-        "무슨일": "원전수소, 탄소제로 대량생산의 현실적 카드인가 — 전력비·규제·사회적 합의 삼중 장벽 뉴스N연합",
+        "제목": "대미 투자 '원전 8기' 검토…합의 '줄다리기' - news.sbs.co.kr",
+        "무슨일": "대미 투자 '원전 8기' 검토…합의 '줄다리기' news.sbs.co.kr",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "뉴스N연합",
-            "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBLRkNNYzdqWFBMSkhhYUhiMjd1b3d4WVEySUxlXzZWYzYzMFB3bndaN1NUZHZBR1M2cEZiVVNCbTN3alcyR3dKc3JzcnlQQmc?oc=5",
-            "날짜": "9/7"
+            "이름": "news.sbs.co.kr",
+            "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9rNFZUV2dsM2NNRGhadWc4Q1NHdEJ2T190bDhlZG0tVUJSMi01a3pWTExIQVYtTVJtS1otNEh2WjNUbXE5OWNscGwyY1BEajdHU2VDNzBrTTljcUsySmxadDFXdEFzTldmQ3c?oc=5",
+            "날짜": "9/8"
           }
         ]
       },
       {
-        "분야": "생활경제",
-        "제목": "[미리보는 증시재료] 美 물가 발표 앞둔 증시…금리·유가가 '변수' - 뉴스핌",
-        "무슨일": "[미리보는 증시재료] 美 물가 발표 앞둔 증시…금리·유가가 '변수' 뉴스핌",
-        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+        "분야": "산업·기술",
+        "제목": "KDI \"AI 투자 중심으로 개선 흐름 유지\" - 연합뉴스TV",
+        "무슨일": "KDI \"AI 투자 중심으로 개선 흐름 유지\" 연합뉴스TV",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "뉴스핌",
-            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE94TEV4ZVpNTzZfY0E1c0prVk5QUTRvaUZOQVp1Q1pONlFqblJlQ2ZqZkJtX3RKYTdlQmtFS3JlSUZTM2FWSG1lYXllRjZoZDRNVDJLNW9DLXpMVndx?oc=5",
-            "날짜": "9/7"
+            "이름": "연합뉴스TV",
+            "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1XMjhhMlZOUEZDb2UzdEFJR1lrTENKNy0xVEZwU2t2SEJWQVFXQzFub1FSbllEMW5BdnhYVFhHUzg5ZHkyY3pqcWZWM1hlUkVyejQta3B3cXM2OFVtX3VaU3NDeDE5QkU?oc=5",
+            "날짜": "9/8"
           }
         ]
       },
       {
-        "분야": "생활경제",
-        "제목": "[주간 뉴욕증시] 고용 이어 CPI 시험대…오라클 실적도 변수 - newsis.com",
-        "무슨일": "[주간 뉴욕증시] 고용 이어 CPI 시험대…오라클 실적도 변수 newsis.com",
-        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+        "분야": "산업·기술",
+        "제목": "[26년 9월 8일(화)] “AI 투자심리 살아났다”…코스피 4.6% 급등, 7000선 눈앞 -…",
+        "무슨일": "[26년 9월 8일(화)] “AI 투자심리 살아났다”…코스피 4.6% 급등, 7000선 눈앞 - 비티의 오늘 주요 뉴스 요약 네이버 프리미엄콘텐츠",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "newsis.com",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE42NDR2cUk0U0k5aWdaaEREUkpYR1BQcUt1QUpIR1ZiczNNUGtOdE1sbjhfODFockNGdy0xbUV1MFJpWlZvSkZkQmZIUVV1d2ZXaXVjR21SZUQxWWFEZ3dFbNIBeEFVX3lxTE1xcVg4aXZRV2JQVTBHNHR5RzZBXzk3c19EdTE3eVZjcnlXbUhjakxLM3ZCNXJmcEtCWkUxQUFaZ01hcURaUVo0Z0VOWlJaVnVCM1F1YUZsNmZoT2dQZ09zcGM2WUdmclVtSEZSMDdQTFhmZUlZTWNObA?oc=5",
-            "날짜": "9/7"
+            "이름": "네이버 프리미엄콘텐츠",
+            "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxORkRZUEhUXzdCdjFQNkdhUVhwUEg2ajVUM0xoYUZPVGxLaHV4UU90NTRxLUtrMmF1MzMzeGs0Vnphck9raWlfY09FMEtSNEx4LTRjZTE0Yy1pT2xXZFNZRHVLR3BJdUlBM0U1akQ3Q1hXekZ4NkpaZUdwZDdUWTlOeA?oc=5",
+            "날짜": "9/8"
           }
         ]
       }
@@ -131,24 +149,24 @@
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "필라델피아 반도체 상승, 연계 ETF 영향은?",
-        "이유": "필라델피아 반도체 상승의 핵심 수치 11,735.26 (+3.37%)와 ETF 전달 경로를 설명할 필요",
-        "관련ETF": "필라델피아 반도체 상승 연계 지수·업종 ETF",
+        "제목": "VIX 상승, 연계 ETF 영향은?",
+        "이유": "VIX 상승의 핵심 수치 15.30 (+5.30%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "VIX 상승 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
-        "질문": "필라델피아 반도체 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
+        "질문": "VIX 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
         "사실": "",
         "관찰": ""
       }
     ],
     "오늘관전": [
-      "필라델피아 반도체 상승 흐름이 다음 거래일까지 이어지는지 확인"
+      "VIX 상승 흐름이 다음 거래일까지 이어지는지 확인"
     ],
     "월요일요약": null,
     "체크포인트": [
       {
         "유형": "확인",
         "때": "다음 거래일",
-        "내용": "필라델피아 반도체 상승 흐름의 지속 여부"
+        "내용": "VIX 상승 흐름의 지속 여부"
       }
     ],
     "오늘의개념": null,
@@ -156,21 +174,10 @@
     "관망요인": null,
     "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 9/7 브리핑\n1. 필라델피아 반도체 상승\n2. 코스닥 상승\n3. 코스피 상승\n4. 구리 상승\n5. VIX 상승"
+      "1": "☀️ 9/8 브리핑\n1. VIX 상승\n2. 코스피 상승\n3. 필라델피아 반도체 상승\n4. 구리 상승\n5. 코스닥 상승"
     }
   },
   "history": [
-    {
-      "날짜": "2026-09-02",
-      "주제": [
-        "유가 6%대 급등",
-        "미 국채금리 상승",
-        "비트코인 ETF 유입",
-        "채권혼합 20조 돌파",
-        "국내 지수 디커플링"
-      ],
-      "개념": "디커플링(Decoupling)"
-    },
     {
       "날짜": "2026-09-03",
       "주제": [
@@ -281,6 +288,82 @@
           "핵심": "브로드컴이 매출 급증 등 호실적을 발표했음에도 불구하고 주가는 시간외 거래 등에서 하락세를 보였습니다. 시장 기대치가 과도하게 높아진 상황에서 AI 반도체 성장성에 대한 눈높이 조정이 진행되고 있음을 시사합니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMifkFVX3lxTE1VSGxPbHBoNlNYMUc2NHBucDFTem5SaktPbFpSOEZSSnR2V3NnaTg0azVrU0lpc1U5dVhSLXNITkdJMHlMckhwTWUtUU1xbDdGdi1iN29UTHFrcHRna0gyeEdKQkZZZUdqd0JHTzJmdnQxc3BvT3JxclVPZUpyQQ?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-09-07",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "필라델피아 반도체 상승",
+          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 11,735.26 (+3.37%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "코스닥 상승",
+          "핵심": "코스닥 연계 ETF 흐름 확인 813.50 (+2.95%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "코스피 상승",
+          "핵심": "코스피 연계 ETF 흐름 확인 6,687.21 (+1.64%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "구리 상승",
+          "핵심": "구리 연계 ETF 흐름 확인 6.68 (+1.60%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "VIX 상승",
+          "핵심": "VIX 연계 ETF 흐름 확인 14.53 (+1.47%)",
+          "출처": []
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "코스피·코스닥 디커플링",
+          "핵심": "외국인 순매수 5,037억원 · 기관 순매수 16,694억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 +1.64% · 코스닥 +2.95%",
+          "출처": [
+            "https://data.krx.co.kr"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "미국 증시 마감 흐름",
+          "핵심": "주요 지수와 함께 미 10년물 +0.46% · VIX +1.47%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 -0.38% · 나스닥 종합 -0.29% · 다우 30 -0.51%",
+          "출처": [
+            "https://finance.yahoo.com"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "원전수소, 탄소제로 대량생산의 현실적 카드인가 — 전력비·규제·사회적 합의 삼중 장벽 - 뉴스N연합",
+          "핵심": "원전수소, 탄소제로 대량생산의 현실적 카드인가 — 전력비·규제·사회적 합의 삼중 장벽 뉴스N연합 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBLRkNNYzdqWFBMSkhhYUhiMjd1b3d4WVEySUxlXzZWYzYzMFB3bndaN1NUZHZBR1M2cEZiVVNCbTN3alcyR3dKc3JzcnlQQmc?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "[미리보는 증시재료] 美 물가 발표 앞둔 증시…금리·유가가 '변수' - 뉴스핌",
+          "핵심": "[미리보는 증시재료] 美 물가 발표 앞둔 증시…금리·유가가 '변수' 뉴스핌 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiXEFVX3lxTE94TEV4ZVpNTzZfY0E1c0prVk5QUTRvaUZOQVp1Q1pONlFqblJlQ2ZqZkJtX3RKYTdlQmtFS3JlSUZTM2FWSG1lYXllRjZoZDRNVDJLNW9DLXpMVndx?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "[주간 뉴욕증시] 고용 이어 CPI 시험대…오라클 실적도 변수 - newsis.com",
+          "핵심": "[주간 뉴욕증시] 고용 이어 CPI 시험대…오라클 실적도 변수 newsis.com 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE42NDR2cUk0U0k5aWdaaEREUkpYR1BQcUt1QUpIR1ZiczNNUGtOdE1sbjhfODFockNGdy0xbUV1MFJpWlZvSkZkQmZIUVV1d2ZXaXVjR21SZUQxWWFEZ3dFbNIBeEFVX3lxTE1xcVg4aXZRV2JQVTBHNHR5RzZBXzk3c19EdTE3eVZjcnlXbUhjakxLM3ZCNXJmcEtCWkUxQUFaZ01hcURaUVo0Z0VOWlJaVnVCM1F1YUZsNmZoT2dQZ09zcGM2WUdmclVtSEZSMDdQTFhmZUlZTWNObA?oc=5"
           ]
         }
       ],
