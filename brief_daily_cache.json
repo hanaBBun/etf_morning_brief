@@ -1,19 +1,19 @@
 {
-  "날짜": "2026-09-09",
+  "날짜": "2026-09-10",
   "ai": {
     "top5": [
       {
-        "제목": "브렌트 상승",
-        "숫자": "99.31 (+3.15%)",
-        "영향": "브렌트 연계 ETF 흐름 확인",
+        "제목": "VIX 상승",
+        "숫자": "16.46 (+4.71%)",
+        "영향": "VIX 연계 ETF 흐름 확인",
         "순위": 1,
         "출처": [],
         "설명": "",
-        "카톡요약": "브렌트 상승"
+        "카톡요약": "VIX 상승"
       },
       {
         "제목": "WTI 상승",
-        "숫자": "94.25 (+3.03%)",
+        "숫자": "96.67 (+3.91%)",
         "영향": "WTI 연계 ETF 흐름 확인",
         "순위": 2,
         "출처": [],
@@ -21,31 +21,31 @@
         "카톡요약": "WTI 상승"
       },
       {
-        "제목": "VIX 상승",
-        "숫자": "15.72 (+2.75%)",
-        "영향": "VIX 연계 ETF 흐름 확인",
+        "제목": "브렌트 상승",
+        "숫자": "101.63 (+3.79%)",
+        "영향": "브렌트 연계 ETF 흐름 확인",
         "순위": 3,
         "출처": [],
         "설명": "",
-        "카톡요약": "VIX 상승"
+        "카톡요약": "브렌트 상승"
       },
       {
-        "제목": "구리 상승",
-        "숫자": "6.78 (+2.73%)",
-        "영향": "구리 연계 ETF 흐름 확인",
+        "제목": "코스닥 상승",
+        "숫자": "830.37 (+2.28%)",
+        "영향": "코스닥 연계 ETF 흐름 확인",
         "순위": 4,
         "출처": [],
         "설명": "",
-        "카톡요약": "구리 상승"
+        "카톡요약": "코스닥 상승"
       },
       {
-        "제목": "필라델피아 반도체 상승",
-        "숫자": "11,887.87 (+1.30%)",
-        "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
+        "제목": "구리 상승",
+        "숫자": "6.85 (+1.68%)",
+        "영향": "구리 연계 ETF 흐름 확인",
         "순위": 5,
         "출처": [],
         "설명": "",
-        "카톡요약": "필라델피아 반도체 상승"
+        "카톡요약": "구리 상승"
       }
     ],
     "시장브리핑": [
@@ -53,8 +53,8 @@
         "시장": "국내",
         "제목": "국내 증시 마감 흐름",
         "자동생성": true,
-        "결과": "코스피 -0.58% · 코스닥 -1.25%",
-        "원인": "외국인 순매수 6,482억원 · 기관 순매수 6,427억원의 수급이 지수 등락과 함께 나타났습니다.",
+        "결과": "코스피 +1.40% · 코스닥 +2.28%",
+        "원인": "외국인 순매도 4,270억원 · 기관 순매수 9,422억원의 수급이 지수 등락과 함께 나타났습니다.",
         "전달경로": "투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률",
         "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
@@ -63,13 +63,13 @@
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "매일경제 마켓",
+            "이름": "Traders Union",
             "url": ""
           },
           {
-            "이름": "매일경제 마켓",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1IVmM2aUh1VFhtZHRMSzQyQ0lqT29nMGhNc3ZNbW5wN09qc05sX3ZVek1ES082dG8tbVBjelFUdTBSeWxsdWRaX1dIMGhPRjZFWmc?oc=5",
-            "날짜": "9/8"
+            "이름": "Traders Union",
+            "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQbjcyc0JvU3dybWc3VDRKOGFMM3lpOHpwUFp1dF9GRVRaOEZ3WC0xeWZXRjl0Ymg2alM4TF9YX2RCMVVqT25MSDB2TkVxbG5sVlFDeFFSMDB6cTFQZVg4R1pXdTZ5R2hzeUppc2FpMmxVNUstX0NubE42MHFzVHZqSWwyeUJzeWUzU1FzbXRlWl95Q2plSEpsVE5Fb2pHN3FLZXZjS1d0ZjNiQ2gt?oc=5",
+            "날짜": "9/9"
           }
         ]
       },
@@ -77,8 +77,8 @@
         "시장": "미국",
         "제목": "유가·금리 상승에 기술주 약세",
         "자동생성": true,
-        "결과": "S&P 500 -0.58% · 나스닥 종합 -0.32% · 다우 30 -1.18%",
-        "원인": "WTI가 +3.03% 급등하고 미 10년물 금리가 +2.2bp 오른 날 나스닥이 -0.32% 하락했습니다. 유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다.",
+        "결과": "S&P 500 -0.48% · 나스닥 종합 -0.64% · 다우 30 -0.77%",
+        "원인": "WTI가 +3.91% 급등하고 미 10년물 금리가 +3.1bp 오른 날 나스닥이 -0.64% 하락했습니다. 유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다.",
         "전달경로": "지정학·공급 불안 → 유가 상승 → 물가·국채금리 부담 → 기술주·반도체 약세",
         "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
@@ -87,13 +87,13 @@
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "한국경제TV",
+            "이름": "뉴시스",
             "url": ""
           },
           {
-            "이름": "한국경제TV",
-            "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1Oc1pYNWliV2UtVk1ISmJMWEhGVm1ZU3RBZlhzWUhMeEU3WWlOZ1FLMXhkTW1ZT2hsNHNBOFZRVWZRVWF2ZHR0V1BSSFJPRngxNld3S1NQTGRDcFoxM0tpak95MG9uLUdHSmZjT3ZneWJZcUxPV2k0?oc=5",
-            "날짜": "9/9"
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4xMndFeDZudEI4eWhGTlRFcExRd2xuV3dlYnhFS3Q1Y0FYZjZxb2dtRDBwN0xIYWNOa0RvSHgwNGJqbTRwVURFa2s5amFOQU1DcmpRaUJmaldQdTdubUI2UNIBeEFVX3lxTE10TGZndk9VY2pWbGo1dk5TN193eUdaSW13ODFJSjA1QkpxSXdKSXhVV19LXzZrWmdVa0JMMUxjOE16RGxSTzBFU2k1WWN2SjVMMEhXOXY1blBuNWU1RWt5VjdHWm9lZUM0dGtPYWRTczQzb3lBRzhwWg?oc=5",
+            "날짜": "9/10"
           }
         ]
       }
@@ -101,43 +101,43 @@
     "놓치면안될이슈": [
       {
         "분야": "생활경제",
-        "제목": "美 실업률 상승 우려, 코로나 이후 최고…고용·물가에 낀 연준 - edaily.co.kr",
-        "무슨일": "美 실업률 상승 우려, 코로나 이후 최고…고용·물가에 낀 연준 edaily.co.kr",
+        "제목": "랩 테크놀로지스, CEO 및 COO와 고용계약 갱신…성과 연동 주식 보상 부여 - 데이터투자",
+        "무슨일": "랩 테크놀로지스, CEO 및 COO와 고용계약 갱신…성과 연동 주식 보상 부여 데이터투자",
         "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "edaily.co.kr",
-            "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQT1U5cWREY1gtT014ZmFBRFdlQ1k2RnNoX0M0YnVKX0xEVDVWTmY4RGhNQXVzQzUzRUdKTENxSkZQMDZBTUk0QVA4LVRiX0wwVjBtYWNpbXBsOUJnN2NtbC1OcGdvd1lRcDB3T3VwS0JJUUpUT2o1aS1wQlhpdTNKOQ?oc=5",
-            "날짜": "9/9"
+            "이름": "데이터투자",
+            "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1FR0dIbHJzeGtlRTVpNGtpTjA0aHIyNjFOaEh3eWlSYzA4QzVOZDJ2OVZzNmdJUC1KaWU2eU5qRGNRbE1qOVczTC04WkVIcTZMWDJYZWdlQmhmQUFRX3dTWUJjdnd6SDhJMk55MzNET1hwNWM?oc=5",
+            "날짜": "9/10"
           }
         ]
       },
       {
-        "분야": "산업·기술",
-        "제목": "\"AI 투자 막았다\"는 하태경…\"왜 보험연수원이 하나\"10억 출자 논란 - v.daum.net",
-        "무슨일": "\"AI 투자 막았다\"는 하태경…\"왜 보험연수원이 하나\"10억 출자 논란 v.daum.net",
-        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "분야": "정책",
+        "제목": "Uzbekistan and Serbia prepare zero-tariff free trade a…",
+        "무슨일": "Uzbekistan and Serbia prepare zero-tariff free trade agreement akipress.com",
+        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "v.daum.net",
-            "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE92TDl4TjRvT3dYZWdQeGM5ZWpXNjdnTWRqNEZLYXh5M0xsZHpEcDdVRTdRZ1dkeE5NTjFDNlNROFYtRjdVRWxfZlNMSXQ1emM?oc=5",
-            "날짜": "9/9"
+            "이름": "akipress.com",
+            "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQMGFHQl9Tbm53allKR3piV1NObjFpOENnU3otR3ZSQmJ2OXRoMi1VVy1kcG90VnRWaVpQTlNPR2ZQVkFZUnFoNl9QOGZaQ0RWd1VUalp1bjhGUmxDSzMxVVdjUFRRZzczU003dXI1OTN0SHlKbnZVWmxZN09kOFhUX0dhbG4zcmtJaWtGTHZKRVFyUWE1QnRRcGpmeDQ?oc=5",
+            "날짜": "9/10"
           }
         ]
       },
       {
-        "분야": "산업·기술",
-        "제목": "면역질환 투자 늘리는 빅파마···릴리 가세 - 메디칼업저버",
-        "무슨일": "면역질환 투자 늘리는 빅파마···릴리 가세 메디칼업저버",
-        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "분야": "기업",
+        "제목": "Oracle & Adobe Earnings Ahead: Which Software Giant Ha…",
+        "무슨일": "Oracle & Adobe Earnings Ahead: Which Software Giant Has More AI Upside? Zacks Investment Research",
+        "왜중요": "대형 기업의 실적과 가이던스는 관련 업종과 ETF 기대를 다시 정하는 재료입니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "메디칼업저버",
-            "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1UVzJBcUR1SzRGZllUS1BRRWk0cUNFajlvdktLRGZLRTgxU1dqMjRLa0FOUWlmQ3ZvckRNMF9qZ3p6aE9KaS1qZl9IT1A0YXVtUVBzdWRwWmZZenRMV21VQ2tLQW11TGZjTTFj?oc=5",
-            "날짜": "9/9"
+            "이름": "Zacks Investment Research",
+            "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQbnZOR2V5em1odk40Tm9tQ1dVNGxQWlBuZG9kN08zNldIenN2alk4cEx5ZFR0N2NmVnJpMkhCUm1FVWpnd2F3M1g3UGR3enJVUHNJaExQYVhKbHJHcWRxdTVKd0NKY2xqbzBqckxSalFfRlBqNmtsdFRLa3AyaDc1RHlCTlJPT1lka0o5YjdOelQtbjhKdm9PZl8xZTNrMExjR3ZYcTZWczhBa1hq?oc=5",
+            "날짜": "9/10"
           }
         ]
       }
@@ -149,24 +149,24 @@
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "브렌트 상승, 연계 ETF 영향은?",
-        "이유": "브렌트 상승의 핵심 수치 99.31 (+3.15%)와 ETF 전달 경로를 설명할 필요",
-        "관련ETF": "브렌트 상승 연계 지수·업종 ETF",
+        "제목": "VIX 상승, 연계 ETF 영향은?",
+        "이유": "VIX 상승의 핵심 수치 16.46 (+4.71%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "VIX 상승 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
-        "질문": "브렌트 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
+        "질문": "VIX 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
         "사실": "",
         "관찰": ""
       }
     ],
     "오늘관전": [
-      "브렌트 상승 흐름이 다음 거래일까지 이어지는지 확인"
+      "VIX 상승 흐름이 다음 거래일까지 이어지는지 확인"
     ],
     "월요일요약": null,
     "체크포인트": [
       {
         "유형": "확인",
         "때": "다음 거래일",
-        "내용": "브렌트 상승 흐름의 지속 여부"
+        "내용": "VIX 상승 흐름의 지속 여부"
       }
     ],
     "오늘의개념": null,
@@ -174,114 +174,10 @@
     "관망요인": null,
     "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 9/9 브리핑\n1. 브렌트 상승\n2. WTI 상승\n3. VIX 상승\n4. 구리 상승\n5. 필라델피아 반도체 상승"
+      "1": "☀️ 9/10 브리핑\n1. VIX 상승\n2. WTI 상승\n3. 브렌트 상승\n4. 코스닥 상승\n5. 구리 상승"
     }
   },
   "history": [
-    {
-      "날짜": "2026-09-04",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "연준 월러 9월 동결 시사",
-          "핵심": "크리스토퍼 월러 연준 이사가 물가 둔화세가 이어지면 9월 기준금리 동결을 지지할 것이라고 밝혔습니다. 미 국채금리가 하락하고 기술주 중심으로 매수세가 유입되며 증시가 반등했습니다. 미 10년물 4.762% (-3.4bp)",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1PUWNrOXNMMVJlS215TWpaYnlxQ0hYRXdrbFBKVVhxbGZjbFduX3FodDdBYUpGNUFMdEZfVnVKV2R0SXhqTTZsUGVsQzlySk1HdEt1dXAzeFHSAV5BVV95cUxPREFKMTNuV01JZzZoUFNiRmM3dGFYOW1pZUllVkNLNVRrLUhPR2pjNFBnUkJRVTJOYXd4ZFdZUDZscUV0X1hmWkxBMW92ODd5b050Y1dCSHBiYThaazBn?oc=5"
-          ]
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "브로드컴 AI매출 221% 급증",
-          "핵심": "브로드컴이 AI 칩 매출 221% 급증을 발표했으나 시장 기대치 혼조로 주가는 강보합 수준을 보였습니다. 반도체 업종 내 실적 눈높이 조율로 AI 반도체 ETF 변동성이 지속될 수 있습니다. AI 매출 221% ↑ · 시간외 주가 약세",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMifkFVX3lxTE9GRXFIeGlTMkxuU08wRjRlUWoxRXZwTXRQSmV1ZkxhZGhFT3dXZWFFYkVMNkRUUjl2VGhVSFVLS0Ewc19ZWHBNLTNPWGR0UVVpckNOM2UxcmgzS2ZrVXc1QURKNW1MMElDOTFMZ1hnRnd3WVVzbTBNNzZkVTZkQQ?oc=5"
-          ]
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스피 반등·코스닥 약세",
-          "핵심": "국내 증시 업종별 차별화가 심화되며 테마형 ETF 간 성과 격차가 확대되었습니다. 코스피 +0.26% · 코스닥 -1.71%",
-          "출처": [
-            "https://data.krx.co.kr"
-          ]
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "美 첨단기업 韓 2.7조 투자",
-          "핵심": "반도체 및 첨단소재 분야 미국 기업 4곳이 한국에 20억 달러 투자를 확정했습니다. 국내 반도체 공급망 강화 기대감이 관련 장비·소재 ETF 수급에 긍정적 요인입니다. 투자 규모 20억 달러 (약 2.7조 원)",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5GcHFZWFFjS3k5OGRYaXg5RGdnU1pEVU9tNEJZcnotQWNZQWhBOHJPZEVxUEdwVER4My1LYVc3dVBSbERWakk5cm9iQ3pOd18xSjRr0gFTQVVfeXFMTkZwcVlYUWNLeTk4ZFhpeDlEZ2dTWkRVT200Qllyei1BY1lBaEE4ck9kRXFQR3BURHgzLUthVzd1UFJsRFZqSTlyb2JDek53XzFKNGs?oc=5"
-          ]
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "임대사업자 세제혜택 논란",
-          "핵심": "정부의 세제개편안 중 임대사업자 혜택 폐지를 두고 정치권 내에서 보완론이 제기되었습니다. 부동산 및 건설업종 투자 심리 향방을 좌우할 변수로 작용할 수 있습니다. 등록임대 세제 보완 논의 중",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiUkFVX3lxTE0tdlRScFdtdjVZMWVON2xoWjg0bFZFOGFyal9hNFpNUG5Pc1VFeEh4M0V6T3E2ZXRTcC1rODN1TlQ5a0VrX0kyMmdVSGd2UUZVOEHSAVNBVV95cUxOZnU2WjRSeU9vRjh0eWJXRWg1RU1wQjlUcHZUN3l5RDFaWXNFUk1oeHlheFE4WHhLXzBuWGtmR3huTWN6OTcxS0ZXY0o1clBoU3Nodw?oc=5"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "기관 순매수에 코스피 소폭 반등…코스닥은 약세로 디커플링",
-          "핵심": "전일 급락 이후 유가증권시장에서는 조선·보험·금융 등 대형 가치주를 중심으로 기관 매수세가 유입되며 지수 하방을 받쳤을 가능성이 있습니다. 반면 코스닥 시장에서는 제약·바이오 및 중소형 반도체 관련주를 중심으로 차익 실현 매물이 출회되며 상방이 제한된 것으로 볼 수 있습니다. 원/달러 환율이 1,356.0원(-1.23%)으로 하락하며 원화가 강세를 보인 점도 코스피 방어에 기여했을 여지가 있",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://www.mk.co.kr/news/stock/12144044"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "연준 인사 동결 발언과 금리 하락에 미 3대 지수 반등",
-          "핵심": "크리스토퍼 월러 연준 이사가 물가 둔화세가 이어지면 9월 기준금리 동결을 지지하겠다고 발언하면서 긴축 우려가 줄어든 것으로 해석할 여지가 있습니다. 국채금리가 하락세를 보임에 따라 기술주를 중심으로 증시 전반에 위험선호 심리가 회복되었을 가능성이 있습니다. 다만 장 마감 후 실적을 발표한 브로드컴은 AI 칩 매출 221% 급증에도 불구하고 시장의 높은 기대치로 인해 주가가 소폭 약세를 보였습",
-          "출처": [
-            "https://finance.yahoo.com",
-            "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1PUWNrOXNMMVJlS215TWpaYnlxQ0hYRXdrbFBKVVhxbGZjbFduX3FodDdBYUpGNUFMdEZfVnVKV2R0SXhqTTZsUGVsQzlySk1HdEt1dXAzeFHSAV5BVV95cUxPREFKMTNuV01JZzZoUFNiRmM3dGFYOW1pZUllVkNLNVRrLUhPR2pjNFBnUkJRVTJOYXd4ZFdZUDZscUV0X1hmWkxBMW92ODd5b050Y1dCSHBiYThaazBn?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "젠슨 황, 미국 AI 인프라에 1조 달러 투자 전망",
-          "핵심": "엔비디아 젠슨 황 CEO가 미국 내 AI 인프라 구축에 총 1조 달러 규모의 투자가 이뤄질 것이라고 밝혔습니다. 빅테크 기업들의 AI 데이터센터 설비투자(CAPEX)가 지속될 것임을 보여주는 중요한 신호입니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5xLXZUc283RWlWWWR6M3dWYm5fbmlzdno4c3YydE9RVU1BaFNMRktaSko4bWlRT2U4UHRoU3M1NXcwUFo5eVh5QVlLUDlYemRqS0HSAVNBVV95cUxON0JIQmFIS2U2bXpReFRIaGhyQzhNUkdYR3NCZ21DY3BvRnBUaHlTTDIxWVBLT0lDY1M1QWF1MHRSaFEyc3dPYko5bHNTOFBGTnNNMA?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "정부 세제개편안 국회 제출과 입법 수정 논란",
-          "핵심": "정부의 세제개편안이 국회에 제출된 가운데 여야 간 예산 및 세제 수정 요구가 대립하고 있습니다. 금융투자 세제 및 임대사업자 관련 세제 변동은 국내 증시 유동성에 영향을 미칩니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5adHNrcWRONUR5R1BMSTR5emhEeXlfMGhVWnJPdHRzUkJuX25GcU1abVpzQUwzd1h0V3NxclhBcVg3OUo5UGNYSDd3NF8zeW1DNmNWVlV0YUx2VE0x?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "중국 8월 서비스업 PMI 51.4로 반등",
-          "핵심": "중국의 8월 레이팅독 서비스업 PMI가 51.4를 기록해 전월 대비 1.0포인트 상승했습니다. 경기 확장 국면을 유지했으나 회복 속도가 완만해 중국 내수 관련 ETF에 미치는 영향은 한정적입니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBCTXduLWowTzkta1NteUtOWi1ZMTVWOEswSnUwNWVueno1SFBuNi1OS3E2S3p1THU4UE0wcnlONlhQb01VSndyNnVObms5bEdlVkpob2pmQ2FVMXJ2Sy15dtIBeEFVX3lxTE9kenF2TzNJdE9aNjJuTUhKR3JlVUVneEliQVo2T2taYUtHTnB3aW1IN2tUeEJyVnNVbnJfVE5vZ05vb2dlN0NkbmlkaHdlc29tLXpMNWNZX1VCbTBmTGsxTlpmVGo1MWVzSTJicFpDdUM1Ym5PMm9PNg?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "미국 기업 한국에 20억 달러 투자 유치",
-          "핵심": "반도체, 첨단소재, 청정에너지 분야의 미국 기업 4곳이 한국에 총 20억 달러 규모의 투자를 결정했습니다. 한미 첨단산업 공급망 협력이 한층 강화되면서 국내 반도체 소부장 및 친환경 에너지 관련 기업들의 장기 수혜로 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMijgFBVV95cUxOejgyc1ZwSmVvTW8teXJiNGlIVXZWMk1idXBXUENaNEFCY3Zjdkx0WHRuLXNlTjRtQVJtZG5JcjU2RHc3akQxR1hISmd3UzFfRFM4ZjF3VWFtM19rcTdteUJHcHotNHp0M1Q3YWdhSDZQM0JqWE1TSzI0QnBwNHZlM01QTHVSUm1pdVRWTHJn?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "브로드컴 실적 발표 후 시간외 약세",
-          "핵심": "브로드컴이 매출 급증 등 호실적을 발표했음에도 불구하고 주가는 시간외 거래 등에서 하락세를 보였습니다. 시장 기대치가 과도하게 높아진 상황에서 AI 반도체 성장성에 대한 눈높이 조정이 진행되고 있음을 시사합니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMifkFVX3lxTE1VSGxPbHBoNlNYMUc2NHBucDFTem5SaktPbFpSOEZSSnR2V3NnaTg0azVrU0lpc1U5dVhSLXNITkdJMHlMckhwTWUtUU1xbDdGdi1iN29UTHFrcHRna0gyeEdKQkZZZUdqd0JHTzJmdnQxc3BvT3JxclVPZUpyQQ?oc=5"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-09-07",
       "주제": [
@@ -431,6 +327,84 @@
           "핵심": "[26년 9월 8일(화)] “AI 투자심리 살아났다”…코스피 4.6% 급등, 7000선 눈앞 - 비티의 오늘 주요 뉴스 요약 네이버 프리미엄콘텐츠 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMigAFBVV95cUxORkRZUEhUXzdCdjFQNkdhUVhwUEg2ajVUM0xoYUZPVGxLaHV4UU90NTRxLUtrMmF1MzMzeGs0Vnphck9raWlfY09FMEtSNEx4LTRjZTE0Yy1pT2xXZFNZRHVLR3BJdUlBM0U1akQ3Q1hXekZ4NkpaZUdwZDdUWTlOeA?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-09-09",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "브렌트 상승",
+          "핵심": "브렌트 연계 ETF 흐름 확인 99.31 (+3.15%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "WTI 상승",
+          "핵심": "WTI 연계 ETF 흐름 확인 94.25 (+3.03%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "VIX 상승",
+          "핵심": "VIX 연계 ETF 흐름 확인 15.72 (+2.75%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "구리 상승",
+          "핵심": "구리 연계 ETF 흐름 확인 6.78 (+2.73%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "필라델피아 반도체 상승",
+          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 11,887.87 (+1.30%)",
+          "출처": []
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "국내 증시 마감 흐름",
+          "핵심": "외국인 순매수 6,482억원 · 기관 순매수 6,427억원의 수급이 지수 등락과 함께 나타났습니다. 코스피 -0.58% · 코스닥 -1.25%",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1IVmM2aUh1VFhtZHRMSzQyQ0lqT29nMGhNc3ZNbW5wN09qc05sX3ZVek1ES082dG8tbVBjelFUdTBSeWxsdWRaX1dIMGhPRjZFWmc?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "유가·금리 상승에 기술주 약세",
+          "핵심": "WTI가 +3.03% 급등하고 미 10년물 금리가 +2.2bp 오른 날 나스닥이 -0.32% 하락했습니다. 유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다. S&P 500 -0.58% · 나스닥 종합 -0.32% · 다우 30 -1.18%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMid0FVX3lxTE1Oc1pYNWliV2UtVk1ISmJMWEhGVm1ZU3RBZlhzWUhMeEU3WWlOZ1FLMXhkTW1ZT2hsNHNBOFZRVWZRVWF2ZHR0V1BSSFJPRngxNld3S1NQTGRDcFoxM0tpak95MG9uLUdHSmZjT3ZneWJZcUxPV2k0?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "美 실업률 상승 우려, 코로나 이후 최고…고용·물가에 낀 연준 - edaily.co.kr",
+          "핵심": "美 실업률 상승 우려, 코로나 이후 최고…고용·물가에 낀 연준 edaily.co.kr 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMigAFBVV95cUxQT1U5cWREY1gtT014ZmFBRFdlQ1k2RnNoX0M0YnVKX0xEVDVWTmY4RGhNQXVzQzUzRUdKTENxSkZQMDZBTUk0QVA4LVRiX0wwVjBtYWNpbXBsOUJnN2NtbC1OcGdvd1lRcDB3T3VwS0JJUUpUT2o1aS1wQlhpdTNKOQ?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "\"AI 투자 막았다\"는 하태경…\"왜 보험연수원이 하나\"10억 출자 논란 - v.daum.net",
+          "핵심": "\"AI 투자 막았다\"는 하태경…\"왜 보험연수원이 하나\"10억 출자 논란 v.daum.net 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiT0FVX3lxTE92TDl4TjRvT3dYZWdQeGM5ZWpXNjdnTWRqNEZLYXh5M0xsZHpEcDdVRTdRZ1dkeE5NTjFDNlNROFYtRjdVRWxfZlNMSXQ1emM?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "면역질환 투자 늘리는 빅파마···릴리 가세 - 메디칼업저버",
+          "핵심": "면역질환 투자 늘리는 빅파마···릴리 가세 메디칼업저버 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMia0FVX3lxTE1UVzJBcUR1SzRGZllUS1BRRWk0cUNFajlvdktLRGZLRTgxU1dqMjRLa0FOUWlmQ3ZvckRNMF9qZ3p6aE9KaS1qZl9IT1A0YXVtUVBzdWRwWmZZenRMV21VQ2tLQW11TGZjTTFj?oc=5"
           ]
         }
       ],
