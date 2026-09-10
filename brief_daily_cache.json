@@ -1,10 +1,10 @@
 {
-  "날짜": "2026-09-10",
+  "날짜": "2026-09-11",
   "ai": {
     "top5": [
       {
         "제목": "VIX 상승",
-        "숫자": "16.46 (+4.71%)",
+        "숫자": "17.84 (+8.38%)",
         "영향": "VIX 연계 ETF 흐름 확인",
         "순위": 1,
         "출처": [],
@@ -13,7 +13,7 @@
       },
       {
         "제목": "WTI 상승",
-        "숫자": "96.67 (+3.91%)",
+        "숫자": "103.93 (+8.20%)",
         "영향": "WTI 연계 ETF 흐름 확인",
         "순위": 2,
         "출처": [],
@@ -22,7 +22,7 @@
       },
       {
         "제목": "브렌트 상승",
-        "숫자": "101.63 (+3.79%)",
+        "숫자": "108.95 (+7.65%)",
         "영향": "브렌트 연계 ETF 흐름 확인",
         "순위": 3,
         "출처": [],
@@ -30,32 +30,32 @@
         "카톡요약": "브렌트 상승"
       },
       {
-        "제목": "코스닥 상승",
-        "숫자": "830.37 (+2.28%)",
-        "영향": "코스닥 연계 ETF 흐름 확인",
+        "제목": "구리 하락",
+        "숫자": "6.53 (-4.08%)",
+        "영향": "구리 연계 ETF 흐름 확인",
         "순위": 4,
         "출처": [],
         "설명": "",
-        "카톡요약": "코스닥 상승"
+        "카톡요약": "구리 하락"
       },
       {
-        "제목": "구리 상승",
-        "숫자": "6.85 (+1.68%)",
-        "영향": "구리 연계 ETF 흐름 확인",
+        "제목": "필라델피아 반도체 하락",
+        "숫자": "11,614.17 (-2.66%)",
+        "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
         "순위": 5,
         "출처": [],
         "설명": "",
-        "카톡요약": "구리 상승"
+        "카톡요약": "필라델피아 반도체 하락"
       }
     ],
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "국내 증시 마감 흐름",
+        "제목": "코스피·코스닥 디커플링",
         "자동생성": true,
-        "결과": "코스피 +1.40% · 코스닥 +2.28%",
-        "원인": "외국인 순매도 4,270억원 · 기관 순매수 9,422억원의 수급이 지수 등락과 함께 나타났습니다.",
-        "전달경로": "투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률",
+        "결과": "코스피 -0.25% · 코스닥 +0.79%",
+        "원인": "외국인 순매도 26,230억원 · 기관 순매수 5,744억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
+        "전달경로": "대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차",
         "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
@@ -63,13 +63,13 @@
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "Traders Union",
+            "이름": "매일경제 증권",
             "url": ""
           },
           {
-            "이름": "Traders Union",
-            "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQbjcyc0JvU3dybWc3VDRKOGFMM3lpOHpwUFp1dF9GRVRaOEZ3WC0xeWZXRjl0Ymg2alM4TF9YX2RCMVVqT25MSDB2TkVxbG5sVlFDeFFSMDB6cTFQZVg4R1pXdTZ5R2hzeUppc2FpMmxVNUstX0NubE42MHFzVHZqSWwyeUJzeWUzU1FzbXRlWl95Q2plSEpsVE5Fb2pHN3FLZXZjS1d0ZjNiQ2gt?oc=5",
-            "날짜": "9/9"
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12149706",
+            "날짜": "9/10"
           }
         ]
       },
@@ -77,8 +77,8 @@
         "시장": "미국",
         "제목": "유가·금리 상승에 기술주 약세",
         "자동생성": true,
-        "결과": "S&P 500 -0.48% · 나스닥 종합 -0.64% · 다우 30 -0.77%",
-        "원인": "WTI가 +3.91% 급등하고 미 10년물 금리가 +3.1bp 오른 날 나스닥이 -0.64% 하락했습니다. 유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다.",
+        "결과": "S&P 500 -0.58% · 나스닥 종합 -0.65% · 다우 30 -0.60%",
+        "원인": "WTI가 +8.20% 급등하고 미 10년물 금리가 +10.7bp 오른 날 나스닥이 -0.65% 하락했습니다. 유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다.",
         "전달경로": "지정학·공급 불안 → 유가 상승 → 물가·국채금리 부담 → 기술주·반도체 약세",
         "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
@@ -92,52 +92,52 @@
           },
           {
             "이름": "뉴시스",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4xMndFeDZudEI4eWhGTlRFcExRd2xuV3dlYnhFS3Q1Y0FYZjZxb2dtRDBwN0xIYWNOa0RvSHgwNGJqbTRwVURFa2s5amFOQU1DcmpRaUJmaldQdTdubUI2UNIBeEFVX3lxTE10TGZndk9VY2pWbGo1dk5TN193eUdaSW13ODFJSjA1QkpxSXdKSXhVV19LXzZrWmdVa0JMMUxjOE16RGxSTzBFU2k1WWN2SjVMMEhXOXY1blBuNWU1RWt5VjdHWm9lZUM0dGtPYWRTczQzb3lBRzhwWg?oc=5",
-            "날짜": "9/10"
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBlbFBuUEtRYjVYRFowZE9nY0FzSkg0cWVpT2lyWUZBQ1l6UTFGc1ZlMXlSTmRQVmxZTTdwZklqcUlSRG1hdlB2NGtSQnl3WkprNGkxREtCX0lMUjRJTXMwT9IBeEFVX3lxTE03OF82cVdRSnFwNGxlSnFJc1kzcy1SQnlXMlc4R3E4bE9NQW9PTEstOUsxUE5nRXRoUVhpaDZKajdReGxOMWtzSEJSUndmSUFRQzRWQ29sN1hRYWdjdWw5aU1md1hjdlJOMU9aV1VveHY2RUU4SUxlOQ?oc=5",
+            "날짜": "9/11"
           }
         ]
       }
     ],
     "놓치면안될이슈": [
       {
-        "분야": "생활경제",
-        "제목": "랩 테크놀로지스, CEO 및 COO와 고용계약 갱신…성과 연동 주식 보상 부여 - 데이터투자",
-        "무슨일": "랩 테크놀로지스, CEO 및 COO와 고용계약 갱신…성과 연동 주식 보상 부여 데이터투자",
-        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "데이터투자",
-            "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1FR0dIbHJzeGtlRTVpNGtpTjA0aHIyNjFOaEh3eWlSYzA4QzVOZDJ2OVZzNmdJUC1KaWU2eU5qRGNRbE1qOVczTC04WkVIcTZMWDJYZWdlQmhmQUFRX3dTWUJjdnd6SDhJMk55MzNET1hwNWM?oc=5",
-            "날짜": "9/10"
-          }
-        ]
-      },
-      {
-        "분야": "정책",
-        "제목": "Uzbekistan and Serbia prepare zero-tariff free trade a…",
-        "무슨일": "Uzbekistan and Serbia prepare zero-tariff free trade agreement akipress.com",
-        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "akipress.com",
-            "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQMGFHQl9Tbm53allKR3piV1NObjFpOENnU3otR3ZSQmJ2OXRoMi1VVy1kcG90VnRWaVpQTlNPR2ZQVkFZUnFoNl9QOGZaQ0RWd1VUalp1bjhGUmxDSzMxVVdjUFRRZzczU003dXI1OTN0SHlKbnZVWmxZN09kOFhUX0dhbG4zcmtJaWtGTHZKRVFyUWE1QnRRcGpmeDQ?oc=5",
-            "날짜": "9/10"
-          }
-        ]
-      },
-      {
         "분야": "기업",
-        "제목": "Oracle & Adobe Earnings Ahead: Which Software Giant Ha…",
-        "무슨일": "Oracle & Adobe Earnings Ahead: Which Software Giant Has More AI Upside? Zacks Investment Research",
+        "제목": "Oracle Corporation Provides Earnings Guidance for the…",
+        "무슨일": "Oracle Corporation Provides Earnings Guidance for the Full Fiscal Year 2027 marketscreener.com",
         "왜중요": "대형 기업의 실적과 가이던스는 관련 업종과 ETF 기대를 다시 정하는 재료입니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "Zacks Investment Research",
-            "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQbnZOR2V5em1odk40Tm9tQ1dVNGxQWlBuZG9kN08zNldIenN2alk4cEx5ZFR0N2NmVnJpMkhCUm1FVWpnd2F3M1g3UGR3enJVUHNJaExQYVhKbHJHcWRxdTVKd0NKY2xqbzBqckxSalFfRlBqNmtsdFRLa3AyaDc1RHlCTlJPT1lka0o5YjdOelQtbjhKdm9PZl8xZTNrMExjR3ZYcTZWczhBa1hq?oc=5",
-            "날짜": "9/10"
+            "이름": "marketscreener.com",
+            "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNYlBMTHpIR1F2eUFhaHQ3NEtHeXRUWS05SE9DcFFlaGFtTFhzeWNJZjVxeDdBUjZoN3U1anZVZHIxSkdIRmN5YUpQSHNmTXpYdDlqR1h6Z0VIR2FUX0w1YVJ4TjFVYm9WSFFtNGpkVmgtS2lUMkVqaGpLMXF2Z3d1SWlWSEpBdGE2c3dhYk4wMVg3cmdVYmFjSHZ3c0dRSXlSMUhOeUFiR2lsZUpmbTY4b3M1dkpDVjBfcW5neXF3Wnh6WEtPV0w0?oc=5",
+            "날짜": "9/11"
+          }
+        ]
+      },
+      {
+        "분야": "산업·기술",
+        "제목": "WSJ \"한국, 대미 투자 첫 사업 합의 임박…에너지 분야에 1천억 달러\" - news.sbs.c…",
+        "무슨일": "WSJ \"한국, 대미 투자 첫 사업 합의 임박…에너지 분야에 1천억 달러\" news.sbs.co.kr",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "news.sbs.co.kr",
+            "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOeU1LU3JaUnIxVkV4dkNBM2RzRGstRWRzSk16czhPWGFGaU1reW9wMTY5dFkzWWpkdTRTQ0FaaGZFZUhHU2I4V3NIaUlKelRrZ1REWVZMT2tzTTBtQjVjTHNwa1ZpOHFkU1dxYTN0SkNFOTRYM3pfNGd0LVdMNE9EUzhzLWJVX05scE5tWS1uNA?oc=5",
+            "날짜": "9/11"
+          }
+        ]
+      },
+      {
+        "분야": "산업·기술",
+        "제목": "“AI가 10년 안에 인류 죽일 수도”…美의회는 “규제”, 국방부는 “종말론” - v.daum.n…",
+        "무슨일": "“AI가 10년 안에 인류 죽일 수도”…美의회는 “규제”, 국방부는 “종말론” v.daum.net",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "v.daum.net",
+            "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5QTDRlOXAyRXFuVFhqWXJiRUNXMW1PRERkaU9UMXltUnFKZ1lqUUhnbWZYWHdXcGdsRFJiWkRkOTB3OVBNTEc2SlFsSmtFa3M?oc=5",
+            "날짜": "9/11"
           }
         ]
       }
@@ -150,7 +150,7 @@
       {
         "코너": "ETF 처방전",
         "제목": "VIX 상승, 연계 ETF 영향은?",
-        "이유": "VIX 상승의 핵심 수치 16.46 (+4.71%)와 ETF 전달 경로를 설명할 필요",
+        "이유": "VIX 상승의 핵심 수치 17.84 (+8.38%)와 ETF 전달 경로를 설명할 필요",
         "관련ETF": "VIX 상승 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
         "질문": "VIX 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
@@ -174,86 +174,10 @@
     "관망요인": null,
     "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 9/10 브리핑\n1. VIX 상승\n2. WTI 상승\n3. 브렌트 상승\n4. 코스닥 상승\n5. 구리 상승"
+      "1": "☀️ 9/11 브리핑\n1. VIX 상승\n2. WTI 상승\n3. 브렌트 상승\n4. 구리 하락\n5. 필라델피아 반도체 하락"
     }
   },
   "history": [
-    {
-      "날짜": "2026-09-07",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "필라델피아 반도체 상승",
-          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 11,735.26 (+3.37%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스닥 상승",
-          "핵심": "코스닥 연계 ETF 흐름 확인 813.50 (+2.95%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스피 상승",
-          "핵심": "코스피 연계 ETF 흐름 확인 6,687.21 (+1.64%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "구리 상승",
-          "핵심": "구리 연계 ETF 흐름 확인 6.68 (+1.60%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 상승",
-          "핵심": "VIX 연계 ETF 흐름 확인 14.53 (+1.47%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "코스피·코스닥 디커플링",
-          "핵심": "외국인 순매수 5,037억원 · 기관 순매수 16,694억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 +1.64% · 코스닥 +2.95%",
-          "출처": [
-            "https://data.krx.co.kr"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "미국 증시 마감 흐름",
-          "핵심": "주요 지수와 함께 미 10년물 +0.46% · VIX +1.47%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 -0.38% · 나스닥 종합 -0.29% · 다우 30 -0.51%",
-          "출처": [
-            "https://finance.yahoo.com"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "원전수소, 탄소제로 대량생산의 현실적 카드인가 — 전력비·규제·사회적 합의 삼중 장벽 - 뉴스N연합",
-          "핵심": "원전수소, 탄소제로 대량생산의 현실적 카드인가 — 전력비·규제·사회적 합의 삼중 장벽 뉴스N연합 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBLRkNNYzdqWFBMSkhhYUhiMjd1b3d4WVEySUxlXzZWYzYzMFB3bndaN1NUZHZBR1M2cEZiVVNCbTN3alcyR3dKc3JzcnlQQmc?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "[미리보는 증시재료] 美 물가 발표 앞둔 증시…금리·유가가 '변수' - 뉴스핌",
-          "핵심": "[미리보는 증시재료] 美 물가 발표 앞둔 증시…금리·유가가 '변수' 뉴스핌 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiXEFVX3lxTE94TEV4ZVpNTzZfY0E1c0prVk5QUTRvaUZOQVp1Q1pONlFqblJlQ2ZqZkJtX3RKYTdlQmtFS3JlSUZTM2FWSG1lYXllRjZoZDRNVDJLNW9DLXpMVndx?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "[주간 뉴욕증시] 고용 이어 CPI 시험대…오라클 실적도 변수 - newsis.com",
-          "핵심": "[주간 뉴욕증시] 고용 이어 CPI 시험대…오라클 실적도 변수 newsis.com 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE42NDR2cUk0U0k5aWdaaEREUkpYR1BQcUt1QUpIR1ZiczNNUGtOdE1sbjhfODFockNGdy0xbUV1MFJpWlZvSkZkQmZIUVV1d2ZXaXVjR21SZUQxWWFEZ3dFbNIBeEFVX3lxTE1xcVg4aXZRV2JQVTBHNHR5RzZBXzk3c19EdTE3eVZjcnlXbUhjakxLM3ZCNXJmcEtCWkUxQUFaZ01hcURaUVo0Z0VOWlJaVnVCM1F1YUZsNmZoT2dQZ09zcGM2WUdmclVtSEZSMDdQTFhmZUlZTWNObA?oc=5"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-09-08",
       "주제": [
@@ -405,6 +329,84 @@
           "핵심": "면역질환 투자 늘리는 빅파마···릴리 가세 메디칼업저버 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMia0FVX3lxTE1UVzJBcUR1SzRGZllUS1BRRWk0cUNFajlvdktLRGZLRTgxU1dqMjRLa0FOUWlmQ3ZvckRNMF9qZ3p6aE9KaS1qZl9IT1A0YXVtUVBzdWRwWmZZenRMV21VQ2tLQW11TGZjTTFj?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-09-10",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "VIX 상승",
+          "핵심": "VIX 연계 ETF 흐름 확인 16.46 (+4.71%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "WTI 상승",
+          "핵심": "WTI 연계 ETF 흐름 확인 96.67 (+3.91%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "브렌트 상승",
+          "핵심": "브렌트 연계 ETF 흐름 확인 101.63 (+3.79%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "코스닥 상승",
+          "핵심": "코스닥 연계 ETF 흐름 확인 830.37 (+2.28%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "구리 상승",
+          "핵심": "구리 연계 ETF 흐름 확인 6.85 (+1.68%)",
+          "출처": []
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "국내 증시 마감 흐름",
+          "핵심": "외국인 순매도 4,270억원 · 기관 순매수 9,422억원의 수급이 지수 등락과 함께 나타났습니다. 코스피 +1.40% · 코스닥 +2.28%",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://news.google.com/rss/articles/CBMirAFBVV95cUxQbjcyc0JvU3dybWc3VDRKOGFMM3lpOHpwUFp1dF9GRVRaOEZ3WC0xeWZXRjl0Ymg2alM4TF9YX2RCMVVqT25MSDB2TkVxbG5sVlFDeFFSMDB6cTFQZVg4R1pXdTZ5R2hzeUppc2FpMmxVNUstX0NubE42MHFzVHZqSWwyeUJzeWUzU1FzbXRlWl95Q2plSEpsVE5Fb2pHN3FLZXZjS1d0ZjNiQ2gt?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "유가·금리 상승에 기술주 약세",
+          "핵심": "WTI가 +3.91% 급등하고 미 10년물 금리가 +3.1bp 오른 날 나스닥이 -0.64% 하락했습니다. 유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다. S&P 500 -0.48% · 나스닥 종합 -0.64% · 다우 30 -0.77%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4xMndFeDZudEI4eWhGTlRFcExRd2xuV3dlYnhFS3Q1Y0FYZjZxb2dtRDBwN0xIYWNOa0RvSHgwNGJqbTRwVURFa2s5amFOQU1DcmpRaUJmaldQdTdubUI2UNIBeEFVX3lxTE10TGZndk9VY2pWbGo1dk5TN193eUdaSW13ODFJSjA1QkpxSXdKSXhVV19LXzZrWmdVa0JMMUxjOE16RGxSTzBFU2k1WWN2SjVMMEhXOXY1blBuNWU1RWt5VjdHWm9lZUM0dGtPYWRTczQzb3lBRzhwWg?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "랩 테크놀로지스, CEO 및 COO와 고용계약 갱신…성과 연동 주식 보상 부여 - 데이터투자",
+          "핵심": "랩 테크놀로지스, CEO 및 COO와 고용계약 갱신…성과 연동 주식 보상 부여 데이터투자 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMic0FVX3lxTE1FR0dIbHJzeGtlRTVpNGtpTjA0aHIyNjFOaEh3eWlSYzA4QzVOZDJ2OVZzNmdJUC1KaWU2eU5qRGNRbE1qOVczTC04WkVIcTZMWDJYZWdlQmhmQUFRX3dTWUJjdnd6SDhJMk55MzNET1hwNWM?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "Uzbekistan and Serbia prepare zero-tariff free trade a…",
+          "핵심": "Uzbekistan and Serbia prepare zero-tariff free trade agreement akipress.com 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMinAFBVV95cUxQMGFHQl9Tbm53allKR3piV1NObjFpOENnU3otR3ZSQmJ2OXRoMi1VVy1kcG90VnRWaVpQTlNPR2ZQVkFZUnFoNl9QOGZaQ0RWd1VUalp1bjhGUmxDSzMxVVdjUFRRZzczU003dXI1OTN0SHlKbnZVWmxZN09kOFhUX0dhbG4zcmtJaWtGTHZKRVFyUWE1QnRRcGpmeDQ?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "Oracle & Adobe Earnings Ahead: Which Software Giant Ha…",
+          "핵심": "Oracle & Adobe Earnings Ahead: Which Software Giant Has More AI Upside? Zacks Investment Research 대형 기업의 실적과 가이던스는 관련 업종과 ETF 기대를 다시 정하는 재료입니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMirAFBVV95cUxQbnZOR2V5em1odk40Tm9tQ1dVNGxQWlBuZG9kN08zNldIenN2alk4cEx5ZFR0N2NmVnJpMkhCUm1FVWpnd2F3M1g3UGR3enJVUHNJaExQYVhKbHJHcWRxdTVKd0NKY2xqbzBqckxSalFfRlBqNmtsdFRLa3AyaDc1RHlCTlJPT1lka0o5YjdOelQtbjhKdm9PZl8xZTNrMExjR3ZYcTZWczhBa1hq?oc=5"
           ]
         }
       ],
