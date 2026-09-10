@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETF 처방전 전달문 · 2026년 9월 10일 (목)</title>
+<style>
+  :root{
+    --bg:#0e1116; --surface:#161b22; --surface2:#1c2230; --line:#242c3a;
+    --ink:#e8edf5; --ink2:#a6b2c4; --ink3:#6f7d92;
+    --up:#f05a5a; --down:#3b8fe8; --warn:#e0a33c; --accent:#7c6cf0; --pick:#2fae7e;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f6; --line:#e2e6ee;
+           --ink:#161b22; --ink2:#4c5768; --ink3:#8792a4; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+       line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 60px}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+  h1{font-size:23px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink3);font-size:13px;margin:0}
+  h2{font-size:15px;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+     letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
+  h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+
+  .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+       border:1px solid var(--line);border-radius:50%;font-size:10px;color:var(--ink3);
+       cursor:help;position:relative;font-weight:600;vertical-align:2px;margin-left:5px;
+       background:var(--surface2);flex-shrink:0}
+  .tip:hover,.tip:focus{color:var(--accent);border-color:var(--accent);outline:none}
+  .tip .bubble{visibility:hidden;opacity:0;position:absolute;top:22px;left:50%;
+       transform:translateX(-50%);width:min(340px,78vw);background:var(--surface2);
+       border:1px solid var(--line);border-radius:8px;padding:10px 12px;z-index:20;
+       font-size:12px;font-weight:400;color:var(--ink2);line-height:1.6;text-align:left;
+       box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
+  .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
+  @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
+
+  /* 뉴스 6선 */
+  .newslist{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+            padding:2px 16px;margin:10px 0}
+  .nitem{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:12px 0;
+         border-bottom:1px solid var(--line);align-items:start}
+  .nitem:last-child{border-bottom:none}
+  .nno{display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+       border-radius:5px;background:var(--surface2);border:1px solid var(--line);
+       font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;margin-top:1px}
+  .nitem a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .nitem a:hover{color:var(--accent)}
+  .nmeta{font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .nsum{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .ntheme{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent);
+          border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 7px;margin-right:7px}
+
+  .copybox{margin:8px 0 0}
+  .copybox summary{font-size:12.5px;color:var(--ink3);cursor:pointer;padding:6px 2px;
+                   list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .copybox summary::before{content:"📋"}
+  .copybox summary:hover{color:var(--accent)}
+  .copybox textarea{width:100%;margin-top:6px;background:var(--surface2);color:var(--ink2);
+                    border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                    font-size:12px;line-height:1.75;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                    resize:vertical}
+  .more-items{margin:10px 0 0;background:var(--surface);border:1px solid var(--line);
+              border-radius:10px;padding:0 16px}
+  .more-items summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;
+                      color:var(--ink2)}
+  .more-items .nitem:first-of-type,.more-items .quote:first-of-type{border-top:1px solid var(--line)}
+
+  /* 애널리스트 발언 */
+  .quote{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:14px 16px;margin:10px 0}
+  .qhead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+  .qname{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .qorg{font-size:12px;color:var(--ink3)}
+  .qtopic{font-size:10.5px;font-weight:700;color:var(--ink3);background:var(--surface2);
+          border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:auto}
+  .qbody{font-size:13px;color:var(--ink2);margin:0;padding-left:11px;
+         border-left:2px solid var(--line)}
+  .qsrc{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+  .qsrc a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+  .qsrc a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* 출연자 추천 */
+  .guest{background:linear-gradient(135deg,rgba(47,174,126,.10),rgba(47,174,126,.03));
+         border:1px solid rgba(47,174,126,.32);border-radius:10px;padding:15px 17px;margin:10px 0}
+  .ghead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:3px}
+  .gname{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .gorg{font-size:12.5px;color:var(--ink3)}
+  .gcorner{font-size:10.5px;font-weight:700;color:var(--pick);
+           border:1px solid rgba(47,174,126,.45);border-radius:4px;padding:2px 8px;margin-left:auto}
+  .grow{display:grid;grid-template-columns:82px 1fr;gap:5px 10px;font-size:12.5px;margin-top:9px}
+  .grow .k{color:var(--ink3);font-weight:600}
+  .grow .v{color:var(--ink2)}
+  .gq{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
+      font-size:12.5px;color:var(--ink2);border-left:2px solid var(--pick)}
+  .gnote{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+
+  .empty{background:var(--surface);border:1px dashed var(--line);border-radius:10px;
+         padding:16px;margin:10px 0;font-size:13px;color:var(--ink3);text-align:center}
+
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:11px;color:var(--ink3);line-height:1.7}
+  .srclist{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+  .srclist a{font-size:11.5px;background:var(--surface2);border:1px solid var(--line);
+             border-radius:16px;padding:3px 10px;color:var(--ink2);text-decoration:none}
+  .srclist a:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ETF 처방전 · 목요일 전달문</div>
+  <h1>2026년 9월 10일 (목) ETF 뉴스 브리프</h1>
+  <p class="sub">09/06 09:40 ~ 09/10 09:40 KST 보도분 · 박승진 실장 전달용</p>
+</header>
+
+<h2>📰 중요 ETF 뉴스 6선<span class="tip" tabindex="0">?<span class="bubble">
+  최근 96시간 ETF 기사 중 중요도 상위 6건을 먼저 보여줍니다.
+  수급 / 신규 상장 / 규제 / 해외 동향 / 상품 구조 / 시장 규모로 분산합니다.
+  아래 <b>복사용 텍스트</b>를 그대로 카톡에 붙여넣으면 됩니다.</span></span>
+  <span class="tag">전달용</span></h2>
+
+<div class="newslist">
+  <div class="nitem">
+    <div class="nno">1</div>
+    <div>
+<span class="ntheme">규제·제도</span>      <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBVNkRaTDFGbXoxYjEtazRQb0pOWk1PX0E2RHh4M2NPaFFjd0E4WlZzT3NsQkk3Y2xaTE8zODlxcUV4dFVHUFNqWFg0RUVtR0VPa1ZSSGlSdFJxZElmMEgtVNIBYEFVX3lxTFBVNkRaTDFGbXoxYjEtazRQb0pOWk1PX0E2RHh4M2NPaFFjd0E4WlZzT3NsQkk3Y2xaTE8zODlxcUV4dFVHUFNqWFg0RUVtR0VPa1ZSSGlSdFJxZElmMEgtVA?oc=5" target="_blank" rel="noopener">단일 레버리지 '음의 괴리율' 기준 초과했지만…72일만에 규정 정비 - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 9/10</div>
+<div class="nsum">단일 레버리지 괴리율 규정 정비</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">2</div>
+    <div>
+<span class="ntheme">규제·제도</span>      <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1jalhQNzdRN25vYVZ2MDVnQVdFOHRNZUFONmhCTWVsMjBteldVX0xvazFYZmRxU204OHVUOUY1T005Z3dpNkZISDdTYnJIcDlhRG5MYjJqNVdLQQ?oc=5" target="_blank" rel="noopener">[단독] 단종레 3000만원 규제에 개인만 퇴출…외국계 HFT는 절반 생존 - 한국경제</a>
+      <div class="nmeta">한국경제 · 9/9</div>
+<div class="nsum">단종레 규제 여파 개인 퇴출 논란</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">3</div>
+    <div>
+<span class="ntheme">규제·제도</span>      <a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE9rWGxVSG9QV0JlTFZlM18zWHJXcXpyek5oQlFmVXY0ekR5VF8wakNLdFVBbV96SFJvbHlnUXZpRkRieUlHbV9xM2sxYmRLUzRCanc?oc=5" target="_blank" rel="noopener">‘퇴근길 ETF 거래’ NXT에서도 연내 무산 - 매일경제 마켓</a>
+      <div class="nmeta">매일경제 마켓 · 9/8</div>
+<div class="nsum">야간 대체거래소 ETF 거래 무산</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">4</div>
+    <div>
+<span class="ntheme">시장 규모</span>      <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE91T2pnVjNNaERVTjF1VzF3YktKVWpOM3lKYXhkLXZ6QTFHVk5wU2FXUUk4eHRmeWl0QlBFM1pqLWpDbEZqRkhYMk9CSEg1bXF3SzVsOUVpNGg1UQ?oc=5" target="_blank" rel="noopener">“내 퇴직연금 어디 있지?”…앱 로그인부터 ETF 매수까지 따라하기 - 한국경제</a>
+      <div class="nmeta">한국경제 · 9/9</div>
+<div class="nsum">퇴직연금 앱 통한 ETF 매수 확대</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">5</div>
+    <div>
+<span class="ntheme">레버리지·인버스</span>      <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE5jVXBVRmZxeU1aX1RFeGF5YnNCbEpkcHgwcjdTNHhQeDhZVEg4dENjdHRGTy1PYnNjdnk1SW5nMnY1aHkyNEN6Qjh1QUJUZUJENVdpX3hfVnJ2Q2fSAWBBVV95cUxQSmpnUXZwSVpvMGY4eXMzcEpIU09rdk5EcU1qemhETnUzRFVGMm9IOXdISHZMZW81eGNSTVJJSVFzc0syZXpRdlJGUXVlcmF5Ni02VldxeDlTRmtkZTJ1Zk8?oc=5" target="_blank" rel="noopener">'반짝 반등'에 오히려 곱버스 탄 개미… ETF 순매수액 1위(종합) - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 9/8</div>
+<div class="nsum">증시 반등 속 인버스 곱버스 쏠림</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">6</div>
+    <div>
+<span class="ntheme">수급</span>      <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE5GZDdaa2J0ZUJwQjdLbVRwNnhVeHNwczh6dnVNZ3BBdHFCQm53WWFReEhDeG9yVl9SVy1ZcmNrQmNDSjhnOU8wdEtnTmc0bjJXSEhwZ3o4bkJ6NGvSAWBBVV95cUxQU3JXQzB3NTIwWDJpV2NBRVhHXzlMYnVldGQ4VjdBUU5XU3VPWWFWR2pfcXNxSDFjbmdDaUI4X0ViOTlQbGRZd1hiX3BLLTNIX1FYZllZT2Y1dEg3WkNmeEQ?oc=5" target="_blank" rel="noopener">"롤러코스피 무서워"…반도체 반등에도 개인은 안정형 ETF로 - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 9/8</div>
+<div class="nsum">증시 변동성에 안정형 ETF로 자금 이동</div>    </div>
+  </div>
+</div>
+<details class="more-items">
+  <summary>추가 ETF 뉴스 4건 보기</summary>
+  <div class="nitem">
+    <div class="nno">7</div>
+    <div>
+<span class="ntheme">해외 동향</span>      <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE4xaTNORVlRei1DNWNtaHZrYkJJakFpS085TWY1WVJQWEpXWWgyMkcxeHlZeVhwLUdrRWZqUlBiWnBKcUR5R2JXMGJZcUdWT2kyZ3BUcjVaZWxEUzTSAWBBVV95cUxNakYtV1VENXUzUWEwZzd6Q3FmZzVPeFBnaVBaZWNHSXpXYWdzT2tvYlRSM0NnSUlEckhyZG5MQ2xnNkJOTG16bnhQVkFkYkxUazNOUGd1U2E5ZFc5WHV3Qkk?oc=5" target="_blank" rel="noopener">일본서 상장된 '한국 반도체 톱10' ETF 첫날 3.1% 상승 - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 9/9</div>
+<div class="nsum">일본 상장 한국 반도체 ETF 첫날 상승</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">8</div>
+    <div>
+<span class="ntheme">상품 구조</span>      <a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTFAtVVJGTlpzRVR0VnI5dGQ1OWczUGlMakJPWjZNTWNHSFlIcEM4MXRROThNRWpUTlZoWnItSWZsaWtxczJPZmJEWS11OURWdW4wUVpXSTZRUnMxc0U3ZU56a0Fn?oc=5" target="_blank" rel="noopener">KODEX 한국부동산리츠인프라 ETF, '특별배당 반영' 분배금 조정 지급 - 아시아경제</a>
+      <div class="nmeta">아시아경제 · 9/10</div>
+<div class="nsum">부동산리츠인프라 ETF 특별배당 지급</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">9</div>
+    <div>
+<span class="ntheme">테마</span>      <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9VZlV4V0lMSzJUMHU4ODdKYVFoRWtTR2VrM0g2OVZ0U0c3dGJ1U2p2UmUwNmpib3hkT3JrUW5qblBmM1hCZHd5QU8yRGVUYjdZZ2hZODR4TUdOeUHSAWBBVV95cUxNUkpZcDdpODNYcTQ5VjM4SkpvSWxMZl95clVnRDRjSUdRVVhBc2NZbWJ6TWtZd2lOUU16SzB2azQybHNheEpkSTFaem4tNTg3dTJBQWx0enlLNXpRQXJoOHg?oc=5" target="_blank" rel="noopener">NH아문디운용 "Fn K-반도체 ETF, 연초 이후 수익률 181%로 1위" - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 9/10</div>
+<div class="nsum">Fn K-반도체 ETF 연초 이후 수익률 상위</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">10</div>
+    <div>
+<span class="ntheme">테마</span>      <a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE8wNDJrWnI3LS1JV1BYU2lLUTdpQ1pDd3NfQVc1cWZpSl8tTzJzZWZpMXJvbWpIMzlyZThCemtVcDhfVlRZZXhGWnBfZkZzbFFtc0HSAVNBVV95cUxQajFRVW96aGszUkxIaFJVMUdNbjJxaE1KVkQtWVBhMTVFdFhPMkFNZXRRUTJ6QTJTMkNXVEM1LXFpdjRLMDlMSGo0VmJXNF9FR1BBSQ?oc=5" target="_blank" rel="noopener">타임폴리오 ‘차이나AI ETF’, 1년 수익률 60%…중화권 ETF 1위 - 서울경제</a>
+      <div class="nmeta">서울경제 · 9/9</div>
+<div class="nsum">차이나 AI ETF 중화권 수익률 1위</div>    </div>
+  </div>
+</details>
+<details class="copybox">
+  <summary>복사용 텍스트 열기</summary>
+  <textarea readonly rows="33">[2026년 9월 10일 (목)] ETF 뉴스 10선
+1. 단일 레버리지 '음의 괴리율' 기준 초과했지만…72일만에 규정 정비 - 연합뉴스
+   연합뉴스 · 9/10   https://news.google.com/rss/articles/CBMiYEFVX3lxTFBVNkRaTDFGbXoxYjEtazRQb0pOWk1PX0E2RHh4M2NPaFFjd0E4WlZzT3NsQkk3Y2xaTE8zODlxcUV4dFVHUFNqWFg0RUVtR0VPa1ZSSGlSdFJxZElmMEgtVNIBYEFVX3lxTFBVNkRaTDFGbXoxYjEtazRQb0pOWk1PX0E2RHh4M2NPaFFjd0E4WlZzT3NsQkk3Y2xaTE8zODlxcUV4dFVHUFNqWFg0RUVtR0VPa1ZSSGlSdFJxZElmMEgtVA?oc=5
+2. [단독] 단종레 3000만원 규제에 개인만 퇴출…외국계 HFT는 절반 생존 - 한국경제
+   한국경제 · 9/9   https://news.google.com/rss/articles/CBMiWkFVX3lxTE1jalhQNzdRN25vYVZ2MDVnQVdFOHRNZUFONmhCTWVsMjBteldVX0xvazFYZmRxU204OHVUOUY1T005Z3dpNkZISDdTYnJIcDlhRG5MYjJqNVdLQQ?oc=5
+3. ‘퇴근길 ETF 거래’ NXT에서도 연내 무산 - 매일경제 마켓
+   매일경제 마켓 · 9/8   https://news.google.com/rss/articles/CBMiUkFVX3lxTE9rWGxVSG9QV0JlTFZlM18zWHJXcXpyek5oQlFmVXY0ekR5VF8wakNLdFVBbV96SFJvbHlnUXZpRkRieUlHbV9xM2sxYmRLUzRCanc?oc=5
+4. “내 퇴직연금 어디 있지?”…앱 로그인부터 ETF 매수까지 따라하기 - 한국경제
+   한국경제 · 9/9   https://news.google.com/rss/articles/CBMiWkFVX3lxTE91T2pnVjNNaERVTjF1VzF3YktKVWpOM3lKYXhkLXZ6QTFHVk5wU2FXUUk4eHRmeWl0QlBFM1pqLWpDbEZqRkhYMk9CSEg1bXF3SzVsOUVpNGg1UQ?oc=5
+5. '반짝 반등'에 오히려 곱버스 탄 개미… ETF 순매수액 1위(종합) - 연합뉴스
+   연합뉴스 · 9/8   https://news.google.com/rss/articles/CBMiW0FVX3lxTE5jVXBVRmZxeU1aX1RFeGF5YnNCbEpkcHgwcjdTNHhQeDhZVEg4dENjdHRGTy1PYnNjdnk1SW5nMnY1aHkyNEN6Qjh1QUJUZUJENVdpX3hfVnJ2Q2fSAWBBVV95cUxQSmpnUXZwSVpvMGY4eXMzcEpIU09rdk5EcU1qemhETnUzRFVGMm9IOXdISHZMZW81eGNSTVJJSVFzc0syZXpRdlJGUXVlcmF5Ni02VldxeDlTRmtkZTJ1Zk8?oc=5
+6. "롤러코스피 무서워"…반도체 반등에도 개인은 안정형 ETF로 - 연합뉴스
+   연합뉴스 · 9/8   https://news.google.com/rss/articles/CBMiW0FVX3lxTE5GZDdaa2J0ZUJwQjdLbVRwNnhVeHNwczh6dnVNZ3BBdHFCQm53WWFReEhDeG9yVl9SVy1ZcmNrQmNDSjhnOU8wdEtnTmc0bjJXSEhwZ3o4bkJ6NGvSAWBBVV95cUxQU3JXQzB3NTIwWDJpV2NBRVhHXzlMYnVldGQ4VjdBUU5XU3VPWWFWR2pfcXNxSDFjbmdDaUI4X0ViOTlQbGRZd1hiX3BLLTNIX1FYZllZT2Y1dEg3WkNmeEQ?oc=5
+7. 일본서 상장된 '한국 반도체 톱10' ETF 첫날 3.1% 상승 - 연합뉴스
+   연합뉴스 · 9/9   https://news.google.com/rss/articles/CBMiW0FVX3lxTE4xaTNORVlRei1DNWNtaHZrYkJJakFpS085TWY1WVJQWEpXWWgyMkcxeHlZeVhwLUdrRWZqUlBiWnBKcUR5R2JXMGJZcUdWT2kyZ3BUcjVaZWxEUzTSAWBBVV95cUxNakYtV1VENXUzUWEwZzd6Q3FmZzVPeFBnaVBaZWNHSXpXYWdzT2tvYlRSM0NnSUlEckhyZG5MQ2xnNkJOTG16bnhQVkFkYkxUazNOUGd1U2E5ZFc5WHV3Qkk?oc=5
+8. KODEX 한국부동산리츠인프라 ETF, '특별배당 반영' 분배금 조정 지급 - 아시아경제
+   아시아경제 · 9/10   https://news.google.com/rss/articles/CBMiYkFVX3lxTFAtVVJGTlpzRVR0VnI5dGQ1OWczUGlMakJPWjZNTWNHSFlIcEM4MXRROThNRWpUTlZoWnItSWZsaWtxczJPZmJEWS11OURWdW4wUVpXSTZRUnMxc0U3ZU56a0Fn?oc=5
+9. NH아문디운용 "Fn K-반도체 ETF, 연초 이후 수익률 181%로 1위" - 연합뉴스
+   연합뉴스 · 9/10   https://news.google.com/rss/articles/CBMiW0FVX3lxTE9VZlV4V0lMSzJUMHU4ODdKYVFoRWtTR2VrM0g2OVZ0U0c3dGJ1U2p2UmUwNmpib3hkT3JrUW5qblBmM1hCZHd5QU8yRGVUYjdZZ2hZODR4TUdOeUHSAWBBVV95cUxNUkpZcDdpODNYcTQ5VjM4SkpvSWxMZl95clVnRDRjSUdRVVhBc2NZbWJ6TWtZd2lOUU16SzB2azQybHNheEpkSTFaem4tNTg3dTJBQWx0enlLNXpRQXJoOHg?oc=5
+10. 타임폴리오 ‘차이나AI ETF’, 1년 수익률 60%…중화권 ETF 1위 - 서울경제
+   서울경제 · 9/9   https://news.google.com/rss/articles/CBMiUkFVX3lxTE8wNDJrWnI3LS1JV1BYU2lLUTdpQ1pDd3NfQVc1cWZpSl8tTzJzZWZpMXJvbWpIMzlyZThCemtVcDhfVlRZZXhGWnBfZkZzbFFtc0HSAVNBVV95cUxQajFRVW96aGszUkxIaFJVMUdNbjJxaE1KVkQtWVBhMTVFdFhPMkFNZXRRUTJ6QTJTMkNXVEM1LXFpdjRLMDlMSGo0VmJXNF9FR1BBSQ?oc=5
+</textarea>
+</details>
+
+
+<h2>🎯 출연자 추천<span class="tip" tabindex="0">?<span class="bubble">
+  위 발언자 중 지금 섭외할 만한 인물을 코너별로 제안합니다.
+  <b>왜 지금인지</b>가 명확한 경우에만 올립니다. 섭외 이력·연락처는 별도 확인이 필요합니다.</span></span></h2>
+<div class="guest">
+  <div class="ghead">
+    <span class="gname">최창규</span>
+    <span class="gorg">미래에셋증권 ETF리서치본부장</span>
+    <span class="gcorner">ETF 처방전</span>
+  </div>
+  <div class="grow">
+    <div class="k">왜 지금</div><div class="v">단일종목 레버리지 ETF 괴리율 규정과 제도 개편 이슈를 심도 있게 설명 가능함.</div>
+<div class="k">다룰 주제</div><div class="v">단일종목 레버리지 ETF 규정 정비 및 시장 영향 분석</div><div class="k">관련 ETF</div><div class="v">레버리지 · 지수형</div>  </div>
+<div class="gq"><b>물어볼 질문</b> — “단일종목 레버리지 ETF 괴리율 규정 정비가 시장과 개인 투자자에게 어떤 영향을 미치나요?”</div><div class="gnote">⚠ 운용사·상품 이해관계가 있는 주제는 비교 기준을 사전에 명확히 전달</div></div>
+<div class="guest">
+  <div class="ghead">
+    <span class="gname">김성일</span>
+    <span class="gorg">업라이즈투자자문 대표</span>
+    <span class="gcorner">요즘하태형</span>
+  </div>
+  <div class="grow">
+    <div class="k">왜 지금</div><div class="v">변동성 장세에서 퇴직연금과 안정형 ETF를 활용한 포트폴리오 전략 제시 가능.</div>
+<div class="k">다룰 주제</div><div class="v">변동성 장세 속 퇴직연금 ETF 활용법과 포트폴리오 자산배분</div><div class="k">관련 ETF</div><div class="v">연금 · 자산배분 · 파킹형</div>  </div>
+<div class="gq"><b>물어볼 질문</b> — “증시 변동성이 커진 상황에서 퇴직연금 계좌로 ETF에 장기 투자할 때 핵심 원칙은 무엇인가요?”</div><div class="gnote">⚠ 단기 전망보다 장기 포트폴리오와 투자 원칙 중심으로 구성</div></div>
+
+<h2>🔗 출처</h2>
+<div class="srclist">
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a><a href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a></div>
+
+<footer>
+  생성 2026-09-10 09:43 KST · 최근 96시간 기준 · 매주 목요일 오전 10시 자동 발송 / 수동 실행 시 HTML 생성<br>
+  ※ 발언 인용은 기사 원문 기준입니다. 인용문을 그대로 쓰실 때는 원문 링크로 한 번 더 확인해 주세요.<br>
+  ※ 출연자 추천은 공개 발언을 근거로 한 제안이며, 섭외 가능 여부·이력은 별도 확인이 필요합니다.
+</footer>
+
+</div>
+</body>
+</html>
