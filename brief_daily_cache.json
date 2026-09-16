@@ -1,16 +1,62 @@
 {
-  "날짜": "2026-09-16",
+  "날짜": "2026-09-17",
   "ai": {
-    "시장국면": null,
-    "관망요인": null,
+    "top5": [
+      {
+        "제목": "WTI 하락",
+        "숫자": "102.02 (-3.60%)",
+        "영향": "WTI 연계 ETF 흐름 확인",
+        "순위": 1,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "WTI 하락"
+      },
+      {
+        "제목": "VIX 상승",
+        "숫자": "17.71 (+2.97%)",
+        "영향": "VIX 연계 ETF 흐름 확인",
+        "순위": 2,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "VIX 상승"
+      },
+      {
+        "제목": "브렌트 하락",
+        "숫자": "105.60 (-2.90%)",
+        "영향": "브렌트 연계 ETF 흐름 확인",
+        "순위": 3,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "브렌트 하락"
+      },
+      {
+        "제목": "코스피 상승",
+        "숫자": "6,717.97 (+1.37%)",
+        "영향": "코스피 연계 ETF 흐름 확인",
+        "순위": 4,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "코스피 상승"
+      },
+      {
+        "제목": "다우 30 하락",
+        "숫자": "51,461.90 (-1.21%)",
+        "영향": "다우 30 연계 ETF 흐름 확인",
+        "순위": 5,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "다우 30 하락"
+      }
+    ],
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "외국인·기관 동반 매도에 코스피 0.85% 하락, 코스닥은 0.70% 반등",
-        "결과": "코스피 지수는 외국인과 기관의 순매도세에 밀려 0.85% 하락한 6,627.26으로 마감했습니다. 반면 코스닥 지수는 중소형주 중심의 매수세가 유입되며 0.69% 상승한 812.41에 장을 마쳐 양 지수 간의 디커플링이 나타났습니다.",
-        "원인": "원/달러 환율이 1.37% 급등해 1,363.11원까지 올라서며 외국인의 환차손 우려를 자극했습니다. 이로 인해 외국인이 코스피 시장에서 1조 5,541억 원 규모의 강한 순매도세를 기록하고 기관 역시 9,522억 원을 동반 순매도하면서 대형주 중심의 코스피 하락을 주도한 것으로 볼 수 있습니다. 반면 코스닥 시장은 최근 낙폭 과대에 따른 개인의 저가 매수세가 유입되며 상대적인 강세를 보인 것으로 해석할 여지가 있습니다.",
-        "전달경로": "환율 급등 → 외국인·기관 코스피 순매도 → 대형주 중심 코스피 하락 / 코스닥 상대적 선방",
-        "ETF연결": "외국인 수급 이탈이 대형주형 ETF인 KODEX 200에 미치는 영향과 환율 변동에 따른 환헤지형 미국 지수 ETF의 흐름을 비교해 보아야 합니다.",
+        "제목": "국내 증시 마감 흐름",
+        "자동생성": true,
+        "결과": "코스피 +1.37% · 코스닥 +0.44%",
+        "원인": "외국인 순매도 16,828억원 · 기관 순매수 12,371억원의 수급이 지수 등락과 함께 나타났습니다.",
+        "전달경로": "투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률",
+        "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
@@ -18,310 +64,120 @@
           },
           {
             "이름": "매일경제 증권",
-            "url": "https://www.mk.co.kr/news/stock/12153825",
-            "날짜": "9/16"
+            "url": ""
+          },
+          {
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12154897",
+            "날짜": "9/17"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "유가 급등과 금리 상승에 기술주 약세, S&P 500 0.45% 하락",
-        "결과": "S&P 500은 0.45% 하락한 7,585.73, 나스닥은 0.78% 하락한 25,981.57로 마감했습니다. 미 10년물 국채금리는 3.5bp 상승한 4.996%를 기록했고, 서부텍사스산원유(WTI)는 4.03% 급등해 배럴당 105.48달러로 치솟았습니다.",
-        "원인": "국제 유가가 지정학적 불안과 공급 우려로 4% 넘게 급등하면서 시장의 인플레이션 경계감을 자극했습니다. 유가 상승은 물가 압력을 높여 연준의 금리 인하 경로를 제약할 수 있다는 우려로 이어졌고, 이에 따라 미 국채 금리가 동반 상승했습니다. 금리 상승은 미래 수익을 할인하는 기술주와 성장주에 밸류에이션 부담을 주며 나스닥을 중심으로 증시 전반에 하락 압력을 가한 것으로 해석할 수 있습니다.",
-        "전달경로": "유가 급등 → 인플레이션 우려 및 국채 금리 상승 → 기술주 할인율 부담 → 주요 지수 하락",
-        "ETF연결": "미국 장기채 금리 상승세와 유가 동향을 점검하며 미국채30년커버드콜 ETF 및 미국나스닥100 ETF의 가격 변동성을 관찰할 필요가 있습니다.",
+        "제목": "미국 증시 마감 흐름",
+        "자동생성": true,
+        "결과": "S&P 500 -0.45% · 나스닥 종합 -0.01% · 다우 30 -1.21%",
+        "원인": "주요 지수와 함께 미 10년물 +0.20% · VIX +2.97%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
+        "전달경로": "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF",
+        "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "서울경제",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1FM3ZJNjJSeG1ZWlFxSVB3QTYtVEpZV0tnUXhVZUFvZU5FbHpvdm15Tzh4X0plbTFKbmFGb0hsR016S0RKNXVkWGkzTTFLREY3SGfSAVNBVV95cUxQdFBVSmhUMHFBWFVWQ3NKUzJJR1VWTDhLOFFnZ09fc2hIY01jd3VLeHh6U01tb2JaMUpBWkY3MXhFeDA1VWkxS2FiV2x5M2VWWVJpVQ?oc=5",
-            "날짜": "9/16"
-          }
-        ]
-      }
-    ],
-    "오늘관전": [
-      "원/달러 환율의 1,360원대 안착 여부와 외국인 수급의 추가 이탈 규모",
-      "국제 유가(WTI) 105달러 돌파에 따른 국내 정유·에너지 업종의 주가 반응",
-      "코스피와 코스닥의 디커플링 흐름 지속 여부 및 중소형주로의 자금 이동"
-    ],
-    "월요일요약": null,
-    "주도테마": null,
-    "관심종목": [],
-    "top5": [
-      {
-        "순위": 1,
-        "제목": "국제유가 급등세 지속",
-        "숫자": "WTI 105.48달러 (+4.03%)",
-        "설명": "",
-        "영향": "에너지 가격 상승이 인플레이션 우려를 자극해 원자재 ETF 및 정유 관련 업종에 상승 압력을 줄 수 있습니다.",
-        "카톡요약": "WTI 유가 4.03% 급등하며 105달러 돌파, 물가 우려…",
-        "출처": [
-          {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
-          }
-        ]
-      },
-      {
-        "순위": 2,
-        "제목": "미 국채 금리 동반 상승",
-        "숫자": "10년물 4.996% (+3.5bp)",
-        "설명": "",
-        "영향": "금리 상승 압력이 기술주 중심의 나스닥 지수와 미국 장기채 ETF 가격에 하락 요인으로 작용할 수 있습니다.",
-        "카톡요약": "유가 불안에 미 10년물 국채금리 4.99%대로 상승 마감",
-        "출처": [
-          {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
-          }
-        ]
-      },
-      {
-        "순위": 3,
-        "제목": "외국인 대규모 순매도",
-        "숫자": "코스피 순매도 -1.55조 원",
-        "설명": "",
-        "영향": "대형주 위주의 코스피 200 지수 및 관련 레버리지 ETF에 강한 하락 압력으로 작용합니다.",
-        "카톡요약": "환율 급등에 외국인 코스피 1.55조 원 대규모 순매도",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          }
-        ]
-      },
-      {
-        "순위": 4,
-        "제목": "S&P500 ETF 개인 매수",
-        "숫자": "하반기 개인 순매수 1위",
-        "설명": "개인 투자자들이 TIGER 미국S&P500 ETF를 100일 넘게 순매수하며 하반기 국내 상장 해외 ETF 중 순매수 1위를 기록했습니다.",
-        "영향": "글로벌 증시 변동성 속에서도 미국 대표 지수형 ETF로의 개인 자금 유입 독주가 지속되는 모습입니다.",
-        "카톡요약": "개인 100일 넘게 사들인 미국S&P500 ETF 하반기 순…",
-        "출처": [
+            "이름": "매일경제 마켓",
+            "url": ""
+          },
           {
             "이름": "매일경제 마켓",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBuRUpzQzlINDQwTnF1bFUxdHNaVGZyb1NGdTF4ak4xUHh3WDNjdnRRVHprenU2WWxQWkpkNjREZ2ZXUHdfckd0a2MwMHBJUHBfcXc?oc=5",
-            "날짜": "9/15"
-          }
-        ]
-      },
-      {
-        "순위": 5,
-        "제목": "탄소배출권 ETF 강세",
-        "숫자": "이달 수익률 상위권 기록",
-        "설명": "최근 탄소배출권 가격이 급등세를 보이면서 국내 증시에 상장된 탄소배출권 관련 ETF들이 이달 수익률 상위권에 대거 포진했습니다.",
-        "영향": "원자재 및 친환경 정책 테마 ETF로의 단기 트레이딩 자금 유입 촉매가 될 수 있습니다.",
-        "카톡요약": "탄소배출권 가격 급등에 관련 ETF 이달 수익률 상위권 진입",
-        "출처": [
-          {
-            "이름": "연합뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9FYjFLWTVSOExORzdacU9jbTVDb1RkdU96SjB0dllXVmhuR01RbmNUS2ZNS1FhX2ltc3p3Y2haQ1BfampTb3FIVExBV0FxZV9VTVlYM2FLdWd5WUZMYUF5ZtIBYEFVX3lxTE9FYjFLWTVSOExORzdacU9jbTVDb1RkdU96SjB0dllXVmhuR01RbmNUS2ZNS1FhX2ltc3p3Y2haQ1BfampTb3FIVExBV0FxZV9VTVlYM2FLdWd5WUZMYUF5Zg?oc=5",
-            "날짜": "9/15"
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1VWFJ4VEpLbkNhaWVxUHc1cm5teEtmNy1OYl9HSUpFejhSWjg3ZmoydlBmaDRnampwU0dCNUs3QkdqbS1SdkRMZ0hsbDhjeWpEeUE?oc=5",
+            "날짜": "9/17"
           }
         ]
       }
     ],
     "놓치면안될이슈": [
       {
+        "분야": "정책",
+        "제목": "[증권사 미스터리쇼핑②] IBK투자증권 \"아직 정부는 몰라요\"…레버리지 ETF 규제 '우회' 안내…",
+        "무슨일": "[증권사 미스터리쇼핑②] IBK투자증권 \"아직 정부는 몰라요\"…레버리지 ETF 규제 '우회' 안내 신아일보",
+        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "신아일보",
+            "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE11X0xUems3X3ZpY0pGNHg3ODQ2SFpMOVBNc2Q0QzBPdUZnRkZDVWxxZGZ2SUk5RkFaeGxueF9lbEE1cktPUjJ0dGo4SktldmV6UVhORklZVjdMS1U3a0JaTmU4dndOWENERlNBR2d4b0k?oc=5",
+            "날짜": "9/17"
+          }
+        ]
+      },
+      {
+        "분야": "정책",
+        "제목": "점차 완성돼 가는 창고형약국 규제 '3가지 퍼즐' - 약사공론",
+        "무슨일": "점차 완성돼 가는 창고형약국 규제 '3가지 퍼즐' 약사공론",
+        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "약사공론",
+            "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFB6VXdwRl82SFFrNncyZDd1cUpwYW9TNko2cXZKc3FGTG1IVklJZk1YRWNSQjZBeDZTa1ZrQ1ZoUzY1c2lhRGE3azhnVzZzM19SaEtwRktrWnlXQ0Q5S0pxZTd6aExTbmRvSmZvaA?oc=5",
+            "날짜": "9/17"
+          }
+        ]
+      },
+      {
         "분야": "산업·기술",
-        "제목": "Pennsylvania has the energy. Will regulation send inve…",
-        "무슨일": "Pennsylvania has the energy. Will regulation send investment elsewhere? Pennsylvania Business Report -",
+        "제목": "AI 3대 대부의 섬뜩한 경고…\"통제력 잃었다, 핵무기급 규제 필요\" - 머니투데이 - 머니투데이",
+        "무슨일": "AI 3대 대부의 섬뜩한 경고…\"통제력 잃었다, 핵무기급 규제 필요\" - 머니투데이 머니투데이",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "Pennsylvania Business Report -",
-            "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOYjdIUThtdEZhTm1kZm92ZmNua05kMFpGeVU2YzI0NEpUTlVNcVQ5OGpER2xERnpjNm05d2EtS1VfNFVqd3BJVEx4WGlGaGwyRTQ2Q25WTGEyME4yc0J1WmhObVR6VWlkdTZlTDdjOTdmSEZhb3BxX0praXMtdHBNQjk4QmRVbUhCMXB3V0NwYlExVE5OUXFUVEhWemFMam5HaDNubW0zeGJDYjA?oc=5",
-            "날짜": "9/16"
-          }
-        ]
-      },
-      {
-        "분야": "정책",
-        "제목": "가계부채 비율 10년 만에 최저…정부 목표치 조기 달성 눈앞 - 연합뉴스",
-        "무슨일": "가계부채 비율 10년 만에 최저…정부 목표치 조기 달성 눈앞 연합뉴스",
-        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "연합뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9zaHJ2ZVN2aWY3ZFk2UmtrRXh5U05nd01rLTdwWDNPOUdVbFQ2SGg3VkVINGNEQi0tUmFRN0ZMZDlUME9IQ2VuenZUamRzZ3ZxWUlPRGZ0b3g0WUU?oc=5",
-            "날짜": "9/16"
-          }
-        ]
-      },
-      {
-        "분야": "정책",
-        "제목": "Canada Investment Summit live: Ottawa expands tax brea…",
-        "무슨일": "Canada Investment Summit live: Ottawa expands tax break in 'game changer for investment' Financial Post",
-        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "Financial Post",
-            "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPc3lMT3RDMWZSbjZhRnVOak9WM3VkTEV3OExjM0ZtRUNoTllSRk9PbFlCWl9PWF8zeERXdmRFVEVLcE5mNlkzdDl4WlhSdXRlNG9FX21lbXVHcFpOajRWRVRuZzd0SUhvNVI2ZHJnMWc3RUtmQjZqV21ja013SWo2N1ZEdmtRaWFLcHZ3Sy1rUzlpR1Fu?oc=5",
-            "날짜": "9/16"
+            "이름": "머니투데이",
+            "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE94RmRpa2FNVVFMVHV2YUVwSlFOVGR1ZzlxT3JvdmdrVDZXZzJ0b0FRZnZ5cUVVeHA3elk2eXhaMjZ0UGd3VXVjOFNqYmJlcEphLWd1VnI1M2NSZnFxdUVqZkl1aWJONlQt0gFuQVVfeXFMUFFINHZnbWl0a0EtUW9UUnFXNloyVXFLUVhHNnFfVDVmRlZfVFZiRDM0T05OR01IX2RBV0ZBa3hjN0l4U3Q1RS12QjJralE5ak14ZGdDbzBfbVFiM0pSa3FYVmJmcFVrU1BkQzhvMEE?oc=5",
+            "날짜": "9/17"
           }
         ]
       }
     ],
-    "etf_레이더": [
-      {
-        "구분": "유형 쏠림",
-        "제목": "미국 S&P500 ETF로의 개인 자금 유입 지속",
-        "사실": "TIGER 미국S&P500 ETF에 대해 개인 투자자들이 100거래일 연속 순매수를 기록하며 하반기 순매수 1위를 유지하고 있습니다.",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "매일경제 마켓",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBuRUpzQzlINDQwTnF1bFUxdHNaVGZyb1NGdTF4ak4xUHh3WDNjdnRRVHprenU2WWxQWkpkNjREZ2ZXUHdfckd0a2MwMHBJUHBfcXc?oc=5",
-            "날짜": "9/15"
-          }
-        ],
-        "관찰": "시장 변동성 확대 국면에서 개별 기술주보다 미국 대표 지수를 추종하는 연금성 자금의 유입세가 지속되고 있는 것으로 볼 수 있습니다.",
-        "이유": "",
-        "관련ETF": "",
-        "질문": "",
-        "차별점": ""
-      }
-    ],
-    "유튜브": [
-      {
-        "영상ID": "keu5SvpD7KE",
-        "핵심주제": "50대 노후 대비 연금 및 ISA 활용법",
-        "훅": "나이 제시형 및 조급함 완화형",
-        "관련성": "보통",
-        "관련성근거": "연금계좌 내 ETF 포트폴리오 구성과 밀접함"
-      },
-      {
-        "영상ID": "yUKSk9KEvGQ",
-        "핵심주제": "연 15% 고배당 ETF 연금 포트폴리오",
-        "훅": "고수익률 제시 및 무적 자극형",
-        "관련성": "높음",
-        "관련성근거": "배당형 ETF 및 커버드콜 상품 직접 분석"
-      }
-    ],
-    "댓글키워드": "연금 계좌에서 고배당 및 커버드콜 ETF 투자 시 원금 손실 우려와 세제 혜택 한도에 대한 질문이 많았습니다.",
+    "etf_레이더": [],
+    "주도테마": null,
+    "관심종목": [],
+    "유튜브": [],
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "연 15% 배당의 함정? 커버드콜 ETF 원금 회복력 팩트체크",
-        "이유": "유튜브 댓글에서 커버드콜 ETF의 원금 감소 우려가 지속적으로 제기되므로 실제 성과와 배당금 재투자 효과를 분석할 필요가 있습니다.",
-        "관련ETF": "미국배당다우존스커버드콜 · 미국채30년커버드콜",
-        "질문": "커버드콜 ETF의 기초자산 상승 시 상방 제한이 실제 원금 훼손으로 이어지는 구조적 원인은 무엇인가요?",
-        "차별점": "단순 배당률 홍보를 넘어 하락장과 상승장 시나리오별 원금 변화 추이를 시뮬레이션으로 보여줍니다.",
+        "제목": "WTI 하락, 연계 ETF 영향은?",
+        "이유": "WTI 하락의 핵심 수치 102.02 (-3.60%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "WTI 하락 연계 지수·업종 ETF",
+        "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
+        "질문": "WTI 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
         "사실": "",
         "관찰": ""
       }
     ],
+    "오늘관전": [
+      "WTI 하락 흐름이 다음 거래일까지 이어지는지 확인"
+    ],
+    "월요일요약": null,
     "체크포인트": [
       {
         "유형": "확인",
-        "때": "이번 주",
-        "내용": "외국인 코스피 순매도세 진정 및 환율 안정 여부"
-      },
-      {
-        "유형": "확인",
-        "때": "상시",
-        "내용": "국제 유가(WTI) 배럴당 105달러선 안착 여부와 인플레이션 영향"
-      },
-      {
-        "유형": "확인",
         "때": "다음 거래일",
-        "내용": "WTI 상승 흐름의 지속 여부"
+        "내용": "WTI 하락 흐름의 지속 여부"
       }
     ],
+    "오늘의개념": null,
+    "시장국면": null,
+    "관망요인": null,
+    "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 9/16 브리핑\n1. WTI 유가 4.03% 급등하며 105달러 돌파, 물가 우려…\n2. 유가 불안에 미 10년물 국채금리 4.99%대로 상승 마감\n3. 환율 급등에 외국인 코스피 1.55조 원 대규모 순매도\n4. 개인 100일 넘게 사들인 미국S&P500 ETF 하반기 순…\n5. 탄소배출권 가격 급등에 관련 ETF 이달 수익률 상위권 진입"
-    },
-    "오늘의개념": null
+      "1": "☀️ 9/17 브리핑\n1. WTI 하락\n2. VIX 상승\n3. 브렌트 하락\n4. 코스피 상승\n5. 다우 30 하락"
+    }
   },
   "history": [
-    {
-      "날짜": "2026-09-11",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 상승",
-          "핵심": "VIX 연계 ETF 흐름 확인 17.84 (+8.38%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "WTI 상승",
-          "핵심": "WTI 연계 ETF 흐름 확인 103.93 (+8.20%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "브렌트 상승",
-          "핵심": "브렌트 연계 ETF 흐름 확인 108.95 (+7.65%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "구리 하락",
-          "핵심": "구리 연계 ETF 흐름 확인 6.53 (-4.08%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "필라델피아 반도체 하락",
-          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 11,614.17 (-2.66%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "코스피·코스닥 디커플링",
-          "핵심": "외국인 순매도 26,230억원 · 기관 순매수 5,744억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 -0.25% · 코스닥 +0.79%",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://www.mk.co.kr/news/stock/12149706"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "유가·금리 상승에 기술주 약세",
-          "핵심": "WTI가 +8.20% 급등하고 미 10년물 금리가 +10.7bp 오른 날 나스닥이 -0.65% 하락했습니다. 유가 상승이 물가 우려와 금리 부담을 거쳐 기술주 할인율을 높이는 경로로 해석할 수 있습니다. S&P 500 -0.58% · 나스닥 종합 -0.65% · 다우 30 -0.60%",
-          "출처": [
-            "https://finance.yahoo.com",
-            "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBlbFBuUEtRYjVYRFowZE9nY0FzSkg0cWVpT2lyWUZBQ1l6UTFGc1ZlMXlSTmRQVmxZTTdwZklqcUlSRG1hdlB2NGtSQnl3WkprNGkxREtCX0lMUjRJTXMwT9IBeEFVX3lxTE03OF82cVdRSnFwNGxlSnFJc1kzcy1SQnlXMlc4R3E4bE9NQW9PTEstOUsxUE5nRXRoUVhpaDZKajdReGxOMWtzSEJSUndmSUFRQzRWQ29sN1hRYWdjdWw5aU1md1hjdlJOMU9aV1VveHY2RUU4SUxlOQ?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "Oracle Corporation Provides Earnings Guidance for the…",
-          "핵심": "Oracle Corporation Provides Earnings Guidance for the Full Fiscal Year 2027 marketscreener.com 대형 기업의 실적과 가이던스는 관련 업종과 ETF 기대를 다시 정하는 재료입니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMixwFBVV95cUxNYlBMTHpIR1F2eUFhaHQ3NEtHeXRUWS05SE9DcFFlaGFtTFhzeWNJZjVxeDdBUjZoN3U1anZVZHIxSkdIRmN5YUpQSHNmTXpYdDlqR1h6Z0VIR2FUX0w1YVJ4TjFVYm9WSFFtNGpkVmgtS2lUMkVqaGpLMXF2Z3d1SWlWSEpBdGE2c3dhYk4wMVg3cmdVYmFjSHZ3c0dRSXlSMUhOeUFiR2lsZUpmbTY4b3M1dkpDVjBfcW5neXF3Wnh6WEtPV0w0?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "WSJ \"한국, 대미 투자 첫 사업 합의 임박…에너지 분야에 1천억 달러\" - news.sbs.c…",
-          "핵심": "WSJ \"한국, 대미 투자 첫 사업 합의 임박…에너지 분야에 1천억 달러\" news.sbs.co.kr 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMijwFBVV95cUxOeU1LU3JaUnIxVkV4dkNBM2RzRGstRWRzSk16czhPWGFGaU1reW9wMTY5dFkzWWpkdTRTQ0FaaGZFZUhHU2I4V3NIaUlKelRrZ1REWVZMT2tzTTBtQjVjTHNwa1ZpOHFkU1dxYTN0SkNFOTRYM3pfNGd0LVdMNE9EUzhzLWJVX05scE5tWS1uNA?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "“AI가 10년 안에 인류 죽일 수도”…美의회는 “규제”, 국방부는 “종말론” - v.daum.n…",
-          "핵심": "“AI가 10년 안에 인류 죽일 수도”…美의회는 “규제”, 국방부는 “종말론” v.daum.net 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5QTDRlOXAyRXFuVFhqWXJiRUNXMW1PRERkaU9UMXltUnFKZ1lqUUhnbWZYWHdXcGdsRFJiWkRkOTB3OVBNTEc2SlFsSmtFa3M?oc=5"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-09-14",
       "주제": [
@@ -472,6 +328,94 @@
           "핵심": "미 부통령 \"AI 업계의 규제강화 요청, 트로이 목마 같아\" v.daum.net 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1LTEhoNEpEYVEtLVF0aEpPT1pYTHJNX09rUGtJRnJzTUFqMkI1WE1NSXY2UTBDOXRzZTZmU3J6ZXVtdno5LTdTaXBFVjgyOHc?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-09-16",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "국제유가 급등세 지속",
+          "핵심": "에너지 가격 상승이 인플레이션 우려를 자극해 원자재 ETF 및 정유 관련 업종에 상승 압력을 줄 수 있습니다. WTI 105.48달러 (+4.03%)",
+          "출처": [
+            "https://finance.yahoo.com"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "미 국채 금리 동반 상승",
+          "핵심": "금리 상승 압력이 기술주 중심의 나스닥 지수와 미국 장기채 ETF 가격에 하락 요인으로 작용할 수 있습니다. 10년물 4.996% (+3.5bp)",
+          "출처": [
+            "https://finance.yahoo.com"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "외국인 대규모 순매도",
+          "핵심": "대형주 위주의 코스피 200 지수 및 관련 레버리지 ETF에 강한 하락 압력으로 작용합니다. 코스피 순매도 -1.55조 원",
+          "출처": [
+            "https://data.krx.co.kr"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "S&P500 ETF 개인 매수",
+          "핵심": "개인 투자자들이 TIGER 미국S&P500 ETF를 100일 넘게 순매수하며 하반기 국내 상장 해외 ETF 중 순매수 1위를 기록했습니다. 글로벌 증시 변동성 속에서도 미국 대표 지수형 ETF로의 개인 자금 유입 독주가 지속되는 모습입니다. 하반기 개인 순매수 1위",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBuRUpzQzlINDQwTnF1bFUxdHNaVGZyb1NGdTF4ak4xUHh3WDNjdnRRVHprenU2WWxQWkpkNjREZ2ZXUHdfckd0a2MwMHBJUHBfcXc?oc=5"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "탄소배출권 ETF 강세",
+          "핵심": "최근 탄소배출권 가격이 급등세를 보이면서 국내 증시에 상장된 탄소배출권 관련 ETF들이 이달 수익률 상위권에 대거 포진했습니다. 원자재 및 친환경 정책 테마 ETF로의 단기 트레이딩 자금 유입 촉매가 될 수 있습니다. 이달 수익률 상위권 기록",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9FYjFLWTVSOExORzdacU9jbTVDb1RkdU96SjB0dllXVmhuR01RbmNUS2ZNS1FhX2ltc3p3Y2haQ1BfampTb3FIVExBV0FxZV9VTVlYM2FLdWd5WUZMYUF5ZtIBYEFVX3lxTE9FYjFLWTVSOExORzdacU9jbTVDb1RkdU96SjB0dllXVmhuR01RbmNUS2ZNS1FhX2ltc3p3Y2haQ1BfampTb3FIVExBV0FxZV9VTVlYM2FLdWd5WUZMYUF5Zg?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "외국인·기관 동반 매도에 코스피 0.85% 하락, 코스닥은 0.70% 반등",
+          "핵심": "원/달러 환율이 1.37% 급등해 1,363.11원까지 올라서며 외국인의 환차손 우려를 자극했습니다. 이로 인해 외국인이 코스피 시장에서 1조 5,541억 원 규모의 강한 순매도세를 기록하고 기관 역시 9,522억 원을 동반 순매도하면서 대형주 중심의 코스피 하락을 주도한 것으로 볼 수 있습니다. 반면 코스닥 시장은 최근 낙폭 과대에 따른 개인의 저가 매수세가 유입되며 상대적인 강세를 보인 ",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://www.mk.co.kr/news/stock/12153825"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "유가 급등과 금리 상승에 기술주 약세, S&P 500 0.45% 하락",
+          "핵심": "국제 유가가 지정학적 불안과 공급 우려로 4% 넘게 급등하면서 시장의 인플레이션 경계감을 자극했습니다. 유가 상승은 물가 압력을 높여 연준의 금리 인하 경로를 제약할 수 있다는 우려로 이어졌고, 이에 따라 미 국채 금리가 동반 상승했습니다. 금리 상승은 미래 수익을 할인하는 기술주와 성장주에 밸류에이션 부담을 주며 나스닥을 중심으로 증시 전반에 하락 압력을 가한 것으로 해석할 수 있습니다. ",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1FM3ZJNjJSeG1ZWlFxSVB3QTYtVEpZV0tnUXhVZUFvZU5FbHpvdm15Tzh4X0plbTFKbmFGb0hsR016S0RKNXVkWGkzTTFLREY3SGfSAVNBVV95cUxQdFBVSmhUMHFBWFVWQ3NKUzJJR1VWTDhLOFFnZ09fc2hIY01jd3VLeHh6U01tb2JaMUpBWkY3MXhFeDA1VWkxS2FiV2x5M2VWWVJpVQ?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "Pennsylvania has the energy. Will regulation send inve…",
+          "핵심": "Pennsylvania has the energy. Will regulation send investment elsewhere? Pennsylvania Business Report - 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOYjdIUThtdEZhTm1kZm92ZmNua05kMFpGeVU2YzI0NEpUTlVNcVQ5OGpER2xERnpjNm05d2EtS1VfNFVqd3BJVEx4WGlGaGwyRTQ2Q25WTGEyME4yc0J1WmhObVR6VWlkdTZlTDdjOTdmSEZhb3BxX0praXMtdHBNQjk4QmRVbUhCMXB3V0NwYlExVE5OUXFUVEhWemFMam5HaDNubW0zeGJDYjA?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "가계부채 비율 10년 만에 최저…정부 목표치 조기 달성 눈앞 - 연합뉴스",
+          "핵심": "가계부채 비율 10년 만에 최저…정부 목표치 조기 달성 눈앞 연합뉴스 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9zaHJ2ZVN2aWY3ZFk2UmtrRXh5U05nd01rLTdwWDNPOUdVbFQ2SGg3VkVINGNEQi0tUmFRN0ZMZDlUME9IQ2VuenZUamRzZ3ZxWUlPRGZ0b3g0WUU?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "Canada Investment Summit live: Ottawa expands tax brea…",
+          "핵심": "Canada Investment Summit live: Ottawa expands tax break in 'game changer for investment' Financial Post 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMilAFBVV95cUxPc3lMT3RDMWZSbjZhRnVOak9WM3VkTEV3OExjM0ZtRUNoTllSRk9PbFlCWl9PWF8zeERXdmRFVEVLcE5mNlkzdDl4WlhSdXRlNG9FX21lbXVHcFpOajRWRVRuZzd0SUhvNVI2ZHJnMWc3RUtmQjZqV21ja013SWo2N1ZEdmtRaWFLcHZ3Sy1rUzlpR1Fu?oc=5"
           ]
         }
       ],
