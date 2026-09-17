@@ -1,260 +1,234 @@
 {
-  "날짜": "2026-09-17",
+  "날짜": "2026-09-18",
   "ai": {
-    "top5": [
-      {
-        "제목": "WTI 하락",
-        "숫자": "102.02 (-3.60%)",
-        "영향": "WTI 연계 ETF 흐름 확인",
-        "순위": 1,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "WTI 하락"
-      },
-      {
-        "제목": "VIX 상승",
-        "숫자": "17.71 (+2.97%)",
-        "영향": "VIX 연계 ETF 흐름 확인",
-        "순위": 2,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "VIX 상승"
-      },
-      {
-        "제목": "브렌트 하락",
-        "숫자": "105.60 (-2.90%)",
-        "영향": "브렌트 연계 ETF 흐름 확인",
-        "순위": 3,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "브렌트 하락"
-      },
-      {
-        "제목": "코스피 상승",
-        "숫자": "6,717.97 (+1.37%)",
-        "영향": "코스피 연계 ETF 흐름 확인",
-        "순위": 4,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "코스피 상승"
-      },
-      {
-        "제목": "다우 30 하락",
-        "숫자": "51,461.90 (-1.21%)",
-        "영향": "다우 30 연계 ETF 흐름 확인",
-        "순위": 5,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "다우 30 하락"
-      }
-    ],
+    "시장국면": null,
+    "관망요인": null,
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "국내 증시 마감 흐름",
-        "자동생성": true,
-        "결과": "코스피 +1.37% · 코스닥 +0.44%",
-        "원인": "외국인 순매도 16,828억원 · 기관 순매수 12,371억원의 수급이 지수 등락과 함께 나타났습니다.",
-        "전달경로": "투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률",
-        "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
+        "제목": "외국인 2.6조 원 순매도에 코스피 0.04% 약보합 마감",
+        "결과": "코스피 지수는 외국인의 2.6조 원 규모 대규모 순매도세 속에 기관의 매수세가 맞서며 0.04% 하락한 6715.41로 보합 마감한 반면, 코스닥은 0.76% 상승 마감했습니다.",
+        "원인": "원/달러 환율이 1379.99원(+1.20%)까지 급등하며 외국인의 환차손 우려를 자극했고, 이로 인해 외국인이 코스피 시장에서 2조 6,361억 원의 강한 순매도를 기록하며 지수 상단을 제한한 것으로 볼 수 있습니다. 다만 기관이 2,497억 원을 순매수하고 코스닥 시장에서는 낙폭 과대에 따른 저가 매수세가 유입되며 지수별 방향성이 갈리는 디커플링 흐름이 나타났을 가능성이 있습니다.",
+        "전달경로": "환율 급등 → 외국인 환차손 우려 → 코스피 대규모 순매도 → 코스피 보합 및 코스닥 상대적 강세",
+        "ETF연결": "외국인 수급 이탈이 지속되는 상황에서 코스피 200 지수형 ETF보다는 개별 업종 및 코스닥 성장주 테마 ETF의 상대적 방어력을 관찰해야 합니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "매일경제 증권",
-            "url": ""
-          },
-          {
-            "이름": "매일경제 증권",
-            "url": "https://www.mk.co.kr/news/stock/12154897",
+            "이름": "아주경제",
+            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4NEFqMGIwYWp3S1RkdEVMS011djdqMXlmYW5oMXVzUGQ3T1VNNzlOSHMtTkdjODkyYWFTcnhCbzlYZDhVRTU5QnRISjNMUjctSkNHSXU4MXhwQdIBWEFVX3lxTFA0bkIzTGtmTi0tR1hOREhBTTFzVkJPTFVmb2RXQTJyMHdvS2RkUFRyNm1LRkwtVzZNaXN3Yk02SEFPX1U1djA4RDRZTHlmVEYtVEVPbTh4Rlk?oc=5",
             "날짜": "9/17"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "미국 증시 마감 흐름",
-        "자동생성": true,
-        "결과": "S&P 500 -0.45% · 나스닥 종합 -0.01% · 다우 30 -1.21%",
-        "원인": "주요 지수와 함께 미 10년물 +0.20% · VIX +2.97%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
-        "전달경로": "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF",
-        "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
+        "제목": "금리 하락과 반도체 급등에 나스닥 1.69% 상승 마감",
+        "결과": "미국 10년물 국채 금리가 4.947%(-5.9bp)로 하락한 가운데, 나스닥 지수가 1.69% 상승하고 필라델피아 반도체 지수가 3.14% 급등하며 기술주 중심의 강한 매수세가 유입되었습니다.",
+        "원인": "최근 지정학적 불안과 유가 급등으로 인플레이션 경계감이 고조되며 국채 금리가 상승 압력을 받아왔으나, 밤사이 금리가 하락세로 돌아서며 기술주들의 할인율 부담이 완화되었습니다. 특히 인텔(+7.67%), AMD(+6.36%), 마이크론(+5.50%) 등 주요 반도체 종목들이 동반 급등하며 지수 상승을 주도한 것으로 해석할 수 있습니다.",
+        "전달경로": "국채 금리 하락 → 기술주 할인율 부담 완화 → 반도체 업종 급등 → 나스닥 지수 상승",
+        "ETF연결": "미국 반도체 테마 및 나스닥100 지수형 ETF의 단기 반등 모멘텀을 확인하고, 금리 하락세가 지속되는지 점검할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "매일경제 마켓",
-            "url": ""
-          },
+            "이름": "뉴시스",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9XTzM3Ry1oNEY4cFlOZTNzeHRZalJzSURsc29seUlQa2E1bnJEbUNQZU8yMmNJS3JnYXAyQ1M4V0JFOHlNa2tObF9BMmt1Tjd3aUVvNmFhcVVHNW9BZVJqQtIBeEFVX3lxTE8wSTNjZlpIenRPY0JCOGZUMlptR1pVT2J4NGVIQUM0NHZSNFdMOFhDeTlUM2Q1eUMzbW1Kclp2X2lZak9tSFJUZWJUbHptQWVOU0ktX1I3Nlc5YmpMYUE1RFFZZnZ5TVl6bDh2dEhJOGkwenZhcVlyZA?oc=5",
+            "날짜": "9/18"
+          }
+        ]
+      }
+    ],
+    "오늘관전": [
+      "미국 반도체주 급등에 따른 국내 반도체 소부장 ETF의 동반 반등 여부",
+      "1380원에 육박한 원/달러 환율의 추가 상승 제한 및 외국인 수급 복귀 여부",
+      "미 국채 금리 하락에 따른 국내 장기채 및 성장주 테마 ETF의 가격 반응"
+    ],
+    "월요일요약": null,
+    "주도테마": null,
+    "관심종목": [],
+    "top5": [
+      {
+        "순위": 1,
+        "제목": "미 국채 금리 하락",
+        "숫자": "10년물 4.947% · 30년물 5.296%",
+        "설명": "",
+        "영향": "기술주 및 성장주 할인율 부담 완화로 나스닥 지수 상승 유도",
+        "카톡요약": "미 국채 금리 하락세 전환에 나스닥 1.69% 반등 성공",
+        "출처": [
           {
-            "이름": "매일경제 마켓",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1VWFJ4VEpLbkNhaWVxUHc1cm5teEtmNy1OYl9HSUpFejhSWjg3ZmoydlBmaDRnampwU0dCNUs3QkdqbS1SdkRMZ0hsbDhjeWpEeUE?oc=5",
-            "날짜": "9/17"
+            "이름": "Yahoo Finance",
+            "url": "https://finance.yahoo.com"
+          }
+        ]
+      },
+      {
+        "순위": 2,
+        "제목": "반도체 업종 급등",
+        "숫자": "필라델피아 반도체 +3.14%",
+        "설명": "",
+        "영향": "글로벌 반도체 및 IT 테마 ETF의 단기 가격 강세 촉매",
+        "카톡요약": "필라델피아 반도체 지수 3.14% 급등하며 기술주 매수세 유입",
+        "출처": [
+          {
+            "이름": "Yahoo Finance",
+            "url": "https://finance.yahoo.com"
+          }
+        ]
+      },
+      {
+        "순위": 3,
+        "제목": "외인 2.6조 매도",
+        "숫자": "코스피 외국인 -2.63조 원",
+        "설명": "",
+        "영향": "코스피 200 지수 및 대형주 레버리지 ETF에 하락 압력 작용",
+        "카톡요약": "외국인 2.6조 원 역대급 순매도에 코스피 보합권 마감",
+        "출처": [
+          {
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
+          }
+        ]
+      },
+      {
+        "순위": 4,
+        "제목": "원/달러 환율 급등",
+        "숫자": "원/달러 1379.99원 (+1.20%)",
+        "설명": "",
+        "영향": "외국인 자금 이탈 촉진 및 환헤지/환노출 ETF 간 수익률 희비 교차",
+        "카톡요약": "원/달러 환율 1379.99원 급등하며 외국인 이탈 자극",
+        "출처": [
+          {
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
+          }
+        ]
+      },
+      {
+        "순위": 5,
+        "제목": "우주항공 테마 강세",
+        "숫자": "SOL 우주항공 +8.47%",
+        "설명": "",
+        "영향": "방산 및 우주항공 액티브/패시브 ETF 전반의 거래대금 증가",
+        "카톡요약": "우주항공·방산 수주 모멘텀에 관련 ETF 최대 8.47% 급등",
+        "출처": [
+          {
+            "이름": "KRX 정보데이터시스템",
+            "url": "https://data.krx.co.kr"
           }
         ]
       }
     ],
     "놓치면안될이슈": [
       {
-        "분야": "정책",
-        "제목": "[증권사 미스터리쇼핑②] IBK투자증권 \"아직 정부는 몰라요\"…레버리지 ETF 규제 '우회' 안내…",
-        "무슨일": "[증권사 미스터리쇼핑②] IBK투자증권 \"아직 정부는 몰라요\"…레버리지 ETF 규제 '우회' 안내 신아일보",
-        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "분야": "산업·기술",
+        "제목": "교보악사운용, 2년 만에 SK그룹주 ETF 출시",
+        "무슨일": "교보악사자산운용이 2년 만에 신규 ETF를 출시하며 SK그룹 계열사들을 집중적으로 담는 상품을 선보였습니다.",
+        "왜중요": "대기업 그룹주 펀드 및 ETF 시장의 라인업 다변화와 함께 SK그룹 계열사 전반의 수급에 긍정적인 영향을 줄 수 있습니다.",
+        "확인할것": "상장 이후 초기 자금 유입 규모와 그룹주 내 비중 변화",
         "출처": [
           {
-            "이름": "신아일보",
-            "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE11X0xUems3X3ZpY0pGNHg3ODQ2SFpMOVBNc2Q0QzBPdUZnRkZDVWxxZGZ2SUk5RkFaeGxueF9lbEE1cktPUjJ0dGo4SktldmV6UVhORklZVjdMS1U3a0JaTmU4dndOWENERlNBR2d4b0k?oc=5",
-            "날짜": "9/17"
-          }
-        ]
-      },
-      {
-        "분야": "정책",
-        "제목": "점차 완성돼 가는 창고형약국 규제 '3가지 퍼즐' - 약사공론",
-        "무슨일": "점차 완성돼 가는 창고형약국 규제 '3가지 퍼즐' 약사공론",
-        "왜중요": "정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "약사공론",
-            "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFB6VXdwRl82SFFrNncyZDd1cUpwYW9TNko2cXZKc3FGTG1IVklJZk1YRWNSQjZBeDZTa1ZrQ1ZoUzY1c2lhRGE3azhnVzZzM19SaEtwRktrWnlXQ0Q5S0pxZTd6aExTbmRvSmZvaA?oc=5",
+            "이름": "dealsite.co.kr",
+            "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE83SHBtZjA1ZG5CbVpjS3REN3lETmk0aWhMdE1XcHBDNE5xOHF1cWtGdWxKZ0dTZlFRYmdDWHpwSmhkWW9BaC1FOTJpQzAzWjg?oc=5",
             "날짜": "9/17"
           }
         ]
       },
       {
         "분야": "산업·기술",
-        "제목": "AI 3대 대부의 섬뜩한 경고…\"통제력 잃었다, 핵무기급 규제 필요\" - 머니투데이 - 머니투데이",
-        "무슨일": "AI 3대 대부의 섬뜩한 경고…\"통제력 잃었다, 핵무기급 규제 필요\" - 머니투데이 머니투데이",
+        "제목": "대미투자 1호 발표 내주 초 유력…원전 기종·투자 한도 등 '막판 진통' - 뉴스1",
+        "무슨일": "대미투자 1호 발표 내주 초 유력…원전 기종·투자 한도 등 '막판 진통' 뉴스1",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "머니투데이",
-            "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE94RmRpa2FNVVFMVHV2YUVwSlFOVGR1ZzlxT3JvdmdrVDZXZzJ0b0FRZnZ5cUVVeHA3elk2eXhaMjZ0UGd3VXVjOFNqYmJlcEphLWd1VnI1M2NSZnFxdUVqZkl1aWJONlQt0gFuQVVfeXFMUFFINHZnbWl0a0EtUW9UUnFXNloyVXFLUVhHNnFfVDVmRlZfVFZiRDM0T05OR01IX2RBV0ZBa3hjN0l4U3Q1RS12QjJralE5ak14ZGdDbzBfbVFiM0pSa3FYVmJmcFVrU1BkQzhvMEE?oc=5",
-            "날짜": "9/17"
+            "이름": "뉴스1",
+            "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1Wb251UjhNLW5GY0p3WWFRbEwyQnZraDRYcnhHX05YUW9aa1h4d2FpY1R3TXZuMG9jbGkteUQ0Uk1paVRLYVFYTG93SHo1WlRGckQybNIBWkFVX3lxTE90UVdpNTBwalhPbHh6dnRCVk5sbTNYeGtackRYdVFpYV9rdkFEUWN4LTRRRkFydk1OcHlvX0d6OGEtMWw3ZGxzSUdqbVVoeXZHcDhva3VOYkIzUQ?oc=5",
+            "날짜": "9/18"
+          }
+        ]
+      },
+      {
+        "분야": "산업·기술",
+        "제목": "병목 따라 도는 돈…AI ETF 투자 지도 - 한경매거진&북",
+        "무슨일": "병목 따라 도는 돈…AI ETF 투자 지도 한경매거진&북",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "한경매거진&북",
+            "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBmSFkxejRBRF83bFhRZzEyQVRZbWhNWDRmRV81b0ZCbVNsMTQ0b0xTdFZZOEViWmJhU20xS3o0UGFLV05OOWZTRWdjWm5Ld2hRUHk0TEdlM0diODI0THo5SHYtN2t0c1dx?oc=5",
+            "날짜": "9/18"
+          }
+        ]
+      },
+      {
+        "분야": "산업·기술",
+        "제목": "젠슨황·저커버그·머스크, 트럼프 설득…AI규제기구 무산 [1일1트] - 헤럴드경제",
+        "무슨일": "젠슨황·저커버그·머스크, 트럼프 설득…AI규제기구 무산 [1일1트] 헤럴드경제",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "헤럴드경제",
+            "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1sdXZUNENiQks4Y2ptRkJTV3EwaXpOaFVpdzVmdVN4MEZ5OVVpMVphMlk2MU5zU1RrN2p2TmFJYzNNSG0ySUJYanZzcUxScFdBZFNkb1hR?oc=5",
+            "날짜": "9/18"
           }
         ]
       }
     ],
     "etf_레이더": [],
-    "주도테마": null,
-    "관심종목": [],
-    "유튜브": [],
+    "유튜브": [
+      {
+        "영상ID": "wai_qN8sgJI",
+        "핵심주제": "ISA 1억 복리 투자 vs 3년 주기 연금저축 이전 전략 비교",
+        "훅": "질문 및 대안 제시형",
+        "관련성": "높음",
+        "관련성근거": "절세 계좌 활용법 및 연금 ETF 포트폴리오 설계와 직결됨"
+      },
+      {
+        "영상ID": "gmtOcTiEi1I",
+        "핵심주제": "삼성 및 SK 그룹주를 동시에 담은 신규 ETF 소개",
+        "훅": "신상품 정보 제공형",
+        "관련성": "높음",
+        "관련성근거": "국내 그룹주 ETF 신규 상장 분석 콘텐츠와 일치"
+      }
+    ],
+    "댓글키워드": "ISA 만기 자금을 연금저축으로 전환할 때의 실질적인 세제 혜택과 중도 인출 제한에 대한 질문이 많았습니다.",
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "WTI 하락, 연계 ETF 영향은?",
-        "이유": "WTI 하락의 핵심 수치 102.02 (-3.60%)와 ETF 전달 경로를 설명할 필요",
-        "관련ETF": "WTI 하락 연계 지수·업종 ETF",
+        "제목": "VIX 하락, 연계 ETF 영향은?",
+        "이유": "VIX 하락의 핵심 수치 15.44 (-12.82%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "VIX 하락 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
-        "질문": "WTI 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
+        "질문": "VIX 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
         "사실": "",
         "관찰": ""
       }
     ],
-    "오늘관전": [
-      "WTI 하락 흐름이 다음 거래일까지 이어지는지 확인"
-    ],
-    "월요일요약": null,
     "체크포인트": [
       {
         "유형": "확인",
+        "때": "상시",
+        "내용": "외국인의 코스피 2조 원대 순매도 지속 여부"
+      },
+      {
+        "유형": "확인",
         "때": "다음 거래일",
-        "내용": "WTI 하락 흐름의 지속 여부"
+        "내용": "VIX 하락 흐름의 지속 여부"
       }
     ],
-    "오늘의개념": null,
-    "시장국면": null,
-    "관망요인": null,
-    "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 9/17 브리핑\n1. WTI 하락\n2. VIX 상승\n3. 브렌트 하락\n4. 코스피 상승\n5. 다우 30 하락"
-    }
+      "1": "☀️ 9/18 브리핑\n1. 미 국채 금리 하락세 전환에 나스닥 1.69% 반등 성공\n2. 필라델피아 반도체 지수 3.14% 급등하며 기술주 매수세 유입\n3. 외국인 2.6조 원 역대급 순매도에 코스피 보합권 마감\n4. 원/달러 환율 1379.99원 급등하며 외국인 이탈 자극\n5. 우주항공·방산 수주 모멘텀에 관련 ETF 최대 8.47% 급등"
+    },
+    "오늘의개념": null
   },
   "history": [
-    {
-      "날짜": "2026-09-14",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 하락",
-          "핵심": "VIX 연계 ETF 흐름 확인 15.84 (-11.21%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "브렌트 하락",
-          "핵심": "브렌트 연계 ETF 흐름 확인 104.61 (-2.81%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "WTI 하락",
-          "핵심": "WTI 연계 ETF 흐름 확인 100.05 (-2.37%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스닥 하락",
-          "핵심": "코스닥 연계 ETF 흐름 확인 820.64 (-1.95%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "필라델피아 반도체 상승",
-          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 11,824.00 (+1.81%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "국내 증시 마감 흐름",
-          "핵심": "외국인 순매도 23,110억원 · 기관 순매도 12,184억원의 수급이 지수 등락과 함께 나타났습니다. 코스피 -1.76% · 코스닥 -1.95%",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://news.google.com/rss/articles/CBMiakFVX3lxTE5vYWt4SlVmSmRQM0M4U0JTNFpiWFQzeFpRNnJiUFVXNkUyWGFqbXd2cTlpeFJoUkVyQk5EN3kxM05JaVdYcjRWdzB0c2kzVjJoNlB1bTRLU3B2Z3FlWlBaZ28zeHZuV0JFTmc?oc=5"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "미국 증시 마감 흐름",
-          "핵심": "주요 지수와 함께 미 10년물 +0.63% · VIX -11.21%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 +0.86% · 나스닥 종합 +0.96% · 다우 30 +0.98%",
-          "출처": [
-            "https://finance.yahoo.com"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "한경협·국회, 지역관광 살릴 규제 개선·입법 과제 논의 - edaily.co.kr",
-          "핵심": "한경협·국회, 지역관광 살릴 규제 개선·입법 과제 논의 edaily.co.kr 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMigAFBVV95cUxNSWNBX18tbEg2bUpFZXc4OFNfU0hyTkRIUmRIb2l2WXAzLTBPdHpJLUhNenZuMENiemEyTVIyVEI2akNyZXJWMnNSdGJCOVJmbnNjZ2lWOFF1VkhCOVdFelBzTnpxMWRYZkNzZHJtVDVlR1VpNmpUQ1JQTngyR1UxVw?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "오바마까지 나섰다.... \"AI 통제못하면 위험\"…민주당 잠룡들도 규제 촉구 - v.daum.net",
-          "핵심": "오바마까지 나섰다.... \"AI 통제못하면 위험\"…민주당 잠룡들도 규제 촉구 v.daum.net 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1LRm1uYkQ5LWJfRjJ6d0NobG16dVBiWm83Zm9DRWVoS21uRmg2RHdYRlB3UHpJNVkyall3dTF3OWlUV1pwa0pYNDg1RHY0amM?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "자포리자 원전 디젤 트럭 공격의 경제·안전 파장 — 에너지 공급망 리스크 재점화 - 얼리어답터뉴스",
-          "핵심": "자포리자 원전 디젤 트럭 공격의 경제·안전 파장 — 에너지 공급망 리스크 재점화 얼리어답터뉴스 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiSkFVX3lxTE0xM0h2WmlNZnNiSFBfQWpBbmxxc29XNEJxSFVIdTNhaWF5RFhaZzBMRUZvS3dKZ2l4bFpCYXlxaUFkczQzTGRLOHNB?oc=5"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-09-15",
       "주제": [
@@ -416,6 +390,84 @@
           "핵심": "Canada Investment Summit live: Ottawa expands tax break in 'game changer for investment' Financial Post 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMilAFBVV95cUxPc3lMT3RDMWZSbjZhRnVOak9WM3VkTEV3OExjM0ZtRUNoTllSRk9PbFlCWl9PWF8zeERXdmRFVEVLcE5mNlkzdDl4WlhSdXRlNG9FX21lbXVHcFpOajRWRVRuZzd0SUhvNVI2ZHJnMWc3RUtmQjZqV21ja013SWo2N1ZEdmtRaWFLcHZ3Sy1rUzlpR1Fu?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-09-17",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "WTI 하락",
+          "핵심": "WTI 연계 ETF 흐름 확인 102.02 (-3.60%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "VIX 상승",
+          "핵심": "VIX 연계 ETF 흐름 확인 17.71 (+2.97%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "브렌트 하락",
+          "핵심": "브렌트 연계 ETF 흐름 확인 105.60 (-2.90%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "코스피 상승",
+          "핵심": "코스피 연계 ETF 흐름 확인 6,717.97 (+1.37%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "다우 30 하락",
+          "핵심": "다우 30 연계 ETF 흐름 확인 51,461.90 (-1.21%)",
+          "출처": []
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "국내 증시 마감 흐름",
+          "핵심": "외국인 순매도 16,828억원 · 기관 순매수 12,371억원의 수급이 지수 등락과 함께 나타났습니다. 코스피 +1.37% · 코스닥 +0.44%",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://www.mk.co.kr/news/stock/12154897"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "미국 증시 마감 흐름",
+          "핵심": "주요 지수와 함께 미 10년물 +0.20% · VIX +2.97%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 -0.45% · 나스닥 종합 -0.01% · 다우 30 -1.21%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1VWFJ4VEpLbkNhaWVxUHc1cm5teEtmNy1OYl9HSUpFejhSWjg3ZmoydlBmaDRnampwU0dCNUs3QkdqbS1SdkRMZ0hsbDhjeWpEeUE?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "[증권사 미스터리쇼핑②] IBK투자증권 \"아직 정부는 몰라요\"…레버리지 ETF 규제 '우회' 안내…",
+          "핵심": "[증권사 미스터리쇼핑②] IBK투자증권 \"아직 정부는 몰라요\"…레버리지 ETF 규제 '우회' 안내 신아일보 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMicEFVX3lxTE11X0xUems3X3ZpY0pGNHg3ODQ2SFpMOVBNc2Q0QzBPdUZnRkZDVWxxZGZ2SUk5RkFaeGxueF9lbEE1cktPUjJ0dGo4SktldmV6UVhORklZVjdMS1U3a0JaTmU4dndOWENERlNBR2d4b0k?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "점차 완성돼 가는 창고형약국 규제 '3가지 퍼즐' - 약사공론",
+          "핵심": "점차 완성돼 가는 창고형약국 규제 '3가지 퍼즐' 약사공론 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMibEFVX3lxTFB6VXdwRl82SFFrNncyZDd1cUpwYW9TNko2cXZKc3FGTG1IVklJZk1YRWNSQjZBeDZTa1ZrQ1ZoUzY1c2lhRGE3azhnVzZzM19SaEtwRktrWnlXQ0Q5S0pxZTd6aExTbmRvSmZvaA?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "AI 3대 대부의 섬뜩한 경고…\"통제력 잃었다, 핵무기급 규제 필요\" - 머니투데이 - 머니투데이",
+          "핵심": "AI 3대 대부의 섬뜩한 경고…\"통제력 잃었다, 핵무기급 규제 필요\" - 머니투데이 머니투데이 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiaEFVX3lxTE94RmRpa2FNVVFMVHV2YUVwSlFOVGR1ZzlxT3JvdmdrVDZXZzJ0b0FRZnZ5cUVVeHA3elk2eXhaMjZ0UGd3VXVjOFNqYmJlcEphLWd1VnI1M2NSZnFxdUVqZkl1aWJONlQt0gFuQVVfeXFMUFFINHZnbWl0a0EtUW9UUnFXNloyVXFLUVhHNnFfVDVmRlZfVFZiRDM0T05OR01IX2RBV0ZBa3hjN0l4U3Q1RS12QjJralE5ak14ZGdDbzBfbVFiM0pSa3FYVmJmcFVrU1BkQzhvMEE?oc=5"
           ]
         }
       ],
