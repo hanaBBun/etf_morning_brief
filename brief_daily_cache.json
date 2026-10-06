@@ -1,51 +1,51 @@
 {
-  "날짜": "2026-10-06",
+  "날짜": "2026-10-07",
   "ai": {
     "top5": [
       {
-        "제목": "구리 상승",
-        "숫자": "6.63 (+2.16%)",
-        "영향": "구리 연계 ETF 흐름 확인",
+        "제목": "VIX 하락",
+        "숫자": "15.01 (-3.29%)",
+        "영향": "VIX 연계 ETF 흐름 확인",
         "순위": 1,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "VIX 하락"
+      },
+      {
+        "제목": "코스닥 상승",
+        "숫자": "919.92 (+2.98%)",
+        "영향": "코스닥 연계 ETF 흐름 확인",
+        "순위": 2,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "코스닥 상승"
+      },
+      {
+        "제목": "구리 상승",
+        "숫자": "6.66 (+1.12%)",
+        "영향": "구리 연계 ETF 흐름 확인",
+        "순위": 3,
         "출처": [],
         "설명": "",
         "카톡요약": "구리 상승"
       },
       {
-        "제목": "WTI 하락",
-        "숫자": "89.30 (-1.99%)",
-        "영향": "WTI 연계 ETF 흐름 확인",
-        "순위": 2,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "WTI 하락"
-      },
-      {
-        "제목": "브렌트 하락",
-        "숫자": "100.32 (-1.89%)",
-        "영향": "브렌트 연계 ETF 흐름 확인",
-        "순위": 3,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "브렌트 하락"
-      },
-      {
-        "제목": "VIX 상승",
-        "숫자": "15.52 (+1.37%)",
-        "영향": "VIX 연계 ETF 흐름 확인",
+        "제목": "코스피 하락",
+        "숫자": "6,941.39 (-0.89%)",
+        "영향": "코스피 연계 ETF 흐름 확인",
         "순위": 4,
         "출처": [],
         "설명": "",
-        "카톡요약": "VIX 상승"
+        "카톡요약": "코스피 하락"
       },
       {
-        "제목": "나스닥 종합 상승",
-        "숫자": "27,477.31 (+1.05%)",
-        "영향": "나스닥 종합 연계 ETF 흐름 확인",
+        "제목": "금 상승",
+        "숫자": "4,192.70 (+0.86%)",
+        "영향": "금 연계 ETF 흐름 확인",
         "순위": 5,
         "출처": [],
         "설명": "",
-        "카톡요약": "나스닥 종합 상승"
+        "카톡요약": "금 상승"
       }
     ],
     "시장브리핑": [
@@ -53,8 +53,8 @@
         "시장": "국내",
         "제목": "코스피·코스닥 디커플링",
         "자동생성": true,
-        "결과": "코스피 +0.46% · 코스닥 -0.11%",
-        "원인": "외국인 순매도 1,011억원 · 기관 순매수 4,155억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
+        "결과": "코스피 -0.89% · 코스닥 +2.98%",
+        "원인": "외국인 순매도 17,567억원 · 기관 순매도 37억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
         "전달경로": "대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차",
         "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
@@ -63,13 +63,13 @@
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "CoinNess",
+            "이름": "매일경제 증권",
             "url": ""
           },
           {
-            "이름": "CoinNess",
-            "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9tY1hBTjdvQ0ViYWlwZF9PcHRtOVJ2TjVnb0doTWJVN1F4MVc0YjkzWEl4eW1VRUxKR0ZyOHc0LW0tQ2V0dG9EQVc5WkppcUxrZXNrS0hoUQ?oc=5",
-            "날짜": "10/5"
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12169623",
+            "날짜": "10/6"
           }
         ]
       },
@@ -77,8 +77,8 @@
         "시장": "미국",
         "제목": "미국 증시 마감 흐름",
         "자동생성": true,
-        "결과": "S&P 500 +0.66% · 나스닥 종합 +1.05% · 다우 30 +0.18%",
-        "원인": "주요 지수와 함께 미 10년물 +0.64% · VIX +1.37%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
+        "결과": "S&P 500 +0.58% · 나스닥 종합 +0.45% · 다우 30 +0.49%",
+        "원인": "주요 지수와 함께 미 10년물 -0.79% · VIX -3.29%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
         "전달경로": "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF",
         "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
@@ -87,57 +87,57 @@
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "연합뉴스",
+            "이름": "아시아경제",
             "url": ""
           },
           {
-            "이름": "연합뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5GbFUxRWVzSmpPWTdEYTdISzVEUEVNblJvMTIzVzNIMjdjWmZ2WFF2OV9HQTh6blpITjlINUdTN3JtUzR6SlBLTVFCQzY0UmVmLWdLTzI3dGI1eknSAWBBVV95cUxPU1ZqbTFtcXNXeVJBOUxncnFzWS1DSlVhdTB0djVjQVRpajNmeng0SjM2MHRhTzNVRF9RRnprVzI1aFVMY2I0dEtEWHRRZmgxc3dTM2hMR1BqckRhc1JldlU?oc=5",
-            "날짜": "10/6"
+            "이름": "아시아경제",
+            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1hOXhVWE5Ra1V4Y0VZT29PR243NXJUbE1QcEVBWndzSEhHOEF0blpyMEVnNmlvX0FpNHRiSklVaTNMU0NoMzhOaVRQaUQzWVpyYWp4UG1IVF9PSkdZVTIwYw?oc=5",
+            "날짜": "10/7"
           }
         ]
       }
     ],
     "놓치면안될이슈": [
       {
-        "분야": "생활경제",
-        "제목": "챔피언 홈스, 주택 소매업체 팀버라인 홈스 인수 합의 - 데이터투자",
-        "무슨일": "챔피언 홈스, 주택 소매업체 팀버라인 홈스 인수 합의 데이터투자",
-        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+        "분야": "정책",
+        "제목": "삼전 ‘영업익 100조’ 예고에도 주가는 영…8일도 심상치않다는데",
+        "무슨일": "3분기 잠정실적 8일 발표 원화값 강세에 눈높이 낮아져 석달새 113조→106조로 하향 4분기 HBM4 매출 본격 확대 높아진 가격 협상력에 기대감 ETF 리밸런싱 날짜와 겹친 탓..",
+        "왜중요": "국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12169872",
+            "날짜": "10/7"
+          }
+        ]
+      },
+      {
+        "분야": "산업·기술",
+        "제목": "트럼프 관세에도 美수입 사상 최대…AI 투자붐에 무역적자 1056억달러 - 지이코노미",
+        "무슨일": "트럼프 관세에도 美수입 사상 최대…AI 투자붐에 무역적자 1056억달러 지이코노미",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "지이코노미",
+            "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE81R3YySzQ2alZfSkd2YkhNdk90WF9DTXBvZGI1SG4wVEI2RlZtamFpa2VmeEk2NnRBcm83eExFNWU5bmZ4UFRvWU8teV8ydHlUTmd3Zk9xV0VnZzVLU3JCbldrcDI?oc=5",
+            "날짜": "10/7"
+          }
+        ]
+      },
+      {
+        "분야": "산업·기술",
+        "제목": "퍼스널리스, 템퍼스 AI와의 합병 관련 미 반독점 규제 대기기간 만료 - 데이터투자",
+        "무슨일": "퍼스널리스, 템퍼스 AI와의 합병 관련 미 반독점 규제 대기기간 만료 데이터투자",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
             "이름": "데이터투자",
-            "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9SeUJZM2Zma0tjUlp3blphZnM4ZlZzcllZNlVfUm90WE0zZ1JFV1duMVpNN3JXRzF5VE50TlhGN24wLWFabldyR0l1MlBvZVpQSDhsM0Jtc3FoYUwzQlo2ek5aT3R4LXdKbndDZnFNYXpROTg?oc=5",
-            "날짜": "10/6"
-          }
-        ]
-      },
-      {
-        "분야": "산업·기술",
-        "제목": "삼성·SK 투자에 웃은 日도쿄일렉…영업익 첫 1조엔 - 한국경제",
-        "무슨일": "삼성·SK 투자에 웃은 日도쿄일렉…영업익 첫 1조엔 한국경제",
-        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "한국경제",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxUWdKNHBBRjBXbFZ3NGd3S282d211TE01TWpFS2dOei1ZOEdQNk5pTU00c2o4MUIyVFFVMVJwbkt2TWpNYTRDVXZneWJaWEtUN0xPZjEzVHBndw?oc=5",
-            "날짜": "10/6"
-          }
-        ]
-      },
-      {
-        "분야": "산업·기술",
-        "제목": "삼성물산 협약 유럽 소형 원전에 폴란드 1720억 투자 예정 - 글로벌이코노믹",
-        "무슨일": "삼성물산 협약 유럽 소형 원전에 폴란드 1720억 투자 예정 글로벌이코노믹",
-        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "글로벌이코노믹",
-            "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPd3lFRUhzNlVqYmo1ZHl2MDhTM0o2OGNxdkVVVlRKX0FkOXAtWWZ1cTlFTmtfN1JOWXpEQnFnWjV6VmpRcDVmSHYzc0xIek9EdmJHN09IYWFGMHREd2Q3NlRLcDRSdVlFSWJxNlJWQk5LTk1HOU9xa1VfZ1k2RHVRYTR6VFItZEtr?oc=5",
-            "날짜": "10/6"
+            "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE4teEFZRHpyUE1WZVJMQzBDMEhERGFkTFJfMjlxV1Q4N1RoMTdFRnNwRHpLVDR1bVZaSF95ODVoWVBIZnFLQVZtVkUyRnlPZ1c5dVZkY0doWi0tVjdTeVZBbWtjWFFDcG02QXhRTlZEaDdDUTg?oc=5",
+            "날짜": "10/7"
           }
         ]
       }
@@ -149,34 +149,24 @@
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "구리 상승, 연계 ETF 영향은?",
-        "이유": "구리 상승의 핵심 수치 6.63 (+2.16%)와 ETF 전달 경로를 설명할 필요",
-        "관련ETF": "구리 상승 연계 지수·업종 ETF",
+        "제목": "VIX 하락, 연계 ETF 영향은?",
+        "이유": "VIX 하락의 핵심 수치 15.01 (-3.29%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "VIX 하락 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
-        "질문": "구리 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
+        "질문": "VIX 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
         "사실": "",
         "관찰": ""
       }
     ],
     "오늘관전": [
-      "구리 상승 흐름이 다음 거래일까지 이어지는지 확인"
+      "VIX 하락 흐름이 다음 거래일까지 이어지는지 확인"
     ],
     "월요일요약": null,
     "체크포인트": [
       {
-        "유형": "일정",
-        "때": "10/6 (화) 21:30",
-        "날짜": "2026-10-06",
-        "내용": "미국 무역수지",
-        "출처": {
-          "이름": "미 상무부 경제분석국(BEA)",
-          "url": "https://apps.bea.gov/API/signup/release_dates.json"
-        }
-      },
-      {
         "유형": "확인",
         "때": "다음 거래일",
-        "내용": "구리 상승 흐름의 지속 여부"
+        "내용": "VIX 하락 흐름의 지속 여부"
       }
     ],
     "오늘의개념": null,
@@ -184,88 +174,10 @@
     "관망요인": null,
     "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 10/6 브리핑\n1. 구리 상승\n2. WTI 하락\n3. 브렌트 하락\n4. VIX 상승\n5. 나스닥 종합 상승"
+      "1": "☀️ 10/7 브리핑\n1. VIX 하락\n2. 코스닥 상승\n3. 구리 상승\n4. 코스피 하락\n5. 금 상승"
     }
   },
   "history": [
-    {
-      "날짜": "2026-10-01",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "브렌트 하락",
-          "핵심": "브렌트 연계 ETF 흐름 확인 97.92 (-4.55%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 상승",
-          "핵심": "VIX 연계 ETF 흐름 확인 16.34 (+1.87%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "구리 상승",
-          "핵심": "구리 연계 ETF 흐름 확인 6.64 (+1.47%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "WTI 상승",
-          "핵심": "WTI 연계 ETF 흐름 확인 90.34 (+1.07%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "다우 30 하락",
-          "핵심": "다우 30 연계 ETF 흐름 확인 50,906.05 (-0.86%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "코스피·코스닥 디커플링",
-          "핵심": "외국인 순매도 20,692억원 · 기관 순매도 7,993억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 -0.48% · 코스닥 +0.72%",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://www.yna.co.kr/view/AKR20260930174700008"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "미국 증시 마감 흐름",
-          "핵심": "주요 지수와 함께 미 10년물 +0.72% · VIX +1.87%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 -0.25% · 나스닥 종합 +0.24% · 다우 30 -0.86%",
-          "출처": [
-            "https://finance.yahoo.com",
-            "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBhYTFETnd6Q29XRzFRVHdJQk9hM2JfSUp3WU5rU2RzWUdTZlRxTk45VW5MZGR0YTlUTGRGcURUNUVkZmtPZ0hEblZPTERILXZ2U2c?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "[일지] 한미 관세 합의부터 전략투자 프로젝트 발표까지",
-          "핵심": "(서울=연합뉴스) 장보인 기자 = 한국과 미국 정부의 긴 협상 끝에 1일 첫 대미 전략적 투자 프로젝트가 발표됐다. 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
-          "출처": [
-            "https://www.yna.co.kr/view/AKR20260923091300003"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "트럼프 \"한국, 관세인하 위해 비용 지불\"…알래스카 대미투자 공식발표 - 머니투데이 - 머니투데이",
-          "핵심": "트럼프 \"한국, 관세인하 위해 비용 지불\"…알래스카 대미투자 공식발표 - 머니투데이 머니투데이 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiaEFVX3lxTFByZHNaRXluRWtIalhTTmZjNHpMdlA4M3FDd2puT0JNbERKbzNuQnMyTktQd2hEcmtnVHFWeVl1UGpJdjBoUlZOLVNvcVpFX3dtMGhiTnlCUmxCeTlrX2tRaFVBTERhOFND0gFuQVVfeXFMTnFfWFhuZHdGbjRpb3JDQ2w1YmtJTENfVHUwaGxWU2xmWl9SZGpOQjFFdC1pUkdkSlNwbFR3aEF0QnRhYV9KQ1plWHR4M2NoTUxMRThFNHo4MmE0QnpoY0otVG5MZmpCNXdLWmxLYlE?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "산업장관 \"대미투자, 관세 압박 관리 차원…15% 상한선 재확인\"",
-          "핵심": "(서울=연합뉴스) 신창용 장보인 기자 = 도널드 트럼프 미국 행정부의 추가 관세 발표가 임박한 가운데 통상 당국이 미국 측으로부터 기존 관세 합... 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
-          "출처": [
-            "https://www.yna.co.kr/view/AKR20260923159400003"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-10-02",
       "주제": [
@@ -434,6 +346,84 @@
           "핵심": "40년 벽 허물고 한계 극복한 '통합의 힘'…대전환 열린다[통합 100일①] 뉴시스 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMiYEFVX3lxTFA4aTFpYjJ2cEFHRjFwZUdhT3phQkhIaFBlczJILWNzTEx6V2JtWndzbmdZSHJ0T3lVZUlhRk9kOERobzEyc3hzNFQtX2pZbUVzNjlfV1pCSDcyMjZ3OUt3dtIBeEFVX3lxTE1ILXJmZkdDa19hTU5qNHRTdjA4bkJSVWw1Wm1fekxvWnUyQWY5Z01oX3dfMXQ4ZTh4Z3RuWkJzdDBibDVLb3FoWUhEZ19KUUNDU3dIazdzSGRGN29uQUJYTi0zR2RtRTNRODlGVEJyY2dBemFnWGs4Ng?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-10-06",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "구리 상승",
+          "핵심": "구리 연계 ETF 흐름 확인 6.63 (+2.16%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "WTI 하락",
+          "핵심": "WTI 연계 ETF 흐름 확인 89.30 (-1.99%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "브렌트 하락",
+          "핵심": "브렌트 연계 ETF 흐름 확인 100.32 (-1.89%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "VIX 상승",
+          "핵심": "VIX 연계 ETF 흐름 확인 15.52 (+1.37%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "나스닥 종합 상승",
+          "핵심": "나스닥 종합 연계 ETF 흐름 확인 27,477.31 (+1.05%)",
+          "출처": []
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "코스피·코스닥 디커플링",
+          "핵심": "외국인 순매도 1,011억원 · 기관 순매수 4,155억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 +0.46% · 코스닥 -0.11%",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9tY1hBTjdvQ0ViYWlwZF9PcHRtOVJ2TjVnb0doTWJVN1F4MVc0YjkzWEl4eW1VRUxKR0ZyOHc0LW0tQ2V0dG9EQVc5WkppcUxrZXNrS0hoUQ?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "미국 증시 마감 흐름",
+          "핵심": "주요 지수와 함께 미 10년물 +0.64% · VIX +1.37%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 +0.66% · 나스닥 종합 +1.05% · 다우 30 +0.18%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5GbFUxRWVzSmpPWTdEYTdISzVEUEVNblJvMTIzVzNIMjdjWmZ2WFF2OV9HQTh6blpITjlINUdTN3JtUzR6SlBLTVFCQzY0UmVmLWdLTzI3dGI1eknSAWBBVV95cUxPU1ZqbTFtcXNXeVJBOUxncnFzWS1DSlVhdTB0djVjQVRpajNmeng0SjM2MHRhTzNVRF9RRnprVzI1aFVMY2I0dEtEWHRRZmgxc3dTM2hMR1BqckRhc1JldlU?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "챔피언 홈스, 주택 소매업체 팀버라인 홈스 인수 합의 - 데이터투자",
+          "핵심": "챔피언 홈스, 주택 소매업체 팀버라인 홈스 인수 합의 데이터투자 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMic0FVX3lxTE9SeUJZM2Zma0tjUlp3blphZnM4ZlZzcllZNlVfUm90WE0zZ1JFV1duMVpNN3JXRzF5VE50TlhGN24wLWFabldyR0l1MlBvZVpQSDhsM0Jtc3FoYUwzQlo2ek5aT3R4LXdKbndDZnFNYXpROTg?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "삼성·SK 투자에 웃은 日도쿄일렉…영업익 첫 1조엔 - 한국경제",
+          "핵심": "삼성·SK 투자에 웃은 日도쿄일렉…영업익 첫 1조엔 한국경제 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxUWdKNHBBRjBXbFZ3NGd3S282d211TE01TWpFS2dOei1ZOEdQNk5pTU00c2o4MUIyVFFVMVJwbkt2TWpNYTRDVXZneWJaWEtUN0xPZjEzVHBndw?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "삼성물산 협약 유럽 소형 원전에 폴란드 1720억 투자 예정 - 글로벌이코노믹",
+          "핵심": "삼성물산 협약 유럽 소형 원전에 폴란드 1720억 투자 예정 글로벌이코노믹 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPd3lFRUhzNlVqYmo1ZHl2MDhTM0o2OGNxdkVVVlRKX0FkOXAtWWZ1cTlFTmtfN1JOWXpEQnFnWjV6VmpRcDVmSHYzc0xIek9EdmJHN09IYWFGMHREd2Q3NlRLcDRSdVlFSWJxNlJWQk5LTk1HOU9xa1VfZ1k2RHVRYTR6VFItZEtr?oc=5"
           ]
         }
       ],
