@@ -1,440 +1,183 @@
 {
-  "날짜": "2026-10-12",
+  "날짜": "2026-10-13",
   "ai": {
-    "시장국면": null,
-    "관망요인": null,
+    "top5": [
+      {
+        "제목": "코스닥 하락",
+        "숫자": "849.19 (-4.83%)",
+        "영향": "코스닥 연계 ETF 흐름 확인",
+        "순위": 1,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "코스닥 하락"
+      },
+      {
+        "제목": "코스피 하락",
+        "숫자": "6,384.24 (-3.65%)",
+        "영향": "코스피 연계 ETF 흐름 확인",
+        "순위": 2,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "코스피 하락"
+      },
+      {
+        "제목": "필라델피아 반도체 하락",
+        "숫자": "12,236.79 (-2.67%)",
+        "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
+        "순위": 3,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "필라델피아 반도체 하락"
+      },
+      {
+        "제목": "VIX 상승",
+        "숫자": "15.21 (+2.49%)",
+        "영향": "VIX 연계 ETF 흐름 확인",
+        "순위": 4,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "VIX 상승"
+      },
+      {
+        "제목": "구리 상승",
+        "숫자": "6.76 (+1.84%)",
+        "영향": "구리 연계 ETF 흐름 확인",
+        "순위": 5,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "구리 상승"
+      }
+    ],
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "외국인·기관 대규모 동반 매도 속 코스피 2.62% 급락",
-        "결과": "코스피는 2.62% 하락한 6625.93, 코스닥은 0.69% 내린 892.27로 마감했습니다. 외국인(-2조 811억원)과 기관(-1조 6750억원)이 대규모 순매도를 기록했습니다.",
-        "원인": "직전 거래일 글로벌 고유가 지속과 금리 상방 압력에 따른 기술주 조정 우려가 반영되던 상황이었습니다. 국내 대형주 실적 눈높이 조정 및 글로벌 유동성 축소 경계감이 겹치며 대형 수출주 중심으로 외국인과 기관의 차익 실현 물량이 대거 쏟아졌을 가능성이 있습니다. 상대적으로 중소형 성장주가 포진한 코스닥보다 대형주 비중이 높은 코스피의 낙폭이 훨씬 크게 나타나는 지수 괴리가 발생한 것으로 볼 수 있습니다.",
-        "전달경로": "글로벌 매크로 부담 → 외국인·기관 대형주 집중 순매도 → 코스피 급락 및 대형주 지수 ETF 약세",
-        "ETF연결": "KODEX 200, TIGER 200 등 대표 지수형 ETF의 낙폭이 컸던 반면 2차전지 전고체 등 일부 개별 테마는 선방했습니다. 코스피 지수형 ETF의 하방 지지력과 외국인 순매도 진정 여부를 우선 점검해야 합니다.",
+        "제목": "코스피·코스닥 디커플링",
+        "자동생성": true,
+        "결과": "코스피 -3.65% · 코스닥 -4.83%",
+        "원인": "외국인 순매도 20,182억원 · 기관 순매도 1,338억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
+        "전달경로": "대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차",
+        "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "한국경제",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1UMjhJRGhqZHUxaURwNWNWSk9pWUtWaVE5eWs1V1Z6UEVWbXdBLV8zb0JXS0hoME16V0E3eXozVTFTLWY0M2FuNEdScUhPVEwxLXJyYTFQVzJGdw?oc=5",
-            "날짜": "10/11"
+            "이름": "매일경제 증권",
+            "url": ""
+          },
+          {
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12173906",
+            "날짜": "10/12"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "물가 지표 대기 속 저가 매수세 유입으로 3대 지수 반등",
-        "결과": "다우(+0.83%), S&P500(+0.59%), 나스닥(+0.64%)이 일제히 상승했고, 필라델피아 반도체 지수는 0.41% 하락했습니다. 미 10년물 국채금리는 5.244%(+1.3bp)를 기록했습니다.",
-        "원인": "직전 거래일까지 유가 급등과 연준의 인플레이션 경계 발언으로 기술주 중심의 차익 실현 매물이 출회된 바 있습니다. 이번 장에서는 주초 발표될 9월 소비자물가지수(CPI) 등 핵심 물가 이벤트를 앞두고 과매도 인식이 확산되며 반발 매수세가 유입된 것으로 해석할 여지가 있습니다. 다만 반도체 업종은 기술적 부담과 공급망 경계감이 이어지며 지수 반등에서 소외되었을 가능성이 있습니다.",
-        "전달경로": "지수 과매도 인식 → 대형 기술주·가치주 반발 매수 유입 → 3대 지수 상승 마감",
-        "ETF연결": "미국 지수형 ETF(S&P500, 나스닥100)는 안도 랠리를 나타냈으나 반도체 ETF는 약세를 보였습니다. 국내 개장 시 반도체 대형주 중심의 지수 견인력이 분산될 수 있어 지수형 ETF와 개별 섹터 ETF 간의 온도차를 확인할 필요가 있습니다.",
+        "제목": "미국 증시 마감 흐름",
+        "자동생성": true,
+        "결과": "S&P 500 -0.06% · 나스닥 종합 -0.44% · 다우 30 +0.38%",
+        "원인": "주요 지수와 함께 미 10년물 -0.08% · VIX +2.49%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
+        "전달경로": "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF",
+        "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "아시아경제",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5",
-            "날짜": "10/12"
-          }
-        ]
-      }
-    ],
-    "오늘관전": [
-      "미국 물가 지표(CPI·PPI) 발표를 앞둔 외국인 수급의 순매도 완화 여부",
-      "낙폭이 과대했던 코스피 대형 반도체주 및 대표 지수 ETF의 반등 탄력",
-      "데이터센터 전력 및 ESS 모멘텀이 부각된 2차전지 ETF의 상승 지속성"
-    ],
-    "월요일요약": {
-      "지난주복기": [
-        "코스피는 외국인과 기관의 대규모 동반 매도로 주간 3.10% 하락 마감",
-        "미국 증시는 주 후반 물가 경계 속에서도 저가 매수가 유입되며 S&P500 주간 1.15% 상승",
-        "WTI는 배럴당 91달러선, 미 10년물 금리는 5.24% 수준을 유지하며 매크로 부담 잔존"
-      ],
-      "주말변수": [
-        {
-          "제목": "데이터센터 전력 공급원으로서 ESS 및 배터리 수혜 부각",
-          "설명": "주말 동안 AI 데이터센터 전력망 구축을 위한 ESS(에너지저장장치) 수요가 2차전지 업종의 새로운 실적 돌파구로 재조명되었습니다.",
-          "출처": [
-            {
-              "이름": "조선일보",
-              "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQX2hueDVDX2VjcFZXSXlCUXZodFNudzJmdVJlaW9JaG5KdngxRU85a3M4N0d1aXRZc2xGdnpuem5ucVlOQ2ZOdTc5NDM4UC1vUTlrMnJMaEFxYW1zVklkU0Rnd1VERVVzRGgyOHQ3Nl9TZ3NzTTV0bHVZNWdpZl9xMA?oc=5",
-              "날짜": "10/12"
-            },
-            {
-              "이름": "매일경제",
-              "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBMOHphZ0ZRN3RIa0NZMzVDTFZsdDdqS243TnhQbklkNU94dFRTMEZwaEN5SUFYQ3JPV0ZBczhMdXA3c3RQRlRBbTd6eC1jNU12WkE?oc=5",
-              "날짜": "10/11"
-            }
-          ]
-        },
-        {
-          "제목": "미국 9월 CPI 등 주요 물가 지표 발표 대기",
-          "설명": "14일 예정된 미국 소비자물가지수(CPI) 발표를 앞두고 글로벌 채권 및 외환 시장의 관망 심리가 강화되었습니다.",
-          "출처": [
-            {
-              "이름": "아시아경제",
-              "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5",
-              "날짜": "10/12"
-            },
-            {
-              "이름": "토큰포스트",
-              "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5RX0NSM2VBU1VLWWpHeDlHWjFWcV9GZFk4SmVVWVpwc21qdFFNU1Z6eUxreWdMOUhuVU9JUWFKRElnVkE4SFlhRG94UVlFTHpSQzdvd0l3?oc=5",
-              "날짜": "10/12"
-            }
-          ]
-        }
-      ],
-      "국내개장영향": "미 증시 반등 온기가 반영될 수 있으나 반도체 지수 조정과 주중 물가 지표 대기 심리로 인해, 지수 전반의 반등보다는 ESS 수혜가 부각된 2차전지 및 전고체 ETF 중심의 차별화 장세가 나타날지 확인할 필요가 있습니다."
-    },
-    "주도테마": {
-      "테마": "2차전지",
-      "제목": "AI 데이터센터 ESS 수요 부각에 2차전지 ETF 강세",
-      "움직임": "SOL 전고체배터리&실리콘음극재(+2.53%)와 KODEX 전고체배터리ESS TOP2플러스(+2.42%)가 지수 급락 속에서도 동반 상승했습니다.",
-      "원인": "전기차 캐즘 우려 속에서 AI 데이터센터 증설에 따른 대용량 ESS 배터리 수요가 신규 성장 동력으로 부각되었습니다. 북미 실적 개선 기대감이 관련 밸류체인과 전고체 배터리 소재주로 유입된 것으로 해석할 여지가 있습니다.",
-      "주도종목": [],
-      "ETF연결": "전기차 수요 회복 여부와 별개로 전력망·ESS향 수주 가시성이 유지되는지 관련 ETF의 거래대금 추이를 확인해야 합니다.",
-      "출처": [
-        {
-          "이름": "조선일보",
-          "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQX2hueDVDX2VjcFZXSXlCUXZodFNudzJmdVJlaW9JaG5KdngxRU85a3M4N0d1aXRZc2xGdnpuem5ucVlOQ2ZOdTc5NDM4UC1vUTlrMnJMaEFxYW1zVklkU0Rnd1VERVVzRGgyOHQ3Nl9TZ3NzTTV0bHVZNWdpZl9xMA?oc=5",
-          "날짜": "10/12"
-        },
-        {
-          "이름": "매일경제",
-          "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBMOHphZ0ZRN3RIa0NZMzVDTFZsdDdqS243TnhQbklkNU94dFRTMEZwaEN5SUFYQ3JPV0ZBczhMdXA3c3RQRlRBbTd6eC1jNU12WkE?oc=5",
-          "날짜": "10/11"
-        }
-      ]
-    },
-    "관심종목": [],
-    "top5": [
-      {
-        "순위": 1,
-        "제목": "외국인·기관 동반 매도 코스피 급락",
-        "숫자": "외인 -2.08조 · 기관 -1.67조",
-        "설명": "",
-        "영향": "대표 지수 추종 ETF 및 대형주 레버리지 상품에 강한 하방 압력으로 작용했습니다.",
-        "카톡요약": "외인·기관 대규모 순매도에 코스피 2.6% 급락",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          }
-        ]
-      },
-      {
-        "순위": 2,
-        "제목": "미 3대 지수 과매도 인식 속 반등",
-        "숫자": "다우 +0.83% · 나스닥 +0.64%",
-        "설명": "물가 지표 경계 속에서도 낙폭 과대 인식에 따른 기술주와 가치주 중심 반발 매수가 유입됐습니다.",
-        "영향": "국내 증시의 야간 선물 및 시초가 갭상승 출발 기대감을 형성했습니다.",
-        "카톡요약": "미국 증시 저가 매수세 유입되며 3대 지수 일제히 반등",
-        "출처": [
-          {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
+            "이름": "매일경제 마켓",
+            "url": ""
           },
           {
-            "이름": "아시아경제",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5",
-            "날짜": "10/12"
-          }
-        ]
-      },
-      {
-        "순위": 3,
-        "제목": "데이터센터 ESS 수요로 배터리 반등",
-        "숫자": "SOL 전고체배터리 +2.53%",
-        "설명": "AI 데이터센터 증설에 따른 ESS 배터리 수요가 실적 돌파구로 부각되며 관련 ETF가 강세를 보였습니다.",
-        "영향": "2차전지 소재 및 전고체 관련 ETF로의 매수세 분산 경로를 마련했습니다.",
-        "카톡요약": "데이터센터 ESS 수요 부각에 2차전지 테마 ETF 상승",
-        "출처": [
-          {
-            "이름": "조선일보",
-            "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQX2hueDVDX2VjcFZXSXlCUXZodFNudzJmdVJlaW9JaG5KdngxRU85a3M4N0d1aXRZc2xGdnpuem5ucVlOQ2ZOdTc5NDM4UC1vUTlrMnJMaEFxYW1zVklkU0Rnd1VERVVzRGgyOHQ3Nl9TZ3NzTTV0bHVZNWdpZl9xMA?oc=5",
-            "날짜": "10/12"
-          },
-          {
-            "이름": "한국경제",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5udXgyeGxJVkRzRWJMMTZzZWRSLV9VTTZ1UXpTTVBZMHdpU1hPeS1TMzZDRVV2cnVyUHNGRV9CaWlubmJlWHYwMTQ1QlFVRVJCVWVla1VPTnFuZw?oc=5",
-            "날짜": "10/11"
-          }
-        ]
-      },
-      {
-        "순위": 4,
-        "제목": "미 국채금리 5.24% 물가 대기 관망",
-        "숫자": "10년물 5.244% (+1.3bp)",
-        "설명": "9월 CPI 발표를 앞두고 인플레이션 상방 압력 우려 속에 미 10년물 금리가 소폭 상승했습니다.",
-        "영향": "글로벌 성장주 밸류에이션 부담 및 채권형 ETF의 가격 변동성을 자극했습니다.",
-        "카톡요약": "미 10년물 금리 5.24% 기록 속 CPI 발표 관망세",
-        "출처": [
-          {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
-          },
-          {
-            "이름": "아시아경제",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5",
-            "날짜": "10/12"
-          }
-        ]
-      },
-      {
-        "순위": 5,
-        "제목": "국내 신규 테마 및 채권 ETF 상장",
-        "숫자": "신규 4종 상장",
-        "설명": "MLCC, AI 반도체, 회사채 액티브, AI 에이전트 등 신산업과 금리 대응형 ETF가 상장을 예고했습니다.",
-        "영향": "세부 테마형 ETF 시장의 선택지가 확대되며 관련 포트폴리오 유입 경로가 생성됐습니다.",
-        "카톡요약": "MLCC·AI반도체·회사채액티브 등 신규 ETF 상장 예정",
-        "출처": [
-          {
-            "이름": "IT조선",
-            "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA4bmtZWGltaHRWQjBSc1JyaFNzVEI3eWsweldXeFRGYXo3bTlGZmNPTGpGQ1F1WDJlOHhLaG9la3FlakZ5bUFnMFFTOGt4dy11U3N6dFdTUzVkWTFVT2ppNGUxcEhvQWdpRVJrNEU4eWbSAXRBVV95cUxQU0lBU21LZXRlWXhHQnBYX3p0LWdfdW9rVHNRQUY0REpJRzJQekp3SXR5V3ZJUW9VQkgtRE54RnNQT1J6ZlFfQ2RZLWJFa3lFaWd6Yldqd1VSWmJRcnEyVWxwVTdrT1ljZy13RmQ3eW9CeUFtdQ?oc=5",
-            "날짜": "10/11"
+            "이름": "매일경제 마켓",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE0xZklrbWt1dFNXQmZMY3VOekJaUTRTdEMxcVFBRVYtWjNaYXgxdk53TjhwSFR2OEZuZUplUVBTYTVxMkFTbE9kQVU3dG5KaDNQMlE?oc=5",
+            "날짜": "10/13"
           }
         ]
       }
     ],
     "놓치면안될이슈": [
       {
-        "분야": "산업·기술",
-        "제목": "빅테크 AI 전력 확보 위해 원전 및 ESS 동맹 가속",
-        "무슨일": "빅테크 기업들이 AI 데이터센터 전력 수급을 위해 원자력 기업과의 장기 계약을 확대하고 대용량 ESS 도입을 본격화하고 있습니다.",
-        "왜중요": "원전과 배터리 산업이 단순 경기순환을 넘어 AI 인프라 핵심 전력망 공급망으로 구조적 재평가를 받을 수 있습니다.",
-        "확인할것": "빅테크-원전 기업 간 추가 전력구매계약(PPA) 체결 여부",
+        "분야": "생활경제",
+        "제목": "뉴욕증시 AI 대형주 약세에 혼조…기업 실적·물가 지표 주시 - 네이버 프리미엄콘텐츠",
+        "무슨일": "뉴욕증시 AI 대형주 약세에 혼조…기업 실적·물가 지표 주시 네이버 프리미엄콘텐츠",
+        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "매일경제 마켓",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE90UkdLMGxkd081eHcyWFUwUEV4cGtpWXdXYVN5TkdnOUhIWXBJSnQ2NjY1N053X2dSQWdvY0Fia25xMHN0Qi1POFpLU0ZpVUVackE?oc=5",
-            "날짜": "10/11"
-          },
-          {
-            "이름": "매일경제",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBMOHphZ0ZRN3RIa0NZMzVDTFZsdDdqS243TnhQbklkNU94dFRTMEZwaEN5SUFYQ3JPV0ZBczhMdXA3c3RQRlRBbTd6eC1jNU12WkE?oc=5",
-            "날짜": "10/11"
-          }
-        ]
-      },
-      {
-        "분야": "산업·기술",
-        "제목": "TSMC·ASML 등 글로벌 반도체 실적 발표 주간 진입",
-        "무슨일": "이번 주 TSMC와 ASML 등 글로벌 반도체 핵심 장비·파운드리 기업들의 분기 실적 발표가 예정되어 있습니다.",
-        "왜중요": "AI 반도체 수요의 지속 가능성과 레거시 반도체 장비 수요 회복 여부를 검증하는 분수령이 됩니다.",
-        "확인할것": "TSMC 및 ASML 실적 컨퍼런스콜 가이던스 코멘트",
-        "출처": [
-          {
-            "이름": "뉴스핌",
-            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5CREg0eEgxZTNVbTBlNHNzNXlGNFlvemVhMktYVF9xUzZqUUdnM3BzSUIxLW4zdnhxSWFlZGdKQVQ4VTUyNjAxTG1URWk2Y3VnSHktYTJRa0NfR2hq?oc=5",
-            "날짜": "10/11"
+            "이름": "네이버 프리미엄콘텐츠",
+            "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOX094d0FmX0w1LTlpYTY1c0s5RDNtcnF1Qy1YRS1wZ2lrcFBCOXpDQWlmSm1ETFp4OUxYVEpfdGdyTzEtTnZIQUd0UjlHaGd3OG5RWTRNN2lLTzFsNHRNdmcxQzBUcnhiSG40OUkzTzVJN1N4QWZlemQ5SkJGSzlTOW1R?oc=5",
+            "날짜": "10/13"
           }
         ]
       },
       {
         "분야": "정책",
-        "제목": "고금리 버틴 금융·헬스케어 실적 줄줄이 … 14일 美CPI가 증시 향배 좌우",
-        "무슨일": "이번 주 자본시장 이슈 점검지난주 8일 미국 증시에서는 오픈AI 매출 보도가 AI 관련주 투자심리를 흔들었습니다. 인공지능(AI) 기업의 매출을 둘러싼 논란과 추가 금리 인상 가능..",
+        "제목": "한중 통상당국, 공급망 핫라인 유지…새만금 산단 협력도 속도",
+        "무슨일": "(서울=연합뉴스) 신창용 기자 = 한국과 중국 통상당국이 공급망 현안 발생 시 신속히 협의하는 체계를 유지하고 새만금 협력이 실질적인 투자 성과...",
         "왜중요": "국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "매일경제 증권",
-            "url": "https://www.mk.co.kr/news/stock/12173055",
-            "날짜": "10/12"
+            "이름": "연합뉴스 경제",
+            "url": "https://www.yna.co.kr/view/AKR20261012165300003",
+            "날짜": "10/13"
           }
         ]
       },
       {
         "분야": "산업·기술",
-        "제목": "AI 투자 열풍이 빌딩값 올릴까…건물마다 다른 계산서 [김용남의 부동산 자산관리] - 한국경제",
-        "무슨일": "AI 투자 열풍이 빌딩값 올릴까…건물마다 다른 계산서 [김용남의 부동산 자산관리] 한국경제",
+        "제목": "탄소발자국이 수출 경쟁력으로…제약·바이오 공급망의 변화 - 약사공론",
+        "무슨일": "탄소발자국이 수출 경쟁력으로…제약·바이오 공급망의 변화 약사공론",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "한국경제",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4S0NlR1pIMTNMNTd0UnQxUUxxS0NhVC1rMDZNVHRfeG1zSTFKTU9DZFYxckN5RXd3QlQwdGRIRlhVeVYzUDZSTGlkUlNOc1c0dTJMZ09BdUJjUQ?oc=5",
-            "날짜": "10/12"
-          }
-        ]
-      },
-      {
-        "분야": "생활경제",
-        "제목": "美 국채시장, 14일 CPI에 주목…9월 물가 상승폭 확대 전망 - 아시아경제",
-        "무슨일": "美 국채시장, 14일 CPI에 주목…9월 물가 상승폭 확대 전망 아시아경제",
-        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "아시아경제",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5",
-            "날짜": "10/12"
+            "이름": "약사공론",
+            "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5HakQyal9vOS1NellhaVU0LVNQNExGbnlvWVhmek9VMk9vQ05IQXdNWnFpNGs3OHpaT0pkNnFnNFE1M0Qyc2FJSS1Vakpzc0g2cW9wdFpKd3RBQ3pQX05lQldPWEtWWVNackZVTA?oc=5",
+            "날짜": "10/13"
           }
         ]
       }
     ],
-    "etf_레이더": [
-      {
-        "구분": "유형 쏠림",
-        "제목": "데이터센터 ESS 수요 기대에 배터리 ETF 거래 집중",
-        "사실": "SOL 전고체배터리&실리콘음극재 ETF의 거래량이 직전 대비 3.6배 급증하며 거래대금 401억원을 기록했습니다.",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "한국경제",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1UMjhJRGhqZHUxaURwNWNWSk9pWUtWaVE5eWs1V1Z6UEVWbXdBLV8zb0JXS0hoME16V0E3eXozVTFTLWY0M2FuNEdScUhPVEwxLXJyYTFQVzJGdw?oc=5",
-            "날짜": "10/11"
-          }
-        ],
-        "관찰": "전기차 캐즘 우려 속에서도 ESS라는 구체적 대체 수요처가 부각되며 단기 모멘텀이 집중되었을 가능성이 있습니다.",
-        "이유": "",
-        "관련ETF": "",
-        "질문": "",
-        "차별점": ""
-      }
-    ],
-    "유튜브": [
-      {
-        "영상ID": "paVrdQV8ko4",
-        "핵심주제": "5060세대를 위한 고배당 및 연금 맞춤형 ETF 전략",
-        "훅": "숫자 제시형",
-        "관련성": "보통",
-        "관련성근거": "배당 ETF 유형 다룸"
-      },
-      {
-        "영상ID": "po9BdLIptUc",
-        "핵심주제": "달러 자산 투자 및 달러 ETF·단기채 운용 가이드",
-        "훅": "정보 나열형",
-        "관련성": "보통",
-        "관련성근거": "달러 ETF 자산배분"
-      }
-    ],
-    "댓글키워드": "ISA 계좌 내 나스닥 커버드콜 및 배당 ETF 포트폴리오 비중 구성에 대한 문의 반복",
+    "etf_레이더": [],
+    "주도테마": null,
+    "관심종목": [],
+    "유튜브": [],
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "VIX 하락, 연계 ETF 영향은?",
-        "이유": "VIX 하락의 핵심 수치 14.84 (-3.70%)와 ETF 전달 경로를 설명할 필요",
-        "관련ETF": "VIX 하락 연계 지수·업종 ETF",
+        "제목": "코스닥 하락, 연계 ETF 영향은?",
+        "이유": "코스닥 하락의 핵심 수치 849.19 (-4.83%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "코스닥 하락 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
-        "질문": "VIX 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
+        "질문": "코스닥 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
         "사실": "",
         "관찰": ""
       }
     ],
+    "오늘관전": [
+      "코스닥 하락 흐름이 다음 거래일까지 이어지는지 확인"
+    ],
+    "월요일요약": null,
     "체크포인트": [
       {
         "유형": "확인",
-        "때": "이번 주",
-        "내용": "외국인 코스피 순매도 전환 및 진정 여부 점검"
-      },
-      {
-        "유형": "일정",
-        "때": "10/14 (수)",
-        "내용": "미국 9월 소비자물가지수(CPI) 발표"
-      },
-      {
-        "유형": "일정",
-        "때": "이번 주",
-        "내용": "TSMC 및 ASML 3분기 실적 발표"
-      },
-      {
-        "유형": "확인",
-        "때": "상시",
-        "내용": "미 국채 10년물 금리 5.2%대 유지 및 유가 추이 확인"
+        "때": "다음 거래일",
+        "내용": "코스닥 하락 흐름의 지속 여부"
       }
     ],
+    "오늘의개념": null,
+    "시장국면": null,
+    "관망요인": null,
+    "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 10/12 브리핑\n1. 외인·기관 대규모 순매도에 코스피 2.6% 급락\n2. 미국 증시 저가 매수세 유입되며 3대 지수 일제히 반등\n3. 데이터센터 ESS 수요 부각에 2차전지 테마 ETF 상승\n4. 미 10년물 금리 5.24% 기록 속 CPI 발표 관망세\n5. MLCC·AI반도체·회사채액티브 등 신규 ETF 상장 예정"
-    },
-    "오늘의개념": null
+      "1": "☀️ 10/13 브리핑\n1. 코스닥 하락\n2. 코스피 하락\n3. 필라델피아 반도체 하락\n4. VIX 상승\n5. 구리 상승"
+    }
   },
   "history": [
-    {
-      "날짜": "2026-10-07",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 하락",
-          "핵심": "VIX 연계 ETF 흐름 확인 15.01 (-3.29%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스닥 상승",
-          "핵심": "코스닥 연계 ETF 흐름 확인 919.92 (+2.98%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "구리 상승",
-          "핵심": "구리 연계 ETF 흐름 확인 6.66 (+1.12%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스피 하락",
-          "핵심": "코스피 연계 ETF 흐름 확인 6,941.39 (-0.89%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "금 상승",
-          "핵심": "금 연계 ETF 흐름 확인 4,192.70 (+0.86%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "코스피·코스닥 디커플링",
-          "핵심": "외국인 순매도 17,567억원 · 기관 순매도 37억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 -0.89% · 코스닥 +2.98%",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://www.mk.co.kr/news/stock/12169623"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "미국 증시 마감 흐름",
-          "핵심": "주요 지수와 함께 미 10년물 -0.79% · VIX -3.29%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 +0.58% · 나스닥 종합 +0.45% · 다우 30 +0.49%",
-          "출처": [
-            "https://finance.yahoo.com",
-            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1hOXhVWE5Ra1V4Y0VZT29PR243NXJUbE1QcEVBWndzSEhHOEF0blpyMEVnNmlvX0FpNHRiSklVaTNMU0NoMzhOaVRQaUQzWVpyYWp4UG1IVF9PSkdZVTIwYw?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "삼전 ‘영업익 100조’ 예고에도 주가는 영…8일도 심상치않다는데",
-          "핵심": "3분기 잠정실적 8일 발표 원화값 강세에 눈높이 낮아져 석달새 113조→106조로 하향 4분기 HBM4 매출 본격 확대 높아진 가격 협상력에 기대감 ETF 리밸런싱 날짜와 겹친 탓.. 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
-          "출처": [
-            "https://www.mk.co.kr/news/stock/12169872"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "트럼프 관세에도 美수입 사상 최대…AI 투자붐에 무역적자 1056억달러 - 지이코노미",
-          "핵심": "트럼프 관세에도 美수입 사상 최대…AI 투자붐에 무역적자 1056억달러 지이코노미 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiZEFVX3lxTE81R3YySzQ2alZfSkd2YkhNdk90WF9DTXBvZGI1SG4wVEI2RlZtamFpa2VmeEk2NnRBcm83eExFNWU5bmZ4UFRvWU8teV8ydHlUTmd3Zk9xV0VnZzVLU3JCbldrcDI?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "퍼스널리스, 템퍼스 AI와의 합병 관련 미 반독점 규제 대기기간 만료 - 데이터투자",
-          "핵심": "퍼스널리스, 템퍼스 AI와의 합병 관련 미 반독점 규제 대기기간 만료 데이터투자 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMic0FVX3lxTE4teEFZRHpyUE1WZVJMQzBDMEhERGFkTFJfMjlxV1Q4N1RoMTdFRnNwRHpLVDR1bVZaSF95ODVoWVBIZnFLQVZtVkUyRnlPZ1c5dVZkY0doWi0tVjdTeVZBbWtjWFFDcG02QXhRTlZEaDdDUTg?oc=5"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-10-08",
       "주제": [
@@ -586,6 +329,114 @@
           "핵심": "\"AI 투자로 고수익\"...가짜 앱 설치 유도로 수십억원 가로챈 조직원 실형 뉴스핌 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1pMmxZRHVCbmdwaEhZSUVhdVRpbGFGSEFKQkczWk9lZ3ROam84MkJQakpjMS1URUptVFNodDF1ZjhLdUZHck1KSDYzLUdsMG93bXZ4Qk10empVZzh0?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-10-12",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "외국인·기관 동반 매도 코스피 급락",
+          "핵심": "대표 지수 추종 ETF 및 대형주 레버리지 상품에 강한 하방 압력으로 작용했습니다. 외인 -2.08조 · 기관 -1.67조",
+          "출처": [
+            "https://data.krx.co.kr"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "미 3대 지수 과매도 인식 속 반등",
+          "핵심": "물가 지표 경계 속에서도 낙폭 과대 인식에 따른 기술주와 가치주 중심 반발 매수가 유입됐습니다. 국내 증시의 야간 선물 및 시초가 갭상승 출발 기대감을 형성했습니다. 다우 +0.83% · 나스닥 +0.64%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "데이터센터 ESS 수요로 배터리 반등",
+          "핵심": "AI 데이터센터 증설에 따른 ESS 배터리 수요가 실적 돌파구로 부각되며 관련 ETF가 강세를 보였습니다. 2차전지 소재 및 전고체 관련 ETF로의 매수세 분산 경로를 마련했습니다. SOL 전고체배터리 +2.53%",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMigAFBVV95cUxQX2hueDVDX2VjcFZXSXlCUXZodFNudzJmdVJlaW9JaG5KdngxRU85a3M4N0d1aXRZc2xGdnpuem5ucVlOQ2ZOdTc5NDM4UC1vUTlrMnJMaEFxYW1zVklkU0Rnd1VERVVzRGgyOHQ3Nl9TZ3NzTTV0bHVZNWdpZl9xMA?oc=5",
+            "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5udXgyeGxJVkRzRWJMMTZzZWRSLV9VTTZ1UXpTTVBZMHdpU1hPeS1TMzZDRVV2cnVyUHNGRV9CaWlubmJlWHYwMTQ1QlFVRVJCVWVla1VPTnFuZw?oc=5"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "미 국채금리 5.24% 물가 대기 관망",
+          "핵심": "9월 CPI 발표를 앞두고 인플레이션 상방 압력 우려 속에 미 10년물 금리가 소폭 상승했습니다. 글로벌 성장주 밸류에이션 부담 및 채권형 ETF의 가격 변동성을 자극했습니다. 10년물 5.244% (+1.3bp)",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "국내 신규 테마 및 채권 ETF 상장",
+          "핵심": "MLCC, AI 반도체, 회사채 액티브, AI 에이전트 등 신산업과 금리 대응형 ETF가 상장을 예고했습니다. 세부 테마형 ETF 시장의 선택지가 확대되며 관련 포트폴리오 유입 경로가 생성됐습니다. 신규 4종 상장",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMicEFVX3lxTFA4bmtZWGltaHRWQjBSc1JyaFNzVEI3eWsweldXeFRGYXo3bTlGZmNPTGpGQ1F1WDJlOHhLaG9la3FlakZ5bUFnMFFTOGt4dy11U3N6dFdTUzVkWTFVT2ppNGUxcEhvQWdpRVJrNEU4eWbSAXRBVV95cUxQU0lBU21LZXRlWXhHQnBYX3p0LWdfdW9rVHNRQUY0REpJRzJQekp3SXR5V3ZJUW9VQkgtRE54RnNQT1J6ZlFfQ2RZLWJFa3lFaWd6Yldqd1VSWmJRcnEyVWxwVTdrT1ljZy13RmQ3eW9CeUFtdQ?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "외국인·기관 대규모 동반 매도 속 코스피 2.62% 급락",
+          "핵심": "직전 거래일 글로벌 고유가 지속과 금리 상방 압력에 따른 기술주 조정 우려가 반영되던 상황이었습니다. 국내 대형주 실적 눈높이 조정 및 글로벌 유동성 축소 경계감이 겹치며 대형 수출주 중심으로 외국인과 기관의 차익 실현 물량이 대거 쏟아졌을 가능성이 있습니다. 상대적으로 중소형 성장주가 포진한 코스닥보다 대형주 비중이 높은 코스피의 낙폭이 훨씬 크게 나타나는 지수 괴리가 발생한 것으로 볼 수",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1UMjhJRGhqZHUxaURwNWNWSk9pWUtWaVE5eWs1V1Z6UEVWbXdBLV8zb0JXS0hoME16V0E3eXozVTFTLWY0M2FuNEdScUhPVEwxLXJyYTFQVzJGdw?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "물가 지표 대기 속 저가 매수세 유입으로 3대 지수 반등",
+          "핵심": "직전 거래일까지 유가 급등과 연준의 인플레이션 경계 발언으로 기술주 중심의 차익 실현 매물이 출회된 바 있습니다. 이번 장에서는 주초 발표될 9월 소비자물가지수(CPI) 등 핵심 물가 이벤트를 앞두고 과매도 인식이 확산되며 반발 매수세가 유입된 것으로 해석할 여지가 있습니다. 다만 반도체 업종은 기술적 부담과 공급망 경계감이 이어지며 지수 반등에서 소외되었을 가능성이 있습니다. 다우(+0.8",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "빅테크 AI 전력 확보 위해 원전 및 ESS 동맹 가속",
+          "핵심": "빅테크 기업들이 AI 데이터센터 전력 수급을 위해 원자력 기업과의 장기 계약을 확대하고 대용량 ESS 도입을 본격화하고 있습니다. 원전과 배터리 산업이 단순 경기순환을 넘어 AI 인프라 핵심 전력망 공급망으로 구조적 재평가를 받을 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiUkFVX3lxTE90UkdLMGxkd081eHcyWFUwUEV4cGtpWXdXYVN5TkdnOUhIWXBJSnQ2NjY1N053X2dSQWdvY0Fia25xMHN0Qi1POFpLU0ZpVUVackE?oc=5",
+            "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBMOHphZ0ZRN3RIa0NZMzVDTFZsdDdqS243TnhQbklkNU94dFRTMEZwaEN5SUFYQ3JPV0ZBczhMdXA3c3RQRlRBbTd6eC1jNU12WkE?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "TSMC·ASML 등 글로벌 반도체 실적 발표 주간 진입",
+          "핵심": "이번 주 TSMC와 ASML 등 글로벌 반도체 핵심 장비·파운드리 기업들의 분기 실적 발표가 예정되어 있습니다. AI 반도체 수요의 지속 가능성과 레거시 반도체 장비 수요 회복 여부를 검증하는 분수령이 됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5CREg0eEgxZTNVbTBlNHNzNXlGNFlvemVhMktYVF9xUzZqUUdnM3BzSUIxLW4zdnhxSWFlZGdKQVQ4VTUyNjAxTG1URWk2Y3VnSHktYTJRa0NfR2hq?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "고금리 버틴 금융·헬스케어 실적 줄줄이 … 14일 美CPI가 증시 향배 좌우",
+          "핵심": "이번 주 자본시장 이슈 점검지난주 8일 미국 증시에서는 오픈AI 매출 보도가 AI 관련주 투자심리를 흔들었습니다. 인공지능(AI) 기업의 매출을 둘러싼 논란과 추가 금리 인상 가능.. 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
+          "출처": [
+            "https://www.mk.co.kr/news/stock/12173055"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "AI 투자 열풍이 빌딩값 올릴까…건물마다 다른 계산서 [김용남의 부동산 자산관리] - 한국경제",
+          "핵심": "AI 투자 열풍이 빌딩값 올릴까…건물마다 다른 계산서 [김용남의 부동산 자산관리] 한국경제 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4S0NlR1pIMTNMNTd0UnQxUUxxS0NhVC1rMDZNVHRfeG1zSTFKTU9DZFYxckN5RXd3QlQwdGRIRlhVeVYzUDZSTGlkUlNOc1c0dTJMZ09BdUJjUQ?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "美 국채시장, 14일 CPI에 주목…9월 물가 상승폭 확대 전망 - 아시아경제",
+          "핵심": "美 국채시장, 14일 CPI에 주목…9월 물가 상승폭 확대 전망 아시아경제 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5aNXdtOVUwWkhVNTFBMHQwSU9KMEZxMTU5OFVYLXZjZ1pEMVBRYW5CQXBVTmd5WHpUVHJ4UzRqZ3pjYkxScllyU3lHclBBLVpkeUp5dTRLNlM3Z3BuTlJNMQ?oc=5"
           ]
         }
       ],
