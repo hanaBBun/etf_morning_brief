@@ -1,350 +1,172 @@
 {
-  "날짜": "2026-10-14",
+  "날짜": "2026-10-15",
   "ai": {
-    "시장국면": null,
-    "관망요인": null,
+    "top5": [
+      {
+        "제목": "VIX 상승",
+        "숫자": "16.87 (+10.48%)",
+        "영향": "VIX 연계 ETF 흐름 확인",
+        "순위": 1,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "VIX 상승"
+      },
+      {
+        "제목": "필라델피아 반도체 하락",
+        "숫자": "11,684.38 (-4.30%)",
+        "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
+        "순위": 2,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "필라델피아 반도체 하락"
+      },
+      {
+        "제목": "러셀 2000 하락",
+        "숫자": "2,729.53 (-1.93%)",
+        "영향": "러셀 2000 연계 ETF 흐름 확인",
+        "순위": 3,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "러셀 2000 하락"
+      },
+      {
+        "제목": "나스닥 종합 하락",
+        "숫자": "26,692.87 (-1.88%)",
+        "영향": "나스닥 종합 연계 ETF 흐름 확인",
+        "순위": 4,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "나스닥 종합 하락"
+      },
+      {
+        "제목": "코스닥 하락",
+        "숫자": "823.88 (-1.57%)",
+        "영향": "코스닥 연계 ETF 흐름 확인",
+        "순위": 5,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "코스닥 하락"
+      }
+    ],
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "외국인 4.5조 순매도 폭탄에 대형 반도체 급락하며 코스피 5.46% 급락",
-        "결과": "코스피는 5.46% 급락한 6,035.35로 마감했고, 코스닥은 1.43% 하락한 837.03을 기록하며 지수 간 하락 강도 괴리가 크게 벌어졌습니다.",
-        "원인": "글로벌 기술주 투자심리 위축과 반도체 업황 경계감이 겹친 가운데 외국인이 유가증권시장에서 4조 5,933억 원을 순매도하며 지수를 강하게 끌어내렸습니다. 특히 삼성전자(-7.39%)와 SK하이닉스(-10.09%) 등 시총 상위 대형 반도체 종목에 매도세가 집중된 점이 코스피 급락의 주요 원인이었을 가능성이 있습니다. 기관이 1조 6,685억 원을 순매수했으나 외국인 매도 압력을 방어하기에는 역부족이었을 것으로 볼 수 있습니다.",
-        "전달경로": "외국인 대규모 매도 → 대형 반도체주 급락 → 코스피 대형 지수 추종 상품 하락 심화",
-        "ETF연결": "KODEX 200 등 시장 대표 지수 ETF와 반도체 레버리지 상품의 가격 변동성이 극대화된 만큼 수급 진정 여부를 우선 관찰해야 합니다.",
+        "제목": "코스피·코스닥 디커플링",
+        "자동생성": true,
+        "결과": "코스피 -0.44% · 코스닥 -1.57%",
+        "원인": "외국인 순매도 11,816억원 · 기관 순매수 8,119억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
+        "전달경로": "대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차",
+        "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "KRX 정보데이터시스템",
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "머니투데이",
-            "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1uS1ZRRERicmhQMjJjX2EwdV9icFNWb0phMmJ4dUF6amlITU9lTUFqQ2h6YXRmaXQydjlVU2EzVUc2TWRpYW1vM3VVck1kSlROV0kwMjFpVkE1QjhZb0kyODdhZ1c5MUdMY1ZIVDNR0gFuQVVfeXFMTW5LVlFERGJyaFAyMmNfYTB1X2JwU1ZvSmEyYnh1QXpqaUhNT2VNQWpDaHphdGZpdDJ2OVVTYTNVRzZNZGlhbW8zdVVyTWRKVE5XSTAyMWlWQTVCOFlvSTI4N2FnVzkxR0xjVkhUM1E?oc=5",
+            "이름": "매일경제 증권",
+            "url": ""
+          },
+          {
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12176048",
             "날짜": "10/14"
           }
         ]
       },
       {
         "시장": "미국",
-        "제목": "물가 발표와 실적 시즌 앞두고 3대 지수 보합권 숨고르기",
-        "결과": "S&P 500은 0.02%, 나스닥은 0.15%, 다우는 0.35% 소폭 하락하며 주요 지수가 일제히 좁은 범위 내에서 조정을 받았습니다. 미 10년물 국채금리는 2.3bp 내린 5.217%로 마감했습니다.",
-        "원인": "직전 거래일까지 이어진 고금리 부담과 기술주 변동성 확대 이후 시장은 방향성을 탐색하는 흐름을 보였습니다. 9월 소비자물가지수(CPI) 발표와 대형 금융주 실적 공개를 앞두고 대규모 베팅을 자제하는 분위기가 짙어졌을 가능성이 있습니다. 시장 참가자들은 물가 경로와 기업 이익 전망을 확인하기 전까지 관망세를 이어갔을 것으로 해석할 여지가 있습니다.",
-        "전달경로": "지표 및 실적 경계 심리 → 채권금리 소폭 반락 및 거래 둔화 → 주요 지수 보합권 마감",
-        "ETF연결": "단기 변동성 확대 국면에서는 S&P 500이나 미국배당다우존스 등 방어적 현금흐름형 상품의 흐름을 함께 점검할 필요가 있습니다.",
+        "제목": "미국 증시 마감 흐름",
+        "자동생성": true,
+        "결과": "S&P 500 -1.11% · 나스닥 종합 -1.88% · 다우 30 -0.09%",
+        "원인": "주요 지수와 함께 미 10년물 -0.52% · VIX +10.48%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
+        "전달경로": "",
+        "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
           {
             "이름": "Yahoo Finance",
             "url": "https://finance.yahoo.com"
-          },
-          {
-            "이름": "머니투데이",
-            "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1uS1ZRRERicmhQMjJjX2EwdV9icFNWb0phMmJ4dUF6amlITU9lTUFqQ2h6YXRmaXQydjlVU2EzVUc2TWRpYW1vM3VVck1kSlROV0kwMjFpVkE1QjhZb0kyODdhZ1c5MUdMY1ZIVDNR0gFuQVVfeXFMTW5LVlFERGJyaFAyMmNfYTB1X2JwU1ZvSmEyYnh1QXpqaUhNT2VNQWpDaHphdGZpdDJ2OVVTYTNVRzZNZGlhbW8zdVVyTWRKVE5XSTAyMWlWQTVCOFlvSTI4N2FnVzkxR0xjVkhUM1E?oc=5",
-            "날짜": "10/14"
-          }
-        ]
-      }
-    ],
-    "오늘관전": [
-      "미국 9월 CPI 발표에 따른 인플레이션 경로 및 금리 반응",
-      "국내 증시에서 외국인의 대규모 순매도세 진정 및 수급 전환 여부",
-      "JP모건 등 주요 금융주 실적 발표 후 기술주와 가치주 간 차별화"
-    ],
-    "월요일요약": null,
-    "주도테마": null,
-    "관심종목": [],
-    "top5": [
-      {
-        "순위": 1,
-        "제목": "코스피 5.46% 급락",
-        "숫자": "코스피 6,035.35 (-5.46%)",
-        "설명": "",
-        "영향": "KODEX 200 등 시장 대표 ETF 및 레버리지 상품의 급격한 가격 조정 유발",
-        "카톡요약": "외인 4.5조 매도에 코스피 5.46% 급락 마감",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          }
-        ]
-      },
-      {
-        "순위": 2,
-        "제목": "SK하이닉스 10%대 하락",
-        "숫자": "등락률 -10.09%",
-        "설명": "",
-        "영향": "국내 반도체 업종 ETF 및 그룹주 ETF의 동반 하락 압력 가중",
-        "카톡요약": "외국인 집중 매도 속 SK하이닉스 10.09% 급락",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          }
-        ]
-      },
-      {
-        "순위": 3,
-        "제목": "미 3대 지수 관망세",
-        "숫자": "S&P500 -0.02% · 나스닥 -0.15%",
-        "설명": "미국 증시는 핵심 물가 지표와 실적 발표를 앞두고 보합권에서 등락을 제한했습니다.",
-        "영향": "글로벌 위험선호 관망에 따라 단기 지수 방향성 탐색 국면 지속",
-        "카톡요약": "미국 증시, CPI와 실적 시즌 앞두고 보합 혼조",
-        "출처": [
-          {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
-          },
-          {
-            "이름": "머니투데이",
-            "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1uS1ZRRERicmhQMjJjX2EwdV9icFNWb0phMmJ4dUF6amlITU9lTUFqQ2h6YXRmaXQydjlVU2EzVUc2TWRpYW1vM3VVck1kSlROV0kwMjFpVkE1QjhZb0kyODdhZ1c5MUdMY1ZIVDNR0gFuQVVfeXFMTW5LVlFERGJyaFAyMmNfYTB1X2JwU1ZvSmEyYnh1QXpqaUhNT2VNQWpDaHphdGZpdDJ2OVVTYTNVRzZNZGlhbW8zdVVyTWRKVE5XSTAyMWlWQTVCOFlvSTI4N2FnVzkxR0xjVkhUM1E?oc=5",
-            "날짜": "10/14"
-          }
-        ]
-      },
-      {
-        "순위": 4,
-        "제목": "미 국채금리 소폭 반락",
-        "숫자": "10년물 5.217% (-2.3bp)",
-        "설명": "",
-        "영향": "채권형 ETF의 단기 낙폭 진정 및 이자율 민감 자산 변동성 완화",
-        "카톡요약": "미 10년물 금리 5.217%로 2.3bp 하락 마감",
-        "출처": [
-          {
-            "이름": "Yahoo Finance",
-            "url": "https://finance.yahoo.com"
-          }
-        ]
-      },
-      {
-        "순위": 5,
-        "제목": "만기채권 액티브 상장",
-        "숫자": "ACE 29-11 신규 상장",
-        "설명": "2029년 11월 만기 회사채를 담는 만기매칭형 채권 액티브 ETF가 시장에 상장됐습니다.",
-        "영향": "금리 변동기 확정 만기 수익을 노리는 연금 계좌 중심 자금 대안 형성",
-        "카톡요약": "한투운용, ACE 29-11회사채액티브 ETF 상장",
-        "출처": [
-          {
-            "이름": "연합뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE53ZVg3MFphVGxvNER3NXIyTFE0S0ZGTTh6WXlVRXlkNDAxQXpRRUdpSlFmZjB6ZG00MFREQkdWdHFDNjZyellYNVBTTEVTZWNqQktMY0FkYkljcTDSAWBBVV95cUxQejFMZEpBTGpqemZKeDBGc0NPaElJa3Rxd3VYVHJxczFtR1hrTDktS1E1Z1BMQXNOT1hYdHN4RG1pa3N2NV94M0dvUF9rSnh3Nkp0Zm94YzNQT05qUTRCWEU?oc=5",
-            "날짜": "10/13"
           }
         ]
       }
     ],
     "놓치면안될이슈": [
       {
-        "분야": "정책",
-        "제목": "미국 9월 소비자물가지수 발표 임박",
-        "무슨일": "연준의 금리 경로를 가늠할 핵심 지표인 9월 CPI가 공개를 앞두고 있습니다.",
-        "왜중요": "물가 둔화세가 주춤할 경우 국채금리 반등과 함께 글로벌 주식시장 밸류에이션에 부담으로 작용할 수 있습니다.",
-        "확인할것": "근원 소비자물가지수 전월비 및 전년비 상승률 수치",
-        "출처": [
-          {
-            "이름": "파이낸셜뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5henhjbmtaMGxZZ0x2bUtlbWtUWC10T3dBRFQ4NDI1S0Y2Z25lQ2U5STNCeFdfU3MwcHNsb0g5d2swVi1qQjdCRUw2SHFMWllIallHUE1iUG8tUQ?oc=5",
-            "날짜": "10/13"
-          }
-        ]
-      },
-      {
-        "분야": "생활경제",
-        "제목": "中 반도체 쇼크보다 걱정되는 것들…美 물가지표·삼전닉스 실적 전망 - 뉴스1",
-        "무슨일": "中 반도체 쇼크보다 걱정되는 것들…美 물가지표·삼전닉스 실적 전망 뉴스1",
-        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+        "분야": "산업·기술",
+        "제목": "트럼프, 중간선거 앞두고 \"韓·日·대만 대미 투자\" 잇따라 발표 - 머니투데이 - 머니투데이",
+        "무슨일": "트럼프, 중간선거 앞두고 \"韓·日·대만 대미 투자\" 잇따라 발표 - 머니투데이 머니투데이",
+        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "뉴스1",
-            "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5ncHhSMmhXQWpiaTUtb2xnYWJaTjNfc1RPSk1uQl9POEhxY1JTYTI1SkNvZXZTTk5hdlV2RXQwQTVOempXekJyT1pnM1RSTThEcExvYmxSWFJhRDRXdURB?oc=5",
-            "날짜": "10/14"
+            "이름": "머니투데이",
+            "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5ObUh3WDRMVjNVS29VdEFySF9rN0l6bk5iaG5FTV91NHFxTjJ0QUpvQ21MVzBmcnVDNnhZOE5UbkJmZXNnSGpxeEdrbmlXeGRCcEtYQVNoM0luWXRENDhIUjZZcjZuTC0z0gFuQVVfeXFMTUY4bGZwTnlUbUZtdmp0UWpYdGhnVDU0NEFGb2lnc0k4TF9fTDlJUDU0QjFoZmpBUlpWZ0NIczlTZkxqNjIzTWFKRlF4SjUtQ0Nqby1wMW5GSWxZYXdpbkNKNUVhalZ5bk14S2xqZ0E?oc=5",
+            "날짜": "10/15"
           }
         ]
       },
       {
         "분야": "산업·기술",
-        "제목": "저커버그 “AI 성공 확신 없었다”…수천억 달러 투자, 메타 실적 시험대｜Global Money…",
-        "무슨일": "저커버그 “AI 성공 확신 없었다”…수천억 달러 투자, 메타 실적 시험대｜Global Money Club 중앙일보",
+        "제목": "뉴욕증시, 물가 상승 · AI 투자 부담에 하락…나스닥 1.88%↓[뉴욕마감] - MTN 머니투데…",
+        "무슨일": "뉴욕증시, 물가 상승 · AI 투자 부담에 하락…나스닥 1.88%↓[뉴욕마감] MTN 머니투데이방송",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "중앙일보",
-            "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5zeVE5eXVIWVZBRjZaY2xQX3hsLUxhcXVMQ3dNVmFRbFZrNjQ3dzFrNUlWem5NNV81ZWhBMTR5VWNZUGM2LVBtZVZONHhhaEMyU3NxR1RkVzhLLWM?oc=5",
-            "날짜": "10/14"
+            "이름": "MTN 머니투데이방송",
+            "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1ITEcwTnZVQmRRam5uaUwwcXdmZks2ZnZIT3RJdjlJNVlBWFhiTEdhcWl5ZUMyUE5xX1NPczUzaW9pVlBMREhjak5rdGxMcHpHNFNvT1dLQXV5dDdNUlFnVzJXZDQ?oc=5",
+            "날짜": "10/15"
           }
         ]
       },
       {
         "분야": "생활경제",
-        "제목": "[1014주요일정] 美 9월 소비자물가지수 발표 및 연준 베이지북 공개 등 - 인포스탁데일리",
-        "무슨일": "[1014주요일정] 美 9월 소비자물가지수 발표 및 연준 베이지북 공개 등 인포스탁데일리",
+        "제목": "미 연준 “고유가에 물가 압력 심화…공급망 비용↑” - KBS 뉴스",
+        "무슨일": "미 연준 “고유가에 물가 압력 심화…공급망 비용↑” KBS 뉴스",
         "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "인포스탁데일리",
-            "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBrc3pRUkctMnlIMlB0eDBfTXBaUjN1SFh1Y0xBWThBVGthMkNFMkdFOXlpVUtRajhsLW9DNnkwZ3M3Qk9ZSG9kd1JUemhocFJ0aXNXbWEta2NUWUp4WkpwLURMZzZIQ0JwQngxTzNkcGdRX0MwMkE?oc=5",
-            "날짜": "10/14"
+            "이름": "KBS 뉴스",
+            "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFB4aDlWZDNhTlhGWTJDRGxXUDJkR0lOeWRSS042TFJwUnM5OFB5cTJRMENBc3hoUDV4TXBrdmlGUjY4eEtqX0JuUElwX0x2Q0h4RkxXV1hjM0lvM00?oc=5",
+            "날짜": "10/15"
           }
         ]
       }
     ],
-    "etf_레이더": [
-      {
-        "구분": "신규 상장",
-        "제목": "만기채권형 액티브 ETF 신규 상장",
-        "사실": "2029년 11월 만기 회사채(AA- 이상)를 편입하는 ACE 29-11 회사채액티브 상품이 상장했습니다.",
-        "출처": [
-          {
-            "이름": "KRX 정보데이터시스템",
-            "url": "https://data.krx.co.kr"
-          },
-          {
-            "이름": "연합뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE53ZVg3MFphVGxvNER3NXIyTFE0S0ZGTTh6WXlVRXlkNDAxQXpRRUdpSlFmZjB6ZG00MFREQkdWdHFDNjZyellYNVBTTEVTZWNqQktMY0FkYkljcTDSAWBBVV95cUxQejFMZEpBTGpqemZKeDBGc0NPaElJa3Rxd3VYVHJxczFtR1hrTDktS1E1Z1BMQXNOT1hYdHN4RG1pa3N2NV94M0dvUF9rSnh3Nkp0Zm94YzNQT05qUTRCWEU?oc=5",
-            "날짜": "10/13"
-          }
-        ],
-        "관찰": "고금리 장기화 환경에서 채권 만기 수익률을 확보하려는 퇴직연금 투자 수요를 겨냥했을 가능성이 있습니다.",
-        "이유": "",
-        "관련ETF": "",
-        "질문": "",
-        "차별점": ""
-      }
-    ],
-    "유튜브": [
-      {
-        "영상ID": "Ua5NBUjs8Go",
-        "핵심주제": "S&P 500 대비 인기 높은 커버드콜 및 배당 ETF",
-        "훅": "수익률 비교 및 호기심 자극형",
-        "관련성": "보통",
-        "관련성근거": "지수 추종과 현금흐름형 상품 비교"
-      },
-      {
-        "영상ID": "UHdqtMWHphE",
-        "핵심주제": "국내 증시 변동성과 해외 투자 비중 확대",
-        "훅": "시장 풍자형",
-        "관련성": "보통",
-        "관련성근거": "국내외 자산배분 채널 이슈"
-      }
-    ],
-    "댓글키워드": "국내 월배당 커버드콜 상품의 연금 계좌 활용법 및 고배당 포트폴리오 구성 질문",
+    "etf_레이더": [],
+    "주도테마": null,
+    "관심종목": [],
+    "유튜브": [],
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "외국인 4조 매도 폭탄, 코스피 대형주 ETF 들고 버텨도 될까?",
-        "이유": "코스피 5%대 급락으로 레버리지 및 대표지수 ETF 투자자 불안이 고조된 상황 반영.",
-        "관련ETF": "국내지수 · 반도체",
-        "질문": "대형 반도체 급락으로 인한 지수 조정 시 분할 매수로 대응하는 것이 유효한가요?",
-        "차별점": "개별 종목 비관론 대신 코스피 200 추종 ETF의 과거 급락 후 회복 패턴 분석 제시",
-        "사실": "",
-        "관찰": ""
+        "제목": "VIX 상승, 연계 ETF 영향은?",
+        "이유": "VIX 상승의 핵심 수치 16.87 (+10.48%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "VIX 상승 연계 지수·업종 ETF",
+        "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
+        "질문": "VIX 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?"
       }
     ],
+    "오늘관전": [
+      "VIX 상승 흐름이 다음 거래일까지 이어지는지 확인"
+    ],
+    "월요일요약": null,
     "체크포인트": [
       {
         "유형": "확인",
-        "때": "이번 주",
-        "내용": "국내 증시 외국인 순매도 진정 및 수급 전환 여부"
-      },
-      {
-        "유형": "일정",
-        "때": "10/14 (수)",
-        "내용": "미국 9월 소비자물가지수(CPI) 발표"
-      },
-      {
-        "유형": "확인",
-        "때": "상시",
-        "내용": "미국 10년물 국채금리 5.2%선 안착 여부"
-      },
-      {
-        "유형": "확인",
         "때": "다음 거래일",
-        "내용": "코스피 하락 흐름의 지속 여부"
+        "내용": "VIX 상승 흐름의 지속 여부"
       }
     ],
+    "오늘의개념": null,
+    "시장국면": null,
+    "관망요인": null,
+    "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 10/14 브리핑\n1. 외인 4.5조 매도에 코스피 5.46% 급락 마감\n2. 외국인 집중 매도 속 SK하이닉스 10.09% 급락\n3. 미국 증시, CPI와 실적 시즌 앞두고 보합 혼조\n4. 미 10년물 금리 5.217%로 2.3bp 하락 마감\n5. 한투운용, ACE 29-11회사채액티브 ETF 상장"
-    },
-    "오늘의개념": null
+      "1": "☀️ 10/15 브리핑\n1. VIX 상승\n2. 필라델피아 반도체 하락\n3. 러셀 2000 하락\n4. 나스닥 종합 하락\n5. 코스닥 하락"
+    }
   },
   "history": [
-    {
-      "날짜": "2026-10-09",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "브렌트 상승",
-          "핵심": "브렌트 연계 ETF 흐름 확인 103.92 (+3.71%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "필라델피아 반도체 하락",
-          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 12,623.71 (-3.39%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "WTI 상승",
-          "핵심": "WTI 연계 ETF 흐름 확인 91.18 (+3.29%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스피 하락",
-          "핵심": "코스피 연계 ETF 흐름 확인 6,625.93 (-2.62%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 상승",
-          "핵심": "VIX 연계 ETF 흐름 확인 15.41 (+2.19%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "코스피·코스닥 디커플링",
-          "핵심": "외국인 순매도 20,811억원 · 기관 순매도 16,750억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 -2.62% · 코스닥 -0.69%",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://www.mk.co.kr/news/stock/12171872"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "유가·금리 상승에 기술주 약세",
-          "핵심": "주요 지수와 함께 미 10년물 -0.87% · VIX +2.19%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 -0.47% · 나스닥 종합 -1.25% · 다우 30 +0.10%",
-          "출처": [
-            "https://finance.yahoo.com",
-            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1mc3dSMUo1R2R6NUliMHBfalJPeXBTRVlyTVhpVzRNMXJkdVBPVENEUEdWVksySnVPZWNITFhiMUZHUDB5WWdqYy1jdExONzlxdjJyazUyeUw0bVpMNkozMtIBeEFVX3lxTFBwNjdTdWNzQl95NUQ4S1NtNHZOOWRuY04wY3ZFaTc2ZUdSWkM2X08yYWpfT2p6N1B1UHp1dFFnMVF2bGVNOXZ1cVh1TlYtdzFhaWJKX0s0WTVhY0JoWm9PQnFya2ExZU5NQ2h6ck9pSzZXcnVXNzNHOQ?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "“전기차 안 팔려 죽을맛이었는데”…K배터리 기업, 호실적 낸 비결은",
-          "핵심": "LG엔솔 3분기 실적 발표 3분기 영업익 7560억 26%↑ 매출은 분기 기준 사상 최대 글로벌 전기차 시장 회복세 하반기 美 ESS 생산 확대에 배터리 3사 실적개선 기대감전기차.. 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
-          "출처": [
-            "https://www.mk.co.kr/news/business/12172123"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "한미 에너지 투자 3대 사업 윤곽…건설사별 셈법 분주 - MTN 머니투데이방송",
-          "핵심": "한미 에너지 투자 3대 사업 윤곽…건설사별 셈법 분주 MTN 머니투데이방송 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5IZDNRT3ZxYVNLQWpwWk9kaUM4bHJYMEt4MjRRSWVnZlc2eV9KaVRUTUtZSUlkX1FnWVNJRlNETmZwNFQ4NnVUbElpMnB0MXNwNWs2TzJfcGxyek5IZzN3?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "\"AI 투자로 고수익\"...가짜 앱 설치 유도로 수십억원 가로챈 조직원 실형 - 뉴스핌",
-          "핵심": "\"AI 투자로 고수익\"...가짜 앱 설치 유도로 수십억원 가로챈 조직원 실형 뉴스핌 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1pMmxZRHVCbmdwaEhZSUVhdVRpbGFGSEFKQkczWk9lZ3ROam84MkJQakpjMS1URUptVFNodDF1ZjhLdUZHck1KSDYzLUdsMG93bXZ4Qk10empVZzh0?oc=5"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-10-12",
       "주제": [
@@ -526,6 +348,103 @@
           "핵심": "탄소발자국이 수출 경쟁력으로…제약·바이오 공급망의 변화 약사공론 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMibEFVX3lxTE5HakQyal9vOS1NellhaVU0LVNQNExGbnlvWVhmek9VMk9vQ05IQXdNWnFpNGs3OHpaT0pkNnFnNFE1M0Qyc2FJSS1Vakpzc0g2cW9wdFpKd3RBQ3pQX05lQldPWEtWWVNackZVTA?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-10-14",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "코스피 5.46% 급락",
+          "핵심": "KODEX 200 등 시장 대표 ETF 및 레버리지 상품의 급격한 가격 조정 유발 코스피 6,035.35 (-5.46%)",
+          "출처": [
+            "https://data.krx.co.kr"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "SK하이닉스 10%대 하락",
+          "핵심": "국내 반도체 업종 ETF 및 그룹주 ETF의 동반 하락 압력 가중 등락률 -10.09%",
+          "출처": [
+            "https://data.krx.co.kr"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "미 3대 지수 관망세",
+          "핵심": "미국 증시는 핵심 물가 지표와 실적 발표를 앞두고 보합권에서 등락을 제한했습니다. 글로벌 위험선호 관망에 따라 단기 지수 방향성 탐색 국면 지속 S&P500 -0.02% · 나스닥 -0.15%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMibkFVX3lxTE1uS1ZRRERicmhQMjJjX2EwdV9icFNWb0phMmJ4dUF6amlITU9lTUFqQ2h6YXRmaXQydjlVU2EzVUc2TWRpYW1vM3VVck1kSlROV0kwMjFpVkE1QjhZb0kyODdhZ1c5MUdMY1ZIVDNR0gFuQVVfeXFMTW5LVlFERGJyaFAyMmNfYTB1X2JwU1ZvSmEyYnh1QXpqaUhNT2VNQWpDaHphdGZpdDJ2OVVTYTNVRzZNZGlhbW8zdVVyTWRKVE5XSTAyMWlWQTVCOFlvSTI4N2FnVzkxR0xjVkhUM1E?oc=5"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "미 국채금리 소폭 반락",
+          "핵심": "채권형 ETF의 단기 낙폭 진정 및 이자율 민감 자산 변동성 완화 10년물 5.217% (-2.3bp)",
+          "출처": [
+            "https://finance.yahoo.com"
+          ]
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "만기채권 액티브 상장",
+          "핵심": "2029년 11월 만기 회사채를 담는 만기매칭형 채권 액티브 ETF가 시장에 상장됐습니다. 금리 변동기 확정 만기 수익을 노리는 연금 계좌 중심 자금 대안 형성 ACE 29-11 신규 상장",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiW0FVX3lxTE53ZVg3MFphVGxvNER3NXIyTFE0S0ZGTTh6WXlVRXlkNDAxQXpRRUdpSlFmZjB6ZG00MFREQkdWdHFDNjZyellYNVBTTEVTZWNqQktMY0FkYkljcTDSAWBBVV95cUxQejFMZEpBTGpqemZKeDBGc0NPaElJa3Rxd3VYVHJxczFtR1hrTDktS1E1Z1BMQXNOT1hYdHN4RG1pa3N2NV94M0dvUF9rSnh3Nkp0Zm94YzNQT05qUTRCWEU?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "외국인 4.5조 순매도 폭탄에 대형 반도체 급락하며 코스피 5.46% 급락",
+          "핵심": "글로벌 기술주 투자심리 위축과 반도체 업황 경계감이 겹친 가운데 외국인이 유가증권시장에서 4조 5,933억 원을 순매도하며 지수를 강하게 끌어내렸습니다. 특히 삼성전자(-7.39%)와 SK하이닉스(-10.09%) 등 시총 상위 대형 반도체 종목에 매도세가 집중된 점이 코스피 급락의 주요 원인이었을 가능성이 있습니다. 기관이 1조 6,685억 원을 순매수했으나 외국인 매도 압력을 방어하기에는 ",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://news.google.com/rss/articles/CBMibkFVX3lxTE1uS1ZRRERicmhQMjJjX2EwdV9icFNWb0phMmJ4dUF6amlITU9lTUFqQ2h6YXRmaXQydjlVU2EzVUc2TWRpYW1vM3VVck1kSlROV0kwMjFpVkE1QjhZb0kyODdhZ1c5MUdMY1ZIVDNR0gFuQVVfeXFMTW5LVlFERGJyaFAyMmNfYTB1X2JwU1ZvSmEyYnh1QXpqaUhNT2VNQWpDaHphdGZpdDJ2OVVTYTNVRzZNZGlhbW8zdVVyTWRKVE5XSTAyMWlWQTVCOFlvSTI4N2FnVzkxR0xjVkhUM1E?oc=5"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "물가 발표와 실적 시즌 앞두고 3대 지수 보합권 숨고르기",
+          "핵심": "직전 거래일까지 이어진 고금리 부담과 기술주 변동성 확대 이후 시장은 방향성을 탐색하는 흐름을 보였습니다. 9월 소비자물가지수(CPI) 발표와 대형 금융주 실적 공개를 앞두고 대규모 베팅을 자제하는 분위기가 짙어졌을 가능성이 있습니다. 시장 참가자들은 물가 경로와 기업 이익 전망을 확인하기 전까지 관망세를 이어갔을 것으로 해석할 여지가 있습니다. S&P 500은 0.02%, 나스닥은 0.15",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMibkFVX3lxTE1uS1ZRRERicmhQMjJjX2EwdV9icFNWb0phMmJ4dUF6amlITU9lTUFqQ2h6YXRmaXQydjlVU2EzVUc2TWRpYW1vM3VVck1kSlROV0kwMjFpVkE1QjhZb0kyODdhZ1c5MUdMY1ZIVDNR0gFuQVVfeXFMTW5LVlFERGJyaFAyMmNfYTB1X2JwU1ZvSmEyYnh1QXpqaUhNT2VNQWpDaHphdGZpdDJ2OVVTYTNVRzZNZGlhbW8zdVVyTWRKVE5XSTAyMWlWQTVCOFlvSTI4N2FnVzkxR0xjVkhUM1E?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "미국 9월 소비자물가지수 발표 임박",
+          "핵심": "연준의 금리 경로를 가늠할 핵심 지표인 9월 CPI가 공개를 앞두고 있습니다. 물가 둔화세가 주춤할 경우 국채금리 반등과 함께 글로벌 주식시장 밸류에이션에 부담으로 작용할 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5henhjbmtaMGxZZ0x2bUtlbWtUWC10T3dBRFQ4NDI1S0Y2Z25lQ2U5STNCeFdfU3MwcHNsb0g5d2swVi1qQjdCRUw2SHFMWllIallHUE1iUG8tUQ?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "中 반도체 쇼크보다 걱정되는 것들…美 물가지표·삼전닉스 실적 전망 - 뉴스1",
+          "핵심": "中 반도체 쇼크보다 걱정되는 것들…美 물가지표·삼전닉스 실적 전망 뉴스1 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5ncHhSMmhXQWpiaTUtb2xnYWJaTjNfc1RPSk1uQl9POEhxY1JTYTI1SkNvZXZTTk5hdlV2RXQwQTVOempXekJyT1pnM1RSTThEcExvYmxSWFJhRDRXdURB?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "저커버그 “AI 성공 확신 없었다”…수천억 달러 투자, 메타 실적 시험대｜Global Money…",
+          "핵심": "저커버그 “AI 성공 확신 없었다”…수천억 달러 투자, 메타 실적 시험대｜Global Money Club 중앙일보 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5zeVE5eXVIWVZBRjZaY2xQX3hsLUxhcXVMQ3dNVmFRbFZrNjQ3dzFrNUlWem5NNV81ZWhBMTR5VWNZUGM2LVBtZVZONHhhaEMyU3NxR1RkVzhLLWM?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "[1014주요일정] 美 9월 소비자물가지수 발표 및 연준 베이지북 공개 등 - 인포스탁데일리",
+          "핵심": "[1014주요일정] 美 9월 소비자물가지수 발표 및 연준 베이지북 공개 등 인포스탁데일리 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMidkFVX3lxTFBrc3pRUkctMnlIMlB0eDBfTXBaUjN1SFh1Y0xBWThBVGthMkNFMkdFOXlpVUtRajhsLW9DNnkwZ3M3Qk9ZSG9kd1JUemhocFJ0aXNXbWEta2NUWUp4WkpwLURMZzZIQ0JwQngxTzNkcGdRX0MwMkE?oc=5"
           ]
         }
       ],
