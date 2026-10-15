@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETF 처방전 전달문 · 2026년 10월 15일 (목)</title>
+<style>
+  :root{
+    --bg:#0e1116; --surface:#161b22; --surface2:#1c2230; --line:#242c3a;
+    --ink:#e8edf5; --ink2:#a6b2c4; --ink3:#6f7d92;
+    --up:#f05a5a; --down:#3b8fe8; --warn:#e0a33c; --accent:#7c6cf0; --pick:#2fae7e;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f6; --line:#e2e6ee;
+           --ink:#161b22; --ink2:#4c5768; --ink3:#8792a4; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+       line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 60px}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+  h1{font-size:23px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink3);font-size:13px;margin:0}
+  h2{font-size:15px;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+     letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
+  h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+
+  .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+       border:1px solid var(--line);border-radius:50%;font-size:10px;color:var(--ink3);
+       cursor:help;position:relative;font-weight:600;vertical-align:2px;margin-left:5px;
+       background:var(--surface2);flex-shrink:0}
+  .tip:hover,.tip:focus{color:var(--accent);border-color:var(--accent);outline:none}
+  .tip .bubble{visibility:hidden;opacity:0;position:absolute;top:22px;left:50%;
+       transform:translateX(-50%);width:min(340px,78vw);background:var(--surface2);
+       border:1px solid var(--line);border-radius:8px;padding:10px 12px;z-index:20;
+       font-size:12px;font-weight:400;color:var(--ink2);line-height:1.6;text-align:left;
+       box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
+  .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
+  @media (max-width:520px){ .tip .bubble{left:auto;right:-8px;transform:none} }
+
+  /* 뉴스 6선 */
+  .newslist{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+            padding:2px 16px;margin:10px 0}
+  .nitem{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:12px 0;
+         border-bottom:1px solid var(--line);align-items:start}
+  .nitem:last-child{border-bottom:none}
+  .nno{display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+       border-radius:5px;background:var(--surface2);border:1px solid var(--line);
+       font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;margin-top:1px}
+  .nitem a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .nitem a:hover{color:var(--accent)}
+  .nmeta{font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .nsum{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .ntheme{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent);
+          border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 7px;margin-right:7px}
+
+  .copybox{margin:8px 0 0}
+  .copybox summary{font-size:12.5px;color:var(--ink3);cursor:pointer;padding:6px 2px;
+                   list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .copybox summary::before{content:"📋"}
+  .copybox summary:hover{color:var(--accent)}
+  .copybox textarea{width:100%;margin-top:6px;background:var(--surface2);color:var(--ink2);
+                    border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                    font-size:12px;line-height:1.75;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                    resize:vertical}
+  .more-items{margin:10px 0 0;background:var(--surface);border:1px solid var(--line);
+              border-radius:10px;padding:0 16px}
+  .more-items summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;
+                      color:var(--ink2)}
+  .more-items .nitem:first-of-type,.more-items .quote:first-of-type{border-top:1px solid var(--line)}
+
+  /* 애널리스트 발언 */
+  .quote{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:14px 16px;margin:10px 0}
+  .qhead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+  .qname{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .qorg{font-size:12px;color:var(--ink3)}
+  .qtopic{font-size:10.5px;font-weight:700;color:var(--ink3);background:var(--surface2);
+          border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:auto}
+  .qbody{font-size:13px;color:var(--ink2);margin:0;padding-left:11px;
+         border-left:2px solid var(--line)}
+  .qsrc{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+  .qsrc a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+  .qsrc a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* 출연자 추천 */
+  .guest{background:linear-gradient(135deg,rgba(47,174,126,.10),rgba(47,174,126,.03));
+         border:1px solid rgba(47,174,126,.32);border-radius:10px;padding:15px 17px;margin:10px 0}
+  .ghead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:3px}
+  .gname{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .gorg{font-size:12.5px;color:var(--ink3)}
+  .gcorner{font-size:10.5px;font-weight:700;color:var(--pick);
+           border:1px solid rgba(47,174,126,.45);border-radius:4px;padding:2px 8px;margin-left:auto}
+  .grow{display:grid;grid-template-columns:82px 1fr;gap:5px 10px;font-size:12.5px;margin-top:9px}
+  .grow .k{color:var(--ink3);font-weight:600}
+  .grow .v{color:var(--ink2)}
+  .gq{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
+      font-size:12.5px;color:var(--ink2);border-left:2px solid var(--pick)}
+  .gnote{margin-top:8px;font-size:11.5px;color:var(--ink3)}
+
+  .empty{background:var(--surface);border:1px dashed var(--line);border-radius:10px;
+         padding:16px;margin:10px 0;font-size:13px;color:var(--ink3);text-align:center}
+
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:11px;color:var(--ink3);line-height:1.7}
+  .srclist{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+  .srclist a{font-size:11.5px;background:var(--surface2);border:1px solid var(--line);
+             border-radius:16px;padding:3px 10px;color:var(--ink2);text-decoration:none}
+  .srclist a:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ETF 처방전 · 목요일 전달문</div>
+  <h1>2026년 10월 15일 (목) ETF 뉴스 브리프</h1>
+  <p class="sub">10/11 09:40 ~ 10/15 09:40 KST 보도분 · 박승진 실장 전달용</p>
+</header>
+
+<h2>📰 중요 ETF 뉴스 6선<span class="tip" tabindex="0">?<span class="bubble">
+  최근 96시간 ETF 기사 중 중요도 상위 6건을 먼저 보여줍니다.
+  수급 / 신규 상장 / 규제 / 해외 동향 / 상품 구조 / 시장 규모로 분산합니다.
+  아래 <b>복사용 텍스트</b>를 그대로 카톡에 붙여넣으면 됩니다.</span></span>
+  <span class="tag">전달용</span></h2>
+
+<div class="newslist">
+  <div class="nitem">
+    <div class="nno">1</div>
+    <div>
+<span class="ntheme">시장 규모</span>      <a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE01dVZQb2FvdllxWkExTS03VUM1ZzloazZMLUJQOEcxSWhScWcwV21DR0c4ZGlpQUtwZG5jV3d3VFk4Yk5fUVh5Tm5YY01kejh3REE?oc=5" target="_blank" rel="noopener">“이제 국장투자 더는 못하겠습니다”…3분기 거래대금 34% 급감 - 매일경제 마켓</a>
+      <div class="nmeta">매일경제 마켓 · 10/13</div>
+<div class="nsum">국장 거래대금 급감 속 ETF 시장 영향 점검</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">2</div>
+    <div>
+<span class="ntheme">지수 변경</span>      <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTFBDeTVmMl8xSEVwZzhVQXBvdzFOMFNYMW0xM0dVeU04NElUaXRKUFl3Q3NiN2FBNnBDNEcyNHhGNXMxNTZPX3p6SUh0b1htNGNFWEtqS2djRTBfMHZVVFR2YzRrcjZCR2Z3U2Mwc1FB0gFuQVVfeXFMUEN5NWYyXzFIRXBnOFVBcG93MU4wU1gxbTEzR1V5TTg0SVRpdEpQWXdDc2I3YUE2cEM0RzI0eEY1czE1Nk9fenpJSHRvWG00Y0VYS2pLZ2NFMF8wdlVUVHZjNGtyNkJHZndTYzBzUUE?oc=5" target="_blank" rel="noopener">커지는 ETF 영향력…편입되면 오르고 빠지면 내린다 - 머니투데이 - 머니투데이</a>
+      <div class="nmeta">머니투데이 · 10/13</div>
+<div class="nsum">지수 편출입에 따른 ETF 수급 영향력 확대</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">3</div>
+    <div>
+<span class="ntheme">수급</span>      <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9VQWtLci01RlJTdVZuelNtQVJqakIyX1NmVkE2YzRNdnY2RjFESHBwUXlvbzNzaUt5N1IxX1BUa0ZzNUxqRTNqZjFkWDVsZFRIcXpGTnBxVHBQMGPSAWBBVV95cUxPMlR5b2hCRW1NYlZHbl9YQ29EZnBhZnN5Ujg0MEJEUGlJRUVoRFVreDZYS2RLUDR1cjE4UUcwbXZpSWxWZEJ4QkJMN01oUFhOSXZ6Yl9ZaUdBV2R4NVJmbTM?oc=5" target="_blank" rel="noopener">외국인, 올해 국내 주식 200조 넘게 팔았지만 ETF 계속 샀다(종합) - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 10/13</div>
+<div class="nsum">국내 주식 판 외인, 국내 상장 ETF 순매수 지속</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">4</div>
+    <div>
+<span class="ntheme">레버리지·인버스</span>      <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE5oeVFsdFd5OEdjSUZBOTRRTFNrU25waVUtUWl6Y2R3SjFXaU1YcFZLTmVSbFRnaElMam1IUlExeDNtVloxR1VfaHNiSGFpdFY4UlNLQlotOEtOZVFSajR1UnMzeURoN0JIdHpsOTVR0gFuQVVfeXFMTmh5UWx0V3k4R2NJRkE5NFFMU2tTbnBpVS1RaXpjZHdKMVdpTVhwVktOZVJsVGdoSUxqbUhSUTF4M21WWjFHVV9oc2JIYWl0VjhSU0tCWi04S05lUVJqNHVSczN5RGg3Qkh0emw5NVE?oc=5" target="_blank" rel="noopener">"오를 줄 알았는데"…급락에 '레버리지 베팅' 6000억 어쩌나 - 머니투데이 - 머니투데이</a>
+      <div class="nmeta">머니투데이 · 10/14</div>
+<div class="nsum">증시 급락에 물린 레버리지 ETF 6000억 수급</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">5</div>
+    <div>
+<span class="ntheme">수급</span>      <a href="https://news.google.com/rss/articles/CBMiWEFVX3lxTFBoTEYxVW1DalYybHBHUFpPdS1UN0pKQXJ2ZHU0NkNLemhIV2tRQUtBcmxBX0w2Y0s5UUhaTjJJV2tRM3JMZUNwVFZIR3NNd0FwRFB3QUVhR3TSAVhBVV95cUxQaExGMVVtQ2pWMmxwR1BaT3UtVDdKSkFydmR1NDZDS3poSFdrUUFLQXJsQV9MNmNLOVFIWk4ySVdrUTNyTGVDcFRWSEdzTXdBcERQd0FFYUd0?oc=5" target="_blank" rel="noopener">연금도 미국 주식이 대세…한투운용, 대표지수 ETF 4종 수익률 ↑ - 아주경제</a>
+      <div class="nmeta">아주경제 · 10/13</div>
+<div class="nsum">연금 계좌 내 미국 대표지수 ETF 자금 쏠림</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">6</div>
+    <div>
+<span class="ntheme">해외 동향</span>      <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE83aV9iOS0yLWN4andJa1FTUHdxLW8tUEtfZWxWR196SjJ3dDlFdlk2RGxVS0h5OHBCdWRENTQtQ18xRW1qOUlaMnVLSlhnMm1pTnBJXzBhRXI1SWlm?oc=5" target="_blank" rel="noopener">中 창업판지수 석 달 새 35% 급락, ETF엔 676억 위안 유입 - 뉴스핌</a>
+      <div class="nmeta">뉴스핌 · 10/15</div>
+<div class="nsum">중국 창업판지수 급락에도 ETF 대규모 자금 유입</div>    </div>
+  </div>
+</div>
+<details class="more-items">
+  <summary>추가 ETF 뉴스 3건 보기</summary>
+  <div class="nitem">
+    <div class="nno">7</div>
+    <div>
+<span class="ntheme">규제·제도</span>      <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE1YazE4RTk2c185eWV3dm1sMXBBVkpoUUViWUJTcmdWdGxJSDgwVV92c1BpZzVqVzZkUWVUaGFqNGZjNEFVVnBMRmhaVWdPM095VnM4WV9ZY2tqVjBk?oc=5" target="_blank" rel="noopener">키움증권, 연금저축 ETF 이벤트…7개 운용사 거래 시 최대 21만원 - 뉴스핌</a>
+      <div class="nmeta">뉴스핌 · 10/12</div>
+<div class="nsum">증권사 연금저축 계좌 ETF 거래 유치 경쟁</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">8</div>
+    <div>
+<span class="ntheme">테마</span>      <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE1CMFhqcWx0TjdZMDlJbHJtYUVBX25mWUN5dUs4bXNDY3d0M0N0cmhFbnpmMWZoRkd3WGVVSVlWdEt5MXVERDlCeWw3a3pWSU85cFhrc25NbS1menQ1?oc=5" target="_blank" rel="noopener">신한운용 'SOL 반도체 소부장' 3종, 1개월 개인투자자 2231억 순매수 - 뉴스핌</a>
+      <div class="nmeta">뉴스핌 · 10/14</div>
+<div class="nsum">반도체 소부장 테마 ETF 1개월간 개인 순매수</div>    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">9</div>
+    <div>
+<span class="ntheme">신규 상장</span>      <a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE9VYm5zX0ZfZVhmbWFpNGpVUmZnZXQ5VEVrTTlSSkxpdUlobjN2MzdldmROb3lCQ2djc1hoOEZZMlp3WUsyQ29lMHZTYVhrZ2Y5cUE?oc=5" target="_blank" rel="noopener">"SCHD 넘겠다"… 삼성운용, 다우존스배당주ETF 출시 - 매일경제 마켓</a>
+      <div class="nmeta">매일경제 마켓 · 10/14</div>
+<div class="nsum">미국 배당다우존스 테마 신규 ETF 상장 경쟁</div>    </div>
+  </div>
+</details>
+<details class="copybox">
+  <summary>복사용 텍스트 열기</summary>
+  <textarea readonly rows="30">[2026년 10월 15일 (목)] ETF 뉴스 9선
+1. “이제 국장투자 더는 못하겠습니다”…3분기 거래대금 34% 급감 - 매일경제 마켓
+   매일경제 마켓 · 10/13   https://news.google.com/rss/articles/CBMiUkFVX3lxTE01dVZQb2FvdllxWkExTS03VUM1ZzloazZMLUJQOEcxSWhScWcwV21DR0c4ZGlpQUtwZG5jV3d3VFk4Yk5fUVh5Tm5YY01kejh3REE?oc=5
+2. 커지는 ETF 영향력…편입되면 오르고 빠지면 내린다 - 머니투데이 - 머니투데이
+   머니투데이 · 10/13   https://news.google.com/rss/articles/CBMibkFVX3lxTFBDeTVmMl8xSEVwZzhVQXBvdzFOMFNYMW0xM0dVeU04NElUaXRKUFl3Q3NiN2FBNnBDNEcyNHhGNXMxNTZPX3p6SUh0b1htNGNFWEtqS2djRTBfMHZVVFR2YzRrcjZCR2Z3U2Mwc1FB0gFuQVVfeXFMUEN5NWYyXzFIRXBnOFVBcG93MU4wU1gxbTEzR1V5TTg0SVRpdEpQWXdDc2I3YUE2cEM0RzI0eEY1czE1Nk9fenpJSHRvWG00Y0VYS2pLZ2NFMF8wdlVUVHZjNGtyNkJHZndTYzBzUUE?oc=5
+3. 외국인, 올해 국내 주식 200조 넘게 팔았지만 ETF 계속 샀다(종합) - 연합뉴스
+   연합뉴스 · 10/13   https://news.google.com/rss/articles/CBMiW0FVX3lxTE9VQWtLci01RlJTdVZuelNtQVJqakIyX1NmVkE2YzRNdnY2RjFESHBwUXlvbzNzaUt5N1IxX1BUa0ZzNUxqRTNqZjFkWDVsZFRIcXpGTnBxVHBQMGPSAWBBVV95cUxPMlR5b2hCRW1NYlZHbl9YQ29EZnBhZnN5Ujg0MEJEUGlJRUVoRFVreDZYS2RLUDR1cjE4UUcwbXZpSWxWZEJ4QkJMN01oUFhOSXZ6Yl9ZaUdBV2R4NVJmbTM?oc=5
+4. "오를 줄 알았는데"…급락에 '레버리지 베팅' 6000억 어쩌나 - 머니투데이 - 머니투데이
+   머니투데이 · 10/14   https://news.google.com/rss/articles/CBMibkFVX3lxTE5oeVFsdFd5OEdjSUZBOTRRTFNrU25waVUtUWl6Y2R3SjFXaU1YcFZLTmVSbFRnaElMam1IUlExeDNtVloxR1VfaHNiSGFpdFY4UlNLQlotOEtOZVFSajR1UnMzeURoN0JIdHpsOTVR0gFuQVVfeXFMTmh5UWx0V3k4R2NJRkE5NFFMU2tTbnBpVS1RaXpjZHdKMVdpTVhwVktOZVJsVGdoSUxqbUhSUTF4M21WWjFHVV9oc2JIYWl0VjhSU0tCWi04S05lUVJqNHVSczN5RGg3Qkh0emw5NVE?oc=5
+5. 연금도 미국 주식이 대세…한투운용, 대표지수 ETF 4종 수익률 ↑ - 아주경제
+   아주경제 · 10/13   https://news.google.com/rss/articles/CBMiWEFVX3lxTFBoTEYxVW1DalYybHBHUFpPdS1UN0pKQXJ2ZHU0NkNLemhIV2tRQUtBcmxBX0w2Y0s5UUhaTjJJV2tRM3JMZUNwVFZIR3NNd0FwRFB3QUVhR3TSAVhBVV95cUxQaExGMVVtQ2pWMmxwR1BaT3UtVDdKSkFydmR1NDZDS3poSFdrUUFLQXJsQV9MNmNLOVFIWk4ySVdrUTNyTGVDcFRWSEdzTXdBcERQd0FFYUd0?oc=5
+6. 中 창업판지수 석 달 새 35% 급락, ETF엔 676억 위안 유입 - 뉴스핌
+   뉴스핌 · 10/15   https://news.google.com/rss/articles/CBMiXEFVX3lxTE83aV9iOS0yLWN4andJa1FTUHdxLW8tUEtfZWxWR196SjJ3dDlFdlk2RGxVS0h5OHBCdWRENTQtQ18xRW1qOUlaMnVLSlhnMm1pTnBJXzBhRXI1SWlm?oc=5
+7. 키움증권, 연금저축 ETF 이벤트…7개 운용사 거래 시 최대 21만원 - 뉴스핌
+   뉴스핌 · 10/12   https://news.google.com/rss/articles/CBMiXEFVX3lxTE1YazE4RTk2c185eWV3dm1sMXBBVkpoUUViWUJTcmdWdGxJSDgwVV92c1BpZzVqVzZkUWVUaGFqNGZjNEFVVnBMRmhaVWdPM095VnM4WV9ZY2tqVjBk?oc=5
+8. 신한운용 'SOL 반도체 소부장' 3종, 1개월 개인투자자 2231억 순매수 - 뉴스핌
+   뉴스핌 · 10/14   https://news.google.com/rss/articles/CBMiXEFVX3lxTE1CMFhqcWx0TjdZMDlJbHJtYUVBX25mWUN5dUs4bXNDY3d0M0N0cmhFbnpmMWZoRkd3WGVVSVlWdEt5MXVERDlCeWw3a3pWSU85cFhrc25NbS1menQ1?oc=5
+9. "SCHD 넘겠다"… 삼성운용, 다우존스배당주ETF 출시 - 매일경제 마켓
+   매일경제 마켓 · 10/14   https://news.google.com/rss/articles/CBMiUkFVX3lxTE9VYm5zX0ZfZVhmbWFpNGpVUmZnZXQ5VEVrTTlSSkxpdUlobjN2MzdldmROb3lCQ2djc1hoOEZZMlp3WUsyQ29lMHZTYVhrZ2Y5cUE?oc=5
+</textarea>
+</details>
+
+
+<h2>🎯 출연자 추천<span class="tip" tabindex="0">?<span class="bubble">
+  위 발언자 중 지금 섭외할 만한 인물을 코너별로 제안합니다.
+  <b>왜 지금인지</b>가 명확한 경우에만 올립니다. 섭외 이력·연락처는 별도 확인이 필요합니다.</span></span></h2>
+<div class="guest">
+  <div class="ghead">
+    <span class="gname">최창규</span>
+    <span class="gorg">미래에셋증권 ETF리서치본부장</span>
+    <span class="gcorner">ETF 처방전</span>
+  </div>
+  <div class="grow">
+    <div class="k">왜 지금</div><div class="v">거래대금 급감과 레버리지 쏠림 속 지수 리밸런싱 영향 분석 적임자</div>
+<div class="k">다룰 주제</div><div class="v">급변하는 시장 수급 속 ETF 지수 편출입 영향과 레버리지 대응법</div><div class="k">관련 ETF</div><div class="v">대표지수형 · 레버리지 · 액티브</div>  </div>
+<div class="gq"><b>물어볼 질문</b> — “지수 편입·제외 이벤트 발생 시 ETF 수급이 시장에 미치는 영향은 무엇인가요?”</div><div class="gnote">⚠ 운용사·상품 이해관계가 있는 주제는 비교 기준을 사전에 명확히 전달</div></div>
+<div class="guest">
+  <div class="ghead">
+    <span class="gname">김성일</span>
+    <span class="gorg">업라이즈투자자문 대표</span>
+    <span class="gcorner">요즘하태형</span>
+  </div>
+  <div class="grow">
+    <div class="k">왜 지금</div><div class="v">연금저축과 미국 대표지수 ETF 쏠림 속 장기 자산배분 기준 제시</div>
+<div class="k">다룰 주제</div><div class="v">연금 계좌 내 미국 대표지수 및 배당형 ETF 자산배분 전략</div><div class="k">관련 ETF</div><div class="v">연금 · 미국 대표지수 · 배당형</div>  </div>
+<div class="gq"><b>물어볼 질문</b> — “퇴직연금에서 ETF를 활용할 때 가장 먼저 정할 원칙은 무엇인가요?”</div><div class="gnote">⚠ 단기 전망보다 장기 포트폴리오와 투자 원칙 중심으로 구성</div></div>
+
+<h2>🔗 출처</h2>
+<div class="srclist">
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a><a href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a></div>
+
+<footer>
+  생성 2026-10-15 09:46 KST · 최근 96시간 기준 · 매주 목요일 오전 10시 자동 발송 / 수동 실행 시 HTML 생성<br>
+  ※ 발언 인용은 기사 원문 기준입니다. 인용문을 그대로 쓰실 때는 원문 링크로 한 번 더 확인해 주세요.<br>
+  ※ 출연자 추천은 공개 발언을 근거로 한 제안이며, 섭외 가능 여부·이력은 별도 확인이 필요합니다.
+</footer>
+
+</div>
+</body>
+</html>
