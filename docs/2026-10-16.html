@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아침 경제·ETF 브리핑 · 2026년 10월 16일 (금)</title>
+<style>
+  :root{
+    --bg:#0e1116; --surface:#161b22; --surface2:#1c2230; --line:#242c3a;
+    --ink:#e8edf5; --ink2:#a6b2c4; --ink3:#6f7d92;
+    --up:#f05a5a; --down:#3b8fe8; --warn:#e0a33c; --accent:#7c6cf0;
+    --p1:#e0524f; --p2:#e08a3c; --p3:#d9b93c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f6; --line:#e2e6ee;
+           --ink:#161b22; --ink2:#4c5768; --ink3:#8792a4; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+       line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 60px}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:24px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+  h1{font-size:24px;margin:7px 0 5px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink3);font-size:13px;margin:0}
+  .sharebar{margin-top:14px}
+  .kakao-share{appearance:none;border:0;border-radius:8px;background:#FEE500;color:#191919;
+               padding:10px 15px;font:700 13px/1.2 inherit;cursor:pointer;display:inline-flex;
+               align-items:center;gap:7px;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+  .kakao-share:hover{filter:brightness(.97)}
+  .kakao-share:focus-visible{outline:3px solid rgba(254,229,0,.35);outline-offset:2px}
+  h2{font-size:15px;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+     letter-spacing:-.01em;display:flex;align-items:center;gap:7px;font-weight:700}
+  h2 .tag{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+
+  /* ── 툴팁 (호버 + 탭 모두 동작) ───────────────── */
+  .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+       border:1px solid var(--line);border-radius:50%;font-size:10px;color:var(--ink3);
+       cursor:help;position:relative;font-weight:600;vertical-align:2px;margin-left:5px;
+       background:var(--surface2);flex-shrink:0}
+  .tip:hover,.tip:focus{color:var(--accent);border-color:var(--accent);outline:none}
+  .tip .bubble{visibility:hidden;opacity:0;position:absolute;top:22px;left:50%;
+       transform:translateX(-50%);width:min(340px,78vw);background:var(--surface2);
+       border:1px solid var(--line);border-radius:8px;padding:10px 12px;z-index:20;
+       font-size:12px;font-weight:400;color:var(--ink2);line-height:1.6;text-align:left;
+       box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .12s}
+  .tip:hover .bubble,.tip:focus .bubble{visibility:visible;opacity:1}
+  .tip .bubble b{color:var(--ink)}
+  .glossary{position:relative;border-bottom:1px dotted var(--accent);cursor:help;white-space:nowrap}
+  .glossary-icon{font-size:10px;color:var(--accent);margin-left:2px}
+  .glossary-bubble{visibility:hidden;opacity:0;position:absolute;left:0;top:1.7em;width:min(300px,76vw);
+       white-space:normal;background:var(--surface2);border:1px solid var(--line);border-radius:8px;
+       padding:9px 11px;z-index:30;font-size:11.5px;font-weight:400;color:var(--ink2);line-height:1.55;
+       box-shadow:0 8px 24px rgba(0,0,0,.35)}
+  .glossary:hover .glossary-bubble,.glossary:focus .glossary-bubble{visibility:visible;opacity:1;outline:none}
+  .popover-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.34);z-index:80}
+  .popover-backdrop[hidden]{display:none}
+  @media (max-width:700px),(hover:none){
+    .tip .bubble,.tip:hover .bubble,.tip:focus .bubble,
+    .glossary .glossary-bubble,.glossary:hover .glossary-bubble,.glossary:focus .glossary-bubble{
+      display:none;visibility:hidden;opacity:0
+    }
+    .tip.popover-open .bubble,.glossary.popover-open .glossary-bubble{
+      display:block;visibility:visible;opacity:1;position:fixed;left:16px;right:16px;
+      top:auto;bottom:calc(18px + env(safe-area-inset-bottom));transform:none;width:auto;
+      max-height:min(44vh,320px);overflow:auto;padding:15px 16px;border-radius:12px;
+      z-index:100;font-size:13px;line-height:1.6;white-space:normal
+    }
+  }
+
+  /* ── TOP 5 ──────────────────────────────────── */
+  .top5{display:flex;flex-direction:column;gap:6px;margin:4px 0}
+  .rank{display:grid;grid-template-columns:auto 1fr;gap:11px;background:var(--surface);
+        border:1px solid var(--line);border-radius:9px;padding:11px 14px;align-items:start}
+  .rank .no{display:flex;align-items:center;justify-content:center;width:22px;height:22px;
+            border-radius:50%;font-size:11.5px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px}
+  .rank.r1 .no,.rank.r2 .no{background:var(--p1)}
+  .rank.r3 .no,.rank.r4 .no{background:var(--p2)}
+  .rank.r5 .no{background:var(--p3)}
+  .rank .t{font-size:14px;font-weight:700;letter-spacing:-.01em;margin:0 0 2px}
+  .rank .n{font-size:12.5px;color:var(--ink2);margin:0;font-variant-numeric:tabular-nums}
+  .rank .n .arrow{color:var(--ink3);margin:0 5px}
+  .rank .n .eff{color:var(--accent);font-weight:600}
+  .rank .desc{font-size:12.5px;color:var(--ink2);margin:6px 0 0;line-height:1.55}
+  .rank .src{margin-top:5px}
+  .rank-more,.evidence{margin-top:7px;border-top:1px solid var(--line)}
+  .rank-more summary,.evidence summary{cursor:pointer;color:var(--ink3);font-size:11.5px;
+        padding:7px 0 1px;list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .rank-more summary::before,.evidence summary::before{content:"＋";font-weight:700;color:var(--accent)}
+  .rank-more[open] summary::before,.evidence[open] summary::before{content:"－"}
+
+  /* ── 시장 한눈에 ─────────────────────────────── */
+  .glance{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+          padding:4px 16px;margin:12px 0}
+  .grow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:2px 22px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .grow:last-child{border-bottom:none}
+  .gcell{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:3px 0;min-width:0}
+  .gcell .k{font-size:12px;color:var(--ink3);white-space:nowrap;flex-shrink:0}
+  .gcell .v{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;
+            text-align:right;white-space:nowrap}
+  .gcell .v .p{font-size:11.5px;font-weight:600;margin-left:5px}
+  @media (max-width:430px){ .grow{grid-template-columns:1fr;gap:0} }
+  .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--ink3)}
+  .glabel{font-size:10.5px;font-weight:700;color:var(--ink3);letter-spacing:.08em;
+          padding:11px 0 2px;grid-column:1/-1}
+  .period{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);
+          border-radius:10px;overflow:hidden;font-size:12.5px;margin:10px 0}
+  .period th,.period td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right}
+  .period th:first-child,.period td:first-child{text-align:left}.period tr:last-child td{border-bottom:0}
+  .regime{background:linear-gradient(135deg,rgba(124,108,240,.10),var(--surface));
+          border:1px solid rgba(124,108,240,.35);border-radius:10px;padding:14px 16px;margin:12px 0}
+  .regime h3{margin:0 0 6px;font-size:15px}.regime p{margin:0;color:var(--ink2);font-size:13px}
+  .waitbox{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+           padding:3px 16px;margin:12px 0}
+  .waitbox h3{font-size:15px;margin:12px 0 3px}.waititem{padding:10px 0;border-bottom:1px solid var(--line)}
+  .waititem:last-child{border-bottom:none}.waititem .wt{display:flex;gap:9px;align-items:baseline}
+  .waititem .wn{font-size:10px;font-weight:700;color:var(--accent);min-width:20px}
+  .waititem b{font-size:13.5px}.waititem p{margin:5px 0 0 29px;color:var(--ink2);font-size:12.5px}
+  .waititem .path{border-left:3px solid var(--accent);background:var(--surface2);padding:7px 9px;margin-top:7px}
+  .waititem .src{margin-left:29px}
+  .waititem .evidence{margin-left:29px}
+
+  /* ── 시장 스토리 ─────────────────────────── */
+  .story{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:15px 17px;margin:9px 0}
+  .storyhead{display:flex;align-items:baseline;gap:9px;margin-bottom:9px}
+  .marketbadge{font-size:10px;font-weight:700;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+               border-radius:4px;padding:1px 7px;flex-shrink:0}
+  .story h3{font-size:15px;margin:0;line-height:1.45}
+  .story-copy{font-size:13.5px;color:var(--ink2);line-height:1.75;margin:8px 0}
+  .story-flow{font-size:12.5px;color:var(--ink);font-weight:600;background:rgba(124,108,240,.07);border-radius:7px;padding:8px 10px;margin:10px 0}
+  .story-takeaway{background:var(--surface2);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:10px 12px;margin-top:11px;font-size:13px;color:var(--ink2)}
+  .storyline{display:grid;grid-template-columns:54px 1fr;gap:7px 10px;margin:6px 0;font-size:13px}
+  .storyline .k{color:var(--ink3);font-size:10.5px;font-weight:700;letter-spacing:.04em;padding-top:2px}
+  .storyline .v{color:var(--ink2)}
+  .storyline.interpretation{background:var(--surface2);border-left:3px solid var(--accent);
+                            border-radius:0 7px 7px 0;padding:9px 11px;margin:8px 0}
+  .storyline.interpretation .k{color:var(--accent)}
+  .storyline.path{background:rgba(124,108,240,.07);border-radius:7px;padding:7px 9px}
+  .storyline.path .v{color:var(--ink);font-weight:600}
+  .storyline.meaning{background:var(--surface2);border-left:3px solid var(--accent);
+                     border-radius:0 7px 7px 0;padding:9px 11px;margin-top:10px}
+  .watch{background:linear-gradient(135deg,rgba(124,108,240,.10),var(--surface));
+         border:1px solid rgba(124,108,240,.3);border-radius:9px;padding:11px 15px;margin:10px 0}
+  .watch b{font-size:11px;color:var(--accent);letter-spacing:.05em}
+  .watch ol{margin:5px 0 0;padding-left:20px;color:var(--ink2);font-size:12.5px}
+
+  /* ── 카드 (사실/해석) ────────────────────────── */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+        padding:14px 16px;margin:10px 0}
+  .card h3{margin:0 0 8px;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .fact{font-size:13.5px;color:var(--ink2);margin:0}
+  .fact .k{display:inline-block;font-size:9.5px;font-weight:700;color:var(--ink3);
+           border:1px solid var(--line);border-radius:4px;padding:1px 6px;margin-right:7px;
+           letter-spacing:.08em;vertical-align:2px}
+  .src{margin-top:7px;font-size:11.5px;color:var(--ink3)}
+  .src a{color:var(--ink3);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+  .src a:hover{color:var(--accent);border-color:var(--accent)}
+  .sdate{display:inline-block;margin-left:5px;font-size:10.5px;color:var(--ink3);
+         border:1px solid var(--line);border-radius:4px;padding:0 5px;
+         font-variant-numeric:tabular-nums;vertical-align:1px}
+  .interp{margin-top:10px;background:var(--surface2);border:1px solid var(--line);
+          border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 13px;
+          font-size:12.5px;color:var(--ink2)}
+  .interp .k{display:block;font-size:9.5px;font-weight:700;color:var(--accent);
+             letter-spacing:.08em;margin-bottom:4px}
+
+  /* ── 종목 (최대 3, 컴팩트) ──────────────────── */
+  .stocks{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+  .srow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;
+        background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+  .srow .nm{font-size:13px;font-weight:700}
+  .srow .nm span{font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px}
+  .srow .pc{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .srow .rz{grid-column:1/-1;font-size:12px;color:var(--ink3);margin-top:2px}
+
+  /* ── ETF 레이더 ─────────────────────────────── */
+  .radar{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+         padding:2px 16px;margin:10px 0}
+  .ritem{padding:12px 0;border-bottom:1px solid var(--line)}
+  .ritem:last-child{border-bottom:none}
+  .ritem .h{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+  .ritem .badge{font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--accent);
+                border:1px solid rgba(124,108,240,.4);border-radius:4px;padding:1px 6px;flex-shrink:0}
+  .ritem .t{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+  .flowboard{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+             padding:12px 14px;margin:10px 0}
+  .flowtab-input{position:absolute;opacity:0;pointer-events:none}
+  .flowtabs{display:flex;gap:6px;margin:0 0 11px}
+  .flowtabs label{cursor:pointer;border:1px solid var(--line);border-radius:16px;padding:4px 14px;
+                  color:var(--ink3);font-size:11.5px;font-weight:700;transition:.15s}
+  #flow-kr:checked~.flowtabs label[for="flow-kr"],#flow-us:checked~.flowtabs label[for="flow-us"]{
+                  background:var(--accent);border-color:var(--accent);color:#fff}
+  .flow-panel{display:none}
+  #flow-kr:checked~.flow-panels .flow-panel.kr,#flow-us:checked~.flow-panels .flow-panel.us{display:block}
+  .flow-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+  .flow-head b{font-size:13.5px}.flow-head span{font-size:10.5px;color:var(--ink3)}
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .flow-col{background:var(--surface2);border-radius:8px;padding:9px 10px}
+  .flow-col h3{font-size:10.5px;color:var(--ink3);margin:0 0 5px;letter-spacing:.04em}
+  .flow-row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:12px}
+  .flow-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .flow-row .pct{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .flow-extra{border-top:1px solid var(--line);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--ink2)}
+  .flow-extra b{color:var(--ink3);font-size:10.5px;margin-right:6px}
+  .flow-extra span+span:before{content:" · ";color:var(--ink3)}
+  .flow-empty{color:var(--ink3);font-size:11.5px;margin:4px 0 0}
+  @media(max-width:520px){.flow-grid{grid-template-columns:1fr}}
+  .themebox{background:linear-gradient(135deg,rgba(224,163,60,.12),var(--surface));
+            border:1px solid rgba(224,163,60,.38);border-radius:10px;padding:14px 16px;margin:10px 0}
+  .themehead{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}
+  .themehead .badge{font-size:10px;font-weight:700;color:var(--warn);border:1px solid rgba(224,163,60,.45);
+                    border-radius:4px;padding:1px 7px}.themehead h3{font-size:14.5px;margin:0}
+  .themerow{display:grid;grid-template-columns:58px 1fr;gap:8px;font-size:12.5px;margin:6px 0}
+  .themerow .k{color:var(--ink3);font-size:10.5px;font-weight:700}.themerow .v{color:var(--ink2)}
+  .leaders{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 2px}
+  .leader{background:var(--surface2);border:1px solid var(--line);border-radius:16px;
+          padding:4px 9px;font-size:11.5px}.leader b{margin-left:5px;font-variant-numeric:tabular-nums}
+  .stockwatch{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px 15px;margin:10px 0}
+  .worldissues{display:flex;flex-direction:column;gap:8px}
+  .worlditem{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .worldhead{display:flex;align-items:baseline;gap:8px}.worldhead h3{font-size:14px;margin:0}
+  .worldbadge{font-size:10px;font-weight:700;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+              border-radius:4px;padding:1px 6px;white-space:nowrap}
+  .worlditem p{font-size:12.5px;color:var(--ink2);margin:7px 0 0}
+  .worldpath{border-left:3px solid var(--accent);background:var(--surface2);padding:8px 10px;border-radius:0 7px 7px 0}
+  .worldcheck{font-size:11.5px;color:var(--ink3);margin-top:7px}
+  .stockwatch .sitem{padding:10px 0;border-bottom:1px solid var(--line)}
+  .stockwatch .sitem:last-child{border-bottom:0}.stockwatch .st{display:flex;gap:8px;align-items:baseline}
+  .stockwatch .st b{font-size:13px}.stockwatch .st span{font-size:11.5px;font-weight:700}
+  .stockwatch p{margin:4px 0 0;color:var(--ink2);font-size:12.5px}
+  .more-news{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+             padding:0 14px;margin:8px 0 12px}
+  .more-news summary{cursor:pointer;padding:11px 0;font-size:12.5px;font-weight:700;color:var(--ink2)}
+  .more-item{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid var(--line);
+             font-size:12.5px;flex-wrap:wrap}
+  .more-item .badge{font-size:9.5px;color:var(--accent);border:1px solid rgba(124,108,240,.4);
+                    border-radius:4px;padding:1px 5px}
+  .more-item a{color:var(--ink);text-decoration:none;font-weight:650}
+  .more-item small{margin-left:auto;color:var(--ink3)}
+  .ritem p{margin:0;font-size:12.5px;color:var(--ink2)}
+  .ritem .sig{margin-top:5px;font-size:12px;color:var(--ink3)}
+
+  /* ── ETF 뉴스 6선 ───────────────────────────── */
+  .newslist{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+            padding:2px 16px;margin:10px 0}
+  .nitem{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:11px 0;
+         border-bottom:1px solid var(--line);align-items:start}
+  .nitem:last-child{border-bottom:none}
+  .nno{display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+       border-radius:5px;background:var(--surface2);border:1px solid var(--line);
+       font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;margin-top:1px}
+  .nitem a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .nitem a:hover{color:var(--accent)}
+  .nmeta{font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .nsum{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .copybox{margin:8px 0 0}
+  .copybox summary{font-size:12.5px;color:var(--ink3);cursor:pointer;padding:6px 2px;
+                   list-style:none;display:inline-flex;align-items:center;gap:5px}
+  .copybox summary::before{content:"📋"}
+  .copybox summary:hover{color:var(--accent)}
+  .copybox textarea{width:100%;margin-top:6px;background:var(--surface2);color:var(--ink2);
+                    border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                    font-size:12px;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                    resize:vertical}
+
+  .notice{background:var(--surface2);border:1px dashed var(--line);border-radius:9px;
+          padding:12px 14px;margin:10px 0;font-size:12.5px;color:var(--ink3)}
+  /* ── 유튜브 ─────────────────────────────────── */
+  .yt{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+  .ytc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .ytc .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:3px}
+  .ytc a{color:var(--ink);text-decoration:none;font-weight:700;font-size:13.5px;line-height:1.45}
+  .ytc a:hover{color:var(--accent)}
+  .ytc .meta{font-size:11.5px;color:var(--ink3);margin-top:4px;font-variant-numeric:tabular-nums}
+  .ytc .row{display:grid;grid-template-columns:58px 1fr;gap:4px 10px;margin-top:8px;font-size:12px}
+  .ytc .row .k{color:var(--ink3);font-weight:600}
+  .ytc .row .v{color:var(--ink2)}
+  .ov{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+  .ov.high{background:rgba(240,90,90,.15);color:var(--up);border:1px solid rgba(240,90,90,.35)}
+  .ov.mid{background:rgba(224,163,60,.15);color:var(--warn);border:1px solid rgba(224,163,60,.35)}
+  .ov.low{background:var(--surface2);color:var(--ink3);border:1px solid var(--line)}
+
+  /* ── 콘텐츠 후보 ────────────────────────────── */
+  .idea{background:linear-gradient(135deg,rgba(124,108,240,.10),rgba(124,108,240,.03));
+        border:1px solid rgba(124,108,240,.32);border-radius:10px;padding:14px 16px;margin:10px 0}
+  .idea .k{font-size:10.5px;font-weight:700;color:var(--accent);letter-spacing:.06em}
+  .idea h3{margin:5px 0 8px;font-size:14.5px;font-weight:700;line-height:1.45}
+  .idea .row{display:grid;grid-template-columns:74px 1fr;gap:5px 10px;font-size:12.5px}
+  .idea .row .k2{color:var(--ink3);font-weight:600}
+  .idea .row .v{color:var(--ink2)}
+  .idea .q{margin-top:9px;padding:9px 11px;background:var(--surface);border-radius:7px;
+           font-size:12.5px;color:var(--ink2);border-left:2px solid var(--accent)}
+
+  /* ── 일정 ───────────────────────────────────── */
+  .cal{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:13px;margin:10px 0}
+  .cal .d{color:var(--ink3);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .cal .e{color:var(--ink2)}
+  .calgroup{grid-column:1/-1;font-size:11px;font-weight:700;color:var(--ink3);
+            letter-spacing:.06em;border-bottom:1px solid var(--line);padding:7px 0 4px;margin-top:4px}
+  .cal .e small{display:block;margin-top:2px;font-size:10.5px}.cal .e small a{color:var(--ink3)}
+  .cpk{display:inline-block;font-size:10px;font-weight:700;border-radius:4px;
+       padding:1px 6px;margin-right:7px;letter-spacing:.03em;vertical-align:1px}
+  .cpk.일정{color:var(--accent);border:1px solid rgba(124,108,240,.42)}
+  .cpk.확인{color:var(--warn);border:1px solid rgba(224,163,60,.42)}
+
+  footer{margin-top:38px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:11px;color:var(--ink3);line-height:1.7}
+  footer a{color:var(--ink3)}
+  .srclist{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+  .srclist a{font-size:11.5px;background:var(--surface2);border:1px solid var(--line);
+             border-radius:16px;padding:3px 10px;color:var(--ink2);text-decoration:none}
+  .srclist a:hover{color:var(--accent);border-color:var(--accent)}
+  .mondaybox{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+             padding:18px;margin:10px 0 26px}
+  .mondaybox h3{font-size:15px;margin:0 0 9px}.recap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:17px}
+  .recap-card{background:var(--surface2);border:1px solid var(--line);border-radius:9px;padding:11px 12px;line-height:1.5}
+  .recap-no{display:block;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.06em;margin-bottom:5px}
+  .weekend-label{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px}
+  .weekend-item{padding:10px 0;border-top:1px solid var(--line)}
+  .weekend-item p{margin:4px 0;line-height:1.55}.open-impact{margin-top:12px;padding:11px 13px;
+             border-left:3px solid var(--accent);background:var(--surface2);line-height:1.6}
+  @media(max-width:700px){.recap-grid{grid-template-columns:1fr}.recap-card{padding:10px 11px}}
+</style>
+</head>
+<body>
+<div class="popover-backdrop" data-popover-backdrop hidden></div>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Morning Brief · ETF Edition</div>
+  <h1>2026년 10월 16일 (금) 아침 경제·ETF 브리핑</h1>
+  <p class="sub">전일 시장 정리 · 전일(10/15) 국내 증시 마감 · 10/15 미국 증시 기준 · 뉴스 10/15 00:00 ~ 10/16 06:33 KST</p>
+</header>
+
+
+<h2>🎯 오늘 아침 5줄 요약<span class="tip" tabindex="0">?<span class="bubble">
+  가장 중요한 다섯 사건을 <b>무슨 일 / 왜 중요한지</b>까지 펼쳐 보여줍니다.</span></span>
+  <span class="tag">30초 스캔</span></h2>
+<div class="top5">
+  <div class="rank r1">
+    <div class="no">1</div>
+    <div>
+      <p class="t">코스닥 하락</p>
+      <p class="n">760.82 (-7.65%)<span class="arrow">→</span><span class="eff">코스닥 연계 ETF 흐름 확인</span></p>
+    </div>
+  </div>
+  <div class="rank r2">
+    <div class="no">2</div>
+    <div>
+      <p class="t">코스피 하락</p>
+      <p class="n">5,554.22 (-7.57%)<span class="arrow">→</span><span class="eff">코스피 연계 ETF 흐름 확인</span></p>
+    </div>
+  </div>
+  <div class="rank r3">
+    <div class="no">3</div>
+    <div>
+      <p class="t">VIX 하락</p>
+      <p class="n">16.46 (-2.43%)<span class="arrow">→</span><span class="eff">VIX 연계 ETF 흐름 확인</span></p>
+    </div>
+  </div>
+  <div class="rank r4">
+    <div class="no">4</div>
+    <div>
+      <p class="t">금 상승</p>
+      <p class="n">4,192.50 (+2.06%)<span class="arrow">→</span><span class="eff">금 연계 ETF 흐름 확인</span></p>
+    </div>
+  </div>
+  <div class="rank r5">
+    <div class="no">5</div>
+    <div>
+      <p class="t">미 10년물 하락</p>
+      <p class="n">5.09 (-1.95%)<span class="arrow">→</span><span class="eff">미 10년물 연계 ETF 흐름 확인</span></p>
+    </div>
+  </div>
+</div>
+
+<h2>📈 시장 한눈에 <span class="tag">10/15</span></h2>
+<div class="glance">
+  <div class="grow">
+    <div class="glabel">국내 증시 · 환율 · 10/15 마감</div>
+    <div class="gcell">
+      <span class="k">코스피</span>
+      <span class="v">5,554.22<span class="p down">-7.57%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">코스닥</span>
+      <span class="v">760.82<span class="p down">-7.65%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">원/달러</span>
+      <span class="v">1,341.3원<span class="p up">+0.08%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">외국인 수급</span>
+      <span class="v">-3조 7,677억<span class="p down"></span></span>
+    </div>
+  </div>
+  <div class="grow">
+    <div class="glabel">해외 지수 · 10/15 마감</div>
+    <div class="gcell">
+      <span class="k">S&P 500</span>
+      <span class="v">7,744.06<span class="p up">+0.33%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">나스닥 종합</span>
+      <span class="v">26,713.03<span class="p up">+0.08%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">다우 30</span>
+      <span class="v">52,177.69<span class="p up">+1.08%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">러셀 2000</span>
+      <span class="v">2,767.27<span class="p up">+1.38%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">필라델피아 반도체</span>
+      <span class="v">11,581.21<span class="p down">-0.88%</span></span>
+    </div>
+  </div>
+  <div class="grow">
+    <div class="glabel">국채 금리 · 10/15 마감</div>
+    <div class="gcell">
+      <span class="k">미 10년물</span>
+      <span class="v">5.089%<span class="p down">-10.1bp</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">미 30년물</span>
+      <span class="v">5.429%<span class="p down">-9.6bp</span></span>
+    </div>
+  </div>
+  <div class="grow">
+    <div class="glabel">원자재 · 변동성 · 10/15 스냅샷</div>
+    <div class="gcell">
+      <span class="k">WTI</span>
+      <span class="v">96.12<span class="p up">+1.08%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">브렌트</span>
+      <span class="v">105.73<span class="p down">-0.31%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">금</span>
+      <span class="v">4,192.50<span class="p up">+2.06%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">구리</span>
+      <span class="v">6.56<span class="p down">-0.74%</span></span>
+    </div>
+    <div class="gcell">
+      <span class="k">VIX</span>
+      <span class="v">16.46<span class="p down">-2.43%</span></span>
+    </div>
+  </div>
+</div>
+
+
+
+
+<h2>🧭 어제와 밤사이 핵심 이야기<span class="tip" tabindex="0">?<span class="bubble">
+  숫자만 나열하지 않고 배경, 시장 반응, 한국 시장과 ETF로 이어지는 흐름을 설명합니다.</span></span>
+  <span class="tag">배경부터 차근차근</span></h2>
+<div class="story">
+  <div class="storyhead"><span class="marketbadge">국내</span><h3>국내 증시 마감 흐름</h3></div>
+<p class="story-copy"><b>왜 이렇게 움직였나.</b> 외국인 순매도 37,677억원 · 기관 순매수 17,121억원의 수급이 지수 등락과 함께 나타났습니다.</p><div class="story-flow">흐름 한눈에 · 투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률</div><div class="story-takeaway"><b>그래서 오늘 볼 것</b><br>코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.</div><div class="src">출처 · <a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a> · 연합뉴스 경제 · <a href="https://www.yna.co.kr/view/AKR20261015157700011" target="_blank" rel="noopener">연합뉴스 경제 (10/15 보도)</a></div></div>
+<div class="story">
+  <div class="storyhead"><span class="marketbadge">미국</span><h3>미국 증시 마감 흐름</h3></div>
+<p class="story-copy"><b>왜 이렇게 움직였나.</b> 주요 지수와 함께 미 10년물 -1.95% · VIX -2.43%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.</p><div class="story-flow">흐름 한눈에 · 금리·위험선호 변화 → 성장주 <span class="glossary" tabindex="0">할인율<span class="glossary-icon">ⓘ</span><span class="glossary-bubble">미래에 벌 돈을 현재 가치로 바꿀 때 적용하는 비율입니다. 금리가 오르면 성장주의 현재 가치가 낮아질 수 있습니다.</span></span> → S&amp;P500·나스닥 ETF</div><div class="story-takeaway"><b>그래서 오늘 볼 것</b><br>S&amp;P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.</div><div class="src">출처 · <a href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a> · 뉴시스 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE1qY2oya053dmlEME1GWHY2V1BFVGRGR0pEOXh1TF9Udk84RnZqTm9sZnA5UVdUTVg0TmFnOXY0bmlXVXl0cXQtVGd5a2pXelRfRHRSNG1BNUNsS2xwX21XYtIBeEFVX3lxTE5ycndnaDB2U1I1NXotQ1hyMmNfX29vX0tTa190NTVrVnNUZzY3MExxLUZHYU8zOTJJTVd5anRkcWdnbGlxQ2RFb0pyZ2pOM1BFN1pmU3RNem5PMDdENkZsbTAzc3o0bl9IU1l5bGI1NDNCZnpSakNWOA?oc=5" target="_blank" rel="noopener">뉴시스 (10/15 보도)</a></div></div>
+<div class="watch"><b>오늘 관전 포인트</b><ol><li>코스닥 하락 흐름이 다음 거래일까지 이어지는지 확인</li></ol></div>
+<h2>🌍 놓치면 안 될 경제·세상 이슈<span class="tip" tabindex="0"><span class="bubble">
+  당일 가격 반응이 작아도 정책·산업·기술·국제정세·생활경제에 오래 영향을 줄 수 있는 새 변화를 고릅니다.
+  중요도에 따라 하루 3~5개를 보여줍니다.</span></span><span class="tag">선행 이슈 3~5개</span></h2>
+<div class="worldissues">
+  <article class="worlditem">
+    <div class="worldhead"><span class="worldbadge">정책</span><h3>삼성전기 8조 투자 이어 SK 반도체 소재기업 세종공장 확장 추진</h3></div>
+    <p>(세종=연합뉴스) 양영석 기자 = 삼성전기가 세종시 명학산단에 대규모 투자 계획을 발표한 데 이어 SK 그룹 반도체 소재 기업도 같은 지역에 추...</p>
+    <p class="worldpath"><b>왜 중요한가</b> · 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.</p>
+<div class="worldcheck"><b>다음 확인</b> · 후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.</div><div class="src">출처 · <a href="https://www.yna.co.kr/view/AKR20261015156600063" target="_blank" rel="noopener">연합뉴스 경제 (10/16 보도)</a></div>  </article>
+  <article class="worlditem">
+    <div class="worldhead"><span class="worldbadge">산업·기술</span><h3>AI 투자 열기에… TSMC·ASML도 호실적 - 대한경제</h3></div>
+    <p>AI 투자 열기에… TSMC·ASML도 호실적 대한경제</p>
+    <p class="worldpath"><b>왜 중요한가</b> · 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.</p>
+<div class="worldcheck"><b>다음 확인</b> · 후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.</div><div class="src">출처 · <a href="https://news.google.com/rss/articles/CBMic0FVX3lxTE5QSklrWU5ZWXBldjFvUTZucm5SQjZSOWdUQ29LOUxSNEJzQVFSZW5yLXRuS2twdTdKNWZuejNyVXVJUDZMaXZOY250ZDVjc19yN2Nad01qQmQ0MlJMRXIydGhWaTVGQlBWenRNS2RaUHBjREU?oc=5" target="_blank" rel="noopener">대한경제 (10/16 보도)</a></div>  </article>
+  <article class="worlditem">
+    <div class="worldhead"><span class="worldbadge">산업·기술</span><h3>[여기는 논설실] 코스피 폭락…시장은 AI 투자의 수익성을 의심한다 - 한국경제</h3></div>
+    <p>[여기는 논설실] 코스피 폭락…시장은 AI 투자의 수익성을 의심한다 한국경제</p>
+    <p class="worldpath"><b>왜 중요한가</b> · 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.</p>
+<div class="worldcheck"><b>다음 확인</b> · 후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.</div><div class="src">출처 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBuUTJrOTlHUmFBZzFvN2lZLTNYTE9jOVdMMFdaeGxYbGpkYTlmUi1CV1Y0WTFrc3NNV29ENHlfSDI3a1U2bzhxdHJUSzBmekJ4cFQ3VXh1dkNqUQ?oc=5" target="_blank" rel="noopener">한국경제 (10/16 보도)</a></div>  </article>
+</div>
+
+<h2>📡 ETF 레이더<span class="tip" tabindex="0">?<span class="bubble">
+  수익률·거래 집중으로 실제 시장 반응을 먼저 보고, 관련 뉴스는 <b>핵심 3개와 추가 뉴스 최대 5개</b>로 나눕니다.
+  해당 없는 갈래는 표시하지 않습니다.<br><br>
+  ① 순매수·순매도 특이 수급 ② 최근 자금유입 급증 ③ 순자산 급증
+  ④ 신규 상장 ⑤ 거래량 급증 ⑥ 운용사 주요 신상품·보도자료</span></span>
+  <span class="tag">전일 기준</span></h2>
+<div class="flowboard">
+  <input class="flowtab-input" type="radio" name="flow-country" id="flow-kr" checked>
+  <input class="flowtab-input" type="radio" name="flow-country" id="flow-us">
+  <div class="flowtabs" role="tablist" aria-label="ETF 상장 국가 선택">
+    <label for="flow-kr" role="tab">한국</label><label for="flow-us" role="tab">미국</label>
+  </div>
+  <div class="flow-panels">
+  <div class="flow-panel kr">
+    <div class="flow-head"><b>ETF 흐름판 · 한국 상승·하락 TOP3</b><span>10/15 확정 마감 · 거래대금 50억원 이상 일반형 · 테마 중복 제외 · 저장 종가 + KRX 개별 거래대금</span></div>
+    <div class="flow-grid">
+      <div class="flow-col"><h3>상승률 TOP3</h3>
+<div class="flow-row"><span class="nm">TIGER 미국30년국채스트립액티브(합성 H)</span><span class="pct up">+2.55%</span></div><div class="flow-row"><span class="nm">ACE 미국30년국채액티브</span><span class="pct up">+2.17%</span></div><div class="flow-row"><span class="nm">TIGER 미국배당다우존스</span><span class="pct up">+1.94%</span></div>      </div>
+      <div class="flow-col"><h3>하락률 TOP3</h3>
+<div class="flow-row"><span class="nm">HANARO 반도체핵심공정주도주</span><span class="pct down">-14.16%</span></div><div class="flow-row"><span class="nm">TIGER 코리아AI전력기기TOP3플러스</span><span class="pct down">-11.94%</span></div><div class="flow-row"><span class="nm">UNICORN SK하이닉스밸류체인액티브</span><span class="pct down">-11.93%</span></div>      </div>
+    </div>
+<div class="flow-extra"><b>레버리지·인버스 별도</b><span>KODEX 반도체레버리지 -22.98%</span><span>TIGER 200IT레버리지 -21.67%</span></div><div class="flow-extra"><b>거래량 급증</b><span>KODEX 200TR 6.1배</span><span>KODEX 코스피 5.3배</span><span>KODEX 코스피100 5.2배</span></div>  </div>
+  <div class="flow-panel us">
+    <div class="flow-head"><b>ETF 흐름판 · 미국 상승·하락 TOP3</b><span>거래대금 1천만달러 이상 일반형 · 테마 중복 제외 · NASDAQ ETF Screener</span></div>
+    <div class="flow-grid">
+      <div class="flow-col"><h3>상승률 TOP3</h3>
+<div class="flow-row"><span class="nm">IHE · iShares U.S. Pharmaceutical ETF</span><span class="pct up">+0.85%</span></div><div class="flow-row"><span class="nm">IYH · iShares U.S. Healthcare ETF</span><span class="pct up">+0.81%</span></div><div class="flow-row"><span class="nm">VHT · Vanguard Health Care ETF</span><span class="pct up">+0.74%</span></div>      </div>
+      <div class="flow-col"><h3>하락률 TOP3</h3>
+<div class="flow-row"><span class="nm">MRNY · YieldMax MRNA Option Income Strategy ETF</span><span class="pct down">-0.72%</span></div><div class="flow-row"><span class="nm">FSTA · Fidelity MSCI Consumer Staples Index ETF</span><span class="pct down">-0.64%</span></div><div class="flow-row"><span class="nm">NCLD · Roundhill Neocloud ETF</span><span class="pct down">-0.54%</span></div>      </div>
+    </div>
+<div class="flow-extra"><b>레버리지·인버스 별도</b><span>ETF Opportunities Trust T-REX 2X Long CRWV Daily Target ETF -4.94%</span><span>Leverage Shares 2X Long CIFR Daily ETF +4.05%</span></div>  </div>
+  </div>
+</div>
+
+<h2>🗞️ 전일 ETF 뉴스 헤드라인<span class="tip" tabindex="0">?<span class="bubble">
+  전 거래일에 발행된 ETF·자산운용 관련 기사입니다. 주요 뉴스와 ETF 레이더에 뽑히지 않은 기사도
+  제목을 훑어볼 수 있도록 원문 링크 그대로 최대 6건을 보여줍니다.</span></span>
+  <span class="tag">10/15</span></h2>
+<div class="newslist">
+  <div class="nitem">
+    <div class="nno">1</div>
+    <div>
+      <a href="https://www.yna.co.kr/view/AKR20261015174800002" target="_blank" rel="noopener">2차 국민성장펀드 목표액 못 채웠다…전체 86.6% 판매</a>
+      <div class="nmeta">연합뉴스 경제 · 10/15</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">2</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9pN2hRTk5mYWdFYy1jS21YREc0NU1pRFB3M1ZZaWxfUm13Yk5CZktoenRwNFBjbnFTWlJlVWM5UjFwTDlzcXBYMEJZV3ExNGpXdHRuS05hTDlJR3k1N2t1aNIBYEFVX3lxTE9pN2hRTk5mYWdFYy1jS21YREc0NU1pRFB3M1ZZaWxfUm13Yk5CZktoenRwNFBjbnFTWlJlVWM5UjFwTDlzcXBYMEJZV3ExNGpXdHRuS05hTDlJR3k1N2t1aA?oc=5" target="_blank" rel="noopener">미래에셋 美배당다우존스, 개인 순매수 1.3조…동종 ETF 최대 - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 10/15</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">3</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE1Nakpkcm1nVkFacE1sS2lRT2pTSm9VMGJPQ3l6dzlNRFZhTkFybkJhdmg4bU5GOFdsRGtGdm9IOGRZelNULW9aNGVnRnp4Q2pjZkw5ZkRWdG5Zc0c4VldRYtIBYEFVX3lxTE1Nakpkcm1nVkFacE1sS2lRT2pTSm9VMGJPQ3l6dzlNRFZhTkFybkJhdmg4bU5GOFdsRGtGdm9IOGRZelNULW9aNGVnRnp4Q2pjZkw5ZkRWdG5Zc0c4VldRYg?oc=5" target="_blank" rel="noopener">'삼전·닉스' 급락에 단일종목 레버리지 신저가 또 경신 - 연합뉴스</a>
+      <div class="nmeta">연합뉴스 · 10/15</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">4</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE96T3JCQnliNjNrcnRZTVViYkFtcUhkY3BLYTdtRDRpS2s2c1VFUVNfd1ZGWmpzbE5JbVdINHZULWJoTnZXeXN5dFpvQnpkNjdySGtmRllYR091dw?oc=5" target="_blank" rel="noopener">"반도체에 올인했다가 반토막"…ETF 줄줄이 곤두박질 - 한국경제</a>
+      <div class="nmeta">한국경제 · 10/15</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">5</div>
+    <div>
+      <a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE9WalNZRFBKZzBnMURqS1NNaVk2TktxTjB1MW9iUWFxWkNqcXBJaDlkVEFkdXQ3YlNjQjYxaUN5dzBkME10a1c4dWp5anFoR25KZXc?oc=5" target="_blank" rel="noopener">2차전지 ETF '씽씽'…석달 수익률 30%대 - 매일경제 마켓</a>
+      <div class="nmeta">매일경제 마켓 · 10/15</div>
+    </div>
+  </div>
+  <div class="nitem">
+    <div class="nno">6</div>
+    <div>
+      <a href="https://www.mk.co.kr/news/economy/12177195" target="_blank" rel="noopener">‘투자금 40% 소득공제’ 파격 혜택에도…외면받은 2차 국민성장펀드, 왜?</a>
+      <div class="nmeta">매일경제 증권 · 10/15</div>
+    </div>
+  </div>
+</div>
+
+<h2>📺 경쟁 채널 동향<span class="tip" tabindex="0">?<span class="bubble">
+  설정 파일에 등록된 채널의 최근 업로드 중 최대 5개. 당일 처음 잡힌 영상은 재실행해도 유지합니다.
+  <b>ETF를 다룬 영상을 먼저 고릅니다.</b><br>
+  <b>채널 관련성</b>은 영상이 ETF 아는형의 상시 콘텐츠 범위와 얼마나 가까운지를 뜻합니다.
+  <b>높음</b>=ETF·ISA·연금·지수투자 등 채널 핵심 주제,
+  <b>보통</b>=금리·종목·시장 전망 등 인접 주제,
+  <b>낮음</b>=재테크 일반 또는 채널과 직접 연결이 적은 주제입니다.</span></span>
+  <span class="tag">최근 이틀</span></h2>
+<div class="yt">
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=K_Ez5-iTaao" target="_blank" rel="noopener">나스닥100 말고 '이 주식' 사세요, 5천만원 묻어두면 20억이 된다 (라오어 작가)</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">김작가TV · 조회 121,387회 · 업로드 34시간 전
+      · ETF 경쟁
+ · 채널 핵심 주제: 나스닥100</div>
+    <div class="row">
+    </div>
+  </div>
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=pO0eRlMnwvw" target="_blank" rel="noopener">"연금 없는 5060 필수시청" 폭락장에도 끄떡없는 ETF. 퇴직금 1억 여기 맘편히 묻어라   | 최고민수 작가 2부 #노후준비</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">부티플 · 조회 24,159회 · 업로드 13시간 전
+      · ETF 경쟁
+ · 채널 핵심 주제: ETF</div>
+    <div class="row">
+    </div>
+  </div>
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=O_sL4mnBCYg" target="_blank" rel="noopener">"서킷브레이커 또 떴다" 코스피 충격적인 -8% 대폭락. 가진 현금 싹 다 여기로 옮기세요. 지금은 이 ETF가 저평가입니다 | 최고민수 작가 3부 #코스피</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">부티플 · 조회 10,936회 · 업로드 11시간 전
+      · ETF 경쟁
+ · 채널 핵심 주제: ETF</div>
+    <div class="row">
+    </div>
+  </div>
+  <div class="ytc">
+    <div class="top">
+      <a href="https://www.youtube.com/watch?v=IGPJOocA2pE" target="_blank" rel="noopener">[🔴10/16 #당잠사] 나스닥·S&P500 상승 전환 | 9월 PPI, 4년 6개월만에 최고 | 젠슨 황 “코어위브, 자본조달 비용 하락” | #코어위브 #엔비디아 #마이크론</a>
+<span class="ov high">채널 관련성 높음</span>    </div>
+    <div class="meta">한국경제TV · 조회 7,200회 · 업로드 23분 전
+      · ETF 경쟁
+ · 채널 핵심 주제: S&P500</div>
+    <div class="row">
+    </div>
+  </div>
+</div>
+<div class="notice"><b>운용사 마케팅 동향</b> · <a href="https://www.youtube.com/watch?v=o18wS7lDF7Y" target="_blank" rel="noopener">스마트 타이거 — ETF 포트폴리오 구성 전략 / TIGER LIVE</a></div>
+
+<h2>🎬 ETF 아는형 콘텐츠 후보<span class="tip" tabindex="0">?<span class="bubble">
+  <b>아직 만들지 않은 기획안입니다.</b> 오늘 데이터를 근거로 AI가 제안한
+  영상 제목·질문 초안이며, 실제로 존재하는 영상이 아닙니다.
+  (이미 올라온 다른 채널 영상은 '경쟁 채널 동향'에 따로 나옵니다.)</span></span>
+  <span class="tag">기획안 · 최대 2개</span></h2>
+<div class="idea">
+  <div class="k">ETF 처방전 · 제목안</div>
+  <h3>코스닥 하락, 연계 ETF 영향은?</h3>
+  <div class="row">
+    <div class="k2">이유</div><div class="v">코스닥 하락의 핵심 수치 760.82 (-7.65%)와 ETF 전달 경로를 설명할 필요</div>
+    <div class="k2">관련 ETF</div><div class="v">코스닥 하락 연계 지수·업종 ETF</div>
+<div class="k2">차별화 각도</div><div class="v">당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교</div>  </div>
+<div class="q"><b>출연자 질문</b> — “코스닥 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?”</div></div>
+
+<h2>🗓️ 체크포인트 · 주요 일정<span class="tip" tabindex="0">?<span class="bubble">
+  두 가지를 함께 담습니다.<br>
+  <b>일정</b> — 날짜가 확정된 것 (FOMC, 금통위, 실적 발표, ETF 상장일)<br>
+  <b>확인</b> — 날짜는 없지만 계속 지켜봐야 하는 것 (수급 연속 여부, 특정 레벨 유지 여부)</span></span></h2>
+<div class="cal">
+  <div class="calgroup">이번 주 확인</div>
+  <div class="d"><span class="cpk 확인">확인</span>다음 거래일</div>
+  <div class="e">코스닥 하락 흐름의 지속 여부</div>
+</div>
+
+<h2>🔗 출처</h2>
+<div class="srclist">
+<a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템</a><a href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a><a>연합뉴스 경제</a><a>뉴시스</a><a href="https://www.youtube.com" target="_blank" rel="noopener">YouTube Data API</a></div>
+
+<footer>
+  생성 2026-10-16 06:39 KST · 자동 브리핑 · 주 단위 지표는 토요일 브리핑에 담깁니다<br>
+  ※ 국내 투자자 해외주식 수급은 한국예탁결제원 결제 기준으로 실제 매매일보다 2~3영업일 지연됩니다.<br>
+  ※ 정보 제공 목적이며 투자 권유가 아닙니다. '해석'은 확정된 사실이 아닙니다. 투자 판단과 결과는 본인 책임입니다.
+</footer>
+
+</div>
+<script>
+(() => {
+  const mobile = window.matchMedia('(max-width: 700px), (hover: none)');
+  const triggers = [...document.querySelectorAll('.tip, .glossary')];
+  const backdrop = document.querySelector('[data-popover-backdrop]');
+  if (!backdrop || !triggers.length) return;
+
+  const closeAll = () => {
+    triggers.forEach((trigger) => {
+      trigger.classList.remove('popover-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+    backdrop.hidden = true;
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.setAttribute('role', 'button');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.addEventListener('click', (event) => {
+      if (!mobile.matches) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const shouldOpen = !trigger.classList.contains('popover-open');
+      closeAll();
+      if (shouldOpen) {
+        trigger.classList.add('popover-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        backdrop.hidden = false;
+      }
+    });
+  });
+  backdrop.addEventListener('click', closeAll);
+  document.addEventListener('click', (event) => {
+    if (mobile.matches && !event.target.closest('.tip, .glossary')) closeAll();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAll();
+  });
+  mobile.addEventListener?.('change', closeAll);
+})();
+</script>
+</body>
+</html>
