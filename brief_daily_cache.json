@@ -1,61 +1,61 @@
 {
-  "날짜": "2026-10-16",
+  "날짜": "2026-10-19",
   "ai": {
     "top5": [
       {
-        "제목": "코스닥 하락",
-        "숫자": "760.82 (-7.65%)",
-        "영향": "코스닥 연계 ETF 흐름 확인",
+        "제목": "VIX 상승",
+        "숫자": "19.99 (+21.45%)",
+        "영향": "VIX 연계 ETF 흐름 확인",
         "순위": 1,
         "출처": [],
         "설명": "",
-        "카톡요약": "코스닥 하락"
+        "카톡요약": "VIX 상승"
       },
       {
-        "제목": "코스피 하락",
-        "숫자": "5,554.22 (-7.57%)",
-        "영향": "코스피 연계 ETF 흐름 확인",
+        "제목": "코스닥 상승",
+        "숫자": "794.78 (+4.46%)",
+        "영향": "코스닥 연계 ETF 흐름 확인",
         "순위": 2,
         "출처": [],
         "설명": "",
-        "카톡요약": "코스피 하락"
+        "카톡요약": "코스닥 상승"
       },
       {
-        "제목": "VIX 하락",
-        "숫자": "16.46 (-2.43%)",
-        "영향": "VIX 연계 ETF 흐름 확인",
+        "제목": "필라델피아 반도체 하락",
+        "숫자": "11,137.29 (-3.83%)",
+        "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
         "순위": 3,
         "출처": [],
         "설명": "",
-        "카톡요약": "VIX 하락"
+        "카톡요약": "필라델피아 반도체 하락"
       },
       {
-        "제목": "금 상승",
-        "숫자": "4,192.50 (+2.06%)",
-        "영향": "금 연계 ETF 흐름 확인",
+        "제목": "브렌트 상승",
+        "숫자": "109.86 (+3.72%)",
+        "영향": "브렌트 연계 ETF 흐름 확인",
         "순위": 4,
         "출처": [],
         "설명": "",
-        "카톡요약": "금 상승"
+        "카톡요약": "브렌트 상승"
       },
       {
-        "제목": "미 10년물 하락",
-        "숫자": "5.09 (-1.95%)",
-        "영향": "미 10년물 연계 ETF 흐름 확인",
+        "제목": "나스닥 종합 하락",
+        "숫자": "26,140.03 (-2.15%)",
+        "영향": "나스닥 종합 연계 ETF 흐름 확인",
         "순위": 5,
         "출처": [],
         "설명": "",
-        "카톡요약": "미 10년물 하락"
+        "카톡요약": "나스닥 종합 하락"
       }
     ],
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "국내 증시 마감 흐름",
+        "제목": "코스피·코스닥 디커플링",
         "자동생성": true,
-        "결과": "코스피 -7.57% · 코스닥 -7.65%",
-        "원인": "외국인 순매도 37,677억원 · 기관 순매수 17,121억원의 수급이 지수 등락과 함께 나타났습니다.",
-        "전달경로": "투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률",
+        "결과": "코스피 +2.05% · 코스닥 +4.46%",
+        "원인": "외국인 순매수 3,214억원 · 기관 순매도 6,403억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
+        "전달경로": "대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차",
         "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
@@ -63,13 +63,13 @@
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "연합뉴스 경제",
+            "이름": "매일경제 증권",
             "url": ""
           },
           {
-            "이름": "연합뉴스 경제",
-            "url": "https://www.yna.co.kr/view/AKR20261015157700011",
-            "날짜": "10/15"
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/economy/12178869",
+            "날짜": "10/18"
           }
         ]
       },
@@ -77,8 +77,8 @@
         "시장": "미국",
         "제목": "미국 증시 마감 흐름",
         "자동생성": true,
-        "결과": "S&P 500 +0.33% · 나스닥 종합 +0.08% · 다우 30 +1.08%",
-        "원인": "주요 지수와 함께 미 10년물 -1.95% · VIX -2.43%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
+        "결과": "S&P 500 -1.09% · 나스닥 종합 -2.15% · 다우 30 -0.34%",
+        "원인": "주요 지수와 함께 미 10년물 +0.18% · VIX +21.45%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
         "전달경로": "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF",
         "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
@@ -87,13 +87,13 @@
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "뉴시스",
+            "이름": "파이낸셜뉴스",
             "url": ""
           },
           {
-            "이름": "뉴시스",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1qY2oya053dmlEME1GWHY2V1BFVGRGR0pEOXh1TF9Udk84RnZqTm9sZnA5UVdUTVg0TmFnOXY0bmlXVXl0cXQtVGd5a2pXelRfRHRSNG1BNUNsS2xwX21XYtIBeEFVX3lxTE5ycndnaDB2U1I1NXotQ1hyMmNfX29vX0tTa190NTVrVnNUZzY3MExxLUZHYU8zOTJJTVd5anRkcWdnbGlxQ2RFb0pyZ2pOM1BFN1pmU3RNem5PMDdENkZsbTAzc3o0bl9IU1l5bGI1NDNCZnpSakNWOA?oc=5",
-            "날짜": "10/15"
+            "이름": "파이낸셜뉴스",
+            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9RdExvYWNqS3VXN1JXR2Y0ejFzSWtPY0xTXzVZazJLTVNhU3ZfVlo3bVZTU2x3RXRIZnV2aW11VzBhWVBIbUEzVWNha1RHNnpkT1JxV3Q2VFpndw?oc=5",
+            "날짜": "10/19"
           }
         ]
       }
@@ -101,43 +101,43 @@
     "놓치면안될이슈": [
       {
         "분야": "정책",
-        "제목": "삼성전기 8조 투자 이어 SK 반도체 소재기업 세종공장 확장 추진",
-        "무슨일": "(세종=연합뉴스) 양영석 기자 = 삼성전기가 세종시 명학산단에 대규모 투자 계획을 발표한 데 이어 SK 그룹 반도체 소재 기업도 같은 지역에 추...",
+        "제목": "실적 발표에는 널뛰는 주식 … 기준금리 변화 영향은 미미 한 까닭",
+        "무슨일": "美 NBER 연구결과주식투자를 처음 시작할 때는 투자한 종목이 어떤 곳인가에 많은 관심을 쏟지만, 경력이 쌓일수록 종목외 뉴스에 주목하게 됩니다. 이런 종목 외 뉴스의 범위도 점점..",
         "왜중요": "국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "연합뉴스 경제",
-            "url": "https://www.yna.co.kr/view/AKR20261015156600063",
-            "날짜": "10/16"
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/economy/12178906",
+            "날짜": "10/19"
           }
         ]
       },
       {
         "분야": "산업·기술",
-        "제목": "AI 투자 열기에… TSMC·ASML도 호실적 - 대한경제",
-        "무슨일": "AI 투자 열기에… TSMC·ASML도 호실적 대한경제",
+        "제목": "美 경제 '물가 상승·고용 정체' 이중고…AI 투자에 성장 의존 - 글로벌이코노믹",
+        "무슨일": "美 경제 '물가 상승·고용 정체' 이중고…AI 투자에 성장 의존 글로벌이코노믹",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "대한경제",
-            "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5QSklrWU5ZWXBldjFvUTZucm5SQjZSOWdUQ29LOUxSNEJzQVFSZW5yLXRuS2twdTdKNWZuejNyVXVJUDZMaXZOY250ZDVjc19yN2Nad01qQmQ0MlJMRXIydGhWaTVGQlBWenRNS2RaUHBjREU?oc=5",
-            "날짜": "10/16"
+            "이름": "글로벌이코노믹",
+            "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQd0FLTVlnTTVlZ09WblhOSmpmUzBHamNoSUp4WWNqWk9WMFV4NVpSQkdOXzhfSFhQbE81ZjJFdUlEZnR6eHZJdzFIRFNlcTMtV2NNMk5vZ28xcnNXMENRcEdCeWIzTG5GQ3VxTEx2b0NIc3o0MExGSkJFLTFMVVdFSXVvbm9OSmVF?oc=5",
+            "날짜": "10/19"
           }
         ]
       },
       {
         "분야": "산업·기술",
-        "제목": "[여기는 논설실] 코스피 폭락…시장은 AI 투자의 수익성을 의심한다 - 한국경제",
-        "무슨일": "[여기는 논설실] 코스피 폭락…시장은 AI 투자의 수익성을 의심한다 한국경제",
+        "제목": "[미리보는 증시재료] 삼성물산·삼성SDS 실적…메타·IBM 등 AI 투자 지속성 확인 주목 - 뉴…",
+        "무슨일": "[미리보는 증시재료] 삼성물산·삼성SDS 실적…메타·IBM 등 AI 투자 지속성 확인 주목 뉴스핌",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "한국경제",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBuUTJrOTlHUmFBZzFvN2lZLTNYTE9jOVdMMFdaeGxYbGpkYTlmUi1CV1Y0WTFrc3NNV29ENHlfSDI3a1U2bzhxdHJUSzBmekJ4cFQ3VXh1dkNqUQ?oc=5",
-            "날짜": "10/16"
+            "이름": "뉴스핌",
+            "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBqZE5kLWNvNjdQQ1dHbVEwMGd3YkNnODktVFF4cmotaVhKekRQNTRzRVg2ZG0zM3RVbnlteDZySlFEWV9kdUhXRGJueFRmV01VSVhBM2hSOFRWelJQ?oc=5",
+            "날짜": "10/19"
           }
         ]
       }
@@ -149,24 +149,34 @@
     "콘텐츠후보": [
       {
         "코너": "ETF 처방전",
-        "제목": "코스닥 하락, 연계 ETF 영향은?",
-        "이유": "코스닥 하락의 핵심 수치 760.82 (-7.65%)와 ETF 전달 경로를 설명할 필요",
-        "관련ETF": "코스닥 하락 연계 지수·업종 ETF",
+        "제목": "VIX 상승, 연계 ETF 영향은?",
+        "이유": "VIX 상승의 핵심 수치 19.99 (+21.45%)와 ETF 전달 경로를 설명할 필요",
+        "관련ETF": "VIX 상승 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
-        "질문": "코스닥 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
+        "질문": "VIX 상승 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
         "사실": "",
         "관찰": ""
       }
     ],
     "오늘관전": [
-      "코스닥 하락 흐름이 다음 거래일까지 이어지는지 확인"
+      "VIX 상승 흐름이 다음 거래일까지 이어지는지 확인"
     ],
     "월요일요약": null,
     "체크포인트": [
       {
+        "유형": "일정",
+        "때": "10/22 (목)",
+        "날짜": "2026-10-22",
+        "내용": "한국은행 금융통화위원회 기준금리 결정",
+        "출처": {
+          "이름": "한국은행",
+          "url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
+        }
+      },
+      {
         "유형": "확인",
         "때": "다음 거래일",
-        "내용": "코스닥 하락 흐름의 지속 여부"
+        "내용": "VIX 상승 흐름의 지속 여부"
       }
     ],
     "오늘의개념": null,
@@ -174,88 +184,10 @@
     "관망요인": null,
     "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 10/16 브리핑\n1. 코스닥 하락\n2. 코스피 하락\n3. VIX 하락\n4. 금 상승\n5. 미 10년물 하락"
+      "1": "☀️ 10/19 브리핑\n1. VIX 상승\n2. 코스닥 상승\n3. 필라델피아 반도체 하락\n4. 브렌트 상승\n5. 나스닥 종합 하락"
     }
   },
   "history": [
-    {
-      "날짜": "2026-10-13",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "코스닥 하락",
-          "핵심": "코스닥 연계 ETF 흐름 확인 849.19 (-4.83%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스피 하락",
-          "핵심": "코스피 연계 ETF 흐름 확인 6,384.24 (-3.65%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "필라델피아 반도체 하락",
-          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 12,236.79 (-2.67%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 상승",
-          "핵심": "VIX 연계 ETF 흐름 확인 15.21 (+2.49%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "구리 상승",
-          "핵심": "구리 연계 ETF 흐름 확인 6.76 (+1.84%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "코스피·코스닥 디커플링",
-          "핵심": "외국인 순매도 20,182억원 · 기관 순매도 1,338억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 -3.65% · 코스닥 -4.83%",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://www.mk.co.kr/news/stock/12173906"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "미국 증시 마감 흐름",
-          "핵심": "주요 지수와 함께 미 10년물 -0.08% · VIX +2.49%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 -0.06% · 나스닥 종합 -0.44% · 다우 30 +0.38%",
-          "출처": [
-            "https://finance.yahoo.com",
-            "https://news.google.com/rss/articles/CBMiUkFVX3lxTE0xZklrbWt1dFNXQmZMY3VOekJaUTRTdEMxcVFBRVYtWjNaYXgxdk53TjhwSFR2OEZuZUplUVBTYTVxMkFTbE9kQVU3dG5KaDNQMlE?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "뉴욕증시 AI 대형주 약세에 혼조…기업 실적·물가 지표 주시 - 네이버 프리미엄콘텐츠",
-          "핵심": "뉴욕증시 AI 대형주 약세에 혼조…기업 실적·물가 지표 주시 네이버 프리미엄콘텐츠 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMiggFBVV95cUxOX094d0FmX0w1LTlpYTY1c0s5RDNtcnF1Qy1YRS1wZ2lrcFBCOXpDQWlmSm1ETFp4OUxYVEpfdGdyTzEtTnZIQUd0UjlHaGd3OG5RWTRNN2lLTzFsNHRNdmcxQzBUcnhiSG40OUkzTzVJN1N4QWZlemQ5SkJGSzlTOW1R?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "한중 통상당국, 공급망 핫라인 유지…새만금 산단 협력도 속도",
-          "핵심": "(서울=연합뉴스) 신창용 기자 = 한국과 중국 통상당국이 공급망 현안 발생 시 신속히 협의하는 체계를 유지하고 새만금 협력이 실질적인 투자 성과... 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
-          "출처": [
-            "https://www.yna.co.kr/view/AKR20261012165300003"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "탄소발자국이 수출 경쟁력으로…제약·바이오 공급망의 변화 - 약사공론",
-          "핵심": "탄소발자국이 수출 경쟁력으로…제약·바이오 공급망의 변화 약사공론 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMibEFVX3lxTE5HakQyal9vOS1NellhaVU0LVNQNExGbnlvWVhmek9VMk9vQ05IQXdNWnFpNGs3OHpaT0pkNnFnNFE1M0Qyc2FJSS1Vakpzc0g2cW9wdFpKd3RBQ3pQX05lQldPWEtWWVNackZVTA?oc=5"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-10-14",
       "주제": [
@@ -425,6 +357,84 @@
           "핵심": "미 연준 “고유가에 물가 압력 심화…공급망 비용↑” KBS 뉴스 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMiW0FVX3lxTFB4aDlWZDNhTlhGWTJDRGxXUDJkR0lOeWRSS042TFJwUnM5OFB5cTJRMENBc3hoUDV4TXBrdmlGUjY4eEtqX0JuUElwX0x2Q0h4RkxXV1hjM0lvM00?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-10-16",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "코스닥 하락",
+          "핵심": "코스닥 연계 ETF 흐름 확인 760.82 (-7.65%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "코스피 하락",
+          "핵심": "코스피 연계 ETF 흐름 확인 5,554.22 (-7.57%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "VIX 하락",
+          "핵심": "VIX 연계 ETF 흐름 확인 16.46 (-2.43%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "금 상승",
+          "핵심": "금 연계 ETF 흐름 확인 4,192.50 (+2.06%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "미 10년물 하락",
+          "핵심": "미 10년물 연계 ETF 흐름 확인 5.09 (-1.95%)",
+          "출처": []
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "국내 증시 마감 흐름",
+          "핵심": "외국인 순매도 37,677억원 · 기관 순매수 17,121억원의 수급이 지수 등락과 함께 나타났습니다. 코스피 -7.57% · 코스닥 -7.65%",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://www.yna.co.kr/view/AKR20261015157700011"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "미국 증시 마감 흐름",
+          "핵심": "주요 지수와 함께 미 10년물 -1.95% · VIX -2.43%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 +0.33% · 나스닥 종합 +0.08% · 다우 30 +1.08%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1qY2oya053dmlEME1GWHY2V1BFVGRGR0pEOXh1TF9Udk84RnZqTm9sZnA5UVdUTVg0TmFnOXY0bmlXVXl0cXQtVGd5a2pXelRfRHRSNG1BNUNsS2xwX21XYtIBeEFVX3lxTE5ycndnaDB2U1I1NXotQ1hyMmNfX29vX0tTa190NTVrVnNUZzY3MExxLUZHYU8zOTJJTVd5anRkcWdnbGlxQ2RFb0pyZ2pOM1BFN1pmU3RNem5PMDdENkZsbTAzc3o0bl9IU1l5bGI1NDNCZnpSakNWOA?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "삼성전기 8조 투자 이어 SK 반도체 소재기업 세종공장 확장 추진",
+          "핵심": "(세종=연합뉴스) 양영석 기자 = 삼성전기가 세종시 명학산단에 대규모 투자 계획을 발표한 데 이어 SK 그룹 반도체 소재 기업도 같은 지역에 추... 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
+          "출처": [
+            "https://www.yna.co.kr/view/AKR20261015156600063"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "AI 투자 열기에… TSMC·ASML도 호실적 - 대한경제",
+          "핵심": "AI 투자 열기에… TSMC·ASML도 호실적 대한경제 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMic0FVX3lxTE5QSklrWU5ZWXBldjFvUTZucm5SQjZSOWdUQ29LOUxSNEJzQVFSZW5yLXRuS2twdTdKNWZuejNyVXVJUDZMaXZOY250ZDVjc19yN2Nad01qQmQ0MlJMRXIydGhWaTVGQlBWenRNS2RaUHBjREU?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "[여기는 논설실] 코스피 폭락…시장은 AI 투자의 수익성을 의심한다 - 한국경제",
+          "핵심": "[여기는 논설실] 코스피 폭락…시장은 AI 투자의 수익성을 의심한다 한국경제 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBuUTJrOTlHUmFBZzFvN2lZLTNYTE9jOVdMMFdaeGxYbGpkYTlmUi1CV1Y0WTFrc3NNV29ENHlfSDI3a1U2bzhxdHJUSzBmekJ4cFQ3VXh1dkNqUQ?oc=5"
           ]
         }
       ],
