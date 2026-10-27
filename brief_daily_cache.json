@@ -1,10 +1,10 @@
 {
-  "날짜": "2026-10-27",
+  "날짜": "2026-10-28",
   "ai": {
     "top5": [
       {
         "제목": "브렌트 하락",
-        "숫자": "110.27 (-5.53%)",
+        "숫자": "109.74 (-5.24%)",
         "영향": "브렌트 연계 ETF 흐름 확인",
         "순위": 1,
         "출처": [],
@@ -13,7 +13,7 @@
       },
       {
         "제목": "VIX 하락",
-        "숫자": "18.39 (-5.45%)",
+        "숫자": "17.52 (-4.73%)",
         "영향": "VIX 연계 ETF 흐름 확인",
         "순위": 2,
         "출처": [],
@@ -21,41 +21,41 @@
         "카톡요약": "VIX 하락"
       },
       {
-        "제목": "코스닥 하락",
-        "숫자": "727.21 (-3.26%)",
-        "영향": "코스닥 연계 ETF 흐름 확인",
-        "순위": 3,
-        "출처": [],
-        "설명": "",
-        "카톡요약": "코스닥 하락"
-      },
-      {
         "제목": "필라델피아 반도체 상승",
-        "숫자": "11,083.47 (+2.82%)",
+        "숫자": "11,482.50 (+3.60%)",
         "영향": "필라델피아 반도체 연계 ETF 흐름 확인",
-        "순위": 4,
+        "순위": 3,
         "출처": [],
         "설명": "",
         "카톡요약": "필라델피아 반도체 상승"
       },
       {
-        "제목": "WTI 하락",
-        "숫자": "101.25 (-1.96%)",
-        "영향": "WTI 연계 ETF 흐름 확인",
+        "제목": "코스피 상승",
+        "숫자": "5,638.34 (+3.09%)",
+        "영향": "코스피 연계 ETF 흐름 확인",
+        "순위": 4,
+        "출처": [],
+        "설명": "",
+        "카톡요약": "코스피 상승"
+      },
+      {
+        "제목": "구리 상승",
+        "숫자": "6.66 (+2.35%)",
+        "영향": "구리 연계 ETF 흐름 확인",
         "순위": 5,
         "출처": [],
         "설명": "",
-        "카톡요약": "WTI 하락"
+        "카톡요약": "구리 상승"
       }
     ],
     "시장브리핑": [
       {
         "시장": "국내",
-        "제목": "코스피·코스닥 디커플링",
+        "제목": "국내 증시 마감 흐름",
         "자동생성": true,
-        "결과": "코스피 -1.46% · 코스닥 -3.26%",
-        "원인": "외국인 순매도 6,526억원 · 기관 순매수 5,812억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다.",
-        "전달경로": "대형주 방어·중소형주 약세 → 코스피·코스닥 수익률 격차",
+        "결과": "코스피 +3.09% · 코스닥 +2.29%",
+        "원인": "외국인 순매수 5,599억원 · 기관 순매수 3,038억원의 수급이 지수 등락과 함께 나타났습니다.",
+        "전달경로": "투자주체 수급 → 업종별 등락 → 대표지수·ETF 수익률",
         "ETF연결": "코스피200·코스닥150 ETF의 등락과 대형주 기여도를 함께 확인할 필요가 있습니다.",
         "출처": [
           {
@@ -63,13 +63,13 @@
             "url": "https://data.krx.co.kr"
           },
           {
-            "이름": "매일경제 증권",
+            "이름": "헤럴드경제",
             "url": ""
           },
           {
-            "이름": "매일경제 증권",
-            "url": "https://www.mk.co.kr/news/stock/12186320",
-            "날짜": "10/26"
+            "이름": "헤럴드경제",
+            "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE5nS2lzRUlaN3FDMTVKZFpfQkpJSF8tYTdUX29hT3dpYlhUUUpwMnhxMVRabDNIY3JLRTFMXzI0NXN2VlVodWxJNzJHYU9NNTM1MVR1UGZ6SQ?oc=5",
+            "날짜": "10/27"
           }
         ]
       },
@@ -77,8 +77,8 @@
         "시장": "미국",
         "제목": "미국 증시 마감 흐름",
         "자동생성": true,
-        "결과": "S&P 500 +0.70% · 나스닥 종합 +0.82% · 다우 30 +0.28%",
-        "원인": "주요 지수와 함께 미 10년물 -0.04% · VIX -5.45%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
+        "결과": "S&P 500 +0.60% · 나스닥 종합 +1.18% · 다우 30 +0.03%",
+        "원인": "주요 지수와 함께 미 10년물 +0.14% · VIX -4.73%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다.",
         "전달경로": "금리·위험선호 변화 → 성장주 할인율 → S&P500·나스닥 ETF",
         "ETF연결": "S&P500·나스닥100 ETF와 금리 민감 성장주 흐름을 함께 확인할 필요가 있습니다.",
         "출처": [
@@ -87,12 +87,12 @@
             "url": "https://finance.yahoo.com"
           },
           {
-            "이름": "파이낸셜뉴스",
+            "이름": "매일경제 마켓",
             "url": ""
           },
           {
-            "이름": "파이낸셜뉴스",
-            "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9HcHpXdDFXcThYNERmQll4bkxEc2V5cDczUThZcUJWUUZydXpRaUQ2aW93ZnIwajBoZDB4aGlJbU9paWwtUXk1cnlISlJvemxBMW5jeDlXSTJoZw?oc=5",
+            "이름": "매일경제 마켓",
+            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE12OE1qbC1PLTJweUxwZW9FU2d1X0R5SnQyQURBZWc5bmxsNzVpMFZ4Unl4SUR1WHFZZ2lObFZGc3RfLTR1Wk9oR0xvTi1yb1dONHc?oc=5",
             "날짜": "10/27"
           }
         ]
@@ -101,43 +101,43 @@
     "놓치면안될이슈": [
       {
         "분야": "산업·기술",
-        "제목": "AI 투자, 이제 반도체만 보면 놓칩니다…'이 ETF' 주목[머니똑똑] - 머니투데이 - 머니투데이",
-        "무슨일": "AI 투자, 이제 반도체만 보면 놓칩니다…'이 ETF' 주목[머니똑똑] - 머니투데이 머니투데이",
+        "제목": "Blackbaud 실적 발표 앞두고 AI 투자 성과에 주목 - Investing.com 한국어",
+        "무슨일": "Blackbaud 실적 발표 앞두고 AI 투자 성과에 주목 Investing.com 한국어",
         "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
+        "출처": [
+          {
+            "이름": "Investing.com 한국어",
+            "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5pTENEVWstdVJyV3gwd3hfVVppeDNxQ2dfVkdVY1EyWWxlU1F4UWczSVZMUEZIUlhHWFY5Y05PelM4UV9zNDhaOE01QlFtX0l3V1FQMTVHOUY2V19acVF2UG1YeDA5bkFtaV84?oc=5",
+            "날짜": "10/28"
+          }
+        ]
+      },
+      {
+        "분야": "생활경제",
+        "제목": "\"물가 잡겠다며\" 트럼프 찍었는데...관세 부메랑, 러스트벨트 때렸다 - 머니투데이 - 머니투데이",
+        "무슨일": "\"물가 잡겠다며\" 트럼프 찍었는데...관세 부메랑, 러스트벨트 때렸다 - 머니투데이 머니투데이",
+        "왜중요": "고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
             "이름": "머니투데이",
-            "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9jUUdVUDNSaDdjX1RBX1pxNnFWcHFkblg0SnE0MFh1aFdUWEhIY2g0b2QtaXlTSlZYVlNfbU9jMTBzQzNzMHlHeU1nR0RQU1k2clFNTVFsaTlnc2stVllNNnNPdFlXbXFx0gFuQVVfeXFMT1NZaTJtSS1wdnlPM2xHS1NsV0ZSTHMxLW50UjZQQmFzT1VyRzYyWFp1aFhaYThZcmNYSlNoajJBUjgwdE9UMFdMbmYzZXBDM24xSlI1djY5dFBnbnVLUWpiNnV2YXQza1RRb0h0X3c?oc=5",
-            "날짜": "10/27"
+            "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9ScUg5QnFKRkd3TERCMWJwRTMxZzJTY3NIWld2VUpKeUhCY1FQNjZUTGFodUhGUFdGV0NrNU5PNElCOG1oTE9xRWkxM0VwVHA0R2hKZ0FmSXpRWU1naG5MWkhSTXMxREFE0gFuQVVfeXFMTk9zWW9NM0g4bzczVGI5QW1tSUhCWW5iVmc4UGw4N1lEdk1va2NuUHFfQ3dqd0F6dzFybFJHRFR3NnlmTWI4LTFTMV9oVGs2Z0FLZi1mWnpBalFWYWpoX2Z2N25wVXZmRlA1a05zeWc?oc=5",
+            "날짜": "10/28"
           }
         ]
       },
       {
-        "분야": "산업·기술",
-        "제목": "[뉴욕증시]앤스로픽 IPO 출사표에 AI 투자심리 ↑…일제히 상승 마감 - 아시아경제",
-        "무슨일": "[뉴욕증시]앤스로픽 IPO 출사표에 AI 투자심리 ↑…일제히 상승 마감 아시아경제",
-        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+        "분야": "정책",
+        "제목": "삼전닉스 PER이 겨우 3배? … 코스피 적정가는 8700, 지지선은 4200",
+        "무슨일": "코스피 PER·PBR로 따져보니주가는 기업 실적과 수급, 밸류에이션(가치평가)의 함수다. 기업이 얼마나 이익을 내느냐에 더해 투자자들이 그 이익에 얼마 만큼의 가치를 부여하느냐가 ..",
+        "왜중요": "국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
         "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
         "출처": [
           {
-            "이름": "아시아경제",
-            "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE41VXZTc1h0anF4VWdqMnhldkxWZHRYbWRCTmdFMDZDVzdHOFMwdUhZX1Y2bUJIZ3BINW1kWXdQa0EySWFiMklvRlhZR1ZkemkxOUtxSnFwWHIyVHFCcl9GaQ?oc=5",
-            "날짜": "10/27"
-          }
-        ]
-      },
-      {
-        "분야": "산업·기술",
-        "제목": "[시대의눈/정혜진]'법률 AI' 규제, 세계 기준으로 - 동행미디어 시대",
-        "무슨일": "[시대의눈/정혜진]'법률 AI' 규제, 세계 기준으로 동행미디어 시대",
-        "왜중요": "투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-        "확인할것": "후속 발표와 실제 정책·실적 수치의 변화를 확인합니다.",
-        "출처": [
-          {
-            "이름": "동행미디어 시대",
-            "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1tczVnU3I3MXlubDZqa3RFbGhaZDExOEY0d1hWOXpUVWdNY3FXbUdIWnpHeFg3dDJHQW4wVXRwSG5nM3B0dzdCRUswZWJvRXdGUDJmZTFKTzE4RjB3cnc?oc=5",
-            "날짜": "10/27"
+            "이름": "매일경제 증권",
+            "url": "https://www.mk.co.kr/news/stock/12187371",
+            "날짜": "10/28"
           }
         ]
       }
@@ -150,7 +150,7 @@
       {
         "코너": "ETF 처방전",
         "제목": "브렌트 하락, 연계 ETF 영향은?",
-        "이유": "브렌트 하락의 핵심 수치 110.27 (-5.53%)와 ETF 전달 경로를 설명할 필요",
+        "이유": "브렌트 하락의 핵심 수치 109.74 (-5.24%)와 ETF 전달 경로를 설명할 필요",
         "관련ETF": "브렌트 하락 연계 지수·업종 ETF",
         "차별점": "당일 등락 소개가 아니라 ETF 가격에 전달되는 구조와 대응 기준을 비교",
         "질문": "브렌트 하락 움직임이 연계 ETF에 전달되는 경로는 무엇인가요?",
@@ -194,88 +194,10 @@
     "관망요인": null,
     "댓글키워드": "",
     "카톡": {
-      "1": "☀️ 10/27 브리핑\n1. 브렌트 하락\n2. VIX 하락\n3. 코스닥 하락\n4. 필라델피아 반도체 상승\n5. WTI 하락"
+      "1": "☀️ 10/28 브리핑\n1. 브렌트 하락\n2. VIX 하락\n3. 필라델피아 반도체 상승\n4. 코스피 상승\n5. 구리 상승"
     }
   },
   "history": [
-    {
-      "날짜": "2026-10-22",
-      "주제": [
-        {
-          "영역": "5줄요약",
-          "제목": "WTI 하락",
-          "핵심": "WTI 연계 ETF 흐름 확인 97.71 (-4.01%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "VIX 하락",
-          "핵심": "VIX 연계 ETF 흐름 확인 16.68 (-3.64%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스피 상승",
-          "핵심": "코스피 연계 ETF 흐름 확인 5,735.66 (+3.29%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "필라델피아 반도체 상승",
-          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 11,505.56 (+1.97%)",
-          "출처": []
-        },
-        {
-          "영역": "5줄요약",
-          "제목": "코스닥 상승",
-          "핵심": "코스닥 연계 ETF 흐름 확인 792.76 (+1.38%)",
-          "출처": []
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "코스피·코스닥 디커플링",
-          "핵심": "외국인 순매수 6,527억원 · 기관 순매도 817억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 +3.29% · 코스닥 +1.38%",
-          "출처": [
-            "https://data.krx.co.kr",
-            "https://view.asiae.co.kr/article/2026102115594608016"
-          ]
-        },
-        {
-          "영역": "핵심이야기",
-          "제목": "미국 증시 마감 흐름",
-          "핵심": "주요 지수와 함께 미 10년물 +0.57% · VIX -3.64%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 +0.58% · 나스닥 종합 +1.05% · 다우 30 +0.69%",
-          "출처": [
-            "https://finance.yahoo.com",
-            "https://news.google.com/rss/articles/CBMiWkFVX3lxTE53bjNuNzVkS0JtNW5vSkhWZzJBb3JCTEtwX3B2UFA1MnFnRWNBbkRZSGdlTlB0bnFkRFJIUW95bWtfT3FkODlMRFl1YmpWQVo2dEZwR3M3MjU4dw?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "셰브론 미스트 분리기 플레이트 시장 2035년 전망: 반도체 설비 투자와 배출 규제가 성장 견인…",
-          "핵심": "셰브론 미스트 분리기 플레이트 시장 2035년 전망: 반도체 설비 투자와 배출 규제가 성장 견인 - 뉴스 및 통계 IndexBox 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMi3gFBVV95cUxNYVpnRTUtYVJ0SFJrc084MFZTUnNNRll0WHpkZzB6R3diU05JTFRYMUNlNzNrdkpmc3Z0aGdlVVVORFNlR1kzUjZPel9fXzdFNzVhaVV5R3pscHZldnlYcXpHVjItTWdzNng2bHFsSGV0QUlqM3dqSmlLbTRzZEVMallTOXgzS1FuTk5YUkFTeENWUFFWeTl2QjQ2Tlg4M3dqTl9LWHlHNDJEU1RQdlhkVmp5cDlNVFNTYl9QMTdCdi1lTnlVeG9qOVBuWWxVWFQzb3NrYU0wRkk4a0gwbFE?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "[보건복지법안 법률안 톺아보기] 연금 물가연동제가 부른 ‘건보폭탄’...핵심은 합리적 기준선 마련…",
-          "핵심": "[보건복지법안 법률안 톺아보기] 연금 물가연동제가 부른 ‘건보폭탄’...핵심은 합리적 기준선 마련 헬스경향 고용·물가·주택·소비 변화는 경기와 통화정책 판단에 연결됩니다.",
-          "출처": [
-            "https://news.google.com/rss/articles/CBMia0FVX3lxTFBSVWVKSFktZk5qbXk0Y1p2aE1acXBYSWItWFZlQUNpejNFTkUtT3BjQktNYjhaS1RUWThQdU1hRFhCZ2N4Vmgteno0b21Rd3lNLUlUWjI0QXBqLV9PU1JrV1J3bUg3dlQzSkZF?oc=5"
-          ]
-        },
-        {
-          "영역": "세상이슈",
-          "제목": "\"할당관세 1천586억원 감면했지만…가격 인하효과 제한적\"",
-          "핵심": "(서울=연합뉴스) 한주홍 기자 = 정부가 물가 안정을 위해 할당관세를 통해 수입 식료품의 관세를 낮췄지만, 상당수 품목에서 소비자가격 인하 효과... 국내 경기와 기업·가계의 의사결정에 영향을 줄 수 있는 변화입니다.",
-          "출처": [
-            "https://www.yna.co.kr/view/AKR20261021131700030"
-          ]
-        }
-      ],
-      "개념": ""
-    },
     {
       "날짜": "2026-10-23",
       "주제": [
@@ -437,6 +359,84 @@
           "핵심": "정부, 반도체 규제 13개 개선과제 발표… 공장 건설부터 수출까지 속도 높인다 테크데일리 정부·제도 변화가 가계와 기업의 비용·의사결정에 이어질 수 있습니다.",
           "출처": [
             "https://news.google.com/rss/articles/CBMickFVX3lxTE5uUWxUNmd2SG9lZi1jUkhXYzlzdmVGZ1hYV2ptT2dMeHRGbEVncjllcE5nZ0FhQ0pyRkRkU1dOdHZsRGd6eG1JQ2R1WlpMMXhxQzNIdlBpazlXeVRkSWRaT1oxU2tpakZuUnNMUlBCSDJmQdIBckFVX3lxTE5uUWxUNmd2SG9lZi1jUkhXYzlzdmVGZ1hYV2ptT2dMeHRGbEVncjllcE5nZ0FhQ0pyRkRkU1dOdHZsRGd6eG1JQ2R1WlpMMXhxQzNIdlBpazlXeVRkSWRaT1oxU2tpakZuUnNMUlBCSDJmQQ?oc=5"
+          ]
+        }
+      ],
+      "개념": ""
+    },
+    {
+      "날짜": "2026-10-27",
+      "주제": [
+        {
+          "영역": "5줄요약",
+          "제목": "브렌트 하락",
+          "핵심": "브렌트 연계 ETF 흐름 확인 110.27 (-5.53%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "VIX 하락",
+          "핵심": "VIX 연계 ETF 흐름 확인 18.39 (-5.45%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "코스닥 하락",
+          "핵심": "코스닥 연계 ETF 흐름 확인 727.21 (-3.26%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "필라델피아 반도체 상승",
+          "핵심": "필라델피아 반도체 연계 ETF 흐름 확인 11,083.47 (+2.82%)",
+          "출처": []
+        },
+        {
+          "영역": "5줄요약",
+          "제목": "WTI 하락",
+          "핵심": "WTI 연계 ETF 흐름 확인 101.25 (-1.96%)",
+          "출처": []
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "코스피·코스닥 디커플링",
+          "핵심": "외국인 순매도 6,526억원 · 기관 순매수 5,812억원가 나타난 가운데 코스피와 코스닥의 방향·강도가 벌어졌습니다. 같은 국내장에서도 대형주와 중소형 성장주의 체감이 달랐던 장으로 볼 수 있습니다. 코스피 -1.46% · 코스닥 -3.26%",
+          "출처": [
+            "https://data.krx.co.kr",
+            "https://www.mk.co.kr/news/stock/12186320"
+          ]
+        },
+        {
+          "영역": "핵심이야기",
+          "제목": "미국 증시 마감 흐름",
+          "핵심": "주요 지수와 함께 미 10년물 -0.04% · VIX -5.45%의 움직임이 나타나 금리·위험선호 경로를 같이 확인해야 합니다. S&P 500 +0.70% · 나스닥 종합 +0.82% · 다우 30 +0.28%",
+          "출처": [
+            "https://finance.yahoo.com",
+            "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9HcHpXdDFXcThYNERmQll4bkxEc2V5cDczUThZcUJWUUZydXpRaUQ2aW93ZnIwajBoZDB4aGlJbU9paWwtUXk1cnlISlJvemxBMW5jeDlXSTJoZw?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "AI 투자, 이제 반도체만 보면 놓칩니다…'이 ETF' 주목[머니똑똑] - 머니투데이 - 머니투데이",
+          "핵심": "AI 투자, 이제 반도체만 보면 놓칩니다…'이 ETF' 주목[머니똑똑] - 머니투데이 머니투데이 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9jUUdVUDNSaDdjX1RBX1pxNnFWcHFkblg0SnE0MFh1aFdUWEhIY2g0b2QtaXlTSlZYVlNfbU9jMTBzQzNzMHlHeU1nR0RQU1k2clFNTVFsaTlnc2stVllNNnNPdFlXbXFx0gFuQVVfeXFMT1NZaTJtSS1wdnlPM2xHS1NsV0ZSTHMxLW50UjZQQmFzT1VyRzYyWFp1aFhaYThZcmNYSlNoajJBUjgwdE9UMFdMbmYzZXBDM24xSlI1djY5dFBnbnVLUWpiNnV2YXQza1RRb0h0X3c?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "[뉴욕증시]앤스로픽 IPO 출사표에 AI 투자심리 ↑…일제히 상승 마감 - 아시아경제",
+          "핵심": "[뉴욕증시]앤스로픽 IPO 출사표에 AI 투자심리 ↑…일제히 상승 마감 아시아경제 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiYEFVX3lxTE41VXZTc1h0anF4VWdqMnhldkxWZHRYbWRCTmdFMDZDVzdHOFMwdUhZX1Y2bUJIZ3BINW1kWXdQa0EySWFiMklvRlhZR1ZkemkxOUtxSnFwWHIyVHFCcl9GaQ?oc=5"
+          ]
+        },
+        {
+          "영역": "세상이슈",
+          "제목": "[시대의눈/정혜진]'법률 AI' 규제, 세계 기준으로 - 동행미디어 시대",
+          "핵심": "[시대의눈/정혜진]'법률 AI' 규제, 세계 기준으로 동행미디어 시대 투자 계획과 공급망 변화가 관련 업종의 중장기 경쟁력에 이어질 수 있습니다.",
+          "출처": [
+            "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1tczVnU3I3MXlubDZqa3RFbGhaZDExOEY0d1hWOXpUVWdNY3FXbUdIWnpHeFg3dDJHQW4wVXRwSG5nM3B0dzdCRUswZWJvRXdGUDJmZTFKTzE4RjB3cnc?oc=5"
           ]
         }
       ],
